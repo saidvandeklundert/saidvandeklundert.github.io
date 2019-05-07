@@ -1,7 +1,7 @@
 ---
 layout: page
-title: About me
-subtitle: Why you'd want to go on a date with me
+title: Words on things I have done.
+subtitle: Network engineering and automation.
 ---
 
-My name is Said van de Klundert. 
+My name is Said van de Klundert. I do things.
