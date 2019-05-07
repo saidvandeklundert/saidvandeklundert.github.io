@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Words on things I have done.
+title: Things I do.
 subtitle: Network engineering and automation.
 ---
 
