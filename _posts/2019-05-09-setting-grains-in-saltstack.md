@@ -102,10 +102,8 @@ rxr01.bxs01.ams:
 ```
 
  
-Using grains in templates
-=========================
 
-How to set your own grains
+Using grains in templates
 ==========================
 
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
