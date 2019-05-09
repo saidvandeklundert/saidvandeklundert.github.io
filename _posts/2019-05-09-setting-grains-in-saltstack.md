@@ -105,6 +105,9 @@ rxr01.bxs01.ams:
 Using grains in templates
 =========================
 
+How to set your own grains
+==========================
+
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
 ```
 {% raw %}{%- set function = grains.facts.get('function') -%}{% endraw %}
@@ -150,7 +153,7 @@ What we did here was retrieve the datacenter name and then use it to perform a l
 
 This is so useful, I find myself using it all the time. For syslog, radius, ntp, protocol information, anything really. 
 
- 
+
 Closing thoughts
 ================
 
