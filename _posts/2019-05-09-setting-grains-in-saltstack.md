@@ -56,7 +56,7 @@ We then connect to the Juniper proxy minion and execute and RPC from which we re
 
 The naming scheme is such that different bits of information are put into the device name. The first three characters define the device function, so we use string slicing to obtain that one. Different data encoded into the name is separated by a ‘.’, and the last piece of information is the datacenter name. So we use `split` to retrieve that value. 
 
-Next up is the ` elif proxytype == 'napalm':`. This was only put in there to illustrate how we could turn this into something that would work on different types of proxy minions.
+Next up is the `elif proxytype == 'napalm':`. This was only put in there to illustrate how we could turn this into something that would work on different types of proxy minions.
 
 We then build the `facts` dictionary and assign values to the keys. 
 
@@ -83,8 +83,8 @@ rxr01.bxs01.ams:
 
 To look at the facts, we can issue the following command:
 ```
-salt rxr01.bxs01.ams grains.item facts 
-..
+salt 'rxr01.bxs01.ams' grains.item facts 
+…
 rxr01.bxs01.ams:
     ----------
     facts:
@@ -108,7 +108,7 @@ Using grains in templates
 
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
 ```
-{% raw %}{%- set function = grains.facts.get('function') -%}{% endraw %}
+{% raw %}{%- set function = {{{`grains.facts.get('function')`}}} -%}{% endraw %}
 ```
 
 Grains can prove their use in many different ways in our templates.  Let’s look at two examples and start with an obvious one. Here, we use the grain to configure different prefix-lists based on device function:
