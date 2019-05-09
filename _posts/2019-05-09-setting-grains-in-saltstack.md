@@ -108,7 +108,7 @@ Using grains in templates
 
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
 ```
-{% raw %}{%-{% endraw %} set function = `grains.facts.get('function')` {% raw %}-%}{% endraw %}
+{% raw %}{%-{% endraw %} set function = grains.facts.get('function') {% raw %}-%}{% endraw %}
 ```
 
 Grains can prove their use in many different ways in our templates.  Let’s look at two examples and start with an obvious one. Here, we use the grain to configure different prefix-lists based on device function:
@@ -124,7 +124,7 @@ set policy-options prefix-list MGMT 10.3.0.0/24
 By using `if function in [ 'ebr', 'ddr', ]`, I think it is both easy to read as well as extend later on.
 
 Knowing we can access grains this way can also be useful when you are designing your pillar. For instance, now that we have the datacenter name that the node is in accessible as a grain, we can add something like this to the pillar:
-```
+```yaml
   dc:
     ams: {pub_as: 65500, int_as: 65500, dcid: 3, cid: 40}
     par: {pub_as: 65500, int_as: 65500, dcid: 3, cid: 40}
