@@ -9,9 +9,9 @@ In Salt, grains can be a very powerful tool. One of the things you can use them 
 How to set your own grains
 ==========================
 
-Setting your own grains is pretty easy. Let’s look at a basic execution module I created:
-```
-# more /srv/salt/_modules/example.py
+Setting your own grains is pretty easy. Let’s look at a basic execution module called `/srv/salt/_modules/example.py` I created :
+```python
+
 def set_facts():
 
     proxytype = __pillar__.get("proxy", {}).get('proxytype')
@@ -46,6 +46,7 @@ def set_facts():
     __salt__['grains.setval']('facts', facts_dict)
 
     return facts_dict
+
 ```
 
 Let’s break it down and cover what is happening here.
