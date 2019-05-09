@@ -148,7 +148,6 @@ set policy-options community DC-ORIGIN members {{ pub_as }}:{{ dcid }}
 set routing-options autonomous-system {{ int_as }}
 set policy-options community DC-ORIGIN members {{ int_as }}:{{ cid }}
 {%- endif -%}
-{% endraw %}
 ```
 
 What we did here was retrieve the datacenter name and then use it to perform a lookup in the pillar to fetch the values that apply to the datacenter the node is placed in. After this, we use those values in configuration statements that are specific to a device type.
