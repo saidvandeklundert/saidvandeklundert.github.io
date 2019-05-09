@@ -4,7 +4,7 @@ title: Getting your facts straight.
 image: /img/salt_stack_logo.jpg
 ---
 
-In Salt, grains can be a very powerful tool. One of the things you can use them for is to make your templating more effective. As a network engineer, I mostly work with proxy-minions. And even though these come with their own set of grains, I wanted to explain how you can set your own grains and why that is useful.
+The Salt grains interface is a very powerful tool. The interface presents Salt with grains of information about the system that is being managed. One of the things you can use grains for is to make your templating more effective. As a network engineer, I mostly work with proxy-minions. And even though these come with their own set of grains, I wanted to explain how you can set your own grains and why that is useful.
 
 How to set your own grains
 ==========================
@@ -82,10 +82,8 @@ rxr01.bxs01.ams:
         15.1X53-D65.3
 ```
 
-To look at the facts, we can issue the following command:
-```
-salt 'rxr01.bxs01.ams' grains.item facts 
-…
+To look at the facts, we issue the `salt 'rxr01.bxs01.ams' grains.item facts` command and we get to see the following:
+```yaml
 rxr01.bxs01.ams:
     ----------
     facts:
@@ -156,6 +154,18 @@ This is so useful, I find myself using it all the time. For syslog, radius, ntp,
 Closing thoughts
 ================
 
-Salt ships with a lot of tools. It enables you to store device specific information as grain data and network information as pillar data. Add Jinja with Salt extensions to this and you have an extremely powerful templating engine.
+Salt ships with a lot of tools. It enables you to store device specific information as grain data and network information as pillar data. Jinja with Salt extensions has access to grains and pillar data. 
 
-You can I have been doing it for some time now and found templating in Salt is not just very powerful, it is an absolute joy to work with as well.
+By being able to extend the grains with custom grains specific to our environment, we enhance our templating efforts even further. I have been using Salt for some time now and found setting custom network specific grains comes in extremely handy. 
+
+Using the grains to perform pillar lookups has made it possible to simplify templates and to easily create configurations that have a lot of dependencies. Some other things that I have been able to do with custom grains are:
+- putting in a list of neighboring devices and device types (nice for OPS-related things)
+- dealing with corner cases ( not configuring x on model y on release z)
+- putting in all line-cards and their uptime
+- having the same key/value pairs to access certain grains across all your devices/proxy minion types
+- use them in healtchecks ( and set them / refresh them as soon as a custom state runs)
+
+Hope this helps!
+
+
+
