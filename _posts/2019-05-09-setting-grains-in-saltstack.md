@@ -124,7 +124,7 @@ set policy-options prefix-list MGMT 10.3.0.0/24
 {%- endif -%}
 {% endraw %}
 ```
-By using ` if function in [ 'ebr', 'ddr', ]`, I think it is both easy to read as well as extend later on.
+By using `if function in [ 'ebr', 'ddr', ]`, I think it is both easy to read as well as extend later on.
 
 Knowing we can access grains this way can also be useful when you are designing your pillar. For instance, now that we have the datacenter name that the node is in accessible as a grain, we can add something like this to the pillar:
 ```
