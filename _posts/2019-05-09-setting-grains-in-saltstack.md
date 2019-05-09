@@ -6,8 +6,8 @@ image: /img/salt_stack_logo.png
 
 In Salt, grains can be a very powerful tool. One of the things you can use them for is to make your templating more effective. As a network engineer, I mostly work with proxy-minions. And even though these come with their own set of grains, I wanted to explain how you can set your own grains and why that is useful.
 
-How to set your own grains.
-===========================
+How to set your own grains
+==========================
 
 Setting your own grains is pretty easy. Let’s look at a basic execution module I created:
 ```
@@ -102,8 +102,8 @@ rxr01.bxs01.ams:
 ```
 
  
-Using grains in templates.
-==========================
+Using grains in templates
+=========================
 
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
 ```
@@ -135,8 +135,7 @@ Knowing we can access grains this way can also be useful when you are designing 
 ```
 
 We can do a lookup and use the data in a template like this:
- ```
- {% raw %}
+ ```bash
 {% set dc = grains.facts.get('datacenter') -%}
 {% set pub_as = pillar.dc.get(dc).get('pub_as')  -%}
 {% set int_as = pillar.dc.get(dc).get('int_as')  -%}
@@ -157,8 +156,8 @@ What we did here was retrieve the datacenter name and then use it to perform a l
 This is so useful, I find myself using it all the time. For syslog, radius, ntp, protocol information, anything really. 
 
  
-Closing thoughts.
-=================
+Closing thoughts
+================
 
 Salt ships with a lot of tools. It enables you to store device specific information as grain data and network information as pillar data. Add Jinja with Salt extensions to this and you have an extremely powerful templating engine.
 
