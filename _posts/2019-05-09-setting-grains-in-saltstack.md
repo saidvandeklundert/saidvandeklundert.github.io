@@ -113,7 +113,8 @@ Using grains is templates is pretty straightforward. After storing the device fu
 ```
 
 Grains can prove their use in many different ways in our templates.  Let’s look at two examples and start with an obvious one. Here, we use the grain to configure different prefix-lists based on device function:
- ```{% raw %}
+ ```
+{% raw %}
 {%- if function in [ 'ebr', 'ddr', ] -%}
 set policy-options prefix-list MGMT 10.1.0.0/24
 {%- elif function in [ 'rxr', 'sxs', ] -%}
@@ -121,7 +122,8 @@ set policy-options prefix-list MGMT 10.2.0.0/24
 {%- else -%}
 set policy-options prefix-list MGMT 10.3.0.0/24
 {%- endif -%}
-```{% endraw %}
+{% endraw %}
+```
 By using ` if function in [ 'ebr', 'ddr', ]`, I think it is both easy to read as well as extend later on.
 
 Knowing we can access grains this way can also be useful when you are designing your pillar. For instance, now that we have the datacenter name that the node is in accessible as a grain, we can add something like this to the pillar:
@@ -133,7 +135,8 @@ Knowing we can access grains this way can also be useful when you are designing 
 ```
 
 We can do a lookup and use the data in a template like this:
- ```{% raw %}
+ ```
+ {% raw %}
 {% set dc = grains.facts.get('datacenter') -%}
 {% set pub_as = pillar.dc.get(dc).get('pub_as')  -%}
 {% set int_as = pillar.dc.get(dc).get('int_as')  -%}
@@ -146,7 +149,8 @@ set policy-options community DC-ORIGIN members {{ pub_as }}:{{ dcid }}
 set routing-options autonomous-system {{ int_as }}
 set policy-options community DC-ORIGIN members {{ int_as }}:{{ cid }}
 {%- endif -%}
-```{% endraw %}
+{% endraw %}
+```
 
 What we did here was retrieve the datacenter name and then use it to perform a lookup in the pillar to fetch the values that apply to the datacenter the node is placed in. After this, we use those values in configuration statements that are specific to a device type.
 
