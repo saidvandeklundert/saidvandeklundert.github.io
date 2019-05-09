@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Getting your facts straight.
-image: /img/salt_stack_logo.png
+image: /img/salt_stack_logo.jpg
 ---
 
 In Salt, grains can be a very powerful tool. One of the things you can use them for is to make your templating more effective. As a network engineer, I mostly work with proxy-minions. And even though these come with their own set of grains, I wanted to explain how you can set your own grains and why that is useful.
