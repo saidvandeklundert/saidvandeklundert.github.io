@@ -107,7 +107,9 @@ Using grains in templates.
 
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
 ```
+{% raw %}
 {%- set function = grains.facts.get('function') -%}
+{% endraw %}
 ```
 
 Grains can prove their use in many different ways in our templates.  Let’s look at two examples and start with an obvious one. Here, we use the grain to configure different prefix-lists based on device function:
