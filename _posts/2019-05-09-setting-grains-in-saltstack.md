@@ -109,7 +109,7 @@ Using grains in templates
 
 Using grains is templates is pretty straightforward. After storing the device function as a grain, we can assign it to a variable in a template like this:
 <pre>
-{% raw %}{%-{% endraw %}set function = <bold>grains.facts.get('function')</bold>{% raw %}-%}{% endraw %}
+{% raw %}{%-{% endraw %}set function = <b>grains.facts.get('function')</b>{% raw %}-%}{% endraw %}
 </pre>
 
 Grains can prove their use in many different ways in our templates.  Let’s look at two examples and start with an obvious one. Here, we use the grain to configure different prefix-lists based on device function:
@@ -133,7 +133,7 @@ Knowing we can access grains this way can also be useful when you are designing 
 ```
 
 We can do a lookup and use the data in a template like this:
- ```
+<pre>
 {% raw %}{% set dc = grains.facts.get('datacenter') -%}
 {% set pub_as = pillar.dc.get(dc).get('pub_as')  -%}
 {% set int_as = pillar.dc.get(dc).get('int_as')  -%}
@@ -146,7 +146,7 @@ set policy-options community DC-ORIGIN members {{ pub_as }}:{{ dcid }}
 set routing-options autonomous-system {{ int_as }}
 set policy-options community DC-ORIGIN members {{ int_as }}:{{ cid }}
 {%- endif -%}{% endraw %}
-```
+</pre>
 
 What we did here was retrieve the datacenter name and then use it to perform a lookup in the pillar to fetch the values that apply to the datacenter the node is placed in. After this, we use those values in configuration statements that are specific to a device type.
 
