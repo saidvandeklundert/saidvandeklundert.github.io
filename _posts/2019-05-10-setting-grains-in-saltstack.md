@@ -54,7 +54,7 @@ def set_facts():
 
 Let’s break it down and cover what is happening here.
 
-First we retrieve the proxy-minion type from the pillar. Based on this return, we branch off with the ` if proxytype == 'junos':` and use the functions required to interact with that particular proxy minion. 
+First we retrieve the proxy-minion type from the pillar. Based on this return, we branch off with the ```if proxytype == 'junos':``` and use the functions required to interact with that particular proxy minion. 
 
 We then connect to the Juniper proxy minion and execute and RPC from which we retrieve the hostname, model and software version. And because this is our own environment, we know that the hostname holds more information than just that. 
 
