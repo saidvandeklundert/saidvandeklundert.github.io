@@ -9,7 +9,10 @@ The Salt grains interface is a very powerful tool. The interface presents Salt w
 How to set your own grains
 ==========================
 
-Setting your own grains is pretty easy. Let’s look at a basic execution module called `/srv/salt/_modules/example.py` I created :
+Setting your own grains is pretty easy. Let’s look at the following execution module I created :
+
+`/srv/salt/_modules/example.py`
+
 ```python
 
 def set_facts():
@@ -55,15 +58,15 @@ First we retrieve the proxy-minion type from the pillar. Based on this return, w
 
 We then connect to the Juniper proxy minion and execute and RPC from which we retrieve the hostname, model and software version. And because this is our own environment, we know that the hostname holds more information than just that. 
 
-The naming scheme is such that different bits of information are put into the device name. The first three characters define the device function, so we use string slicing to obtain that one. Different data encoded into the name is separated by a ‘.’, and the last piece of information is the datacenter name. So we use `split` to retrieve that value. 
+The naming scheme is such that different bits of information are put into the device name. The first three characters define the device function, so we use *string slicing* to obtain that. Different data encoded into the name is separated by a ‘.’, and the last piece of information is the datacenter name. So we use *split* to retrieve that value. 
 
 Next up is the `elif proxytype == 'napalm':`. This was only put in there to illustrate how we could turn this into something that would work on different types of proxy minions.
 
-We then build the `facts` dictionary and assign values to the keys. 
+We then build the *facts* dictionary and assign values to the keys. 
 
-Using `__salt__['grains.delkey']('facts')` we flush existing values and using `__salt__['grains.setval']('facts', facts_dict)` we update the grains of the minions. After running the function, the key `facts` will return the data this function gathers. 
+Using `__salt__['grains.delkey']('facts')` we flush existing values. After this, using `__salt__['grains.setval']('facts', facts_dict)`, we update the grains of the minions. The *facts* dictionary will be set and accessible via the key `facts`.
 
-After putting the file in the proper directory, we use `saltutil.sync_modules`. After updating the proxy-minion, we can run the function like so:
+After using `saltutil.sync_modules` to update the proxy minion, we can run the function like so:
 
  ```
 salt rxr01.bxcs01.ams example.set_facts
