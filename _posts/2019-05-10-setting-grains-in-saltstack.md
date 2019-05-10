@@ -64,7 +64,7 @@ Next up is the `elif proxytype == 'napalm':`. This was only put in there to illu
 
 We then build the *facts_dict* dictionary and assign values to the keys. 
 
-Using `__salt__['grains.delkey']('facts')` we flush existing values. After this, using `__salt__['grains.setval']('facts', facts_dict)`, we update the grains of the minions.
+Using `__salt__['grains.delkey']('facts')` we flush existing values. After this, we use `__salt__['grains.setval']('facts', facts_dict)` to update the grains of the minions.
 
 When we are done setting the grains, the *facts_dict* dictionary will be set and accessible via the key `facts`.
 
