@@ -62,9 +62,11 @@ The naming scheme is such that different bits of information are put into the de
 
 Next up is the `elif proxytype == 'napalm':`. This was only put in there to illustrate how we could turn this into something that would work on different types of proxy minions.
 
-We then build the *facts* dictionary and assign values to the keys. 
+We then build the *facts_dict* dictionary and assign values to the keys. 
 
-Using `__salt__['grains.delkey']('facts')` we flush existing values. After this, using `__salt__['grains.setval']('facts', facts_dict)`, we update the grains of the minions. The *facts* dictionary will be set and accessible via the key `facts`.
+Using `__salt__['grains.delkey']('facts')` we flush existing values. After this, using `__salt__['grains.setval']('facts', facts_dict)`, we update the grains of the minions.
+
+When we are done setting the grains, the *facts_dict* dictionary will be set and accessible via the key `facts`.
 
 After using `saltutil.sync_modules` to update the proxy minion, we can run the function like so:
 
