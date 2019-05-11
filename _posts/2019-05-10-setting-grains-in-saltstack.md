@@ -90,9 +90,9 @@ rxr01.bxs01.ams:
 To look at the facts, we issue the `salt 'rxr01.bxs01.ams' grains.item facts` command and we get to see the following:
 ```yaml
 rxr01.bxs01.ams:
-    ----------
+
     facts:
-        ----------
+
         datacenter:
             ams
         function:
