@@ -56,7 +56,7 @@ Let’s break it down and cover what is happening here.
 
 First we retrieve the proxy-minion type from the pillar. Based on this return, we branch off with the ```if proxytype == 'junos':``` and use the functions required to interact with that particular proxy minion. 
 
-We then connect to the Juniper proxy minion and execute and RPC from which we retrieve the hostname, model and software version. And because this is our own environment, we know that the hostname holds more information than just that. 
+We then connect to the Juniper proxy minion and execute an RPC from which we retrieve the hostname, model and software version. And because this is our own environment, we know that the hostname holds more information than just that. 
 
 The naming scheme is such that different bits of information are put into the device name. The first three characters define the device function, so we use *string slicing* to obtain that. Different data encoded into the name is separated by a ‘.’, and the last piece of information is the datacenter name. So we use *split* to retrieve that value. 
 
