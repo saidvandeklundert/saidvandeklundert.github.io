@@ -58,9 +58,9 @@ First we retrieve the proxy-minion type from the pillar. Based on this return, w
 
 We then connect to the Juniper proxy minion and execute an RPC from which we retrieve the hostname, model and software version. And because this is our own environment, we know that the hostname holds more information than just that. 
 
-The naming scheme is such that different bits of information are put into the device name. The first three characters define the device function, so we use *string slicing* to obtain that. Different data encoded into the name is separated by a ‘.’, and the last piece of information is the datacenter name. So we use *split* to retrieve that value. 
+In our example, the device naming scheme is such that different data is encoded into it. We use *string slicing* to obtain the device function and we use *split* to grab the datacenter name.
 
-Next up is the `elif proxytype == 'napalm':`. This was only put in there to illustrate how we could turn this into something that would work on different types of proxy minions.
+Next up is the `elif proxytype == 'napalm':`. This was put in there to illustrate how we could turn this into something that would work on different types of proxy minions.
 
 We then build the *facts_dict* dictionary and assign values to the keys. 
 
