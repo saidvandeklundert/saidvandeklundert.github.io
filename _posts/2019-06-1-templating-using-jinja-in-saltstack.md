@@ -440,3 +440,10 @@ Raising custom errors:
 
 These are just some examples. No point in me covering all of them, just read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
 
+
+Wrapping up
+===========
+
+These were some of the tips and examples that I really could have used when I started templating in Salt myself. I hope this has helps clarify a few things and that you have gained some insights.
+
+If you have any additional tips, let me know via mail!
