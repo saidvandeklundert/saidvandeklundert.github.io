@@ -328,3 +328,118 @@ proxy_minion:
 ```
 
 Using the execution modules will enable you to basically do anything you can dream up in Python. Things like connecting to an external database, check operational information on the device, run a script someplace else, etc.
+
+
+Using execution modules to drop structured data into a variable inside a template
+=================================================================================
+
+Not all proxy-minion types will allow you to do this because not all vendors are capable of offering its users structured data. 
+
+Arista and Juniper are able to return structure data. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
+```
+{% set interface = ‘et-0/0/1’ %}
+{% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
+{% set interface_description = interface_description_dict.get('rpc_reply').get('interface-information').get('physical-interface').get('description') %}
+
+{{ interface_description }}
+ ```
+
+Result:
+```
+salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
+…
+proxy_minion:
+    ----------
+    interface description
+```
+
+
+Passing arguments into your template
+====================================
+
+Inside the templates, you can use grains data, pillar data and you can call execution modules to retrieve information from other places. 
+
+But there is another way to provide additional data to a template. This can be provided by appending inline pillar data when you call a state and then using the template inside that state.
+
+Example:
+```
+salt proxy_minion state.apply states.example pillar='{"ops": { "interface" : "et-0/0/1", "change" : "666", }}'
+```
+
+Inside the template, you can access this pillar data in the same way that you would access regular pillar data:
+```
+{% set interface = pillar.get('ops').get('interface') %}
+```
+Reasons for doing this can be because want to enable users running the state to pass it arguments or you are using the Enterprise API and want a nice and easy way to pass it data. When you are working with the API, passing the inline pillar data is just calling a state and passing it a dictionary. 
+
+ 
+Import other files with context
+===============================
+
+If you have a ton of variables you are using in every template, it might be nice to know that you can dump them all in a single template and include that template elsewhere.
+
+For instance, let’s create a template called default:
+```
+{%- set type = grains.facts.get('type') -%}
+{%- set software_version = grains.facts.get('software-version') -%}
+{%- set model = grains.facts.get('model') -%}
+{%- set password_information = pillar.get('secret_data') -%}
+```
+
+We can import this in other templates like this:
+```
+{%- import 'templates/default.j2' as example with context -%}
+{{ example.model }} 
+```
+Since we import the template as `example`, whenever we access a variable set in that template, we prefix it with `example.`.
+The main advantages are that it keeps the templates smaller and the default file is easy to maintain in case something changes or needs to be added to multiple templates.
+
+Additionally, another thing worth noting is that child templates have access to the variables declared in the parent template. So if we import a default template to be able to use variables everywhere, we will also be able to use those in the child templates as well.
+
+
+Using Jinja in state and pillar files
+=====================================
+
+In addition to using jinja in templates, you can also use it in other places, like in your pillar and in your state files. 
+
+The following is an example where doing something in a state file depends on whether or not ‘xyz’ is found in the device name:
+
+```
+{%- set device_name = pillar.get('device-name') -%}
+
+{%- if 'xyz' in device_name -%}
+
+generate_something:
+  cmd.script:
+    - name: /usr/bin/python
+    - source: salt://utility/some_script.py
+    - args: "{{ pw }}"
+
+{%- endif %}
+```
+
+
+Salt has some pretty good additional extensions
+===============================================
+
+You should familiarize yourself with the Jinja extensions Salt offers. SaltStack offers a lot of extensions that can come in quite handy. Reading about them before starting your templating efforts might help you a lot.
+
+Some of the extensions allow you to do pretty cool things. For example, test if something is an IP address:
+```
+{{ '192.168.0.1' | is_ip }}
+```
+Using regex replace:
+```
+{% set my_text = 'yes, this is a TEST' %}
+{{ my_text | regex_replace(' ([a-z])', '__\\1', ignorecase=True) }}
+```
+Raising custom errors:
+```
+{{ raise('Custom Error') }}
+```
+You can even access Python string methods in case you are in a pinch. For instance, you can split a string on the ‘/’ and then grab the first item of the list like so:
+
+{{ pillar.get('primary').get('ipv4').split('/')[0] }}
+
+These are just some of the things you have access to. I cannot cover all of them but you can read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
+
