@@ -246,3 +246,85 @@ If we have 30 devices types, we simply make 30 files that contain the appropriat
 
 And perhaps some device types do not need any additional prefix-lists. By testing the device type against a list of device types, we prevent the template from failing to try and include a file that does not exist.
 
+
+Debugging the template
+======================
+
+The error messages you’ll run into when templates break are not always that helpful. This can be tricky with big templates or templates you have not touched in a while. 
+
+It is nice to know that it is possible to make Salt generate a message that will end up in the proxy log. Observe the following template:
+
+```
+{%- set no_problem_here = 'just a var' -%}
+{%- do salt.log.error('debugging jinja 1: made it to line 2') -%} 
+..
+{%- do salt.log.error('debugging jinja 2: In the loop that starts at line 23') -%}
+..
+{%- set erhm= pillar.get('lala').get('wow:wew') -%}
+..
+{%- do salt.log.error('debugging jinja 3: got to the inner loop at line 32') -%}```
+
+Let’s render the template:
+```
+salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
+..
+proxy_minion:
+    The minion function caused an exception: Traceback (most recent call last):
+      File "/usr/lib/python2.7/site-packages/salt/minion.py", line 1660, in _thread_return
+        return_data = minion_instance.executors[fname](opts, data, func, args, kwargs)
+      File "/usr/lib/python2.7/site-packages/salt/executors/direct_call.py", line 12, in execute
+        return func(*args, **kwargs)
+      File "/usr/lib/python2.7/site-packages/salt/modules/slsutil.py", line 182, in renderer
+        **kwargs
+      File "/usr/lib/python2.7/site-packages/salt/template.py", line 101, in compile_template
+        ret = render(input_data, saltenv, sls, **render_kwargs)
+      File "/usr/lib/python2.7/site-packages/salt/renderers/jinja.py", line 70, in render
+        **kws)
+      File "/usr/lib/python2.7/site-packages/salt/utils/templates.py", line 169, in render_tmpl
+        output = render_str(tmplstr, context, tmplpath)
+      File "/usr/lib/python2.7/site-packages/salt/utils/templates.py", line 402, in render_jinja_tmpl
+        buf=tmplstr)
+    SaltRenderError: Jinja variable 'None' has no attribute 'get'
+
+```
+This is not really helpful. But due to the extra’s we put in, trailing the proxy log is giving us some clues to work with:
+
+```
+/ # tail -f /var/log/salt/proxy | grep 'debugging'
+2019-06-01 11:09:29,010 [salt.loader.localhost.int.module.logmod                    :57  ][WARNING ][7101] debugging jinja 1: made it to line 2
+2019-06-01 11:09:29,010 [salt.loader.localhost.int.module.logmod                    :57  ][WARNING ][7101] debugging jinja 2: In the loop that starts at line 23
+```
+We see the first two messages we put in the template, but we do not see the third one. After learning this, we simply move message number 2 and 3 closer together. This will enable us to locate where the problem is (eventually). 
+
+The logging level is controlled via the master configuration. In this example, the setting was to start logging at the warning level. To be able to use `do salt.log.debug`, you need to set the logging level to include debugging.
+
+
+Using execution modules inside templates
+========================================
+
+You are able to run custom execution modules inside templates. This will give you an enormous amount of flexibility. 
+
+For example, with some vendors, you can only delete syslog servers when you specify the IP address that is configured: `no logging host 10.1.0.1`. But how can you render that in your template without knowing what configuration is applied to your devices?
+ 
+What you can do is retrieve the existing configuration from the device in order to be able to delete it:
+
+```
+{% set delete_existing = salt['em.nuke'](cmd='show running-config section ^logging', all=True) %}
+{{ delete_existing }}
+```
+Or
+```
+{{ salt['em.nuke'](section='logging') }}
+```
+
+The result:
+
+```
+salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
+…
+proxy_minion:
+    no logging host 10.1.0.1
+    no logging host 10.1.0.2 
+```
+
+Using the execution modules will enable you to basically do anything you can dream up in Python. Things like connecting to an external database, check operational information on the device, run a script someplace else, etc.
