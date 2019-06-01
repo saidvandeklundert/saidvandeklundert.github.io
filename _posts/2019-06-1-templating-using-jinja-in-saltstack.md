@@ -297,9 +297,27 @@ The logging level is controlled via the master configuration. In this example, t
 Using execution modules inside templates
 ========================================
 
-You are able to run custom execution modules inside templates. This will give you an enormous amount of flexibility. 
+You are able to run custom execution modules inside templates. This will give you an enormous amount of flexibility and there are a lot of interesting things you can use this for. 
 
-A use case that I ran into was when I was dealing with excess configuration. For instance, with some vendors, you can only delete syslog servers for which you specify the IP address that is configured: `no logging host 10.1.0.1`. But how can you template that without knowing what configuration is applied to your devices?
+One such thing is using execution modules to access structured data inside a template. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
+```
+{% set interface = ‘et-0/0/1’ %}
+{% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
+{% set interface_description = interface_description_dict.get('rpc_reply').get('interface-information').get('physical-interface').get('description') %}
+
+{{ interface_description }}
+ ```
+
+Result:
+```
+salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
+…
+proxy_minion:
+    ----------
+    interface description
+```
+
+Another use case that I ran into was when I was dealing with excess configuration. For instance, with some vendors, you can only delete syslog servers for which you specify the IP address that is configured: `no logging host 10.1.0.1`. But how can you template that without knowing what configuration is applied to your devices?
  
 What you can do is retrieve the existing configuration from the device in order to be able to delete it:
 
@@ -323,28 +341,6 @@ proxy_minion:
 ```
 
 Using the execution modules will enable you to basically do anything you can dream up in Python. Things like connecting to an external database, check operational information on the device, run a script someplace else, etc.
-
-
-Using execution modules to access structured data inside a template
-===================================================================
-
-Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
-```
-{% set interface = ‘et-0/0/1’ %}
-{% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
-{% set interface_description = interface_description_dict.get('rpc_reply').get('interface-information').get('physical-interface').get('description') %}
-
-{{ interface_description }}
- ```
-
-Result:
-```
-salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
-…
-proxy_minion:
-    ----------
-    interface description
-```
 
 
 Passing arguments into your template
