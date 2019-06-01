@@ -251,13 +251,13 @@ It is nice to know that it is possible to make Salt generate a message that will
 
 ```
 {%- set no_problem_here = 'just a var' -%}
-{%- do salt.log.error('debugging jinja 1: made it to line 2') -%} 
+{%- do salt.log.warning('debugging jinja 1: made it to line 2') -%} 
 ..
-{%- do salt.log.error('debugging jinja 2: In the loop that starts at line 23') -%}
+{%- do salt.log.warning('debugging jinja 2: In the loop that starts at line 23') -%}
 ..
 {%- set erhm= pillar.get('lala').get('wow:wew') -%}
 ..
-{%- do salt.log.error('debugging jinja 3: got to the inner loop at line 32') -%}
+{%- do salt.log.warning('debugging jinja 3: got to the inner loop at line 32') -%}
 ```
 
 Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2':
@@ -299,7 +299,7 @@ Using execution modules inside templates
 
 You are able to run custom execution modules inside templates. This will give you an enormous amount of flexibility. 
 
-For example, with some vendors, you can only delete syslog servers when you specify the IP address that is configured: `no logging host 10.1.0.1`. But how can you render that in your template without knowing what configuration is applied to your devices?
+A use case that I ran into was when I was dealing with excess configuration. For instance, with some vendors, you can only delete syslog servers for which you specify the IP address that is configured: `no logging host 10.1.0.1`. But how can you template that without knowing what configuration is applied to your devices?
  
 What you can do is retrieve the existing configuration from the device in order to be able to delete it:
 
@@ -325,12 +325,10 @@ proxy_minion:
 Using the execution modules will enable you to basically do anything you can dream up in Python. Things like connecting to an external database, check operational information on the device, run a script someplace else, etc.
 
 
-Using execution modules to drop structured data into a variable inside a template
-=================================================================================
+Using execution modules to access structured data inside a template
+===================================================================
 
-Not all proxy-minion types will allow you to do this because not all vendors are capable of offering its users structured data. 
-
-Arista and Juniper are able to return structure data. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
+Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
 ```
 {% set interface = ‘et-0/0/1’ %}
 {% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
