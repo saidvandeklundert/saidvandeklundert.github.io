@@ -105,9 +105,7 @@ We can also test multiple conditions at once. In Jinja, this could look somethin
 ```
 
 
-Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has.
-
-On Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
+Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has. On Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
 
 ```
 {%- set model = grains.facts.get('model') -%}
@@ -210,7 +208,7 @@ We can step through this dictionary like so:
 ```
 You can also fill in a template while you are stepping through a dictionary. In the following example, we step through a dictionary and pass it nested dictionary to the template:
 ```
-{% for nested_dict in pillar.get('direct-link').values() -%}
+{% for nested_dict in pillar.get('nested-dict').values() -%}
 {% include 'templates/some_template.j2' %}
 {% endfor -%}
 ```
