@@ -422,7 +422,7 @@ generate_something:
 Salt has some pretty good additional extensions
 ===============================================
 
-You should familiarize yourself with the Jinja extensions Salt offers. SaltStack offers a lot of extensions that can come in quite handy. Reading about them before starting your templating efforts might help you a lot.
+It is worth familiarizing yourself with the Jinja extensions SaltStack offers as many of them can come in quite handy. Reading about them before starting your templating efforts might help you a lot.
 
 Some of the extensions allow you to do pretty cool things. For example, test if something is an IP address:
 ```
@@ -437,9 +437,6 @@ Raising custom errors:
 ```
 {{ raise('Custom Error') }}
 ```
-You can even access Python string methods in case you are in a pinch. For instance, you can split a string on the ‘/’ and then grab the first item of the list like so:
-```
-{{ pillar.get('primary').get('ipv4').split('/')[0] }}
-```
-These are just some of the things you have access to. I cannot cover all of them but you can read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
+
+These are just some examples. No point in me covering all of them, just read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
 
