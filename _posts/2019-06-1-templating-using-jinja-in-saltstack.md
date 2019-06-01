@@ -264,9 +264,8 @@ It is nice to know that it is possible to make Salt generate a message that will
 ..
 {%- do salt.log.error('debugging jinja 3: got to the inner loop at line 32') -%}```
 
-Let’s render the template:
+Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2':
 ```
-salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
 ..
 proxy_minion:
     The minion function caused an exception: Traceback (most recent call last):
