@@ -438,8 +438,8 @@ Raising custom errors:
 {{ raise('Custom Error') }}
 ```
 You can even access Python string methods in case you are in a pinch. For instance, you can split a string on the ‘/’ and then grab the first item of the list like so:
-
+```
 {{ pillar.get('primary').get('ipv4').split('/')[0] }}
-
+```
 These are just some of the things you have access to. I cannot cover all of them but you can read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
 
