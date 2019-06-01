@@ -262,7 +262,8 @@ It is nice to know that it is possible to make Salt generate a message that will
 ..
 {%- set erhm= pillar.get('lala').get('wow:wew') -%}
 ..
-{%- do salt.log.error('debugging jinja 3: got to the inner loop at line 32') -%}```
+{%- do salt.log.error('debugging jinja 3: got to the inner loop at line 32') -%}
+```
 
 Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2':
 ```
