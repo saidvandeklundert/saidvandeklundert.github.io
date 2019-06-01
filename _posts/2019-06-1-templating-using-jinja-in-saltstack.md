@@ -185,7 +185,8 @@ proxy_minion:
     interface eth4
     description unused
     switchport access vlan 999
-    shutdown```
+    shutdown
+```
 
 
 Stepping through a dictionary
