@@ -4,12 +4,12 @@ title: Templating using Jinja in Saltstack.
 image: /img/salt_stack_logo.jpg
 ---
 
-To me, templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I would have liked to have when I started templating myself. After walking you through an easy way to render templates in Salt, I will provide you with some practical examples and tips. 
+To me, templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I would have liked to have when I started templating myself. After walking you through an easy way to render templates in Salt, I will provide you with some of the basics, some practical examples and some tips. 
 
-Quickly iterate your template using slsutil.renderer
-====================================================
+Iterate your template into perfection using slsutil.renderer
+============================================================
 
-As soon as you have your proxy minions setup, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device (without actually applying it). It offers you a quick way to iterate and try out new things in your templates:
+As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device without applying it. It offers you a quick way to iterate and try out new things in your templates:
  
 ```
 salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2
@@ -20,7 +20,7 @@ proxy_minion:
 
 When calling it like this, Salt will use a local copy in `/srv/salt/templates` if it finds the file there. If there is no local copy, Salt will attempt to fetch the latest template from gitfs.
 
-
+An advantage of using this tool is that you can use it to render your Jinja with access to all of the things SaltStack has to offer. This means that you can render templates that contain grains, pillar data, execution modules, etc. 
 
 
 Some basics
@@ -70,34 +70,6 @@ proxy_minion:
 ```
 
 
-Setting variables based on grains or pillar data:
-=================================================
-
-Using grains or pillar data to control the value of a variable can be done like this:
-
-```
-{%- set model = grains.facts.get('model') -%}
-
-{%- if 'qfx' in model -%}
-    {% set ether_options_cfg = 'ether-options' %}
-{%- elif 'mx' in model -%}
-    {% set ether_options_cfg = 'gigether-options' %}
-{%- endif -%}
-
-set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0
-```
-
-On Juniper MX and QFX, the configuration statement for LACP differs. In the above example, we fetch the model from the grains and have that decide the value of the variable. 
-
-With things setup like this, we can properly render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
-```
-salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
-..
-juniper_pm:
-    set interfaces et-0/0/35 ether-options 802.3ad ae7
-```
-
-
 Conditional statements
 ======================
 
@@ -130,6 +102,31 @@ We can also test multiple conditions at once. In Jinja, this could look somethin
     {% if ( software_version in allowed_versions or allowed_versions == 'all' ) and
           ( model in allowed_models or allowed_models == 'all' ) and
           ( type in allowed_types or allowed_type == 'all' ) %}
+```
+
+
+Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has.
+
+On Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
+
+```
+{%- set model = grains.facts.get('model') -%}
+
+{%- if 'qfx' in model -%}
+    {% set ether_options_cfg = 'ether-options' %}
+{%- elif 'mx' in model -%}
+    {% set ether_options_cfg = 'gigether-options' %}
+{%- endif -%}
+
+set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0
+```
+
+With things setup like this, we can properly render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
+```
+salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
+..
+juniper_pm:
+    set interfaces et-0/0/35 ether-options 802.3ad ae7
 ```
 
 
