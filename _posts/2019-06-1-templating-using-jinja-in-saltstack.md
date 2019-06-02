@@ -35,21 +35,21 @@ Some basics to get you started include setting variables and retrieving grains a
 {# Using that variable. #}
 Here we use the {{ variable }}.
 
-{# Performing Python string method on that variable: #}
+{# Performing Python string method on that variable. #}
 {{ variable | upper }}
 
 {# Using grains data. #}
 {%- set vendor = grains.get('vendor') -%}
 {{ vendor }}
 
-{# Get  and use data from the pillar. #}
+{# Get and use data from the pillar. #}
 {%- set snmp_string = pillar.get('snmp_string') -%}
 {{ snmp_string }}
 
-{# Using an IP stored in the pillar. #}
+{# Retrieve the string '10.2.2.1/24' from the pillar. #}
 {{ pillar.get('server').get('primary').get('primary_ip') }}
 
-{# grabbing/using pillar data and extracting the IP #}
+{# Same as previous but with only the IP address ('10.2.2.1') extracted from the string. #}
 {%- set server_ip = pillar.get('server').get('primary').get('primary_ip').split('/')[0] -%}
 {{ server_ip }}
 
