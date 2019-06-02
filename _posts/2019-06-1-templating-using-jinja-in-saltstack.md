@@ -285,7 +285,7 @@ proxy_minion:
     SaltRenderError: Jinja variable 'None' has no attribute 'get'
 
 ```
-This is not really helpful. But due to the extra’s we put in, trailing the proxy log is giving us some clues to work with:
+In a very big template, this will keep you busy for quite some time. But due to the extra’s we put in, trailing the proxy log will give us some clues to work with:
 
 ```
 / # tail -f /var/log/salt/proxy | grep 'debugging'
