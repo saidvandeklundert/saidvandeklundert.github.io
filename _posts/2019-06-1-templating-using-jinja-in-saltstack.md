@@ -23,10 +23,10 @@ When calling it like this, Salt will use a local copy in `/srv/salt/templates` i
 An advantage of using this tool is that you can use it to render your Jinja with access to all of the things SaltStack has to offer. This means that you can render templates that contain grains, pillar data, execution modules, etc. 
 
 
-Some basics
-===========
+Some basics to get you started
+==============================
 
-Some basics to get you started include setting variables and retrieving grains as well as pillar data:
+To illustrate how some of the really basic things are done, I created the following '/srv/salt/templates/my_first_template.j2':
 
 ```
 {# Setting a variable. #}
