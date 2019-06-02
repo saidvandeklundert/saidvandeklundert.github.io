@@ -26,7 +26,7 @@ An advantage of using this tool is that you can use it to render your Jinja with
 Some basics to get you started
 ==============================
 
-To illustrate how some of the really basic things are done, I created the following '/srv/salt/templates/my_first_template.j2':
+To illustrate how some of the really basic things are done, I created the following `/srv/salt/templates/my_first_template.j2`:
 
 ```
 {# Setting a variable. #}
