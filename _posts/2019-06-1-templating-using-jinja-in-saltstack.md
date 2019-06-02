@@ -73,7 +73,7 @@ proxy_minion:
 Conditional statements
 ======================
 
-Let's assume that we have different device types in our network and that we have stored that role as a grain. Through the use of conditional statements, we are able to fit them all into 1 template:
+Let's assume that we have different device types in our network and that we have stored that role as a grain. In this example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {# retrieve grain and store that value in type #}
@@ -105,7 +105,7 @@ We can also test multiple conditions at once. In Jinja, this could look somethin
 ```
 
 
-Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has. On Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
+Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has. For instance, on Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
 
 ```
 {%- set model = grains.facts.get('model') -%}
@@ -119,7 +119,7 @@ Another thing I use conditionals for in my templates is to have grains or pillar
 set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0
 ```
 
-With things setup like this, we can properly render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
+With things setup like this, we can render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
 ```
 salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
 ..
@@ -141,13 +141,13 @@ interface eth{{ n }}
 {% endfor %}
 ```
 
-When rendering from the CLI, for some reasons the newlines disappear. Issuing a ` salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2` will show the following:
+When rendering from the CLI, for some reasons the newlines disappear. Issuing a ` salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2` outputs the following:
 ```
 proxy_minion:
     interface eth0 description unused switchport access vlan 999 shutdown interface eth1 description unused switchport access vlan 999 shutdown interface eth2 description unused switchport access vlan 999 shutdown interface eth3 description unused switchport access vlan 999 shutdown interface eth4 description unused switchport access vlan 999 shutdown
 ```
 
-This changes when it is rendered inside an execution module. Example on how to use the `slsutil.renderer` inside an execution module called 'common.py':
+This changes when it is rendered inside an execution module. Example on how to use the `slsutil.renderer` inside an execution module called `common.py`:
 ```
 def render(template):
     template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
@@ -155,7 +155,7 @@ def render(template):
       
 ```
 
-Now it renders like this:
+After calling the execution module function, it renders like this:
 
 ```
  # salt proxy_minion common.render salt://templates/my_first_template.j2
