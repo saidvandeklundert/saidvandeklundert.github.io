@@ -4,7 +4,7 @@ title: Templating using Jinja in Saltstack.
 image: /img/salt_stack_logo.jpg
 ---
 
-To me, templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I would have liked to have when I started templating myself. After walking you through an easy way to render templates in Salt, I will provide you with some of the basics, some practical examples and some tips. 
+Templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I would have liked to have when I started templating myself. After walking you through an easy way to render templates in Salt, I will provide you with some of the basics, some practical examples and some tips. 
 
 Iterate your template into perfection using slsutil.renderer
 ============================================================
