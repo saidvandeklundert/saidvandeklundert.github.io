@@ -73,7 +73,7 @@ proxy_minion:
 Conditional statements
 ======================
 
-Let's assume that we have different device types in our network and that we have stored that role as a grain. In this example, through the use of conditional statements, we put all the different configurations into 1 template:
+Let's assume that we have different device types in our network and that we have stored that role as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {# retrieve grain and store that value in type #}
@@ -188,7 +188,7 @@ Stepping through a dictionary
 =============================
 
 
-Imagine the following is added to your pillar:
+In this example, we'll use the following pillar data:
 
 ```
 some_dict:    
@@ -206,14 +206,17 @@ We can step through this dictionary like so:
 {{ key }} {{ value }}
 {% endfor %}  
 ```
-You can also fill in a template while you are stepping through a dictionary. In the following example, we step through a dictionary and pass it nested dictionary to the template:
+
+One of the things I have used this for is to fill in a template while stepping through a dictionary. 
+
+In the following example, we step through a dictionary and pass a nested dictionary to a template:
 ```
 {% for nested_dict in pillar.get('nested-dict').values() -%}
 {% include 'templates/some_template.j2' %}
 {% endfor -%}
 ```
 
-We will be able to access the dictionary in `some_template` like so:
+We will be able to access the nested dictionary in `some_template` like so:
 ```{{ nested_dict.some_key }}```
 
 
