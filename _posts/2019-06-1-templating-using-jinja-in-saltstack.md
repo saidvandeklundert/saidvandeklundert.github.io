@@ -300,7 +300,7 @@ The logging level is controlled via the master configuration. In this example, t
 Using execution modules inside templates
 ========================================
 
-You are able to run custom execution modules inside templates. This will give you an enormous amount of flexibility and there are a lot of interesting things you can use this for. 
+You are able to run custom execution modules inside templates. This gives you an enormous amount of flexibility and there are a lot of interesting things you can do with this. 
 
 One such thing is using execution modules to access structured data inside a template. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
 ```
