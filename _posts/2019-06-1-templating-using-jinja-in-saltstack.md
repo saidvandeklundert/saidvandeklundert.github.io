@@ -148,7 +148,7 @@ proxy_minion:
 ```
 
 This changes when it is rendered inside an execution module. Example on how to use the `slsutil.renderer` inside an execution module called `common.py`:
-```
+```python
 def render(template):
     template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
     return template_string        
@@ -190,7 +190,7 @@ Stepping through a dictionary
 
 In this example, we'll use the following pillar data:
 
-```
+```yaml
 some_dict:    
   key_1:
     'value_a'  
