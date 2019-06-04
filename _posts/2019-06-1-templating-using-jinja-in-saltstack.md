@@ -10,7 +10,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 Iterate your template into perfection using slsutil.renderer
 ============================================================
 
-As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device (without applying it). It offers you a quick way to iterate and try out new things in your templates:
+As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device offering you a quick way to iterate and try out new things in your templates:
  
 ```
 salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2
