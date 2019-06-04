@@ -6,6 +6,7 @@ image: /img/salt_stack_logo.jpg
 
 Templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I would have liked to have when I started templating myself. After walking you through an easy way to render templates in Salt, I will provide you with some of the basics, some practical examples and some tips. 
 
+
 Iterate your template into perfection using slsutil.renderer
 ============================================================
 
@@ -23,6 +24,7 @@ When calling it like this, Salt will use a local copy in `/srv/salt/templates` i
 An advantage of using this tool is that you can use it to render your Jinja with access to all of the things SaltStack has to offer. This means that you can render templates that contain grains, pillar data, execution modules, etc. 
 
 Another way I use this `slsutil.renderer` is to render the template inside an execution module. This lets me do with it whatever I want prior to passing it to one of the proxy minion functions that can apply the configuration. Here is an example where we use the `slsutil.renderer` inside an execution module called `common.py`:
+
 ```python
 def render(template):
     template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
@@ -35,6 +37,7 @@ After syncing it to the minion, I call the function like so:
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
+Note: I mostly use the execution module to render the template because using the `slsutil.renderer` directly will sometimes hide the newlines when iterating lists or stepping through dicts.
 
 Some basics to get you started
 ==============================
