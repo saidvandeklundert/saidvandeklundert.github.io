@@ -10,7 +10,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 Iterate your template into perfection using slsutil.renderer
 ============================================================
 
-As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device offering you a quick way to iterate and try out new things in your templates:
+As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device:
  
 ```
 salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2
@@ -21,9 +21,7 @@ proxy_minion:
 
 When calling it like this, Salt will use a local copy in `/srv/salt/templates` if it finds the file there. If there is no local copy, Salt will attempt to fetch the latest template from gitfs.
 
-An advantage of using this tool is that you can use it to render your Jinja with access to all of the things SaltStack has to offer. This means that you can render templates that contain grains, pillar data, execution modules, etc. 
-
-Another way I use this `slsutil.renderer` is to render the template inside an execution module. This lets me do with it whatever I want prior to passing it to one of the proxy minion functions that can apply the configuration. Here is an example where we use the `slsutil.renderer` inside an execution module called `common.py`:
+Another way I use this `slsutil.renderer` is to render the template inside an execution module before passing it to a functions that can apply the configuration. Here is an example on how to use the `slsutil.renderer` inside an execution module called `common.py`:
 
 ```python
 def render(template):
@@ -32,12 +30,13 @@ def render(template):
       
 ```
 
-After syncing it to the minion, I call the function like so:
+After syncing it to the minion, you can call the function like so:
 ```
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
-Note: I mostly use the execution module to render the template because using the `slsutil.renderer` directly will sometimes hide the newlines when iterating lists or stepping through dicts.
+I actually ended up using the `common.render` most of the time since the `slsutil.renderer` will sometimes hide the newlines when iterating lists or stepping through dicts.
+
 
 Some basics to get you started
 ==============================
