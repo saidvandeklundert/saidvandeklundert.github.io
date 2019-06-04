@@ -22,6 +22,19 @@ When calling it like this, Salt will use a local copy in `/srv/salt/templates` i
 
 An advantage of using this tool is that you can use it to render your Jinja with access to all of the things SaltStack has to offer. This means that you can render templates that contain grains, pillar data, execution modules, etc. 
 
+Another way I use this `slsutil.renderer` is to render the template inside an execution module. This lets me do with it whatever I want prior to passing it to one of the proxy minion functions that can apply the configuration. Here is an example where we use the `slsutil.renderer` inside an execution module called `common.py`:
+```python
+def render(template):
+    template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
+    return template_string        
+      
+```
+
+After syncing it to the minion, I call the function like so:
+```
+salt proxy_minion common.render salt://templates/my_first_template.j2
+```
+
 
 Some basics to get you started
 ==============================
@@ -133,7 +146,7 @@ For loop
 
 In the following example, we iterate a list that is generated using the `range` function:
 ```
-{% for n in range(5) -%}
+{% for n in range(5) %}
 interface eth{{ n }}
  description unused
  switchport access vlan 999
@@ -141,21 +154,7 @@ interface eth{{ n }}
 {% endfor %}
 ```
 
-When rendering from the CLI, for some reasons the newlines disappear. Issuing a ` salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2` outputs the following:
-```
-proxy_minion:
-    interface eth0 description unused switchport access vlan 999 shutdown interface eth1 description unused switchport access vlan 999 shutdown interface eth2 description unused switchport access vlan 999 shutdown interface eth3 description unused switchport access vlan 999 shutdown interface eth4 description unused switchport access vlan 999 shutdown
-```
-
-This changes when it is rendered using the same `slsutil`, but calling it from an execution module. Example where we use the `slsutil.renderer` inside an execution module called `common.py`:
-```python
-def render(template):
-    template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
-    return template_string        
-      
-```
-
-After calling the execution module function, newlines are retained when rendering the template:
+When we call the exection module, we can see that the template renders as follows:
 
 ```
  # salt proxy_minion common.render salt://templates/my_first_template.j2
@@ -216,7 +215,75 @@ Endless possibilities here, but one of the things worth mentioning is passing a 
 We will be able to access the nested dictionary in `some_template` like so:
 ```{{ nested_dict.some_key }}```
 
-This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can ‘shoot’ a pillar file over to the `srv/pillar/` directory or attach an inline pillar when calling a state and use the dictionary to pass whatever you want to the template.
+This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can ‘shoot’ a pillar file over to the `/srv/pillar/` directory or attach an inline pillar when calling a state and use the dictionary to pass whatever you want to the template.
+
+
+Loading external files
+======================
+
+It is possible to use and load external files in a template. The following import utilities can help you load the respective file formats:
+- `import_json`
+- `import_text`
+- `import_yaml`
+ 
+
+Let’s look at the following `/var/tmp/example.yaml` file:
+
+```yaml
+Ethernet1:
+  vlan: '150'
+  description: 'storage'
+Ethernet2:
+  vlan: '150'
+  description: 'storage'
+Ethernet3:
+  vlan: '155'
+  description: 'kvm'
+Ethernet4:
+  vlan: '160'
+  description: 'vmware'
+Ethernet5:
+  vlan: '200'
+  description: 'staging'
+```
+
+We can load this file as a dictionary and step through it like so in our `/srv/salt/templates/example_using_yaml.j2` template:
+
+```
+{% import_yaml '/var/tmp/example.yaml' as example_yaml %}
+
+
+{% for interface, d in example_yaml | dictsort %}
+interface {{ interface }}
+ description {{ d.description }}
+ switchport access vlan {{ d.vlan }}
+{% endfor %}
+
+```
+
+Because we used `| dictsort`, SaltStack sorted the dictionary for us and when we render this, we get the following:
+
+```
+interface Ethernet1
+ description storage
+ switchport access vlan 150
+
+interface Ethernet2
+ description storage
+ switchport access vlan 150
+
+interface Ethernet3
+ description kvm
+ switchport access vlan 155
+
+interface Ethernet4
+ description vmware
+ switchport access vlan 160
+
+interface Ethernet5
+ description staging
+ switchport access vlan 200
+```
 
 
 Using grains or pillar data to include other files into the template
