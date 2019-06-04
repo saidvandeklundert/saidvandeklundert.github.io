@@ -9,7 +9,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 Iterate your template into perfection using slsutil.renderer
 ============================================================
 
-As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device without applying it. It offers you a quick way to iterate and try out new things in your templates:
+As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device (without applying it). It offers you a quick way to iterate and try out new things in your templates:
  
 ```
 salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2
@@ -73,7 +73,7 @@ proxy_minion:
 Conditional statements
 ======================
 
-Let's assume that we have different device types in our network and that we have stored that role as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
+Let's assume that we have different device types in our network and that we have stored this information as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {# retrieve grain and store that value in type #}
@@ -131,7 +131,7 @@ juniper_pm:
 For loop
 ========
 
-A simple for loop:
+In the following example, we iterate a list that is generated using the `range` function:
 ```
 {% for n in range(5) -%}
 interface eth{{ n }}
@@ -147,7 +147,7 @@ proxy_minion:
     interface eth0 description unused switchport access vlan 999 shutdown interface eth1 description unused switchport access vlan 999 shutdown interface eth2 description unused switchport access vlan 999 shutdown interface eth3 description unused switchport access vlan 999 shutdown interface eth4 description unused switchport access vlan 999 shutdown
 ```
 
-This changes when it is rendered inside an execution module. Example on how to use the `slsutil.renderer` inside an execution module called `common.py`:
+This changes when it is rendered using the same `slsutil`, but calling it from an execution module. Example where we use the `slsutil.renderer` inside an execution module called `common.py`:
 ```python
 def render(template):
     template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
@@ -155,7 +155,7 @@ def render(template):
       
 ```
 
-After calling the execution module function, it renders like this:
+After calling the execution module function, newlines are retained when rendering the template:
 
 ```
  # salt proxy_minion common.render salt://templates/my_first_template.j2
@@ -187,7 +187,6 @@ proxy_minion:
 Stepping through a dictionary
 =============================
 
-
 In this example, we'll use the following pillar data:
 
 ```yaml
@@ -207,9 +206,7 @@ We can step through this dictionary like so:
 {% endfor %}  
 ```
 
-One of the things I have used this for is to fill in a template while stepping through a dictionary. 
-
-In the following example, we step through a dictionary and pass a nested dictionary to a template:
+Endless possibilities here, but one of the things worth mentioning is passing a nested dictionary to a child template like so:
 ```
 {% for nested_dict in pillar.get('nested-dict').values() -%}
 {% include 'templates/some_template.j2' %}
@@ -218,6 +215,8 @@ In the following example, we step through a dictionary and pass a nested diction
 
 We will be able to access the nested dictionary in `some_template` like so:
 ```{{ nested_dict.some_key }}```
+
+This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can ‘shoot’ a pillar file over to the `srv/pillar/` directory or attach an inline pillar when calling a state and use the dictionary to pass whatever you want to the template.
 
 
 Using grains or pillar data to include other files into the template
@@ -302,7 +301,7 @@ Using execution modules inside templates
 
 You are able to run custom execution modules inside templates. This gives you an enormous amount of flexibility and there are a lot of interesting things you can do with this. 
 
-One such thing is using execution modules to access structured data inside a template. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
+One example is using execution modules to fetch structured data from a device when a template is rendered. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
 ```
 {% set interface = ‘et-0/0/1’ %}
 {% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
@@ -362,7 +361,7 @@ Inside the template, you can access this pillar data in the same way that you wo
 ```
 {% set interface = pillar.get('ops').get('interface') %}
 ```
-Reasons for doing this can be because want to enable users running the state to pass it arguments or you are using the Enterprise API and want a nice and easy way to pass it data. When you are working with the API, passing the inline pillar data is just calling a state and passing it a dictionary. 
+I have encountered multiple reasons for wanting to attach inline pillar data. One reason was to enable users to pass arguments to a state they are running.  Another reason was when I was using the Enterprise API. I found that passing a dictionary to a state is a very easy and neat way to have an external script pass data to templates.
 
  
 Import other files with context
