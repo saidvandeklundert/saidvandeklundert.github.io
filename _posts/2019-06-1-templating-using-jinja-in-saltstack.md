@@ -51,15 +51,15 @@ To illustrate some of the basics, I created the following template:
 
 ```
 {# Setting and using a variable. #}
-{%- set variable = 'string' -%}
+{% set variable = 'string' %}
 Here we use the {{ variable }}.
 
 {# Using grains data. #}
-{%- set vendor = grains.get('vendor') -%}
+{% set vendor = grains.get('vendor') %}
 {{ vendor }}
 
 {# Using pillar data. #}
-{%- set snmp_string = pillar.get('snmp_string') -%}
+{% set snmp_string = pillar.get('snmp_community') %}
 {{ snmp_string }}
 ```
 
@@ -68,8 +68,13 @@ After rendering the above template, this is what we get:
 proxy_minion:
     Here we use the string.
     
+    
+    
     Arista
-    snmp_string
+    
+    
+    
+    s_n_m_p_!
 ```
 
 
