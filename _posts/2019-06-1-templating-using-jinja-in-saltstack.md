@@ -4,7 +4,7 @@ title: Templating using Jinja in Saltstack.
 image: /img/salt_stack_logo.jpg
 ---
 
-Templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I would have liked to have when I started templating myself. After walking you through an easy way to render templates in Salt, I will provide you with some of the basics, some practical examples and some tips. 
+Templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I could have used when I started templating myself. After walking you through an easy way to render templates in Salt, I will cover some of the basics and provide some practical examples. 
 
 
 Iterate your template into perfection using slsutil.renderer
@@ -21,7 +21,7 @@ proxy_minion:
 
 When calling it like this, Salt will use a local copy in `/srv/salt/templates` if it finds the file there. If there is no local copy, Salt will attempt to fetch the latest template from gitfs.
 
-Another way I use this `slsutil.renderer` is to render the template inside an execution module before passing it to a functions that can apply the configuration. Here is an example on how to use the `slsutil.renderer` inside an execution module called `common.py`:
+Another way I use this `slsutil.renderer` is to render the template inside an execution module before passing it to a function that can apply the configuration. Here is an example on how to use the `slsutil.renderer` inside an execution module called `common.py`:
 
 ```python
 def render(template):
@@ -35,19 +35,19 @@ After syncing it to the minion, you can call the function like so:
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
-I actually ended up using the `common.render` most of the time. One of the reasons is that the `slsutil.renderer` will sometimes hide newlines when iterating lists.
+Most of the time I use the `common.render`. One of the reasons is that the return of the `slsutil.renderer` does not always show all the newlines.
 
 
-Basics
-======
+The basics
+==========
 
-The default Jinja delimiters:
+The default Jinja delimiters are as follows:
 - `{# .. #}` where you put your comments, this is not included in the output.
 - `{% .. %}` where you put your statements, assign variables, etc. 
 - `{{ .. }}` where you put expressions that will end up in the template output (print varables for instance).
 
 
-Let's illustrate some of the basics and start with commenting, setting a variable and outputting that variable:
+Let's illustrate how we can get some of the basic things done and start with commenting, setting a variable and outputting that variable:
 
 ```
 {# Setting and using a variable. #}
@@ -108,11 +108,10 @@ proxy_minion:
 ```    
 
 
-
 Conditional statements
 ======================
 
-Let's assume that we have different device types in our network and that we have stored this information as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
+Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {%- set type = grains.facts.get('type') -%}     
@@ -125,7 +124,7 @@ set configuration for the srr or xrr
 set configuration for all the other roles
 {%- endif -%}
 ```
-In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is applied. If it is not, we move on to the next test where we check it the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` will ensure that configuration will be applied to all other device types.
+In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is applied. If it is not, we move on to the next test where we check if the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` reaveals what configuration will be applied to all other device types.
 
 We can also test multiple conditions at once. In Jinja, this could look something like this:
 ```
