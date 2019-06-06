@@ -63,7 +63,7 @@ arista_proxy_minion:
     Here we use the string.
 ```
 
-In the next exmample, we retrieve grain and pillar data and output that to screen:
+In the next example, we retrieve grain and pillar data and output that to screen:
 ```
 {% set vendor = grains.get('vendor') %}
 {{ vendor }}
@@ -115,26 +115,17 @@ Conditional statements
 Let's assume that we have different device types in our network and that we have stored this information as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
-{# retrieve grain and store that value in type #}
 {%- set type = grains.facts.get('type') -%}     
 
-{# test if the type equals cbr #}
 {%- if type == 'cbr' -%}                        
-
 set configuration for the cbr
-
-{# test if type is found in the list [ 'srr', 'xrr', ] #}
 {%- elif type in [ 'srr', 'xrr', ] -%}                        
-
-set configuration for the srr and xrr
-
-{# use the following as a default for other types #}
+set configuration for the srr or xrr
 {%- else -%}                                    
-
 set configuration for all the other roles
-
 {%- endif -%}
 ```
+In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is applied. If it is not, we move on to the next test where we check it the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` will ensure that configuration will be applied to all other device types.
 
 We can also test multiple conditions at once. In Jinja, this could look something like this:
 ```
