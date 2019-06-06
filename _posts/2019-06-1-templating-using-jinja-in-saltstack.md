@@ -41,24 +41,33 @@ I actually ended up using the `common.render` most of the time. One of the reaso
 Basics
 ======
 
-The dfault Jinja delimiters:
+The default Jinja delimiters:
 - `{# .. #}` where you put your comments, this is not included in the output.
 - `{% .. %}` where you put your statements, assign variables, etc. 
 - `{{ .. }}` where you put expressions that will end up in the template output (print varables for instance).
 
 
-To illustrate some of the basics, I created the following template:
+Let's illustrate some of the basics and start with commenting, setting a variable and outputting that variable:
 
 ```
 {# Setting and using a variable. #}
 {% set variable = 'string' %}
 Here we use the {{ variable }}.
+```
 
-{# Using grains data. #}
+This will render as follows:
+```
+arista_proxy_minion:
+    
+    
+    Here we use the string.
+```
+
+In the next exmample, we retrieve grain and pillar data and output that to screen:
+```
 {% set vendor = grains.get('vendor') %}
 {{ vendor }}
 
-{# Using pillar data. #}
 {% set snmp_string = pillar.get('snmp_community') %}
 {{ snmp_string }}
 ```
@@ -66,16 +75,37 @@ Here we use the {{ variable }}.
 After rendering the above template, this is what we get:
 ```
 arista_proxy_minion:
-    Here we use the string.
-    
-    
-    
+
     Arista
-    
-    
     
     s_n_m_p_!
 ```
+
+Another thing worth nothing is that adding `-` to your statements allows you to deal with whitespaces. 
+- `{%-` to deal with leading whitespace
+- `-%}` to deal with trailing whitespace
+
+Example on how that works out in templates:
+```
+Line 1.
+{% set variable = 'string' %}
+Line 3.
+{%- set variable = 'string' %}
+Line 5.
+{% set variable = 'string' -%}
+Line7.
+{%- set variable = 'string' -%}
+Line 9.
+```
+The above will render as follows:
+```
+proxy_minion:
+    Line 1.
+    
+    Line 3.
+    Line 5.
+    Line7.Line 9.
+```    
 
 
 
