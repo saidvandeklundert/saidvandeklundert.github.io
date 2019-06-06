@@ -35,54 +35,43 @@ After syncing it to the minion, you can call the function like so:
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
-I actually ended up using the `common.render` most of the time since the `slsutil.renderer` will sometimes hide the newlines when iterating lists or stepping through dicts.
+I actually ended up using the `common.render` most of the time. One of the reasons is that the `slsutil.renderer` will sometimes hide newlines when iterating lists.
 
 
-Some basics to get you started
-==============================
+Basics
+======
 
-To illustrate how some of the really basic things are done, I created the following `/srv/salt/templates/my_first_template.j2`:
+The dfault Jinja delimiters:
+- {# #} where you put your comments, this is not included in the output.
+- {% %} where you put your statements, assign variables, etc. 
+- {{ }} where you put expressions that will end up in the template output (print varables for instance).
+
+
+To illustrate some of the basics, I created the following template:
 
 ```
-{# Setting a variable. #}
+{# Setting and using a variable. #}
 {%- set variable = 'string' -%}
-
-{# Using that variable. #}
 Here we use the {{ variable }}.
-
-{# Performing Python string method on that variable. #}
-{{ variable | upper }}
 
 {# Using grains data. #}
 {%- set vendor = grains.get('vendor') -%}
 {{ vendor }}
 
-{# Get and use data from the pillar. #}
+{# Using pillar data. #}
 {%- set snmp_string = pillar.get('snmp_string') -%}
 {{ snmp_string }}
-
-{# Retrieve the string '10.2.2.1/24' from the pillar. #}
-{{ pillar.get('server').get('primary').get('primary_ip') }}
-
-{# Same as previous but with only the IP address ('10.2.2.1') extracted from the string. #}
-{%- set server_ip = pillar.get('server').get('primary').get('primary_ip').split('/')[0] -%}
-{{ server_ip }}
-
 ```
 
 After rendering the above template, this is what we get:
 ```
-/ # salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2
 proxy_minion:
     Here we use the string.
     
-    STRING
     Arista
     snmp_string
-    
-    10.2.2.1/24
-    10.2.2.1
 ```
+
 
 
 Conditional statements
