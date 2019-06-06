@@ -42,9 +42,9 @@ Basics
 ======
 
 The dfault Jinja delimiters:
-- {# #} where you put your comments, this is not included in the output.
-- {% %} where you put your statements, assign variables, etc. 
-- {{ }} where you put expressions that will end up in the template output (print varables for instance).
+- `{# .. #}` where you put your comments, this is not included in the output.
+- `{% .. %}` where you put your statements, assign variables, etc. 
+- `{{ .. }}` where you put expressions that will end up in the template output (print varables for instance).
 
 
 To illustrate some of the basics, I created the following template:
@@ -65,7 +65,7 @@ Here we use the {{ variable }}.
 
 After rendering the above template, this is what we get:
 ```
-proxy_minion:
+arista_proxy_minion:
     Here we use the string.
     
     
