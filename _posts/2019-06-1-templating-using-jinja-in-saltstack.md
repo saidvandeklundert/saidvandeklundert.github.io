@@ -228,10 +228,10 @@ Endless possibilities here, but one of the things worth mentioning is passing a 
 {% endfor -%}
 ```
 
-We will be able to access the nested dictionary in `some_template` like so:
+We will be able to access the nested dictionary in `some_template` like this:
 ```{{ nested_dict.some_key }}```
 
-This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can ‘shoot’ a pillar file over to the `/srv/pillar/` directory or attach an inline pillar when calling a state and use the dictionary to pass whatever you want to the template.
+This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can, for instance, attach an inline pillar when calling a state through the API and use the dictionary to pass whatever you want to the template.
 
 
 Loading external files
@@ -446,9 +446,9 @@ Inside the template, you can access this pillar data in the same way that you wo
 ```
 I have encountered multiple reasons for wanting to attach inline pillar data. One reason was to enable users to pass arguments to a state they are running.  Another reason was when I was using the Enterprise API. I found that passing a dictionary to a state is a very easy and neat way to have an external script pass data to templates.
 
- 
-Import other files with context
-===============================
+
+Import other templates with context
+===================================
 
 If you have a ton of variables you are using in every template, it might be nice to know that you can dump them all in a single template and include that template elsewhere.
 
