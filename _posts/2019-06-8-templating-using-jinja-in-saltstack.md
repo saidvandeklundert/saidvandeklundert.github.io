@@ -44,7 +44,7 @@ The basics
 The default Jinja delimiters are as follows:
 - `{# .. #}` where you put your comments, this is not included in the output.
 - `{% raw %}{%{% endraw %} .. {% raw %}%}{% endraw %}` where you put your statements, assign variables, etc. 
-- `{{ .. }}` where you put expressions that will end up in the template output (print varables for instance).
+- `{% raw %}{{{% endraw %} .. {% raw %}}}{% endraw %}` where you put expressions that will end up in the template output (print varables for instance).
 
 
 Let's illustrate how we can get some of the basic things done and start with commenting, setting a variable and outputting that variable:
