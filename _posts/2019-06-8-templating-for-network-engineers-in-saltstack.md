@@ -508,7 +508,7 @@ Raising custom errors:
 {% raw %}{{ raise('Custom Error') }}{% endraw %}
 ```
 
-These are just some examples. No point in me covering all of them, just read up on the rest right here: [UNDERSTANDING JINJA](https://docs.saltstack.com/en/latest/topics/jinja/index.html)
+These are just some examples. No point in me covering all of them, just read up on the rest right here: [understanding Jinja](https://docs.saltstack.com/en/latest/topics/jinja/index.html)
 
 In case you just want to read up on Jinja, you can check out this site: [Jinja2 doc](http://jinja.pocoo.org/docs/)
 
