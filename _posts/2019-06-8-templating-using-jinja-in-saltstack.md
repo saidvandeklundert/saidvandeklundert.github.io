@@ -500,7 +500,7 @@ Some of the extensions allow you to do pretty cool things. For example, test if 
 ```
 Using regex replace:
 ```
-{% set my_text = 'yes, this is a TEST' %}
+{% raw %}{% set my_text = 'yes, this is a TEST' %}{% endraw %}
 {{ my_text | regex_replace(' ([a-z])', '__\\1', ignorecase=True) }}
 ```
 Raising custom errors:
