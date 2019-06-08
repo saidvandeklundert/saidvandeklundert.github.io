@@ -68,7 +68,7 @@ In the next example, we retrieve grain and pillar data and output that to screen
 {% raw %}{%{% endraw %} set vendor = grains.get('vendor') {% raw %}%}{% endraw %}
 {{ vendor }}
 
-{% set snmp_string = pillar.get('snmp_community') %}
+{% raw %}{% set snmp_string = pillar.get('snmp_community') %}{% endraw %}
 {{ snmp_string }}
 ```
 
@@ -82,19 +82,19 @@ arista_proxy_minion:
 ```
 
 Another thing worth nothing is that adding `-` to your statements allows you to deal with whitespaces. 
-- `{%-` to deal with leading whitespace
-- `-%}` to deal with trailing whitespace
+- `{% raw %}{%-{% endraw %}` to deal with leading whitespace
+- `{% raw %}-%}{% endraw %}` to deal with trailing whitespace
 
 Example on how that works out in templates:
 ```
 Line 1.
-{% set variable = 'string' %}
+{% raw %}{% set variable = 'string' %}
 Line 3.
 {%- set variable = 'string' %}
 Line 5.
 {% set variable = 'string' -%}
 Line7.
-{%- set variable = 'string' -%}
+{%- set variable = 'string' -%}{% endraw %}
 Line 9.
 ```
 The above will render as follows:
@@ -114,7 +114,7 @@ Conditional statements
 Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
-{%- set type = grains.facts.get('type') -%}     
+{% raw %}{%- set type = grains.facts.get('type') -%}     
 
 {%- if type == 'cbr' -%}                        
 set configuration for the cbr
@@ -122,28 +122,28 @@ set configuration for the cbr
 set configuration for the srr or xrr
 {%- else -%}                                    
 set configuration for all the other roles
-{%- endif -%}
+{%- endif -%}{% endraw %}
 ```
 In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is shown. If it is not, we move on to the next test where we check if the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` reveals what configuration will be applied to all other device types.
 
 The previous example shows a few basic checks, but we can also test for multiple conditions at once. This could look something like this:
 ```
-    {% if ( software_version in allowed_versions or allowed_versions == 'all' ) and
+    {% raw %}{% if ( software_version in allowed_versions or allowed_versions == 'all' ) and
           ( model in allowed_models or allowed_models == 'all' ) and
-          ( type in allowed_types or allowed_type == 'all' ) %}
+          ( type in allowed_types or allowed_type == 'all' ) %}{% endraw %}
 ```
 
 
 Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has. For instance, on Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
 
 ```
-{%- set model = grains.facts.get('model') -%}
+{% raw %}{%- set model = grains.facts.get('model') -%}
 
 {%- if 'qfx' in model -%}
     {% set ether_options_cfg = 'ether-options' %}
 {%- elif 'mx' in model -%}
     {% set ether_options_cfg = 'gigether-options' %}
-{%- endif -%}
+{%- endif -%}{% endraw %}
 
 set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0
 ```
@@ -162,12 +162,12 @@ For loop
 
 In the following example, we iterate a list that is generated using the `range` function:
 ```
-{% for n in range(5) %}
+{% raw %}{% for n in range(5) %}
 interface eth{{ n }}
  description unused
  switchport access vlan 999
  shutdown
-{% endfor %}
+{% endfor %}{% endraw %}
 ```
 
 When we call the exection module, we can see that the template renders as follows:
@@ -216,16 +216,16 @@ some_dict:
 
 We can step through this dictionary like so:
 ```
-{%- for key, value in pillar.get('some_dict').items() -%} 
+{% raw %}{%- for key, value in pillar.get('some_dict').items() -%} 
 {{ key }} {{ value }}
-{% endfor %}  
+{% endfor %}{% endraw %}
 ```
 
 Endless possibilities here, but one of the things worth mentioning is passing a nested dictionary to a child template like so:
 ```
-{% for nested_dict in pillar.get('nested-dict').values() -%}
+{% raw %}{% for nested_dict in pillar.get('nested-dict').values() -%}
 {% include 'templates/some_template.j2' %}
-{% endfor -%}
+{% endfor -%}{% endraw %}
 ```
 
 We will be able to access the nested dictionary in `some_template` like this:
@@ -266,14 +266,14 @@ Ethernet5:
 We can load this file as a dictionary and step through it like so in our `/srv/salt/templates/example_using_yaml.j2` template:
 
 ```
-{% import_yaml '/var/tmp/example.yaml' as example_yaml %}
+{% raw %}{% import_yaml '/var/tmp/example.yaml' as example_yaml %}
 
 
 {% for interface, d in example_yaml | dictsort %}
 interface {{ interface }}
  description {{ d.description }}
  switchport access vlan {{ d.vlan }}
-{% endfor %}
+{% endfor %}{% endraw %}
 
 ```
 
@@ -309,10 +309,10 @@ To keep things manageable, you will eventually start working with child template
 
 Let’s suppose that a prefix list differs per device type. The following is an easy way to create a separate prefix-list template for every device while inheriting them in the same ‘master’ template:
 ```
-{%- set type = grains.facts.get('type') -%}
+{% raw %}{%- set type = grains.facts.get('type') -%}
 {%- if type in [ 'brr', 'adr', 'xrr', ] %}
 {% include 'templates/'~type~'_prefix_list.set' %}
-{%- endif -%}
+{%- endif -%}{% endraw %}
 ```
 
 When we render this template, the device type is fetched from the grains. After this, that variable is used to determine what template to include. If we have 30 devices types, we simply make 30 files that contain the appropriate prefix-lists and ensure that the template filename contains the device type. This beats having 30 elif’s. 
@@ -328,14 +328,14 @@ The error messages you’ll run into when templates break are not always that he
 It is nice to know that it is possible to make Salt generate a message that will end up in the proxy log. Observe the following template:
 
 ```
-{%- set no_problem_here = 'just a var' -%}
+{% raw %}{%- set no_problem_here = 'just a var' -%}
 {%- do salt.log.warning('debugging jinja 1: made it to line 2') -%} 
 ..
 {%- do salt.log.warning('debugging jinja 2: In the loop that starts at line 23') -%}
 ..
 {%- set erhm= pillar.get('lala').get('wow:wew') -%}
 ..
-{%- do salt.log.warning('debugging jinja 3: got to the inner loop at line 32') -%}
+{%- do salt.log.warning('debugging jinja 3: got to the inner loop at line 32') -%}{% endraw %}
 ```
 
 Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2':
@@ -382,10 +382,10 @@ You are able to run custom execution modules inside templates. This gives you an
 
 One example is using execution modules to fetch structured data from a device when a template is rendered. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
 ```
-{% set interface = ‘et-0/0/1’ %}
+{% raw %}{% set interface = ‘et-0/0/1’ %}
 {% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
 {% set interface_description = interface_description_dict.get('rpc_reply').get('interface-information').get('physical-interface').get('description') %}
-
+{% endraw %}
 {{ interface_description }}
  ```
 
@@ -403,7 +403,7 @@ Another use case that I ran into was when I was dealing with excess configuratio
 What you can do is retrieve the existing configuration from the device in order to be able to delete it:
 
 ```
-{% set delete_existing = salt['em.nuke'](cmd='show running-config section ^logging', all=True) %}
+{% raw %}{% set delete_existing = salt['em.nuke'](cmd='show running-config section ^logging', all=True) %}{% endraw %}
 {{ delete_existing }}
 ```
 Or
@@ -438,7 +438,7 @@ salt proxy_minion state.apply states.example pillar='{"ops": { "interface" : "et
 
 Inside the template, you can access this pillar data in the same way that you would access regular pillar data:
 ```
-{% set interface = pillar.get('ops').get('interface') %}
+{% raw %}{% set interface = pillar.get('ops').get('interface') %}{% endraw %}
 ```
 I have encountered multiple reasons for wanting to attach inline pillar data. One reason was to enable users to pass arguments to a state they are running.  Another reason was when I was using the Enterprise API. I found that passing a dictionary to a state is a very easy and neat way to have an external script pass data to templates.
 
@@ -450,15 +450,15 @@ If you have a ton of variables you are using in every template, it might be nice
 
 For instance, let’s create a template called default:
 ```
-{%- set type = grains.facts.get('type') -%}
+{% raw %}{%- set type = grains.facts.get('type') -%}
 {%- set software_version = grains.facts.get('software-version') -%}
 {%- set model = grains.facts.get('model') -%}
-{%- set password_information = pillar.get('secret_data') -%}
+{%- set password_information = pillar.get('secret_data') -%}{% endraw %}
 ```
 
 We can import this in other templates like this:
 ```
-{%- import 'templates/default.j2' as example with context -%}
+{% raw %}{%- import 'templates/default.j2' as example with context -%}{% endraw %}
 {{ example.model }} 
 ```
 Since we import the template as `example`, whenever we access a variable set in that template, we prefix it with `example.`.
@@ -475,7 +475,7 @@ In addition to using jinja in templates, you can also use it in other places, li
 The following is an example where doing something in a state file depends on whether or not ‘xyz’ is found in the device name:
 
 ```
-{%- set device_name = pillar.get('device-name') -%}
+{% raw %}{%- set device_name = pillar.get('device-name') -%}
 
 {%- if 'xyz' in device_name -%}
 
@@ -485,7 +485,7 @@ generate_something:
     - source: salt://utility/some_script.py
     - args: "{{ pw }}"
 
-{%- endif %}
+{%- endif %}{% endraw %}
 ```
 
 
