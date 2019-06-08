@@ -50,9 +50,9 @@ The default Jinja delimiters are as follows:
 Let's illustrate how we can get some of the basic things done and start with commenting, setting a variable and outputting that variable:
 
 ```
-{# Setting and using a variable. #}
-{% raw %}{%{% endraw %} set variable = 'string' {% raw %}%}{% endraw %}
-Here we use the {{ variable }}.
+{% raw %}{# Setting and using a variable. #}
+{% set variable = 'string' %}
+Here we use the {{ variable }}.{% endraw %}
 ```
 
 This will render as follows:
