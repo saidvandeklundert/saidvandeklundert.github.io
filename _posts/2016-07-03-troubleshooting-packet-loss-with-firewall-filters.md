@@ -13,7 +13,7 @@ Packet loss can be caused by all sorts of reasons. Could be faulty hardware, a s
 Suppose that a VM, sitting behind several switches and a router, is experiencing packet loss:
 
 
-![alt text](https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/old_post/img/tshoot_fw_filter.png "Logo Title Text 1")
+![tshoot with firewall filter](https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/old_post/img/tshoot_fw_filter.png "tshoot with firewall filter")
 
 Using ping could tell us about the packet loss, but it could not tell us where the packets are dropped. We could ping the device that acts as a gateway to the VM, to see if packets make it up until that point. Problem is that the router in question might not feel like replying. This could be because of certain control plane protection measures that police ICMP or this could simply be because the router is busy doing something else.
 
@@ -93,7 +93,7 @@ set firewall family ethernet-switching filter icmp-test term icmp then count icm
 set firewall family ethernet-switching filter icmp-test term accept-rest then accept
 </pre>
 
-Applying the firewall filter and checking the counter would have been no different. EX3200 and up should support this. Unfortunately, the EX2200 does not support count in the same way the other switches do (an overview of EX match conditions is found here).
+Applying the firewall filter and checking the counter would have been no different. EX3200 and up should support this. Unfortunately, the EX2200 does not support count in the same way the other switches do (an overview of EX match conditions is found [here](https://www.juniper.net/documentation/en_US/junos/topics/reference/general/firewall-filter-ex-series-match-conditions-support.html).
 
 Hope this helps!
 
