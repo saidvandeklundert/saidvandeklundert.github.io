@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Templating using Jinja in Saltstack.
+title: Templating for network engineers in Saltstack.
 image: /img/salt_stack_logo.jpg
 ---
 
