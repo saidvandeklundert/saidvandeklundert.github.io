@@ -65,11 +65,11 @@ arista_proxy_minion:
 
 In the next example, we retrieve grain and pillar data and output that to screen:
 ```
-{% raw %}{%{% endraw %} set vendor = grains.get('vendor') {% raw %}%}{% endraw %}
+{% raw %}{% set vendor = grains.get('vendor') %}
 {{ vendor }}
 
-{% raw %}{% set snmp_string = pillar.get('snmp_community') %}{% endraw %}
-{{ snmp_string }}
+{% set snmp_string = pillar.get('snmp_community') %}
+{{ snmp_string }}{% endraw %}
 ```
 
 After rendering the above template, this is what we get:
@@ -143,9 +143,9 @@ Another thing I use conditionals for in my templates is to have grains or pillar
     {% set ether_options_cfg = 'ether-options' %}
 {%- elif 'mx' in model -%}
     {% set ether_options_cfg = 'gigether-options' %}
-{%- endif -%}{% endraw %}
+{%- endif -%}
 
-set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0
+set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0{% endraw %}
 ```
 
 With things setup like this, we can render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
@@ -385,8 +385,8 @@ One example is using execution modules to fetch structured data from a device wh
 {% raw %}{% set interface = ‘et-0/0/1’ %}
 {% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
 {% set interface_description = interface_description_dict.get('rpc_reply').get('interface-information').get('physical-interface').get('description') %}
-{% endraw %}
-{{ interface_description }}
+
+{{ interface_description }}{% endraw %}
  ```
 
 Result:
@@ -403,12 +403,12 @@ Another use case that I ran into was when I was dealing with excess configuratio
 What you can do is retrieve the existing configuration from the device in order to be able to delete it:
 
 ```
-{% raw %}{% set delete_existing = salt['em.nuke'](cmd='show running-config section ^logging', all=True) %}{% endraw %}
-{{ delete_existing }}
+{% raw %}{% set delete_existing = salt['em.nuke'](cmd='show running-config section ^logging', all=True) %}
+{{ delete_existing }}{% endraw %}
 ```
 Or
 ```
-{{ salt['em.nuke'](section='logging') }}
+{% raw %}{{ salt['em.nuke'](section='logging') }}{% endraw %}
 ```
 
 The result:
@@ -433,7 +433,7 @@ But there is another way to provide additional data to a template. This can be p
 
 Example:
 ```
-salt proxy_minion state.apply states.example pillar='{"ops": { "interface" : "et-0/0/1", "change" : "666", }}'
+{% raw %}salt proxy_minion state.apply states.example pillar='{"ops": { "interface" : "et-0/0/1", "change" : "666", }}'{% endraw %}
 ```
 
 Inside the template, you can access this pillar data in the same way that you would access regular pillar data:
@@ -458,8 +458,8 @@ For instance, let’s create a template called default:
 
 We can import this in other templates like this:
 ```
-{% raw %}{%- import 'templates/default.j2' as example with context -%}{% endraw %}
-{{ example.model }} 
+{% raw %}{%- import 'templates/default.j2' as example with context -%}
+{{ example.model }}{% endraw %}
 ```
 Since we import the template as `example`, whenever we access a variable set in that template, we prefix it with `example.`.
 The main advantages are that it keeps the templates smaller and the default file is easy to maintain in case something changes or needs to be added to multiple templates.
@@ -496,16 +496,16 @@ It is worth familiarizing yourself with the Jinja extensions SaltStack offers as
 
 Some of the extensions allow you to do pretty cool things. For example, test if something is an IP address:
 ```
-{{ '192.168.0.1' | is_ip }}
+{% raw %}{{ '192.168.0.1' | is_ip }}{% endraw %}
 ```
 Using regex replace:
 ```
-{% raw %}{% set my_text = 'yes, this is a TEST' %}{% endraw %}
-{{ my_text | regex_replace(' ([a-z])', '__\\1', ignorecase=True) }}
+{% raw %}{% set my_text = 'yes, this is a TEST' %}
+{{ my_text | regex_replace(' ([a-z])', '__\\1', ignorecase=True) }}{% endraw %}
 ```
 Raising custom errors:
 ```
-{{ raise('Custom Error') }}
+{% raw %}{{ raise('Custom Error') }}{% endraw %}
 ```
 
 These are just some examples. No point in me covering all of them, just read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
