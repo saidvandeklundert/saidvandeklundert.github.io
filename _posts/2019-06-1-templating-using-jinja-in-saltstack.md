@@ -35,7 +35,7 @@ After syncing it to the minion, you can call the function like so:
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
-Most of the time I use the `common.render`. One of the reasons is that the return of the `slsutil.renderer` does not always show all the newlines.
+Most of the time I actually use the `common.render` to render templates from the CLI as well. One of the reasons is that the return of the `slsutil.renderer` does not always show all the newlines.
 
 
 The basics
