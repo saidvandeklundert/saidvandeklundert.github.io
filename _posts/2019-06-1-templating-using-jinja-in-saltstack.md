@@ -124,9 +124,9 @@ set configuration for the srr or xrr
 set configuration for all the other roles
 {%- endif -%}
 ```
-In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is applied. If it is not, we move on to the next test where we check if the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` reaveals what configuration will be applied to all other device types.
+In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is shown. If it is not, we move on to the next test where we check if the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` reveals what configuration will be applied to all other device types.
 
-We can also test multiple conditions at once. In Jinja, this could look something like this:
+The previous example shows a few basic checks, but we can also test for multiple conditions at once. This could look something like this:
 ```
     {% if ( software_version in allowed_versions or allowed_versions == 'all' ) and
           ( model in allowed_models or allowed_models == 'all' ) and
@@ -315,14 +315,7 @@ Let’s suppose that a prefix list differs per device type. The following is an 
 {%- endif -%}
 ```
 
-When we run this, the device type is fetched from the grains. After this, that variable is used to determine what template to include:
-```
-salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'
-..
-proxy_minion:
-    set policy-options prefix-list MGMT 10.0.0.1/32
-```
-If we have 30 devices types, we simply make 30 files that contain the appropriate prefix-lists and ensure that the template filename contains the device type. This beats having 30 elif’s. 
+When we render this template, the device type is fetched from the grains. After this, that variable is used to determine what template to include. If we have 30 devices types, we simply make 30 files that contain the appropriate prefix-lists and ensure that the template filename contains the device type. This beats having 30 elif’s. 
 
 And perhaps some device types do not need any additional prefix-lists. By testing the device type against a list of device types, we prevent the template from failing to try and include a file that does not exist.
 
@@ -330,7 +323,7 @@ And perhaps some device types do not need any additional prefix-lists. By testin
 Debugging the template
 ======================
 
-The error messages you’ll run into when templates break are not always that helpful. This can be tricky with big templates or templates you have not touched in a while. 
+The error messages you’ll run into when templates break are not always that helpful. This can be tricky when you are dealing with large and complex templates or templates you have not touched in a while. 
 
 It is nice to know that it is possible to make Salt generate a message that will end up in the proxy log. Observe the following template:
 
@@ -367,7 +360,7 @@ proxy_minion:
     SaltRenderError: Jinja variable 'None' has no attribute 'get'
 
 ```
-In a very big template, this will keep you busy for quite some time. But due to the extra’s we put in, trailing the proxy log will give us some clues to work with:
+This can keep you busy for quite some time. But due to the extra’s we put in, trailing the proxy log will give us some clues to work with:
 
 ```
 / # tail -f /var/log/salt/proxy | grep 'debugging'
@@ -376,8 +369,11 @@ In a very big template, this will keep you busy for quite some time. But due to 
 ```
 We see the first two messages we put in the template, but we do not see the third one. After learning this, we simply move message number 2 and 3 closer together. This will enable us to locate where the problem is (eventually). 
 
-The logging level is controlled via the master configuration. In this example, the setting was to start logging at the warning level. To be able to use `do salt.log.debug`, you need to set the logging level to include debugging.
-
+The logging level is controlled via the master configuration. In this example, the setting was left at the default value. To be able to use `do salt.log.debug`, you need to set the logging level to include debugging. Altering the log level can be done here:
+```
+/ # cat /etc/salt/master | grep log_level_logfile
+#log_level_logfile: warning
+```
 
 Using execution modules inside templates
 ========================================
@@ -514,10 +510,12 @@ Raising custom errors:
 
 These are just some examples. No point in me covering all of them, just read up on the rest right here: https://docs.saltstack.com/en/latest/topics/jinja/index.html
 
+In case you just want to read up on Jinja, you can check out this site: http://jinja.pocoo.org/docs/
+
 
 Wrapping up
 ===========
 
 These were some of the tips and examples that I really could have used when I started templating in Salt myself. I hope this has helps clarify a few things and that you have gained some insights.
 
-If you have any additional tips, let me know via mail!
+If you have any additional tips, let me know via mail. Thank you!
