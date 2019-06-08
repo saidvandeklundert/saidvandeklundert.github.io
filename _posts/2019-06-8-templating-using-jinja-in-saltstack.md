@@ -51,7 +51,7 @@ Let's illustrate how we can get some of the basic things done and start with com
 
 ```
 {# Setting and using a variable. #}
-{% set variable = 'string' %}
+{% raw %}{%{% endraw %} set variable = 'string' {% raw %}%}{% endraw %}
 Here we use the {{ variable }}.
 ```
 
@@ -65,7 +65,7 @@ arista_proxy_minion:
 
 In the next example, we retrieve grain and pillar data and output that to screen:
 ```
-{% set vendor = grains.get('vendor') %}
+{% raw %}{%{% endraw %} set vendor = grains.get('vendor') {% raw %}%}{% endraw %}
 {{ vendor }}
 
 {% set snmp_string = pillar.get('snmp_community') %}
