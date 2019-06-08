@@ -12,7 +12,8 @@ Packet loss can be caused by all sorts of reasons. Could be faulty hardware, a s
 
 Suppose that a VM, sitting behind several switches and a router, is experiencing packet loss:
 
-image: /img/tshoot_fw_filter.png
+
+![alt text](https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/old_post/img/tshoot_fw_filter.png "Logo Title Text 1")
 
 Using ping could tell us about the packet loss, but it could not tell us where the packets are dropped. We could ping the device that acts as a gateway to the VM, to see if packets make it up until that point. Problem is that the router in question might not feel like replying. This could be because of certain control plane protection measures that police ICMP or this could simply be because the router is busy doing something else.
 
