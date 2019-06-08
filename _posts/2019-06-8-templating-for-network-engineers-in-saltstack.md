@@ -7,8 +7,10 @@ image: /img/salt_stack_logo.jpg
 Templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I could have used when I started templating myself. After walking you through an easy way to render templates in Salt, I will cover some of the basics and provide some practical examples. 
 
 
+
 Iterate your template into perfection using slsutil.renderer
 ============================================================
+
 
 As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device:
  
@@ -38,8 +40,10 @@ salt proxy_minion common.render salt://templates/my_first_template.j2
 Most of the time I actually use the `common.render` to render templates from the CLI as well. One of the reasons is that the return of the `slsutil.renderer` does not always show all the newlines.
 
 
+
 The basics
 ==========
+
 
 The default Jinja delimiters are as follows:
 - `{# .. #}` where you put your comments, this is not included in the output.
@@ -108,8 +112,10 @@ proxy_minion:
 ```    
 
 
+
 Conditional statements
 ======================
+
 
 Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
@@ -157,8 +163,10 @@ juniper_pm:
 ```
 
 
+
 For loop
 ========
+
 
 In the following example, we iterate a list that is generated using the `range` function:
 ```
@@ -199,8 +207,10 @@ proxy_minion:
 ```
 
 
+
 Stepping through a dictionary
 =============================
+
 
 In this example, we'll use the following pillar data:
 
@@ -234,8 +244,10 @@ We will be able to access the nested dictionary in `some_template` like this:
 This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can, for instance, attach an inline pillar when calling a state through the API and use the dictionary to pass whatever you want to the template.
 
 
+
 Loading external files
 ======================
+
 
 It is possible to use and load external files in a template. The following import utilities can help you load the respective file formats:
 - `import_json`
@@ -302,8 +314,10 @@ interface Ethernet5
 ```
 
 
+
 Using grains or pillar data to include other files into the template
 ====================================================================
+
 
 To keep things manageable, you will eventually start working with child templates. But it can happen that after a while, even the child templates grow into thousands of lines. 
 
@@ -320,8 +334,10 @@ When we render this template, the device type is fetched from the grains. After 
 And perhaps some device types do not need any additional prefix-lists. By testing the device type against a list of device types, we prevent the template from failing to try and include a file that does not exist.
 
 
+
 Debugging the template
 ======================
+
 
 The error messages you’ll run into when templates break are not always that helpful. This can be tricky when you are dealing with large and complex templates or templates you have not touched in a while. 
 
@@ -375,8 +391,11 @@ The logging level is controlled via the master configuration. In this example, t
 #log_level_logfile: warning
 ```
 
+
+
 Using execution modules inside templates
 ========================================
+
 
 You are able to run custom execution modules inside templates. This gives you an enormous amount of flexibility and there are a lot of interesting things you can do with this. 
 
@@ -424,8 +443,10 @@ proxy_minion:
 Using the execution modules will enable you to basically do anything you can dream up in Python. Things like connecting to an external database, check operational information on the device, run a script someplace else, etc.
 
 
+
 Passing arguments into your template
 ====================================
+
 
 Inside the templates, you can use grains data, pillar data and you can call execution modules to retrieve information from other places. 
 
@@ -443,8 +464,10 @@ Inside the template, you can access this pillar data in the same way that you wo
 I have encountered multiple reasons for wanting to attach inline pillar data. One reason was to enable users to pass arguments to a state they are running.  Another reason was when I was using the Enterprise API. I found that passing a dictionary to a state is a very easy and neat way to have an external script pass data to templates.
 
 
+
 Import other templates with context
 ===================================
+
 
 If you have a ton of variables you are using in every template, it might be nice to know that you can dump them all in a single template and include that template elsewhere.
 
@@ -467,8 +490,10 @@ The main advantages are that it keeps the templates smaller and the default file
 Additionally, another thing worth noting is that child templates have access to the variables declared in the parent template. So if we import a default template to be able to use variables everywhere, we will also be able to use those in the child templates as well.
 
 
+
 Using Jinja in state and pillar files
 =====================================
+
 
 In addition to using jinja in templates, you can also use it in other places, like in your pillar and in your state files. 
 
@@ -489,8 +514,10 @@ generate_something:
 ```
 
 
+
 Salt has some pretty good additional extensions
 ===============================================
+
 
 It is worth familiarizing yourself with the Jinja extensions SaltStack offers as many of them can come in quite handy. Reading about them before starting your templating efforts might help you a lot.
 
@@ -513,8 +540,10 @@ These are just some examples. No point in me covering all of them, just read up 
 In case you just want to read up on Jinja, you can check out this site: [Jinja2 doc](http://jinja.pocoo.org/docs/)
 
 
+
 Wrapping up
 ===========
+
 
 These were some of the tips and examples that I really could have used when I started templating in Salt myself. I hope this has helps clarify a few things and that you have gained some insights.
 
