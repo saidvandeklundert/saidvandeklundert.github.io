@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Troubleshooting packet loss with firewall filters
-image: /img/hello_world.jpeg
+image: /img/juniper_logo.jpg
 ---
 
 Troubleshooting packet loss with firewall filters
