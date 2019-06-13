@@ -6,7 +6,20 @@ image: /img/salt_stack_logo.jpg
 
 Templating in SaltStack is an absolute joy. It makes the generation of text-based configurations for networking devices very easy. This write up is to give you some tips and insights that I could have used when I started templating myself. After walking you through an easy way to render templates in Salt, I will cover some of the basics and provide some practical examples. 
 
-
+- [Iterate your template into perfection using slsutil.renderer](#iterate-your-template-into-perfection-using-slsutilrenderer)
+- [The basics](#the-basics)
+- [Conditional statements](#conditional-statements)
+- [For loop](#for-loop)
+- [Stepping through a dictionary](#stepping-through-a-dictionary)
+- [Loading external files](#loading-external-files)
+- [Using grains or pillar data to include other files into the template](#using-grains-or-pillar-data-to-include-other-files-into-the-template)
+- [Debugging the template](#debugging-the-template)
+- [Using execution modules inside templates](#using-execution-modules-inside-templates)
+- [Passing arguments into your template](#passing-arguments-into-your-template)
+- [Import other templates with context](#import-other-templates-with-context)
+- [Using Jinja in state and pillar files](#using-jinja-in-state-and-pillar-files)
+- [Salt has some pretty good additional extensions](#salt-has-some-pretty-good-additional-extensions)
+- [Wrapping up](#wrapping-up)
 
 Iterate your template into perfection using slsutil.renderer
 ============================================================
