@@ -8,7 +8,9 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 
 [Iterate your template into perfection using slsutil.renderer](#iterate-your-template-into-perfection-using-slsutilrenderer)
 [The basics](#the-basics)
+
 [Conditional statements](#conditional-statements)
+
 [For loop](#for-loop)
 [Stepping through a dictionary](#stepping-through-a-dictionary)
 [Loading external files](#loading-external-files)
