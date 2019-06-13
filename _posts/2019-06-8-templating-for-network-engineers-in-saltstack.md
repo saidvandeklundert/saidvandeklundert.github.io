@@ -85,7 +85,7 @@ arista_proxy_minion:
     s_n_m_p_!
 ```
 
-Another thing worth nothing is that adding `-` to your statements allows you to deal with whitespaces. 
+Another thing worth noting is that adding `-` to your statements allows you to deal with whitespaces. 
 - `{% raw %}{%-{% endraw %}` to deal with leading whitespace
 - `{% raw %}-%}{% endraw %}` to deal with trailing whitespace
 
@@ -154,7 +154,7 @@ Another thing I use conditionals for in my templates is to have grains or pillar
 set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0{% endraw %}
 ```
 
-With things setup like this, we can render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
+With things set up like this, we can render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
 ```
 salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
 ..
