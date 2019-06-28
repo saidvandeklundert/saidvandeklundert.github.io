@@ -33,7 +33,7 @@ This will translate to `get_ospf_neighbor_information(extensive=True)` in your P
 To figure out how to extract the data from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
 
 ```
-svandeklundert@dar01.ams01-re0> show ospf neighbor extensive |display xml    
+said@ar01.ams> show ospf neighbor extensive |display xml    
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
     <ospf-neighbor-information xmlns="http://xml.juniper.net/junos/15.1F4/junos-routing">
         <ospf-neighbor>
