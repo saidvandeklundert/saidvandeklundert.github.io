@@ -224,7 +224,7 @@ Let’s look at the values we extract here by returning them to screen:
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
         print(address, interface, uptime)
 ```
-When we run the function, we can see the following:
+When we run the function with the print statements put in, we can see the following:
 ```
 ('10.253.158.131', 'ae11.0', '65271002')
 ('10.253.158.149', 'ae12.0', '65185642')
