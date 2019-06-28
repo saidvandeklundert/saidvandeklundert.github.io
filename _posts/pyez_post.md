@@ -11,7 +11,7 @@ Since I always learn the most from short examples that I can reverse engineer or
 Retrieving OSPF information
 ===========================
 
-In this example, we will be looking for the neighbor address, interface and neighbor adjacency-time. 
+In this example, we will be looking for the neighbor address, neighbor id, interface and neighbor adjacency-time. 
 
 We know this information is revealed when we issue `show ospf neighbor extensive` command. To figure out what RPC we need, we simple issue `show ospf neighbor extensive |display xml rpc` which will give us the following:
 
@@ -113,10 +113,12 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
     ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
     for neighbor in ospf_neighbors:
+        neighbor_id = neighbor.find('.//neighbor-id').text
         address = neighbor.find('.//neighbor-address').text
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
         return_dict[interface] = { 
+            'neighbor-id' : neighbor_id,
             'neighbor-address' : address,
             'interface-name' : interface,
             'neighbor-adjacency-time' : uptime,
@@ -208,6 +210,7 @@ When we run the function after adding this, this will print every item in the li
 Seeing this will help understand the next part where we extract the information using the `find` method:
 ```python
     for neighbor in ospf_neighbors:
+        neighbor_id = neighbor.find('.//neighbor-id').text
         address = neighbor.find('.//neighbor-address').text
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
@@ -219,21 +222,19 @@ Note that when we check the uptime, we do not just grab the text, instead we ret
 Let’s look at the values we extract here by returning them to screen:
 ```python
     for neighbor in ospf_neighbors:
+        neighbor_id = neighbor.find('.//neighbor-id').text
         address = neighbor.find('.//neighbor-address').text
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
-        print(address, interface, uptime)
+        print(neighbor_id, address, interface, uptime)
 ```
 When we run the function with the print statements put in, we can see the following:
 ```
-('10.253.158.131', 'ae11.0', '65271002')
-('10.253.158.149', 'ae12.0', '65185642')
-('10.253.158.153', 'ae13.0', '92177488')
-('10.253.158.155', 'ae14.0', '92176477')
-('10.253.158.135', 'ae4.0', '17669056')
-('10.97.18.236', 'ae5.0', '24433522')
-('10.97.18.248', 'ae6.0', '24430347')
-('10.253.158.129', 'ae7.0', '92142219')
+('10.253.158.254', '10.253.158.131', 'ae11.0', '66251128')
+('10.253.158.253', '10.253.158.149', 'ae12.0', '66165768')
+('10.253.158.240', '10.253.158.153', 'ae13.0', '93157614')
+('10.253.158.241', '10.253.158.155', 'ae14.0', '93156603')
+('10.253.158.250', '10.253.158.135', 'ae4.0', '18649182')
 ```
 The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier (using ` return_dict = {}`) and now we put everything in that dictionary like so:
 ```
@@ -245,8 +246,9 @@ The last part of the function is storing these values in a dictionary. We instan
 ```
 The  last `return return_dict` statement returns it for future use.
 
-An easy way to run this function in a script is when we go about it like this:
-```
+An easy way to run this function in a script would be the following:
+
+```python
 from jnpr.junos import Device
 from pprint import pprint
 
@@ -263,10 +265,12 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
     ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
     for neighbor in ospf_neighbors:
+        neighbor_id = neighbor.find('.//neighbor-id').text
         address = neighbor.find('.//neighbor-address').text
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
-        return_dict[interface] = {
+        return_dict[interface] = { 
+            'neighbor-id' : neighbor_id,
             'neighbor-address' : address,
             'interface-name' : interface,
             'neighbor-adjacency-time' : uptime,
@@ -275,7 +279,7 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
     return return_dict
 
 if __name__ == "__main__":
-    # to test the module for a single host
+    # to run the function against a single host
     import sys
     host = str(sys.argv[1])
     pprint(jun_ospf_neighbor_extensive('username_123', 'password_123', host ))
@@ -286,28 +290,36 @@ When we run it, we get the following:
 [said@server]$ python get_ospf.py ar01.ams
 {'ae11.0': {'interface-name': 'ae11.0',
             'neighbor-address': '10.253.158.131',
-            'neighbor-adjacency-time': '65271282'},
+            'neighbor-adjacency-time': '66251082',
+            'neighbor-id': '10.253.158.254'},
  'ae12.0': {'interface-name': 'ae12.0',
-            'neighbor-address': '10.252.158.149',
-            'neighbor-adjacency-time': '65185922'},
+            'neighbor-address': '10.253.158.149',
+            'neighbor-adjacency-time': '66165722',
+            'neighbor-id': '10.253.158.253'},
  'ae13.0': {'interface-name': 'ae13.0',
             'neighbor-address': '10.253.158.153',
-            'neighbor-adjacency-time': '92177768'},
+            'neighbor-adjacency-time': '93157568',
+            'neighbor-id': '10.253.158.240'},
  'ae14.0': {'interface-name': 'ae14.0',
-            'neighbor-address': '10.252.158.155',
-            'neighbor-adjacency-time': '92176757'},
+            'neighbor-address': '10.253.158.155',
+            'neighbor-adjacency-time': '93156557',
+            'neighbor-id': '10.253.158.241'},
  'ae4.0': {'interface-name': 'ae4.0',
            'neighbor-address': '10.253.158.135',
-           'neighbor-adjacency-time': '17669336'},
+           'neighbor-adjacency-time': '18649136',
+           'neighbor-id': '10.253.158.250'},
  'ae5.0': {'interface-name': 'ae5.0',
-           'neighbor-address': '10.97.18.236',
-           'neighbor-adjacency-time': '24433802'},
+           'neighbor-address': '192.97.18.236',
+           'neighbor-adjacency-time': '25413602',
+           'neighbor-id': '169.45.16.29'},
  'ae6.0': {'interface-name': 'ae6.0',
-           'neighbor-address': '10.97.18.248',
-           'neighbor-adjacency-time': '24430627'},
+           'neighbor-address': '192.97.18.248',
+           'neighbor-adjacency-time': '25410427',
+           'neighbor-id': '192.45.16.30'},
  'ae7.0': {'interface-name': 'ae7.0',
            'neighbor-address': '10.253.158.129',
-           'neighbor-adjacency-time': '92142499'}}
+           'neighbor-adjacency-time': '93122299',
+           'neighbor-id': '10.253.158.252'}}
 ```
  
 
@@ -347,10 +359,12 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
     ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
     for neighbor in ospf_neighbors:
+        neighbor_id = neighbor.find('.//neighbor-id').text
         address = neighbor.find('.//neighbor-address').text
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
-        return_dict[interface] = {
+        return_dict[interface] = { 
+            'neighbor-id' : neighbor_id,
             'neighbor-address' : address,
             'interface-name' : interface,
             'neighbor-adjacency-time' : uptime,
@@ -369,58 +383,42 @@ def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
 
 
 if __name__ == "__main__":
-    hosts = ['ar01.ams01', 'pr03.dal12', ]
+    hosts = ['ar03.ams', 'pr02.lon04', ]
     pprint(jun_ospf_neighbor_extensive_network('username_123', 'password_123', hosts))
 ```
 When we run it against two hosts, we get the following result:
 ```bash
-{'ar01.ams': {'ae11.0': {'interface-name': 'ae11.0',
-                            'neighbor-address': '10.253.158.131',
-                            'neighbor-adjacency-time': '65736199'},
+{'ar03.ams': {'ae11.0': {'interface-name': 'ae11.0',
+                            'neighbor-address': '10.8.198.131',
+                            'neighbor-adjacency-time': '74643455',
+                            'neighbor-id': '10.8.198.254'},
                  'ae12.0': {'interface-name': 'ae12.0',
-                            'neighbor-address': '10.252.158.149',
-                            'neighbor-adjacency-time': '65650839'},
-                 'ae13.0': {'interface-name': 'ae13.0',
-                            'neighbor-address': '10.253.158.153',
-                            'neighbor-adjacency-time': '92642685'},
-                 'ae14.0': {'interface-name': 'ae14.0',
-                            'neighbor-address': '10.252.158.155',
-                            'neighbor-adjacency-time': '92641674'},
-                 'ae4.0': {'interface-name': 'ae4.0',
-                           'neighbor-address': '10.253.158.135',
-                           'neighbor-adjacency-time': '18134253'},
-                 'ae5.0': {'interface-name': 'ae5.0',
-                           'neighbor-address': '10.97.18.236',
-                           'neighbor-adjacency-time': '24898719'},
-                 'ae6.0': {'interface-name': 'ae6.0',
-                           'neighbor-address': '10.97.18.248',
-                           'neighbor-adjacency-time': '24895544'},
-                 'ae7.0': {'interface-name': 'ae7.0',
-                           'neighbor-address': '10.253.158.129',
-                           'neighbor-adjacency-time': '92607416'}},
- 'pr03.dal': {'ae11.0': {'interface-name': 'ae11.0',
-                            'neighbor-address': '192.253.158.131',
-                            'neighbor-adjacency-time': '65736200'},
-                 'ae12.0': {'interface-name': 'ae12.0',
-                            'neighbor-address': '192.253.158.149',
-                            'neighbor-adjacency-time': '65650840'},
-                 'ae13.0': {'interface-name': 'ae13.0',
-                            'neighbor-address': '192.253.158.153',
-                            'neighbor-adjacency-time': '92642686'},
-                 'ae14.0': {'interface-name': 'ae14.0',
-                            'neighbor-address': '192.253.158.155',
-                            'neighbor-adjacency-time': '92641675'},
-                 'ae4.0': {'interface-name': 'ae4.0',
-                           'neighbor-address': '192.253.158.135',
-                           'neighbor-adjacency-time': '18134254'},
-                 'ae5.0': {'interface-name': 'ae5.0',
-                           'neighbor-address': '192.97.18.236',
-                           'neighbor-adjacency-time': '24898720'},
-                 'ae6.0': {'interface-name': 'ae6.0',
-                           'neighbor-address': '192.97.18.248',
-                           'neighbor-adjacency-time': '24895545'},
-                 'ae7.0': {'interface-name': 'ae7.0',
-                           'neighbor-address': '192.253.158.129',
-                           'neighbor-adjacency-time': '92607417'}}}
+                            'neighbor-address': '10.8.198.135',
+                            'neighbor-adjacency-time': '7350164',
+                            'neighbor-id': '10.8.198.253'},
+                 'ae8.0': {'interface-name': 'ae8.0',
+                           'neighbor-address': '10.8.198.141',
+                           'neighbor-adjacency-time': '74643488',
+                           'neighbor-id': '10.8.198.250'},
+                 'ae9.0': {'interface-name': 'ae9.0',
+                           'neighbor-address': '10.8.198.143',
+                           'neighbor-adjacency-time': '74643490',
+                           'neighbor-id': '10.8.198.249'}},
+ 'pr02.lon04': {'ae0.2': {'interface-name': 'ae0.2',
+                           'neighbor-address': '192.254.3.84',
+                           'neighbor-adjacency-time': '41364841',
+                           'neighbor-id': '10.0.140.234'},
+                 'ae1.2': {'interface-name': 'ae1.2',
+                           'neighbor-address': '192.254.4.84',
+                           'neighbor-adjacency-time': '41364843',
+                           'neighbor-id': '10.0.140.235'},
+                 'ae101.0': {'interface-name': 'ae101.0',
+                             'neighbor-address': '192.254.35.71',
+                             'neighbor-adjacency-time': '32976830',
+                             'neighbor-id': '10.0.140.236'},
+                 'ae42.0': {'interface-name': 'ae42.0',
+                            'neighbor-address': '192.254.9.123',
+                            'neighbor-adjacency-time': '40529384',
+                            'neighbor-id': '10.0.141.255'}}}
 ```
 
