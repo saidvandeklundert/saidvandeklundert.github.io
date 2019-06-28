@@ -85,11 +85,12 @@ said@ar01.ams> show ospf neighbor extensive |display xml
 ```
 
 Here we can see what fields contain the information we are looking for. The fields are:
+- neighbor-id
 - neighbor-address
 - interface-name
 - neighbor-adjacency-time
 
-We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. The aim will be to return the information in a dictionary.
+We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. For this reason, we will have the function return the information as a dictionary.
 
 So starting off with a function that collects and returns the relevant information from 1 node, we will write a function that does the following:
 - Log into the node
@@ -142,7 +143,8 @@ ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
 The `findall` method is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
 
-The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. Right after the `findall`, we add two lines to the function:
+The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. 
+Right after the `findall`, we add two lines to the function:
 ```python
     for neighbor in ospf_neighbors:
         print(etree.tostring(neighbor, pretty_print=True, encoding='unicode')) 
@@ -215,9 +217,9 @@ Seeing this will help understand the next part where we extract the information 
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
-Here, we iterate the objects in the list and retrieve information from the field we are interested in. 
+Here, we iterate the objects in the list and retrieve information from the fields we are interested in. 
 
-Note that when we check the uptime, we do not just grab the text, instead we retrieve the `seconds`.
+Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
 
 Let’s look at the values we extract here by returning them to screen:
 ```python
@@ -236,7 +238,7 @@ When we run the function with the print statements put in, we can see the follow
 ('10.253.158.241', '10.253.158.155', 'ae14.0', '93156603')
 ('10.253.158.250', '10.253.158.135', 'ae4.0', '18649182')
 ```
-The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier (using ` return_dict = {}`) and now we put everything in that dictionary like so:
+The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier (using `return_dict = {}`) and now we put everything in that dictionary like so:
 ```
         return_dict[interface] = { 
             'neighbor-address' : address,
