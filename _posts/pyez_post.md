@@ -37,35 +37,25 @@ said@ar01.ams> show ospf neighbor extensive |display xml
         <ospf-neighbor>
             <neighbor-address>10.253.158.131</neighbor-address>
             <interface-name>ae11.0</interface-name>
-            <ospf-neighbor-state>Full</ospf-neighbor-state>
-            <neighbor-id>10.253.158.254</neighbor-id>
             ..
-            < output omitted>
+            <neighbor-id>10.253.158.254</neighbor-id>
             ..
             <neighbor-adjacency-time junos:seconds="65269304">
                 107w6d 10:21:44
             </neighbor-adjacency-time>
             ..
-            < output omitted>
-            ..
         </ospf-neighbor>
         <ospf-neighbor>
             <neighbor-address>10.253.158.149</neighbor-address>
             <interface-name>ae12.0</interface-name>
-            <ospf-neighbor-state>Full</ospf-neighbor-state>
-            <neighbor-id>10.253.158.253</neighbor-id>
             ..
-            < output omitted>
+            <neighbor-id>10.253.158.253</neighbor-id>
             ..
             <neighbor-adjacency-time junos:seconds="65183944">
                 107w5d 10:39:04
             </neighbor-adjacency-time>
             ..
-            < output omitted>
-            ..
         </ospf-neighbor>
-        ..
-        < output omitted>
         ..
 </rpc-reply>
 ```
@@ -155,8 +145,6 @@ When we run the function after adding this, this will print every item in the li
 40w2d 18:05:48
 </neighbor-adjacency-time>
 ..
-< output omitted>
-..
 </ospf-neighbor>
 
 
@@ -178,11 +166,7 @@ When we run the function after adding this, this will print every item in the li
 152w2d 10:57:00
 </neighbor-adjacency-time>
 ..
-< output omitted>
-..
 </ospf-neighbor>
-..
-< output omitted>
 ..
 
 ```
