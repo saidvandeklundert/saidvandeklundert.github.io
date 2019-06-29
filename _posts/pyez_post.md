@@ -213,7 +213,7 @@ if __name__ == "__main__":
     pprint(jun_ospf_neighbor_extensive('username_123', 'password_123', host ))
 ```
 
-When we run it, we get the following:
+Using `sys.argv` we can target individual devices when we run the script like so:
 
 ```bash
 [said@server]$ python get_ospf.py ar01.ams
@@ -225,26 +225,10 @@ When we run it, we get the following:
             'neighbor-address': '10.253.158.149',
             'neighbor-adjacency-time': '66165722',
             'neighbor-id': '10.253.158.253'},
- 'ae13.0': {'interface-name': 'ae13.0',
-            'neighbor-address': '10.253.158.153',
-            'neighbor-adjacency-time': '93157568',
-            'neighbor-id': '10.253.158.240'},
- 'ae14.0': {'interface-name': 'ae14.0',
-            'neighbor-address': '10.253.158.155',
-            'neighbor-adjacency-time': '93156557',
-            'neighbor-id': '10.253.158.241'},
  'ae4.0': {'interface-name': 'ae4.0',
            'neighbor-address': '10.253.158.135',
            'neighbor-adjacency-time': '18649136',
            'neighbor-id': '10.253.158.250'},
- 'ae5.0': {'interface-name': 'ae5.0',
-           'neighbor-address': '192.97.18.236',
-           'neighbor-adjacency-time': '25413602',
-           'neighbor-id': '169.45.16.29'},
- 'ae6.0': {'interface-name': 'ae6.0',
-           'neighbor-address': '192.97.18.248',
-           'neighbor-adjacency-time': '25410427',
-           'neighbor-id': '192.45.16.30'},
  'ae7.0': {'interface-name': 'ae7.0',
            'neighbor-address': '10.253.158.129',
            'neighbor-adjacency-time': '93122299',
@@ -336,11 +320,11 @@ When we run it against two hosts, we get the following result:
                            'neighbor-address': '10.8.198.143',
                            'neighbor-adjacency-time': '74643490',
                            'neighbor-id': '10.8.198.249'}},
- 'pr02.lon04': {'ae0.2': {'interface-name': 'ae0.2',
+ 'pr02.lon04': {'ae0.12': {'interface-name': 'ae0.12',
                            'neighbor-address': '192.254.3.84',
                            'neighbor-adjacency-time': '41364841',
                            'neighbor-id': '10.0.140.234'},
-                 'ae1.2': {'interface-name': 'ae1.2',
+                 'ae1.12': {'interface-name': 'ae1.12',
                            'neighbor-address': '192.254.4.84',
                            'neighbor-adjacency-time': '41364843',
                            'neighbor-id': '10.0.140.235'},
