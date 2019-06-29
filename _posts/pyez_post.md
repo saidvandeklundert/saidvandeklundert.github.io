@@ -130,17 +130,9 @@ When we run the function after adding this, this will print every item in the li
 <ospf-neighbor>
 <neighbor-address>10.97.18.248</neighbor-address>
 <interface-name>ae6.0</interface-name>
-<ospf-neighbor-state>Full</ospf-neighbor-state>
+..
 <neighbor-id>10.45.16.30</neighbor-id>
-<neighbor-priority>128</neighbor-priority>
-<activity-timer>34</activity-timer>
-<ospf-area>0.0.0.0</ospf-area>
-<options>0x52</options>
-<dr-address>0.0.0.0</dr-address>
-<bdr-address>0.0.0.0</bdr-address>
-<neighbor-up-time seconds="24429948">
-40w2d 18:05:48
-</neighbor-up-time>
+..
 <neighbor-adjacency-time seconds="24429948">
 40w2d 18:05:48
 </neighbor-adjacency-time>
@@ -151,17 +143,9 @@ When we run the function after adding this, this will print every item in the li
 <ospf-neighbor>
 <neighbor-address>10.253.158.129</neighbor-address>
 <interface-name>ae7.0</interface-name>
-<ospf-neighbor-state>Full</ospf-neighbor-state>
+..
 <neighbor-id>10.253.158.252</neighbor-id>
-<neighbor-priority>128</neighbor-priority>
-<activity-timer>38</activity-timer>
-<ospf-area>0.0.0.0</ospf-area>
-<options>0x52</options>
-<dr-address>0.0.0.0</dr-address>
-<bdr-address>0.0.0.0</bdr-address>
-<neighbor-up-time seconds="92141820">
-152w2d 10:57:00
-</neighbor-up-time>
+..
 <neighbor-adjacency-time seconds="92141820">
 152w2d 10:57:00
 </neighbor-adjacency-time>
