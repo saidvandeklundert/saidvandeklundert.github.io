@@ -105,7 +105,7 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
 
 Let’s break this down and describe what is happening.
 
-The following is used to open a connection to the device, retrieve the information and store it in the ‘ospf_information’ variable and close the connection:
+The following is used to open a connection to the device, retrieve the information and store it in the `ospf_information` variable and close the connection:
 
 ```python
     dev.open()    
@@ -122,7 +122,8 @@ ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 The `findall` method is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
 
 The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. 
-Right after the `findall`, we add two lines to the function:
+
+We can do this by adding the following import `from lxml import etree`. Additionaly, we would add the following to the function right after using `findall`:
 
 ```python
     for neighbor in ospf_neighbors:
@@ -158,7 +159,7 @@ When we run the function after adding this, this will print every item in the li
 </ospf-neighbor>
 ```
 
-Seeing this will help understand the next part where we extract the information using the `find` method:
+From the complete XML that was returned by the Juniper device, we extracted a list XML objects. Every object contains information for an individual OSPF neighbor. We can iterate this list and search every individual OSPF neighbor for the relevant information using the `find` method:
 
 ```python
     for neighbor in ospf_neighbors:
@@ -168,9 +169,9 @@ Seeing this will help understand the next part where we extract the information 
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
-Here, we iterate the objects in the list and retrieve information from the fields we are interested in. Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
+Information found is stored in a variable. Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
 
-The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier (using `return_dict = {}`) and now we put everything in that dictionary like so:
+The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` in the beginning of the function. Now, while we are still inside the for loop, we put everything in that dictionary like so:
 
 ```
         return_dict[interface] = { 
