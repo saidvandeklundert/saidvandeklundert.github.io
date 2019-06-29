@@ -151,8 +151,6 @@ When we run the function after adding this, this will print every item in the li
 </neighbor-adjacency-time>
 ..
 </ospf-neighbor>
-..
-
 ```
 Seeing this will help understand the next part where we extract the information using the `find` method:
 ```python
@@ -162,28 +160,10 @@ Seeing this will help understand the next part where we extract the information 
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
-Here, we iterate the objects in the list and retrieve information from the fields we are interested in. 
+Here, we iterate the objects in the list and retrieve information from the fields we are interested in. Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
 
-Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
-
-Let’s look at the values we extract here by returning them to screen:
-```python
-    for neighbor in ospf_neighbors:
-        neighbor_id = neighbor.find('.//neighbor-id').text
-        address = neighbor.find('.//neighbor-address').text
-        interface = neighbor.find('.//interface-name').text
-        uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
-        print(neighbor_id, address, interface, uptime)
-```
-When we run the function with the print statements put in, we can see the following:
-```
-('10.253.158.254', '10.253.158.131', 'ae11.0', '66251128')
-('10.253.158.253', '10.253.158.149', 'ae12.0', '66165768')
-('10.253.158.240', '10.253.158.153', 'ae13.0', '93157614')
-('10.253.158.241', '10.253.158.155', 'ae14.0', '93156603')
-('10.253.158.250', '10.253.158.135', 'ae4.0', '18649182')
-```
 The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier (using `return_dict = {}`) and now we put everything in that dictionary like so:
+
 ```
         return_dict[interface] = { 
             'neighbor-address' : address,
@@ -191,6 +171,7 @@ The last part of the function is storing these values in a dictionary. We instan
             'neighbor-adjacency-time' : uptime,
         }
 ```
+
 The  last `return return_dict` statement returns it for future use.
 
 An easy way to run this function in a script would be the following:
@@ -233,6 +214,7 @@ if __name__ == "__main__":
 ```
 
 When we run it, we get the following:
+
 ```bash
 [said@server]$ python get_ospf.py ar01.ams
 {'ae11.0': {'interface-name': 'ae11.0',
@@ -289,6 +271,7 @@ def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
 You simply feed the function a username, a password and a list of nodes to run `jun_ospf_neighbor_extensive` against every device in the list and store the returned information in a dictionary called `network_ospf_dict`. 
 
 The entire script now looks like this:
+
 ```python
 from jnpr.junos import Device
 from pprint import pprint
@@ -333,7 +316,9 @@ if __name__ == "__main__":
     hosts = ['ar03.ams', 'pr02.lon04', ]
     pprint(jun_ospf_neighbor_extensive_network('username_123', 'password_123', hosts))
 ```
+
 When we run it against two hosts, we get the following result:
+
 ```bash
 {'ar03.ams': {'ae11.0': {'interface-name': 'ae11.0',
                             'neighbor-address': '10.8.198.131',
