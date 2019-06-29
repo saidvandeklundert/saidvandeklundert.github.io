@@ -11,9 +11,7 @@ Since I always learn the most from short examples that I can reverse engineer or
 Retrieving OSPF information
 ===========================
 
-In this example, we will be looking for the neighbor address, neighbor id, interface and neighbor adjacency-time. 
-
-We know this information is revealed when we issue `show ospf neighbor extensive` command. To figure out what RPC we need, we simple issue `show ospf neighbor extensive |display xml rpc`. This will tell us what RPC to use:
+The information we are after in this example is the neighbor id, neighbor address, interface and neighbor adjacency-time. We can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simple issue `show ospf neighbor extensive |display xml rpc`. This will tell us what RPC to use:
 
 ```
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
@@ -60,13 +58,15 @@ said@ar01.ams> show ospf neighbor extensive |display xml
 </rpc-reply>
 ```
 
-From this output, we can see that the fields we are looking for are the following:
+From this output, we can see that the text-nodes we are looking for are contained in the following element nodes:
 - neighbor-id
 - neighbor-address
 - interface-name
 - neighbor-adjacency-time
 
-We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 node and have it do the following:
+Actualy, for the neighbor-adjacency-time, the attribute node (`junos:seconds="65183944"`) is more interesting, so we'll grab that on instead.
+
+We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 device and have it do the following:
 - Log into the node
 - Issue the RPC
 - Iterate all the OSPF adjacencies
@@ -105,7 +105,7 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
 
 Let’s break this down and describe what is happening.
 
-The following is used to open a connection to the device, retrieve the information and store it in the `ospf_information` variable and close the connection:
+The following is used to open a connection to the device, issue the RPC, store the device response in the `ospf_information` variable and close the connection:
 
 ```python
     dev.open()    
@@ -113,7 +113,7 @@ The following is used to open a connection to the device, retrieve the informati
     dev.close()
 ```
 
-The `ospf_information` contains all the data that is returned. This equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the ospf neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
+The information that is now stored in `ospf_information` equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the ospf neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
 
 ```python
 ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
@@ -127,7 +127,7 @@ We can do this by adding the following import `from lxml import etree`. Addition
 
 ```python
     for neighbor in ospf_neighbors:
-        print(etree.tostring(neighbor, pretty_print=True, encoding='unicode')) 
+        print(etree.tostring(neighbor, pretty_print=True)) 
 ```
 
 When we run the function after adding this, this will print every item in the list to screen. The output should look something like this:
@@ -159,7 +159,7 @@ When we run the function after adding this, this will print every item in the li
 </ospf-neighbor>
 ```
 
-From the complete XML that was returned by the Juniper device, we extracted a list XML objects. Every object contains information for an individual OSPF neighbor. We can iterate this list and search every individual OSPF neighbor for the relevant information using the `find` method:
+From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects. Every object contains information on an individual OSPF neighbor. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` method:
 
 ```python
     for neighbor in ospf_neighbors:
@@ -169,11 +169,11 @@ From the complete XML that was returned by the Juniper device, we extracted a li
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
-Information found is stored in a variable. Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
+Information found is stored in a variable. Note that when we check the uptime, we do not just grab the text node. Here, we retrieve the attribute node because it is easier to work with `seconds` instead of some string.
 
-The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` in the beginning of the function. Now, while we are still inside the for loop, we put everything in that dictionary like so:
+The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` in the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
 
-```
+```python
         return_dict[interface] = { 
             'neighbor-address' : address,
             'interface-name' : interface,
@@ -181,13 +181,14 @@ The last part of the function is storing these values in a dictionary. We instan
         }
 ```
 
-The  last `return return_dict` statement returns it for future use.
+The  last `return return_dict` statement returns the dictionary for future use.
 
 An easy way to run this function in a script would be the following:
 
 ```python
 from jnpr.junos import Device
 from pprint import pprint
+from lxml import etree
 
 def jun_ospf_neighbor_extensive(username, pwd, host ):
 
@@ -202,6 +203,7 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
     ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
     for neighbor in ospf_neighbors:
+        #print(etree.tostring(neighbor, pretty_print=True)) 
         neighbor_id = neighbor.find('.//neighbor-id').text
         address = neighbor.find('.//neighbor-address').text
         interface = neighbor.find('.//interface-name').text
@@ -248,7 +250,7 @@ Using `sys.argv` we can target individual devices when we run the script like so
 Checking multiple nodes
 =======================
 
-Let’s continue to work with our previous example and add the following function:
+Let’s continue to work on what we have done so far and make our script suitable to collect information from multiple devices. The following function will make it easy to iterate a list of devices, call the function we have made earlier and store the output in a single dictionary:
 
 ```python
 def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
@@ -261,9 +263,9 @@ def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
     return network_ospf_dict
 ```
 
-You simply feed the function a username, a password and a list of nodes to run `jun_ospf_neighbor_extensive` against every device in the list and store the returned information in a dictionary called `network_ospf_dict`. 
+This function takes in a username, password and a list (of hosts). It starts by instatiating a dictionary called `network_ospf_dict`. After that, it will iterate the list of hosts. For every host in the list, it will run `jun_ospf_neighbor_extensive`. The returned output is stored in the `network_ospf_dict` which is returned in the end.
 
-The entire script now looks like this:
+Let's clean up all references to `etree`, add the new function and change the `main`. We now have the following script:
 
 ```python
 from jnpr.junos import Device
