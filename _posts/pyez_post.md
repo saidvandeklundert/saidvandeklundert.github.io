@@ -66,9 +66,7 @@ From this output, we can see that the fields we are looking for are the followin
 - interface-name
 - neighbor-adjacency-time
 
-We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. For this reason, we will have the function return the information as a dictionary.
-
-We will start off with a function that collects and returns the relevant information for 1 node and write a function that does the following:
+We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 node and have it do the following:
 - Log into the node
 - Issue the RPC
 - Iterate all the OSPF adjacencies
@@ -76,6 +74,7 @@ We will start off with a function that collects and returns the relevant informa
 - Return this information in a dictionary
 
 The example I came up with is the following:
+
 ```python
 def jun_ospf_neighbor_extensive(username, pwd, host ):
     
@@ -103,9 +102,11 @@ def jun_ospf_neighbor_extensive(username, pwd, host ):
         
     return return_dict
 ```
+
 Let’s break this down and describe what is happening.
 
 The following is used to open a connection to the device, retrieve the information and store it in the ‘ospf_information’ variable and close the connection:
+
 ```python
     dev.open()    
     ospf_information = dev.rpc.get_ospf_neighbor_information(extensive=True)
@@ -113,6 +114,7 @@ The following is used to open a connection to the device, retrieve the informati
 ```
 
 The `ospf_information` contains all the data that is returned. This equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the ospf neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
+
 ```python
 ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 ```
@@ -121,11 +123,14 @@ The `findall` method is used to return a list of matching elements. In this case
 
 The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. 
 Right after the `findall`, we add two lines to the function:
+
 ```python
     for neighbor in ospf_neighbors:
         print(etree.tostring(neighbor, pretty_print=True, encoding='unicode')) 
 ```
+
 When we run the function after adding this, this will print every item in the list to screen. The output should look something like this:
+
 ```
 <ospf-neighbor>
 <neighbor-address>10.97.18.248</neighbor-address>
@@ -152,7 +157,9 @@ When we run the function after adding this, this will print every item in the li
 ..
 </ospf-neighbor>
 ```
+
 Seeing this will help understand the next part where we extract the information using the `find` method:
+
 ```python
     for neighbor in ospf_neighbors:
         neighbor_id = neighbor.find('.//neighbor-id').text
@@ -160,6 +167,7 @@ Seeing this will help understand the next part where we extract the information 
         interface = neighbor.find('.//interface-name').text
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
+
 Here, we iterate the objects in the list and retrieve information from the fields we are interested in. Note that when we check the uptime, we do not just grab the text. Instead we retrieve the `seconds`.
 
 The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier (using `return_dict = {}`) and now we put everything in that dictionary like so:
