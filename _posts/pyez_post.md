@@ -13,7 +13,7 @@ Retrieving OSPF information
 
 In this example, we will be looking for the neighbor address, neighbor id, interface and neighbor adjacency-time. 
 
-We know this information is revealed when we issue `show ospf neighbor extensive` command. To figure out what RPC we need, we simple issue `show ospf neighbor extensive |display xml rpc` which will give us the following:
+We know this information is revealed when we issue `show ospf neighbor extensive` command. To figure out what RPC we need, we simple issue `show ospf neighbor extensive |display xml rpc`. This will tell us what RPC to use:
 
 ```
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
@@ -22,13 +22,11 @@ We know this information is revealed when we issue `show ospf neighbor extensive
                 <extensive/>
         </get-ospf-neighbor-information>
     </rpc>
-    <cli>
-        <banner>{master}</banner>
-    </cli>
+..
 </rpc-reply>
 ```
 
-This will translate to `get_ospf_neighbor_information(extensive=True)` in your Python script. 
+What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in your Python script. 
 
 To figure out how to extract the data from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
 
@@ -41,15 +39,9 @@ said@ar01.ams> show ospf neighbor extensive |display xml
             <interface-name>ae11.0</interface-name>
             <ospf-neighbor-state>Full</ospf-neighbor-state>
             <neighbor-id>10.253.158.254</neighbor-id>
-            <neighbor-priority>1</neighbor-priority>
-            <activity-timer>31</activity-timer>
-            <ospf-area>0.0.0.0</ospf-area>
-            <options>0x52</options>
-            <dr-address>0.0.0.0</dr-address>
-            <bdr-address>0.0.0.0</bdr-address>
-            <neighbor-up-time junos:seconds="65269304">
-                107w6d 10:21:44
-            </neighbor-up-time>
+            ..
+            < output omitted>
+            ..
             <neighbor-adjacency-time junos:seconds="65269304">
                 107w6d 10:21:44
             </neighbor-adjacency-time>
@@ -62,15 +54,9 @@ said@ar01.ams> show ospf neighbor extensive |display xml
             <interface-name>ae12.0</interface-name>
             <ospf-neighbor-state>Full</ospf-neighbor-state>
             <neighbor-id>10.253.158.253</neighbor-id>
-            <neighbor-priority>1</neighbor-priority>
-            <activity-timer>31</activity-timer>
-            <ospf-area>0.0.0.0</ospf-area>
-            <options>0x52</options>
-            <dr-address>0.0.0.0</dr-address>
-            <bdr-address>0.0.0.0</bdr-address>
-            <neighbor-up-time junos:seconds="65183945">
-                107w5d 10:39:05
-            </neighbor-up-time>
+            ..
+            < output omitted>
+            ..
             <neighbor-adjacency-time junos:seconds="65183944">
                 107w5d 10:39:04
             </neighbor-adjacency-time>
@@ -84,7 +70,7 @@ said@ar01.ams> show ospf neighbor extensive |display xml
 </rpc-reply>
 ```
 
-Here we can see what fields contain the information we are looking for. The fields are:
+Here we can see what fields contain the information we are looking for. The fields we are looking for are the following:
 - neighbor-id
 - neighbor-address
 - interface-name
@@ -92,7 +78,7 @@ Here we can see what fields contain the information we are looking for. The fiel
 
 We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. For this reason, we will have the function return the information as a dictionary.
 
-So starting off with a function that collects and returns the relevant information from 1 node, we will write a function that does the following:
+We will start off with a function that collects and returns the relevant information for 1 node and write a function that does the following:
 - Log into the node
 - Issue the RPC
 - Iterate all the OSPF adjacencies
@@ -136,7 +122,7 @@ The following is used to open a connection to the device, retrieve the informati
     dev.close()
 ```
 
-The `ospf_information` contains all the data that is returned. What we need to do is iterate all the ospf neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
+The `ospf_information` contains all the data that is returned. This equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the ospf neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
 ```python
 ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 ```
@@ -168,11 +154,9 @@ When we run the function after adding this, this will print every item in the li
 <neighbor-adjacency-time seconds="24429948">
 40w2d 18:05:48
 </neighbor-adjacency-time>
-<ospf-neighbor-topology>
-<ospf-topology-name>default</ospf-topology-name>
-<ospf-topology-id>0</ospf-topology-id>
-<ospf-neighbor-topology-state>Bidirectional</ospf-neighbor-topology-state>
-</ospf-neighbor-topology>
+..
+< output omitted>
+..
 </ospf-neighbor>
 
 
@@ -193,16 +177,9 @@ When we run the function after adding this, this will print every item in the li
 <neighbor-adjacency-time seconds="92141820">
 152w2d 10:57:00
 </neighbor-adjacency-time>
-<lsa-list>
-        ..
-        < output omitted>
-        ..
-</lsa-list>
-<ospf-neighbor-topology>
-<ospf-topology-name>default</ospf-topology-name>
-<ospf-topology-id>0</ospf-topology-id>
-<ospf-neighbor-topology-state>Bidirectional</ospf-neighbor-topology-state>
-</ospf-neighbor-topology>
+..
+< output omitted>
+..
 </ospf-neighbor>
 ..
 < output omitted>
