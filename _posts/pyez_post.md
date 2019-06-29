@@ -60,7 +60,7 @@ said@ar01.ams> show ospf neighbor extensive |display xml
 </rpc-reply>
 ```
 
-Here we can see what fields contain the information we are looking for. The fields we are looking for are the following:
+From this output, we can see that the fields we are looking for are the following:
 - neighbor-id
 - neighbor-address
 - interface-name
