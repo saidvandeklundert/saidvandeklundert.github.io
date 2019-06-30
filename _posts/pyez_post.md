@@ -3,7 +3,7 @@ Intro
 
 Using Python and working with the Junos OS API has always been immensely satisfying. 
 
-Most people that start out working with Junos OS using PyEZ seem to get stuck trying to figure out how to retrieve information for a list of devices they are interested in. They know what they want, but struggle getting started. 
+Most people that start out working with Junos OS using PyEZ seem to get stuck on two things. First, they struggle trying to figure out how to retrieve information. After this, the next hurdle is doing it for a list of devices they are interested in. 
 
 Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. In this article, I will first retrieve OSPF information from a single device running Junos OS using PyEZ. After this, I will move on to retrieving the information from multiple devices.
  
@@ -348,4 +348,13 @@ When we run it against two hosts, we get the following result:
                             'neighbor-adjacency-time': '40529384',
                             'neighbor-id': '10.0.141.255'}}}
 ```
+
+
+Wrapping up
+===========
+
+We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPATH expressions to retrieve the information we want. First, using `findall` we got a list with information on the OSPF neighbors. After this, we used `find` to obtain the exact information we needed from every individual neighbor. The reason for choosing an example that uses both `findall` and `find` is that it applies to a lot of things. Iterating a list of OSPF neighbors is the same as iterating a list of interfaces, BGP neighbors, line-cards, and so on.  Finding information that is specific to OSPF is no different than finding information related to interfaces, BGP, line-cards etc. 
+
+After obtaining the information for 1 device, we then created something that can iterate a list of devices and store everything in 1 dictionary. This way, you will be able to get information on devices for the entire network.
+
 
