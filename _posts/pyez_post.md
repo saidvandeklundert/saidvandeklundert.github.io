@@ -3,7 +3,7 @@ Intro
 
 Using Python and working with the Junos OS API has always been immensely satisfying. 
 
-Most people that start out working with Junos OS using PyEZ seem to get stuck on two things. First, they struggle trying to figure out how to retrieve information. The next hurdle after this is retrieving information for a list of devices they are interested in. 
+Most people that start out working with Junos OS using PyEZ seem to get stuck on two things. First, they struggle trying to figure out how to retrieve information. The problem after this is retrieving information for a list of devices they are interested in. 
 
 Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. In this article, I will first retrieve OSPF information from a single device running Junos OS using PyEZ. In the example, I will use both the `findall` as well as the `find` XPath.
 
