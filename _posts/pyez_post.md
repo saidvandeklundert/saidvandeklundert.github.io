@@ -3,10 +3,14 @@ Intro
 
 Using Python and working with the Junos OS API has always been immensely satisfying. 
 
-Most people that start out working with Junos OS using PyEZ seem to get stuck on two things. First, they struggle trying to figure out how to retrieve information. After this, the next hurdle is doing it for a list of devices they are interested in. 
+Most people that start out working with Junos OS using PyEZ seem to get stuck on two things. First, they struggle trying to figure out how to retrieve information. The next hurdle after this is retrieving information for a list of devices they are interested in. 
 
-Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. In this article, I will first retrieve OSPF information from a single device running Junos OS using PyEZ. After this, I will move on to retrieving the information from multiple devices.
- 
+Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. In this article, I will first retrieve OSPF information from a single device running Junos OS using PyEZ. In the example, I will use both the `findall` as well as the `find` XPath.
+
+The reason is that these will cover so many situations. Iterating a list of OSPF neighbors and extracting information from neighbors is no different from iterating a list of BGP sessions and extracting information from individual sessions for instance. Or doing the same thing for interfaces, line-cards, LDP sessions, and so on.
+
+Finally, I will also give an example on how to get the information from multiple devices.
+
 
 Retrieving OSPF information
 ===========================
@@ -159,7 +163,7 @@ When we run the function after adding this, this will print every item in the li
 </ospf-neighbor>
 ```
 
-From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects. Every object contains information on an individual OSPF neighbor. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` method:
+From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects that contain information on individual OSPF neighbors. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` method:
 
 ```python
     for neighbor in ospf_neighbors:
@@ -169,7 +173,7 @@ From the complete XML that was returned by the Juniper device, we managed to ext
         uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
-Information found is stored in a variable. Note that when we check the uptime, we do not just grab the text node. Here, we retrieve the attribute node because it is easier to work with `seconds` instead of some string.
+We store the information in a variable. When we check the uptime, we do not just grab the text node. Here, we retrieve the attribute node because it is easier to work with `seconds` instead of some string.
 
 The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` in the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
 
@@ -224,7 +228,7 @@ if __name__ == "__main__":
     pprint(jun_ospf_neighbor_extensive('username_123', 'password_123', host ))
 ```
 
-Using `sys.argv` we can target individual devices when we run the script like so:
+Because we are using `sys.argv`, we can target individual devices when we run the script like so:
 
 ```bash
 [said@server]$ python get_ospf.py ar01.ams
@@ -265,7 +269,7 @@ def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
 
 This function takes in a username, password and a list (of hosts). It starts by instatiating a dictionary called `network_ospf_dict`. After that, it will iterate the list of hosts. For every host in the list, it will run `jun_ospf_neighbor_extensive`. The returned output is stored in the `network_ospf_dict` which is returned in the end.
 
-Let's clean up all references to `etree`, add the new function and change the `main`. We now have the following script:
+Let's clean up all references to `etree`, add the new function and change the `__main__`. We now have the following script:
 
 ```python
 from jnpr.junos import Device
@@ -353,7 +357,9 @@ When we run it against two hosts, we get the following result:
 Wrapping up
 ===========
 
-We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPATH expressions to retrieve the information we want. First, using `findall` we got a list with information on the OSPF neighbors. After this, we used `find` to obtain the exact information we needed from every individual neighbor. The reason for choosing an example that uses both `findall` and `find` is that it applies to a lot of things. Iterating a list of OSPF neighbors is the same as iterating a list of interfaces, BGP neighbors, line-cards, and so on.  Finding information that is specific to OSPF is no different than finding information related to interfaces, BGP, line-cards etc. 
+We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPATH expressions to retrieve the information we want. 
+
+First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to obtain the exact information we needed from every individual neighbor. 
 
 After obtaining the information for 1 device, we then created something that can iterate a list of devices and store everything in 1 dictionary. This way, you will be able to get information on devices for the entire network.
 
