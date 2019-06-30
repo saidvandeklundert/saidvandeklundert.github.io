@@ -115,7 +115,7 @@ The following is used to open a connection to the device, issue the RPC, store t
     dev.close()
 ```
 
-The information that is now stored in `ospf_information` equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the ospf neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
+The information that is now stored in `ospf_information` equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the OSPF neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
 
 ```python
 ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
@@ -123,7 +123,7 @@ ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
 The `findall` XPath expression is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
 
-The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. We can do this by adding the following import `from lxml import etree`. Additionaly, we would add the following to the function right after using `findall`:
+The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. We can do this by adding the following import `from lxml import etree`. Additionally, we would add the following to the function right after using `findall`:
 
 ```python
     for neighbor in ospf_neighbors:
@@ -248,7 +248,7 @@ Because we are using `sys.argv`, we can target individual devices when we run th
 Checking multiple nodes
 =======================
 
-Let’s continue to work on what we have done so far and make our script suitable to collect information from multiple devices. The following function will make it easy to iterate a list of devices, call the function we have made earlier and store the output in a single dictionary:
+Let’s enable our script to collect information from multiple devices. The following function will make it easy to iterate a list of devices, call the function we have made earlier and store the output in a single dictionary:
 
 ```python
 def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
@@ -261,7 +261,7 @@ def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
     return network_ospf_dict
 ```
 
-This function takes in a username, password and a list (of hosts). It starts by instatiating a dictionary called `network_ospf_dict`. After that, it will iterate the list of hosts. For every host in the list, it will run `jun_ospf_neighbor_extensive`. The returned output is stored in the `network_ospf_dict` which is returned in the end.
+This function takes in a username, password and a list (of hosts). It starts by instantiating a dictionary called `network_ospf_dict`. After that, it will iterate the list of hosts. For every host in the list, it will run `jun_ospf_neighbor_extensive`. The returned output is stored in the `network_ospf_dict` which is returned in the end.
 
 Let's clean up all references to `etree`, add the new function and change the `__main__`. We now have the following script:
 
