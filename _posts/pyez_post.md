@@ -13,7 +13,7 @@ To wrap things up, I will also give an example on how to get the information fro
 Retrieving OSPF information
 ===========================
 
-The information we are after in this example is the neighbor id, neighbor address, interface and neighbor adjacency-time. We can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simple issue `show ospf neighbor extensive |display xml rpc`:
+The information we are after in this example is the neighbor id, neighbor address, interface and neighbor adjacency-time. We can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simply issue `show ospf neighbor extensive |display xml rpc`:
 
 ```
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
