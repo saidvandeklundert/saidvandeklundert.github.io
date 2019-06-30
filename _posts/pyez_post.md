@@ -66,7 +66,7 @@ From this output, we can see that the text-nodes we are looking for are containe
 - interface-name
 - neighbor-adjacency-time
 
-Actually, for the neighbor-adjacency-time, the attribute node (`junos:seconds="65183944"`) is more interesting, so we'll grab that on instead.
+Actually, for the neighbor-adjacency-time, the attribute node (`junos:seconds="65183944"`) is more interesting. For this reaon we'll grab that one instead.
 
 We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 device and have it do the following:
 - Log into the node
@@ -121,7 +121,7 @@ The information that is now stored in `ospf_information` equates to the entire o
 ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 ```
 
-The `findall` method is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
+The `findall` XPath expression is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
 
 The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. 
 
@@ -161,7 +161,7 @@ When we run the function after adding this, this will print every item in the li
 </ospf-neighbor>
 ```
 
-From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects that contain information on individual OSPF neighbors. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` method:
+From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects that contain information on individual OSPF neighbors. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` XPath expression:
 
 ```python
     for neighbor in ospf_neighbors:
