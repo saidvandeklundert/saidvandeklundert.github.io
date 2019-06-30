@@ -28,7 +28,7 @@ The information we are after in this example is the neighbor id, neighbor addres
 
 What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in your Python script. 
 
-To figure out how to extract the data from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
+To figure out what to extract the data from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
 
 ```
 said@ar01.ams> show ospf neighbor extensive |display xml    
@@ -66,7 +66,7 @@ From this output, we can see that the text-nodes we are looking for are containe
 - interface-name
 - neighbor-adjacency-time
 
-Actualy, for the neighbor-adjacency-time, the attribute node (`junos:seconds="65183944"`) is more interesting, so we'll grab that on instead.
+Actually, for the neighbor-adjacency-time, the attribute node (`junos:seconds="65183944"`) is more interesting, so we'll grab that on instead.
 
 We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 device and have it do the following:
 - Log into the node
