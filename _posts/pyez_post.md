@@ -28,7 +28,7 @@ The information we are after in this example is the neighbor id, neighbor addres
 
 What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in your Python script. 
 
-To figure out what to extract the data from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
+To figure out what data to extract from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
 
 ```
 said@ar01.ams> show ospf neighbor extensive |display xml    
@@ -60,13 +60,13 @@ said@ar01.ams> show ospf neighbor extensive |display xml
 </rpc-reply>
 ```
 
-From this output, we can see that the text-nodes we are looking for are contained in the following element nodes:
+From this output, we can see that we are looking for the following element nodes:
 - neighbor-id
 - neighbor-address
 - interface-name
 - neighbor-adjacency-time
 
-Actually, for the neighbor-adjacency-time, the attribute node (`junos:seconds="65183944"`) is more interesting. For this reaon we'll grab that one instead.
+For the first three items, we will extract the `text-nodes`. For the `neighbor-adjacency-time` however, the attribute node (`junos:seconds="65183944"`) is more interesting. Having just an integer is a lot easier to work with when compared to a string that may or may not contain ```w``` or ```d```.
 
 We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 device and have it do the following:
 - Log into the node
@@ -132,7 +132,7 @@ We can do this by adding the following import `from lxml import etree`. Addition
         print(etree.tostring(neighbor, pretty_print=True)) 
 ```
 
-When we run the function after adding this, this will print every item in the list to screen. The output should look something like this:
+With this addition, the content of the list is revealed:
 
 ```
 <ospf-neighbor>
