@@ -22,7 +22,7 @@ The information we are after in this example is the neighbor id, neighbor addres
 </rpc-reply>
 ```
 
-What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in your Python script. 
+What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in our Python script. 
 
 To figure out what data to extract from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
 
