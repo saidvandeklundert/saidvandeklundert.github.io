@@ -1,8 +1,6 @@
 Intro
 =====
 
-Using Python and working with the Junos OS API has always been immensely satisfying. 
-
 Most people that start out working with Junos OS using PyEZ seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
 
 In this article, I will retrieve OSPF information from multiple devices running Junos OS using PyEZ. In the example, I will use both the `findall` as well as the `find` XPath. The reason for this is that these 2 XPath expressions will cover most situations. Iterating a list of BGP sessions and extracting information from individual sessions will work similar to the example I will walk you through here. Same thing for interfaces, line-cards, LDP sessions, and so on.
@@ -349,10 +347,10 @@ When we run it against two hosts, we get the following result:
 Wrapping up
 ===========
 
-We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPATH expressions to retrieve the information we want. 
+We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPath expressions to retrieve the information we want. 
 
 First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to obtain the exact information we needed from every individual neighbor. 
 
-After obtaining the information for 1 device, we then created something that can iterate a list of devices and store everything in 1 dictionary. This way, you will be able to get information on devices for the entire network.
+After obtaining the information for 1 device, we used a function that can iterate a list of devices and store everything in 1 dictionary. This way, we are able to get information for all the devices in the network.
 
-
+Using Python and working with the Junos OS API has always been immensely satisfying to me. I hope this article gave you some insights and ideas on how to get started.
