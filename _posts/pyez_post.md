@@ -5,9 +5,7 @@ Using Python and working with the Junos OS API has always been immensely satisfy
 
 Most people that start out working with Junos OS using PyEZ seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
 
-In this article, I will first retrieve OSPF information from a single device running Junos OS using PyEZ. In the example, I will use both the `findall` as well as the `find` XPath. The reason for this is that these 2 XPath expressions will cover most situations. Iterating a list of BGP sessions and extracting information from individual sessions will work similar to the example I will walk you through here. Same thing for interfaces, line-cards, LDP sessions, and so on.
-
-To wrap things up, I will also give an example on how to get the information from multiple devices.
+In this article, I will retrieve OSPF information from multiple devices running Junos OS using PyEZ. In the example, I will use both the `findall` as well as the `find` XPath. The reason for this is that these 2 XPath expressions will cover most situations. Iterating a list of BGP sessions and extracting information from individual sessions will work similar to the example I will walk you through here. Same thing for interfaces, line-cards, LDP sessions, and so on.
 
 
 Retrieving OSPF information
