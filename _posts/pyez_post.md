@@ -351,4 +351,4 @@ We wrote a function that retrieves OSPF information by talking to the Juniper AP
 
 First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to get the exact information we needed from every individual neighbor. We finished up showing how to get the information for multiple devices.
 
-Using Python and working with the Junos OS API has always been immensely satisfying to me. I hope this article gave you some insights and ideas on how to get started.
+Working with the Junos OS API has always been immensely satisfying to me. I hope this article gave you some insights and ideas on how to get started.
