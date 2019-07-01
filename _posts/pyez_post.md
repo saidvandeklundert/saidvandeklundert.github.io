@@ -349,8 +349,6 @@ Wrapping up
 
 We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPath expressions to retrieve the information we want. 
 
-First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to obtain the exact information we needed from every individual neighbor. 
-
-After obtaining the information for 1 device, we used a function that can iterate a list of devices and store everything in 1 dictionary. This way, we are able to get information for all the devices in the network.
+First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to get the exact information we needed from every individual neighbor. We finished up showing how to get the information for multiple devices.
 
 Using Python and working with the Junos OS API has always been immensely satisfying to me. I hope this article gave you some insights and ideas on how to get started.
