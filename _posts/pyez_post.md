@@ -113,7 +113,7 @@ The `findall` method is used to return a list of matching elements. In this case
 
 The list that `findall` returns is stored in `ospf_neighbors`. If we would print the type of every item in the list returned by `findall`, it would show `<type 'lxml.etree._Element'>`. 
 
-In case we wanted to see how this information looks, we could decide to use `etree.tostring`. This requires us putting in `from lxml import etree` as well as adding the following code right after using `findall`:
+In case we wanted to see how the information inside every item of the returned list looks, we could decide to use `etree.tostring`. This requires us putting in `from lxml import etree` as well as adding the following code right after using `findall`:
 
 ```python
 for neighbor in ospf_neighbors:
