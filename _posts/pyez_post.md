@@ -9,7 +9,7 @@ In this article, I will use PyEZ to retrieve OSPF information from multiple devi
 Retrieving OSPF information
 ===========================
 
-The information we are after in this example is the neighbor id, neighbor address, interface and neighbor adjacency-time. Using the CLI, we can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simply issue `show ospf neighbor extensive |display xml rpc`:
+The information we are after in this example are the neighbor id, neighbor address, interface and neighbor adjacency-time. Using the CLI, we can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simply issue `show ospf neighbor extensive |display xml rpc`:
 
 ```xml
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
