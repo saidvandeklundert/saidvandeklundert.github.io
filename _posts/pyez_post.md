@@ -1,9 +1,9 @@
 Intro
 =====
 
-Most people that start out working with Junos OS using PyEZ seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
+Most people that start out working with Junos using PyEZ seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
 
-In this article, I will retrieve OSPF information from multiple devices running Junos OS using PyEZ. In the example, I will use both the `findall` as well as the `find` XPath. The reason for this is that these 2 XPath expressions will cover most situations. Iterating a list of BGP sessions and extracting information from individual sessions will work similar to the example I will walk you through here. Same thing for interfaces, line-cards, LDP sessions, and so on.
+In this article, I will use PyEZ to retrieve OSPF information from multiple devices running Junos. In the example, I will use both the `findall` as well as the `find` methods from the `lxml` module. The reason for using these two methods is that they will cover most situations. We will use them to iterate a list of OSPF neighbors and then extract information from individual OSPF neighbors. The logic applied there is similar to what you'll need when you examine BGP sessions, interfaces, line-cards, LSPs, etc.
 
 
 Retrieving OSPF information
@@ -26,37 +26,30 @@ What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information
 
 To figure out what data to extract from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
 
-```
+```xml
 said@ar01.ams> show ospf neighbor extensive |display xml    
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
     <ospf-neighbor-information xmlns="http://xml.juniper.net/junos/15.1F4/junos-routing">
         <ospf-neighbor>
             <neighbor-address>10.253.158.131</neighbor-address>
             <interface-name>ae11.0</interface-name>
-            ..
             <neighbor-id>10.253.158.254</neighbor-id>
-            ..
             <neighbor-adjacency-time junos:seconds="65269304">
                 107w6d 10:21:44
             </neighbor-adjacency-time>
-            ..
         </ospf-neighbor>
         <ospf-neighbor>
             <neighbor-address>10.253.158.149</neighbor-address>
             <interface-name>ae12.0</interface-name>
-            ..
             <neighbor-id>10.253.158.253</neighbor-id>
-            ..
             <neighbor-adjacency-time junos:seconds="65183944">
                 107w5d 10:39:04
             </neighbor-adjacency-time>
-            ..
         </ospf-neighbor>
-        ..
 </rpc-reply>
 ```
 
-From this output, we can see that we are looking for the following element nodes:
+The previous output was shortened to just display just the things we will need, which are the following element nodes:
 - neighbor-id
 - neighbor-address
 - interface-name
@@ -106,9 +99,9 @@ Let’s break this down and describe what is happening.
 The following is used to open a connection to the device, issue the RPC, store the device response in the `ospf_information` variable and close the connection:
 
 ```python
-    dev.open()    
-    ospf_information = dev.rpc.get_ospf_neighbor_information(extensive=True)
-    dev.close()
+dev.open()    
+ospf_information = dev.rpc.get_ospf_neighbor_information(extensive=True)
+dev.close()
 ```
 
 The information that is now stored in `ospf_information` equates to the entire output of the `show ospf extensive | display xml` command. What we need to do is iterate all the OSPF neighbors so that we can retrieve information for every individual neighbor. To this end, we turn to the `findall` method:
@@ -117,62 +110,56 @@ The information that is now stored in `ospf_information` equates to the entire o
 ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 ```
 
-The `findall` XPath expression is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
+The `findall` method is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
 
-The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. We can do this by adding the following import `from lxml import etree`. Additionally, we would add the following to the function right after using `findall`:
+The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. We can do this by adding the following import `from lxml import etree`. Additionally, we would add the following code right after using `findall`:
 
 ```python
-    for neighbor in ospf_neighbors:
-        print(etree.tostring(neighbor, pretty_print=True)) 
+for neighbor in ospf_neighbors:
+    print(etree.tostring(neighbor, pretty_print=True)) 
 ```
 
-With this addition, we can have a look at the content:
+With this addition, we can have a look at the content (shortened to keep it readable):
 
-```
+```xml
 <ospf-neighbor>
 <neighbor-address>10.97.18.248</neighbor-address>
 <interface-name>ae6.0</interface-name>
-..
 <neighbor-id>10.45.16.30</neighbor-id>
-..
 <neighbor-adjacency-time seconds="24429948">
 40w2d 18:05:48
 </neighbor-adjacency-time>
-..
 </ospf-neighbor>
 
 
 <ospf-neighbor>
 <neighbor-address>10.253.158.129</neighbor-address>
 <interface-name>ae7.0</interface-name>
-..
 <neighbor-id>10.253.158.252</neighbor-id>
-..
 <neighbor-adjacency-time seconds="92141820">
 152w2d 10:57:00
 </neighbor-adjacency-time>
-..
 </ospf-neighbor>
 ```
 
-From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects that contain information on individual OSPF neighbors. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` XPath expression:
+From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects that contain information on individual OSPF neighbors. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` method:
 
 ```python
-    for neighbor in ospf_neighbors:
-        neighbor_id = neighbor.find('.//neighbor-id').text
-        address = neighbor.find('.//neighbor-address').text
-        interface = neighbor.find('.//interface-name').text
-        uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
+for neighbor in ospf_neighbors:
+    neighbor_id = neighbor.find('.//neighbor-id').text
+    address = neighbor.find('.//neighbor-address').text
+    interface = neighbor.find('.//interface-name').text
+    uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
 We grab three text node and finish up grabbing the attribute node. The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` in the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
 
 ```python
-        return_dict[interface] = { 
-            'neighbor-address' : address,
-            'interface-name' : interface,
-            'neighbor-adjacency-time' : uptime,
-        }
+return_dict[interface] = { 
+    'neighbor-address' : address,
+    'interface-name' : interface,
+    'neighbor-adjacency-time' : uptime,
+}
 ```
 
 The  last `return return_dict` statement returns the dictionary for future use.
@@ -347,8 +334,10 @@ When we run it against two hosts, we get the following result:
 Wrapping up
 ===========
 
-We wrote a function that retrieves OSPF information by talking to the Juniper API. From the XML response, we used XPath expressions to retrieve the information we want. 
+We wrote a function that retrieves OSPF information by talking to the Juniper API. We used 2 methods from the `lxml` module to deal with the XML and retrieve the information we needed. 
 
-First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to get the exact information we needed from every individual neighbor. We finished up showing how to get the information for multiple devices.
+First we used `findall`. This gave us a list with information on individual OSPF neighbors. After this, we used `find` to get the exact information we needed from every individual neighbor. We finished up showing how to get the information for multiple devices. 
 
-Working with the Junos OS API has always been immensely satisfying to me. I hope this article gave you some insights and ideas on how to get started.
+You can search for the `Junos PyEZ Developer Guide` for more information on PyEZ. To better understand how to extract information from the Junos API responses, look at the XPath support `lxml` has to offer and what other methods you might be able to use.
+
+Working with the Junos API has always been immensely satisfying to me. I hope this article gave you some insights and ideas on how to get started.
