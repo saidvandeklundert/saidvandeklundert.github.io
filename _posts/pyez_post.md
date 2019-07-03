@@ -111,7 +111,7 @@ ospf_neighbors = ospf_information.findall('.//ospf-neighbor')
 
 The `findall` method is used to return a list of matching elements. In this case, the matching element is the `ospf-neighbor`. 
 
-The list that `findall` returns is stored in `ospf_neighbors`. If we wanted to see how this information looks, we could decide to use `etree.tostring`. We can do this by adding the following import `from lxml import etree`. Additionally, we would add the following code right after using `findall`:
+The list that `findall` returns is stored in `ospf_neighbors`. If we would print the type of every item in the list returned by `findall`, it would show `<type 'lxml.etree._Element'>`. In case we wanted to see how this information looks, we could decide to use `etree.tostring`. We can do this by adding the following import `from lxml import etree`. Additionally, we would add the following code right after using `findall`:
 
 ```python
 for neighbor in ospf_neighbors:
@@ -141,7 +141,7 @@ With this addition, we can have a look at the content (shortened to keep it read
 </ospf-neighbor>
 ```
 
-From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects that contain information on individual OSPF neighbors. We can iterate this list and search every individual OSPF neighbor for the things we are after using the `find` method:
+From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects. Every object contains information on a single OSPF neighbor. We can use the `find` method to search the every item for the information we need:
 
 ```python
 for neighbor in ospf_neighbors:
@@ -151,7 +151,7 @@ for neighbor in ospf_neighbors:
     uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
-We grab three text node and finish up grabbing the attribute node. The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` in the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
+We grab three text nodes and finish up grabbing the attribute node. The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` at the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
 
 ```python
 return_dict[interface] = { 
