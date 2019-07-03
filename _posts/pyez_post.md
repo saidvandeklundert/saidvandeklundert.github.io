@@ -3,13 +3,13 @@ Intro
 
 Most people that start out working with Junos using PyEZ seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
 
-In this article, I will use PyEZ to retrieve OSPF information from multiple devices running Junos. In the example, I will use both the `findall` as well as the `find` methods from the `lxml` module. The reason for using these two methods is that they will cover most situations. We will use them to iterate a list of OSPF neighbors and then extract information from individual OSPF neighbors. The logic applied there is similar to what you'll need when you examine BGP sessions, interfaces, line-cards, LSPs, etc.
+In this article, I will use PyEZ to retrieve OSPF information from multiple devices running Junos. In the example, I will use both the `findall` as well as the `find` methods from the `lxml` module. The reason for using these two methods is that they cover most of the situations that I have run into. We will use these methods to iterate a list of OSPF neighbors and then extract information from individual OSPF neighbors. The logic applied there is similar to what you'll need when you examine BGP sessions, interfaces, line-cards, LSPs, etc.
 
 
 Retrieving OSPF information
 ===========================
 
-The information we are after in this example is the neighbor id, neighbor address, interface and neighbor adjacency-time. On the CLI, we can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simply issue `show ospf neighbor extensive |display xml rpc`:
+The information we are after in this example is the neighbor id, neighbor address, interface and neighbor adjacency-time. Using the CLI, we can obtain this information by issuing the `show ospf neighbor extensive` command. To figure out what RPC we need, we simply issue `show ospf neighbor extensive |display xml rpc`:
 
 ```xml
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1F4/junos">
@@ -23,7 +23,7 @@ The information we are after in this example is the neighbor id, neighbor addres
 
 What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in our Python script. 
 
-To figure out what data to extract from the return output, we issue the ` show ospf neighbor extensive |display xml` command:
+To figure out what data to extract from the return output, we issue the ` show ospf neighbor extensive |display xml` command (output shortened to keep it readable):
 
 ```xml
 said@ar01.ams> show ospf neighbor extensive |display xml    
@@ -48,7 +48,7 @@ said@ar01.ams> show ospf neighbor extensive |display xml
 </rpc-reply>
 ```
 
-The previous output was shortened to just display just the things we will need, which are the following element nodes:
+The previous output displays the element nodes we are interested in:
 - neighbor-id
 - neighbor-address
 - interface-name
@@ -151,7 +151,7 @@ for neighbor in ospf_neighbors:
     uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
-We grab three text nodes and finish up grabbing the attribute node. The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` at the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
+We grab three text nodes and an attribute node. The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` at the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
 
 ```python
 return_dict[interface] = { 
@@ -243,7 +243,7 @@ def jun_ospf_neighbor_extensive_network(username, pwd, hosts = []):
     return network_ospf_dict
 ```
 
-This function takes in a username, password and a list (of hosts). It starts by instantiating a dictionary called `network_ospf_dict`. After that, it will iterate the list of hosts. For every host in the list, it will run `jun_ospf_neighbor_extensive`. The returned output is stored in the `network_ospf_dict` which is returned in the end.
+This function takes in a username, password and a list of hosts. It starts by instantiating a dictionary called `network_ospf_dict`. After that, it will iterate the list of hosts. For every host in the list, it will run `jun_ospf_neighbor_extensive`. The returned output is stored in the `network_ospf_dict` which is returned in the end.
 
 Let's clean up all references to `etree`, add the new function and change the `__main__`. We now have the following script:
 
