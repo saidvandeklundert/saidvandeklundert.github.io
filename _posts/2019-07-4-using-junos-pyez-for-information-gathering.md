@@ -4,8 +4,6 @@ title: Using Junos PyEZ for information gathering
 image: /img/juniper_logo.jpg
 ---
 
-Intro
-=====
 
 Most people that start out working with Junos using PyEZ seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
 
