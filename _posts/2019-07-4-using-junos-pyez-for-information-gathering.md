@@ -56,7 +56,7 @@ The previous output displays the element nodes we are interested in:
 - interface-name
 - neighbor-adjacency-time
 
-For the first three items, we will extract the `text-nodes`. For the `neighbor-adjacency-time` however, the attribute node (`junos:seconds="65183944"`) is more interesting. Having just an integer is a lot easier to work with when compared to a string that may or may not contain ```w``` or ```d```.
+For the first three items, we will extract the text-nodes. For the `neighbor-adjacency-time` however, the attribute node (`junos:seconds="65183944"`) is more interesting. Having just an integer is a lot easier to work with when compared to a string that may or may not contain ```w``` or ```d```.
 
 We want to retrieve this information for every adjacency and we need to return the information in a way that we can use it later on. We will start off with a function that collects and returns the relevant information for 1 device and have it do the following:
 - Log into the node
