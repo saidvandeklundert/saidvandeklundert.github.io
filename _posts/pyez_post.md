@@ -143,7 +143,7 @@ With this addition, we can have a look at the content (shortened to keep it read
 </ospf-neighbor>
 ```
 
-From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects. Every object contains information on a single OSPF neighbor. We can use the `find` method to search the every item for the information we need:
+From the complete XML that was returned by the Juniper device, we managed to extract a list of XML objects. Every object contains information on a single OSPF neighbor. We can use the `find` method to search the every item for the three text nodes and the attribute node we need:
 
 ```python
 for neighbor in ospf_neighbors:
@@ -153,7 +153,7 @@ for neighbor in ospf_neighbors:
     uptime = neighbor.find('.//neighbor-adjacency-time').attrib['seconds']
 ```
 
-We grab three text nodes and an attribute node. The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` at the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
+The last part of the function is storing these values in a dictionary. We instantiated that dictionary a little earlier when we used `return_dict = {}` at the beginning of the function. Now, while we are still inside the for loop, we store the variables in that dictionary like so:
 
 ```python
 return_dict[interface] = { 
