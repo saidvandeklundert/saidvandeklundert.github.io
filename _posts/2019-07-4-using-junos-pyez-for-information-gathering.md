@@ -5,7 +5,7 @@ image: /img/juniper_logo.jpg
 ---
 
 
-Most people that start out working with Junos using <b>PyEZ<b> seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
+Most people that start out working with Junos using <b>PyEZ</b> seem to get stuck trying to figure out how to retrieve information. Since I always learn the most from short examples that I can reverse engineer or alter to fit my needs, I aim to provide you with just that. 
 
 In this article, I will use PyEZ to retrieve OSPF information from multiple devices running Junos. In the example, I will use both the `findall` as well as the `find` methods from the `lxml` module. The reason for using these two methods is that they cover most of the situations that I have run into. We will use these methods to iterate a list of OSPF neighbors and then extract information from individual OSPF neighbors. The logic applied there is similar to what you'll need when you examine BGP sessions, interfaces, line-cards, LSPs, etc.
 
