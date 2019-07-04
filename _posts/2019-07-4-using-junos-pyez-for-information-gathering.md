@@ -1,3 +1,9 @@
+---
+layout: post
+title: Using Junos PyEZ for information gathering
+image: /img/juniper_logo.jpg
+---
+
 Intro
 =====
 
