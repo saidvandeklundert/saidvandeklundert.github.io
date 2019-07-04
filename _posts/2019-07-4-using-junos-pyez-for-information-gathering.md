@@ -25,7 +25,7 @@ In this example, we are going after the neighbor id, neighbor address, interface
 </rpc-reply>
 ```
 
-What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in our Python script. To figure out what data to extract from the return output, we issue the ` show ospf neighbor extensive |display xml` command (output shortened to keep it readable):
+What is enclosed in the rpc tag will translate to `get_ospf_neighbor_information(extensive=True)` in our Python script. To figure out what data to extract from the return output, we issue the `show ospf neighbor extensive |display xml` command (output shortened to keep it readable):
 
 ```xml
 said@ar01.ams> show ospf neighbor extensive |display xml    
