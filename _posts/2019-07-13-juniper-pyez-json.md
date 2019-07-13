@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Juniper PyEZ and JSON
+title: Make it JSON with Juniper PyEZ
 image: /img/juniper_logo.jpg
 ---
 
@@ -111,7 +111,7 @@ OSPF neighbor:
 >>> 
 ```
 
-Perhaps you want to store the output because you see something interesting. In that case, just dump it as `json`:
+Perhaps you want to store the output because you see something interesting? In that case, just dump it as `json`:
 
 
 ```python
@@ -239,4 +239,4 @@ salt@vmx01:r1> show ospf neighbor |display json
 }
 ```
 
-Hope this helps you how to get started with PyEZ and JSON.
+Hope this helps you get started with PyEZ and JSON.
