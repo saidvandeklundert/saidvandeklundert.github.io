@@ -7,7 +7,7 @@ image: /img/juniper_logo.jpg
 
 By default, <b>Juniper</b> will return <b>XML</b> in response to your RPC calls. But for all you XML haters out there, Juniper mgd can also translate the XML to <b>JSON</b> for you. 
 
-When using <b>PyEZ</b>, all you have to do is merely pass a dictionary (`{'format':'json'}`) to the RPC call. Here is how an example script could look like:
+When using <b>PyEZ</b>, all you have to do is pass a dictionary (`{'format':'json'}`) to the RPC call. Here is how an example script could look like:
 
 ```python
 from pprint import pprint
