@@ -5,7 +5,7 @@ image: /img/juniper_logo.jpg
 ---
 
 
-For all the XML-haters, the <b>Juniper</b> mgd can really help you out here. Just use <b>PyEZ</b> and have it translate all the output to <b>JSON</b>.
+For all you XML-haters out there, the <b>Juniper</b> mgd can really help you out here. Just use <b>PyEZ</b> and have it translate all the output to <b>JSON</b>.
 
 All you have to do is merely pass a dictionary (`{'format':'json'}`) to the RPC. Here is how an example script could look like:
 
