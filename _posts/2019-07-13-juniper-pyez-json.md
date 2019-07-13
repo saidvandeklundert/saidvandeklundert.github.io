@@ -5,9 +5,9 @@ image: /img/juniper_logo.jpg
 ---
 
 
-For all the XML-haters, the Juniper mgd can really help you out here. Just tell it to translate all the output to JSON.
+For all the XML-haters, the <b>Juniper</b> mgd can really help you out here. Just use <b>PyEZ</b> and have it translate all the output to <b>JSON</b>.
 
-Here is how an example script could look like:
+All you have to do is merely pass a dictionary (`{'format':'json'}`) to the RPC. Here is how an example script could look like:
 
 ```python
 from pprint import pprint
@@ -125,7 +125,7 @@ Perhaps you want to store the output because you see something interesting? In t
 ```
 
 
-When we leave the interpreter, we can check out our `JSON`:
+When we leave the interpreter, we can check out the file we just created like this:
 
 ```json
 [said@srv ]$ cat ospf.json 
