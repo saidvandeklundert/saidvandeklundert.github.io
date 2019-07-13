@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Make it JSON with Juniper PyEZ
+title: JSON with Juniper PyEZ
 image: /img/juniper_logo.jpg
 ---
 
 
-For all the XML-haters, the Juniper mgd can really help you out here. Just tell it to make it JSON.
+For all the XML-haters, the Juniper mgd can really help you out here. Just tell it to translate all the output to JSON.
 
-Here is how:
+Here is how an example script could look like:
 
 ```python
 from pprint import pprint
@@ -47,7 +47,7 @@ Let’s run the script and examine the information that is returned. To this end
 >>>
 ```
 
-With the interpreter in interactive mode, after seeing the output from the `pprint` statement, we can start examining what the device returned:
+After seeing the output from the `pprint` statement, we can start examining what the device returned:
 
 ```python
 >>> type(ospf_r1)
@@ -56,7 +56,7 @@ With the interpreter in interactive mode, after seeing the output from the `ppri
 ```
 
 
-PyEZ turns the `JSON` into a `python dictionary` for us. In interactive mode, we can gradually drill our way down to the thing we are really interested in:
+PyEZ turns the `JSON` into a `python dictionary` for us. In interactive mode, we can gradually drill our way down to the things we are really interested in:
 
 ```python
 >>> pprint(ospf_r1['ospf-neighbor-information'])
@@ -91,7 +91,7 @@ PyEZ turns the `JSON` into a `python dictionary` for us. In interactive mode, we
 >>> 
 ```
 
-Neighbor seems about right.
+Neighbor seems about right:
 
 ```python
 >>> for neighbor in ospf_r1['ospf-neighbor-information'][0]['ospf-neighbor']:
