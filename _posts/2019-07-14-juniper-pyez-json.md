@@ -23,7 +23,6 @@ def get_ospf_neighbor_information(username, pwd, host ):
 
 if __name__ == "__main__": 
     
-
     ospf_r1 = get_ospf_neighbor_information('salt-r1', 'salt123', '169.50.169.171' )
     pprint(ospf_r1)
 ```
