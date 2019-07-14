@@ -104,18 +104,18 @@ This contains a list of dictionaries that describe the individual neighbors. We 
 ```python
 >>> for neighbor in ospf_r1['ospf-neighbor-information'][0]['ospf-neighbor']:
 ...     print('OSPF neighbor: {}'.format(neighbor['neighbor-id'][0]['data']))
-...     print(neighbor['neighbor-address'])                                   
-...     print(neighbor['interface-name'])                                     
-...     print(neighbor['ospf-neighbor-state']) 
+...     print(neighbor['neighbor-address'][0]['data'])                                   
+...     print(neighbor['interface-name'][0]['data'])                                     
+...     print(neighbor['ospf-neighbor-state'][0]['data'])  
 ... 
 OSPF neighbor: 10.0.0.2
-[{u'data': u'192.168.1.1'}]
-[{u'data': u'ge-0/0/1.1'}]
-[{u'data': u'Full'}]
+192.168.1.1
+ge-0/0/1.1
+Full
 OSPF neighbor: 10.0.0.4
-[{u'data': u'192.168.4.1'}]
-[{u'data': u'ge-0/0/1.4'}]
-[{u'data': u'Full'}]
+192.168.4.1
+ge-0/0/1.4
+Full
 >>> 
 ```
 
