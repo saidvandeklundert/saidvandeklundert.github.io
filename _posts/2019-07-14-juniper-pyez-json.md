@@ -120,7 +120,7 @@ Full
 >>> 
 ```
 
-In case we want to store this information for future use, we just dump it as `json`:
+In case we want to store this information for future use, we just dump it as `JSON`:
 
 
 ```python
