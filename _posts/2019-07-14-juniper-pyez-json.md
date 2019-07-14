@@ -103,16 +103,16 @@ This contains a list of dictionaries that describe the individual neighbors. We 
 
 ```python
 >>> for neighbor in ospf_r1['ospf-neighbor-information'][0]['ospf-neighbor']:
-...    print('OSPF neighbor:')
-...    print(neighbor['neighbor-address'])                                   
-...    print(neighbor['interface-name'])                                     
-...    print(neighbor['ospf-neighbor-state'])                                
+...     print('OSPF neighbor: {}'.format(neighbor['neighbor-id'][0]['data']))
+...     print(neighbor['neighbor-address'])                                   
+...     print(neighbor['interface-name'])                                     
+...     print(neighbor['ospf-neighbor-state']) 
 ... 
-OSPF neighbor:
+OSPF neighbor: 10.0.0.2
 [{u'data': u'192.168.1.1'}]
 [{u'data': u'ge-0/0/1.1'}]
 [{u'data': u'Full'}]
-OSPF neighbor:
+OSPF neighbor: 10.0.0.4
 [{u'data': u'192.168.4.1'}]
 [{u'data': u'ge-0/0/1.4'}]
 [{u'data': u'Full'}]
@@ -142,6 +142,8 @@ In case we want to load it later:
 {u'ospf-neighbor-information': [{u'ospf-neighbor': [{u'neighbor-address': [{u'data': u'192.168.1.1'}], u'neighbor-priority': [{u'data': u'128'}], u'interface-name': [{u'data': u'ge-0/0/1.1'}], u'neighbor-id': [{u'data': u'10.0.0.2'}], u'activity-timer': [{u'data': u'39'}], u'ospf-neighbor-state': [{u'data': u'Full'}]}, {u'neighbor-address': [{u'data': u'192.168.4.1'}], u'neighbor-priority': [{u'data': u'128'}], u'interface-name': [{u'data': u'ge-0/0/1.4'}], u'neighbor-id': [{u'data': u'10.0.0.4'}], u'activity-timer': [{u'data': u'38'}], u'ospf-neighbor-state': [{u'data': u'Full'}]}]}]}
 >>> 
 ```
+
+
 When we leave the interpreter, we can check out the file we just created like so:
 
 ```json
