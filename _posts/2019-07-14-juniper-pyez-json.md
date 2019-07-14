@@ -56,7 +56,7 @@ After seeing the output from the `pprint` statement, we can start examining what
 ```
 
 
-PyEZ returns the `JSON` as a `python dictionary`. In interactive mode, we can gradually drill our way down to the things we are really interested in:
+PyEZ returns the `JSON` as a python `dictionary`. In interactive mode, we can gradually drill our way down to the things we are really interested in. We start with the `ospf-neighbor-information` key:
 
 ```python
 >>> pprint(ospf_r1['ospf-neighbor-information'])
@@ -77,7 +77,7 @@ PyEZ returns the `JSON` as a `python dictionary`. In interactive mode, we can gr
 >>> 
 ```
 
-When we access the `ospf-neighbor-information` key, we get a list. From the `pprint` output, we can also see that the list contains 1 item, a dictionary with a key called `ospf-neighbor`:
+When we access the `ospf-neighbor-information` key, we get a list. From the `pprint` output, we can see that this list contains 1 item, a dictionary with a key called `ospf-neighbor`:
 
 ```python
 >>> type(ospf_r1['ospf-neighbor-information'][0])                 
@@ -99,7 +99,7 @@ When we access the `ospf-neighbor-information` key, we get a list. From the `ppr
 >>> 
 ```
 
-This contains a list of dictionaries that describe the individual neighbors. We can step through the list and check the information like this:
+Here we see a list of dictionaries that describe the individual neighbors. We can step through the list and check the information like this:
 
 ```python
 >>> for neighbor in ospf_r1['ospf-neighbor-information'][0]['ospf-neighbor']:
@@ -145,10 +145,9 @@ When we want to access the data later on, we can use the following to load the f
 ```
 
 
-When we leave the interpreter, we can check out the file we just created like so:
+When we leave the interpreter, we can check out the file using `cat ospf.json` to obtain the following output:
 
 ```json
-[said@srv ]$ cat ospf.json 
 {
     "ospf-neighbor-information": [
         {
@@ -226,15 +225,14 @@ When we leave the interpreter, we can check out the file we just created like so
 
 Not a fan of seeing lists in dicts in lists in dicts? Consider the following:
 
-```bash
+```
 set system export-format state-data json compact
 ```
 
 
-This is available starting 17.3R1 and will have the device emit compact `JSON` format.  After configuring the compact format, this is how the output from R1 would look like:
+This is available starting 17.3R1 and will have the device emit compact `JSON` format.  After configuring the compact format, we use `show ospf neighbor |display json` and discover that this is how the output looks like now:
 
 ```json
-salt@vmx01:r1> show ospf neighbor |display json    
 {
     "ospf-neighbor-information" :
     {
