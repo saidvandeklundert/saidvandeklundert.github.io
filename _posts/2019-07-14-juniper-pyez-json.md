@@ -78,7 +78,7 @@ PyEZ turns the `JSON` as a `python dictionary` for us. In interactive mode, we c
 >>> 
 ```
 
-When we access the `ospf-neighbor-information` key, we get a list. From the `pprint` output, we can also see that the list containts 1 item, a dictionary with a key called `ospf-neighbor`:
+When we access the `ospf-neighbor-information` key, we get a list. From the `pprint` output, we can also see that the list contains 1 item, a dictionary with a key called `ospf-neighbor`:
 
 ```python
 >>> type(ospf_r1['ospf-neighbor-information'][0])                 
