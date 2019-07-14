@@ -10,12 +10,13 @@ By default, <b>Juniper</b> will return <b>XML</b> in response to your RPC calls.
 When using <b>PyEZ</b>, all you have to do is pass a dictionary (`{'format':'json'}`) to the RPC call. Here is how an example script could look like:
 
 ```python
+from jnpr.junos import Device
 from pprint import pprint
 
 def get_ospf_neighbor_information(username, pwd, host ):
     dev = Device(host=host, user=username, password=pwd)
     dev.open()
-    rpc = dev.rpc.get_ospf_neighbor_information({'format':'json'}, )
+    rpc = dev.rpc.get_ospf_neighbor_information({'format':'json'})
     dev.close()
     return rpc
 
