@@ -56,7 +56,7 @@ After seeing the output from the `pprint` statement, we can start examining what
 ```
 
 
-PyEZ turns the `JSON` as a `python dictionary` for us. In interactive mode, we can gradually drill our way down to the things we are really interested in:
+PyEZ returns the `JSON` as a `python dictionary` for us. In interactive mode, we can gradually drill our way down to the things we are really interested in:
 
 ```python
 >>> pprint(ospf_r1['ospf-neighbor-information'])
