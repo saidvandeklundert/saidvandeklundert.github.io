@@ -5,7 +5,7 @@ image: /img/juniper_logo.jpg
 ---
 
 
-By default, <b>Juniper</b> will return <b>XML</b> in response to your RPC calls. But for all you XML haters out there, Juniper mgd can also translate the XML into <b>JSON</b> for you. 
+By default, <b>Juniper</b> will return <b>XML</b> in response to your RPC calls. But if you prefer, Juniper can translate the XML into <b>JSON</b> for you. 
 
 When using <b>PyEZ</b>, all you have to do is pass a dictionary (`{'format':'json'}`) to the RPC call. Here is how an example script could look like:
 
@@ -56,7 +56,7 @@ After seeing the output from the `pprint` statement, we can start examining what
 ```
 
 
-PyEZ turns the `JSON` into a `python dictionary` for us. In interactive mode, we can gradually drill our way down to the things we are really interested in:
+PyEZ turns the `JSON` as a `python dictionary` for us. In interactive mode, we can gradually drill our way down to the things we are really interested in:
 
 ```python
 >>> pprint(ospf_r1['ospf-neighbor-information'])
@@ -75,6 +75,14 @@ PyEZ turns the `JSON` into a `python dictionary` for us. In interactive mode, we
 >>> type(ospf_r1['ospf-neighbor-information'])      
 <type 'list'>
 >>> 
+```
+
+The `ospf-neighbor-information` returns a list. From the `pprint` output, we can also see that the list containts 1 item, a dictionary with a key called `ospf-neighbor`:
+
+```python
+>>> type(ospf_r1['ospf-neighbor-information'][0])                 
+<type 'dict'>
+>>> 
 >>> pprint(ospf_r1['ospf-neighbor-information'][0]['ospf-neighbor'])  
 [{u'activity-timer': [{u'data': u'35'}],
   u'interface-name': [{u'data': u'ge-0/0/1.1'}],
@@ -91,7 +99,7 @@ PyEZ turns the `JSON` into a `python dictionary` for us. In interactive mode, we
 >>> 
 ```
 
-Neighbor seems about right:
+This contains a list of dictionaries that describe the individual neighbors. We can step through the list and check the information like this:
 
 ```python
 >>> for neighbor in ospf_r1['ospf-neighbor-information'][0]['ospf-neighbor']:
@@ -111,7 +119,7 @@ OSPF neighbor:
 >>> 
 ```
 
-Perhaps you want to store the output because you see something interesting? In that case, just dump it as `json`:
+In case we want to store this information for future use, we just dump it as `json`:
 
 
 ```python
@@ -124,8 +132,17 @@ Perhaps you want to store the output because you see something interesting? In t
 >>> 
 ```
 
-
-When we leave the interpreter, we can check out the file we just created like this:
+In case we want to load it later:
+```python
+>>> from json import load
+>>> with open("ospf.json", "r") as file:
+...     ospf_json = load(file)
+... 
+>>> ospf_json
+{u'ospf-neighbor-information': [{u'ospf-neighbor': [{u'neighbor-address': [{u'data': u'192.168.1.1'}], u'neighbor-priority': [{u'data': u'128'}], u'interface-name': [{u'data': u'ge-0/0/1.1'}], u'neighbor-id': [{u'data': u'10.0.0.2'}], u'activity-timer': [{u'data': u'39'}], u'ospf-neighbor-state': [{u'data': u'Full'}]}, {u'neighbor-address': [{u'data': u'192.168.4.1'}], u'neighbor-priority': [{u'data': u'128'}], u'interface-name': [{u'data': u'ge-0/0/1.4'}], u'neighbor-id': [{u'data': u'10.0.0.4'}], u'activity-timer': [{u'data': u'38'}], u'ospf-neighbor-state': [{u'data': u'Full'}]}]}]}
+>>> 
+```
+When we leave the interpreter, we can check out the file we just created like so:
 
 ```json
 [said@srv ]$ cat ospf.json 
