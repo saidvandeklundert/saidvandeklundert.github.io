@@ -132,7 +132,7 @@ In case we want to store this information for future use, we just dump it as `js
 >>> 
 ```
 
-In case we want to load it later:
+When we want to access the data later on, we can use the following to load the file as a dictionary again:
 
 ```python
 >>> from json import load
