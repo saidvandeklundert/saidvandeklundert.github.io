@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JSON with Juniper PyEZ
+title: Juniper and JSON
 image: /img/juniper_logo.jpg
 ---
 
