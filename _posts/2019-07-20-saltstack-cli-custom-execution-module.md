@@ -5,7 +5,7 @@ image: /img/salt_stack_logo.jpg
 ---
 
 
-In this article, I will first show you examples on how you can use <b>SaltStack</b> to send a CLI command to a device. As we will see, different proxy minion types come with their own methods for passing a CLI to a device. 
+In this article, I will first show you three examples on how you can use <b>SaltStack</b> to send a CLI command to a device. As we will see, every proxy minion type has it's own method to send a command to a device.
 
 Next, I’ll cover an example on how we could also achieve the same thing with a single custom execution module. We'll use the example function to pass a command to devices managed by <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minions.
 
