@@ -68,7 +68,7 @@ lab-napalm-eos:
 ```
 
 
-As you can see, where the Netmiko proxy minion simply return a string, NAPALM will returns a dictionary. Also worth noting is that NAPALM uses the API to pass the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
+As you can see, where the Netmiko proxy minion simply return a string, NAPALM will returns a dictionary. Also worth noting is that NAPALM proxy minion uses the API to pass the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
 
 
 Passing a command to Junos proxy minion.
