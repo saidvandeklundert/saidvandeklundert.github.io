@@ -232,7 +232,11 @@ lab-netmiko-eos:
 Wrapping up:
 ============
 
-Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason. And if this is the case, it is nice to have a single method to issue commands to different proxy minions. This makes it easier for people who want to gather information from the Salt CLI. 
+Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason. And if this is the case, it is nice to have a single method to issue commands to different proxy minions. 
 
-Extracting information from CLI output using regex or textfsm can be a bother. But if you also have to deal with different proxy minion types or moving from one type another, things can really get messy. For this reason, it might also be worth considering to use a custom execution module like this one in the other custom execution modules you might end up writing.
+Not only does this makes it easier for people who want to gather information from the Salt CLI, it can also simplify work in other custom execution modules where you might be extracting information from CLI output using regex or textfsm. You can simply use something like this:
+
+```python
+cmd_output = __salt__['common.cli'](cli)
+```
 
