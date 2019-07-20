@@ -68,7 +68,9 @@ lab-napalm-eos:
 ```
 
 
-As you can see, where the Netmiko proxy minion simply return a string, NAPALM will returns a dictionary. Also worth noting is that NAPALM proxy minion uses the API to pass the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
+As you can see, where the Netmiko proxy minion simply return a string, NAPALM will returns a dictionary. 
+
+Side note: the NAPALM proxy minion uses the API to pass the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
 
 
 Passing a command to Junos proxy minion.
@@ -98,9 +100,7 @@ Same as with NAPALM, the return is a dictionary and the proxy minion uses the AP
 Using our own custom execution module.
 ======================================
 
-We can create an execution module that can work with any proxy minion type. This can make things easier in case we use different proxy minion types or in case we plan to migrate to another proxy minion type in the future.
-
-To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
+Let's create a function in an execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
 -	Check what proxy minion type it is dealing with
 -	Use the correct execution module
 -	Handle the output from the different proxy minions
@@ -243,3 +243,4 @@ Consider calling a custom execution module like this in case you are extracting 
 
 The last benefit it gave me that is worth mentioning is that if you have the Salt API opened to others, you can simply have them use this method as well. This way, moving to another proxy minion type will not break someone else’s stuff either.
 
+This can make things easier in case we use different proxy minion types or in case we plan to migrate to another proxy minion type in the future.
