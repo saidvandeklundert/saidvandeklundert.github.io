@@ -5,9 +5,7 @@ image: /img/salt_stack_logo.jpg
 ---
 
 
-Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason.
-
-In this article, I will first show you examples on how you can use <b>SaltStack</b> to send a CLI command to a device. Then, I’ll cover an example on how we could also achieve the same thing with a single custom execution module. We'll use the example function to pass a command to devices managed by <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minions.
+In this article, I will first show you examples on how you can use <b>SaltStack</b> to send a CLI command to a device. After this, I’ll cover an example on how we could also achieve the same thing with a single custom execution module. We'll use the example function to pass a command to devices managed by <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minions.
 
 
 Passing a command to Netmiko proxy minion.
@@ -234,7 +232,7 @@ lab-netmiko-eos:
 Wrapping up:
 ============
 
-It is nice to have a single way to issue commands to different proxy minions. This makes it easier for people who want to gather information from the Salt CLI . Using a custom execution module like the one we covered here, we can achieve just that. 
+Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason. And if this is the case, it is nice to have a single method to issue commands to different proxy minions. This makes it easier for people who want to gather information from the Salt CLI. 
 
 Extracting information from CLI output using regex or textfsm can be a bother. But if you also have to deal with different proxy minion types or moving from one type another, things can really get messy. For this reason, it might also be worth considering to use a custom execution module like this one in the other custom execution modules you might end up writing.
 
