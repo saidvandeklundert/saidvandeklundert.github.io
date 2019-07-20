@@ -158,17 +158,15 @@ Next we see a dictionary that is used as a switch statement:
 
 We use this dictionary to check what execution module we should use in order to pass a command to the proxy minion.
 
-In this case, we want to be able to pass the command to NAPALM, Netmiko and Junos proxy minions. To this end, we added the following:
+In this function, we want to be able to pass a command to a NAPALM, Netmiko or Junos proxy minion. The following makes that possible:
 
 ```python
 device_output = __salt__[send_command[proxytype]](command)
 ```
 
-The `send_command[proxytype]` is a lookup in the `send_command` dictionary. This lookup will ensure we turn to the proper method for each proxy minion type. 
+We use `__salt__` because we will be calling another salt execution module. Since we need to be able to call the execution module that is relevant to the proxy minion we are dealing with, we do a lookup in the `send_command` dictionary. The lookup, `send_command[proxytype]`, will ensure we use to the proper method for each proxy minion type. 
 
-The output we get in return is stored inside `device_output`, so the last thing is dealing with the different return values.
-
-The differences in return values were discussed earlier. The following section deals with these differences:
+The output we get in return is stored inside `device_output`. Now, the only thing left is dealing with the different return values:
 
 ```python
     if proxytype == 'napalm':
@@ -236,10 +234,7 @@ lab-netmiko-eos:
 Wrapping up:
 ============
 
-It is nice to have a single way to issue commands to different proxy minions. Using a custom execution module, we can achieve just that. Not only is it easier for people that want to gather information from the Salt CLI, it allows for a smooth migration (at least in some cases) from the one proxy minion type to the other. 
+It is nice to have a single way to issue commands to different proxy minions. This makes it easier for people who want to gather information from the Salt CLI . Using a custom execution module like the one we covered here, we can achieve just that. 
 
-Consider calling a custom execution module like this in case you are extracting information from the CLI command. If you are extracting information from CLI return output using regex or textfsm for instance, the move to another proxy minion type will spare you some trouble.
+Extracting information from CLI output using regex or textfsm can be a bother. But if you also have to deal with different proxy minion types or moving from one type another, things can really get messy. For this reason, it might also be worth considering to use a custom execution module like this one in the other custom execution modules you might end up writing.
 
-The last benefit it gave me that is worth mentioning is that if you have the Salt API opened to others, you can simply have them use this method as well. This way, moving to another proxy minion type will not break someone else’s stuff either.
-
-This can make things easier in case we use different proxy minion types or in case we plan to migrate to another proxy minion type in the future.
