@@ -5,7 +5,7 @@ image: /img/salt_stack_logo.jpg
 ---
 
 
-Though automation is done best using an structured data, there are plenty of reasons you could still need to scrape the screen using the CLI. This might be because existing code depends on it, because some vendor does not offer an API or maybe you cannot upgrade all your devices to the required release..
+Though automation is done best using an structured data, there are plenty of reasons you could still need to do some screen scraping using the CLI. This might be because existing code depends on it, because some vendor does not offer an API or maybe you cannot upgrade all your devices to the required release..
 
 In this article, I will first show you examples on how you can use the SaltStack CLI to have different proxy minions to send a (CLI) command to a device. After this, I’ll cover an example of a single custom execution module function that can be used to pass a command to a device that is managed by a `netmiko`, `napalm` or `junos` proxy minion.
 
