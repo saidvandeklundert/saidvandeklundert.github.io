@@ -7,7 +7,7 @@ image: /img/salt_stack_logo.jpg
 
 Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason.
 
-In this article, I will first show you examples on how you can use the <b>SaltStack</b> to send a CLI command to a device. After this, I’ll cover an example where we use a single custom execution module function to pass a command to devices managed by a <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minion.
+In this article, I will first show you examples on how you can use <b>SaltStack</b> to send a CLI command to a device. Then, I’ll cover an example on how we could also achieve the same thing with a single custom execution module. We'll use the example function to pass a command to devices managed by <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minions.
 
 
 Passing a command to Netmiko proxy minion.
