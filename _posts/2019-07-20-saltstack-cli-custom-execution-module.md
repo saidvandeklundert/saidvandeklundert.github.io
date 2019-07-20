@@ -9,7 +9,7 @@ Though automation is done best using an API and working with structured data, th
 
 In this article, I will first show you examples on how you can use the <b>SaltStack</b> to send a CLI command to a device. After this, I’ll cover an example where we use a single custom execution module function to pass a command to devices managed by a <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minion.
 
- 
+
 Passing a command to Netmiko proxy minion.
 ==========================================
 
