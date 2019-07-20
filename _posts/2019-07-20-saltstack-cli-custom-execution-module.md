@@ -22,12 +22,12 @@ To issue a command to a device, we can do the following:
 lab-netmiko-eos:
     Arista DCS-7050TX-64-R
     Hardware version:    01.01
-    Serial number:       JPE14383084
+    Serial number:       JPE14383000
     System MAC address:  001c.739f.9b25
     
     Software image version: 4.18.2.1F
     Architecture:           i386
-    Internal build version: 4.18.2.1F-5529602.41821F
+    Internal build version: 4.18.2.1F-5528501.41821F
     Internal build ID:      171293b2-b2a9-40e2-a2a8-5e1fcab52f49
     
     Uptime:                 2 weeks, 3 days, 7 hours and 5 minutes
@@ -51,7 +51,7 @@ lab-napalm-eos:
         show version:
             Arista DCS-7280TR-48C6-R
             Hardware version:    01.00
-            Serial number:       JPE16161536
+            Serial number:       JPE16161500
             System MAC address:  444c.a8a5.359d
             
             Software image version: 4.18.0F
@@ -84,7 +84,7 @@ lab-junos:
     ----------
     message:
         
-        Hostname: dar02.ims
+        Hostname: ar02.mx
         Model: mx240
         Junos: 16.1R3-S8
         < output omitted >
@@ -192,7 +192,7 @@ Now that the proxy minions have access to this new execution module, we are read
 / $ salt lab-junos common.cli 'show version'
 lab-junos:
     
-    Hostname: dar02.ims
+    Hostname: ar02.mx
     Model: mx240
     Junos: 16.1R3-S8
     < output omitted >
@@ -201,7 +201,7 @@ lab-junos:
 lab-napalm-eos:
     Arista DCS-7280TR-48C6-R
     Hardware version:    01.00
-    Serial number:       JPE16161536
+    Serial number:       JPE16161500
     System MAC address:  444c.a8a5.359d
     
     Software image version: 4.18.0F
@@ -217,12 +217,12 @@ lab-napalm-eos:
 lab-netmiko-eos:
     Arista DCS-7050TX-64-R
     Hardware version:    01.01
-    Serial number:       JPE14383084
+    Serial number:       JPE14383000
     System MAC address:  001c.739f.9b25
     
     Software image version: 4.18.2.1F
     Architecture:           i386
-    Internal build version: 4.18.2.1F-5529602.41821F
+    Internal build version: 4.18.2.1F-5528501.41821F
     Internal build ID:      171293b2-b2a9-40e2-a2a8-5e1fcab52f49
     
     Uptime:                 2 weeks, 3 days, 7 hours and 34 minutes
