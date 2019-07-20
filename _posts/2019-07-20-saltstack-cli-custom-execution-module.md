@@ -97,8 +97,8 @@ lab-junos:
 Same as with NAPALM, the return is a dictionary and the proxy minion uses the API to pass a command to the device.
 
 
-Using our own custom execution module.
-======================================
+Creating our own custom execution module.
+=========================================
 
 Let's create a function in an execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
 -	Check what proxy minion type it is dealing with
@@ -114,6 +114,7 @@ def cli(command):
     """
     try:
         proxytype = __pillar__.get('proxy').get('proxytype')
+
     except:
         return 'Could not find proxytype in pillar'
 
@@ -134,7 +135,7 @@ def cli(command):
 ```
 
 
-The function starts out retrieving the proxy minion type:
+The function starts out checking the proxy minion type by looking at the pillar:
 
 ```python
     try:
@@ -144,7 +145,7 @@ The function starts out retrieving the proxy minion type:
 ```
 
 
-Next we see a dictionary:
+Next we see a dictionary that is used as a multiway branch:
 
 ```python
     send_command = {
@@ -155,27 +156,19 @@ Next we see a dictionary:
 ```
 
 
-We can use this dictionary to check what execution module we should use to pass a command to the proxy minion in use. 
+We use this dictionary to check what execution module we should use in order to pass a command to the proxy minion.
 
-If we were to call an execution module from within a function for the individual proxy minion types, we could do it like so:
-
-```python
-__salt__['netmiko.send_command'](command)
-__salt__['net.cli'](command)
-__salt__['junos.cli'](command)
-```
-
-
-In this case, we want to be able to pass the command to NAPALM, Netmiko and Junos proxy minions. To this end, we use the following:
+In this case, we want to be able to pass the command to NAPALM, Netmiko and Junos proxy minions. To this end, we added the following:
 
 ```python
 device_output = __salt__[send_command[proxytype]](command)
 ```
 
+The `send_command[proxytype]` is a lookup in the `send_command` dictionary. This lookup will ensure we turn to the proper method for each proxy minion type. 
 
-The ` send_command[proxytype]` is a lookup in the `send_command` dictionary. This lookup will ensure we turn to the proper method for each proxy minion type. 
+The output we get in return is stored inside `device_output`, so the last thing is dealing with the different return values.
 
-The output we get in return is stored inside `device_output`, so the last thing is dealing with the different return values. We saw the differences in the return values earlier, so in our function we can handle it like this:
+The differences in return values were discussed earlier. The following section deals with these differences:
 
 ```python
     if proxytype == 'napalm':
@@ -187,9 +180,15 @@ The output we get in return is stored inside `device_output`, so the last thing 
 ```
 
 
-We put the file called `common.py` in `/srv/salt/_modules/` and we sync it to the minions using ` salt \* saltutil.sync_all`.
+For the NAPALM and Juniper proxy minion, we look for proper key in the return value. In case we are dealing with the Netmiko proxy minion, we simply return the string.
 
-After ensure the proxy minions have access to this new execution module, we check out the new function:
+
+Testing our custom execution module.
+====================================
+
+We name the execution module `common.py` and we place it in `/srv/salt/_modules/`. After this, we sync it to all of the proxy minions using ` salt \* saltutil.sync_all`.
+
+Now that the proxy minions have access to this new execution module, we are ready to check out the new function:
 
 ```bash
 / $ salt lab-junos common.cli 'show version'
