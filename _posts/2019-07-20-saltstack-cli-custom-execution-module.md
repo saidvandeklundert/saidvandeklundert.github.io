@@ -5,15 +5,15 @@ image: /img/salt_stack_logo.jpg
 ---
 
 
-In this article, I will first show you three examples on how you can use <b>SaltStack</b> to send a CLI command to a device. As we will see, every proxy minion type has it's own method to send a command to a device.
+In this article, I will first show you three examples on how you can use <b>SaltStack</b> to send a CLI command to a device. As we will see, different proxy minion types come with their own function to send a command to a device.
 
-Next, I’ll cover an example on how we could also achieve the same thing with a single custom execution module. We'll use the example function to pass a command to devices managed by <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minions.
+Next, I’ll cover an example where we interact with a single custom execution module. We'll use the example function to pass a command to devices managed by <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minions.
 
 
 Passing a command to Netmiko proxy minion.
 ==========================================
 
-Netmiko uses the execution module called `netmiko`. The method to have the proxy minion send a command to a device is called `send_command` (same as when you use Netmiko outside of Salt).
+Netmiko uses the execution module called `netmiko`. The function to have the proxy minion send a command to a device is called `send_command` (same as when you use Netmiko outside of Salt).
 
 To issue a command to a device, we can do the following:
 
@@ -164,7 +164,7 @@ In this function, we want to be able to pass a command to a NAPALM, Netmiko or J
 device_output = __salt__[send_command[proxytype]](command)
 ```
 
-We use `__salt__` because we will be calling another salt execution module. Since we need to be able to call the execution module that is relevant to the proxy minion we are dealing with, we do a lookup in the `send_command` dictionary. The lookup, `send_command[proxytype]`, will ensure we use to the proper method for each proxy minion type. 
+We use `__salt__` because we will be calling another salt execution module. Since we need to be able to call the execution module that is relevant to the proxy minion we are dealing with, we do a lookup in the `send_command` dictionary. The lookup, `send_command[proxytype]`, will ensure we use to the proper function for each proxy minion type. 
 
 The output we get in return is stored inside `device_output`. Now, the only thing left is dealing with the different return values:
 
@@ -234,7 +234,7 @@ lab-netmiko-eos:
 Wrapping up:
 ============
 
-Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason. And if this is the case, it is nice to have a single method to issue commands to different proxy minions. 
+Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason. And if this is the case, it is nice to be able to call a single function to issue commands to different proxy minions. 
 
 Not only does this makes it easier for people who want to gather information from the Salt CLI, it can also simplify work in other custom execution modules where you might be extracting information from CLI output using regex or textfsm. You can simply use something like this:
 
