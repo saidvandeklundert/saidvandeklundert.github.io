@@ -15,7 +15,7 @@ Passing a command to Netmiko proxy minion.
 
 Netmiko uses the execution module called `netmiko`. The function to have the proxy minion send a command to a device is called `send_command` (same as when you use Netmiko outside of Salt).
 
-To issue a command to a device, we can do the following:
+To issue a command to a device called `lab-netmiko-eos`, we can do the following:
 
 ```bash
 / $ salt lab-netmiko-eos netmiko.send_command 'show version'
@@ -39,7 +39,7 @@ lab-netmiko-eos:
 Passing a command to NAPALM proxy minion.
 =========================================
 
-Passing a command to a device managed through a NAPALM proxy minion is done `net.cli`:
+Passing a command to a device called `lab-napalm-eos`, which is managed using a NAPALM proxy minion, is done using `net.cli`:
 
 ```bash
 / $ salt lab-napalm-eos net.cli 'show version'
@@ -76,7 +76,7 @@ Side note: the NAPALM proxy minion uses the API to pass the command to the devic
 Passing a command to Junos proxy minion.
 ========================================
 
-For the Juniper proxy minion, we use `junos.cli`:
+For the Juniper proxy minion, we use `junos.cli` to issue a command to a device called `lab-junos`:
 
 ```bash
 / $ salt lab-junos junos.cli 'show version'
