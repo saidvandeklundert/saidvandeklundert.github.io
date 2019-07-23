@@ -102,7 +102,7 @@ Creating our own custom execution module.
 
 Let's create a function in an execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
 -	Check what proxy minion type it is dealing with
--	Use the correct execution module
+-	Use the proper execution module to interface with the proxy minion
 -	Handle the output from the different proxy minions
 
 Let’s go over the following example `common.py` execution module that does just that:
