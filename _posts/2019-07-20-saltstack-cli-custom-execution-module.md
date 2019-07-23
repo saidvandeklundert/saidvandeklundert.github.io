@@ -100,7 +100,7 @@ Same as with NAPALM, the return is a dictionary and the proxy minion uses the AP
 Creating our own custom execution module.
 =========================================
 
-Let's create a function in a execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
+Let's create a function in an execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
 -	Check what proxy minion type it is dealing with
 -	Use the correct execution module
 -	Handle the output from the different proxy minions
