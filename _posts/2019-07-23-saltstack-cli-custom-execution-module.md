@@ -10,8 +10,8 @@ In this article, I will first show you three examples on how you can use <b>Salt
 After this, I’ll cover an example where we do the same thing using a single custom execution module function. We'll use the example function to pass a command to devices controlled by a <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minion.
 
 
-Passing a command to Netmiko proxy minion.
-==========================================
+The Netmiko proxy minion.
+=========================
 
 Netmiko uses the execution module called `netmiko`. The function to have the proxy minion send a command to a device is called `send_command` (same as when you use Netmiko outside of Salt).
 
@@ -36,8 +36,8 @@ lab-netmiko-eos:
 ```
 
 
-Passing a command to NAPALM proxy minion.
-=========================================
+The NAPALM proxy minion.
+========================
 
 Passing a command to a device called `lab-napalm-eos`, which is managed using a NAPALM proxy minion, is done using `net.cli`:
 
@@ -73,8 +73,8 @@ As you can see, where the Netmiko proxy minion simply return a string, NAPALM re
 Side note: the NAPALM proxy minion uses the API to pass the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
 
 
-Passing a command to Junos proxy minion.
-========================================
+The Junos proxy minion.
+=======================
 
 For the Juniper proxy minion, we use `junos.cli` to issue a command to a device called `lab-junos`:
 
@@ -96,8 +96,8 @@ lab-junos:
 Same as with NAPALM, the return is a dictionary and the proxy minion uses the API to pass a command to the device.
 
 
-Creating our own custom execution module.
-=========================================
+The custom execution module function.
+=====================================
 
 Let's create a function in an execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
 -	Check what proxy minion type it is dealing with
