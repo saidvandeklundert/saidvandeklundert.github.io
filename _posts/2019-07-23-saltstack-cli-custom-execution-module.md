@@ -108,9 +108,6 @@ Let’s go over the following example `common.py` execution module that does jus
 
 ```python
 def cli(command):
-    """
-    Send a CLI command to a device managed via a netmiko, napalm or Junos proxy minion.    
-    """
     
     proxytype = __pillar__.get('proxy').get('proxytype')
 
