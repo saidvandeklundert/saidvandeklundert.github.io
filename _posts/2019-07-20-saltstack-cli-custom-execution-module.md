@@ -230,9 +230,11 @@ Wrapping up:
 
 Though automation is done best using an API and working with structured data, there could still be reasons for you to do some screen scraping. This might be because existing code depends on CLI output, because a vendor does not offer an API or for some other reason. And if this is the case, it is nice to be able to call a single function to issue commands to different proxy minions. 
 
-Not only does this makes it easier for people who want to gather information from the Salt CLI, it can also simplify work in other custom execution modules where you might be extracting information from CLI output using regex or textfsm. You can simply use something like this:
+Not only does this makes it easier for people who want to gather information from the Salt CLI, it can also simplify work in other custom execution modules. In other custom execution modules, you can call the function discussed here like this:
 
 ```python
 cmd_output = __salt__['common.cli'](cli)
 ```
 
+
+You can now start working with the string inside `cmd_output` and, for instance, extract information from CLI output using regex, textfsm.
