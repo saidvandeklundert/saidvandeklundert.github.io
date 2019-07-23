@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Execution modules and the CLI.
+title: SaltStack execution modules and the CLI.
 image: /img/salt_stack_logo.jpg
 ---
 
@@ -90,7 +90,6 @@ lab-junos:
         < output omitted >
     out:
         True
-/ $
 ```
 
 
