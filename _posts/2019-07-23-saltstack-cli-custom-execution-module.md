@@ -174,7 +174,7 @@ For the NAPALM and Juniper proxy minion, we look for proper key in the return va
 Testing our custom execution module.
 ====================================
 
-We name the execution module `common.py` and we place it in `/srv/salt/_modules/`. After this, we sync it to all of the proxy minions using ` salt \* saltutil.sync_all`.
+We name the execution module `common.py` and we place it in `/srv/salt/_modules/`. After this, we sync it to all of the proxy minions using `salt \* saltutil.sync_all`.
 
 Now that the proxy minions have access to this new execution module, we are ready to check out the new function:
 
