@@ -7,7 +7,7 @@ image: /img/salt_stack_logo.jpg
 
 In this article, I will first show you three examples on how you can use <b>SaltStack</b> to send a CLI command to a device. As we will see, different proxy minion types have their own function that you can use to send a command to a device.
 
-After this, I’ll cover an example where we do the same thing using a single custom execution module function. We'll use the example function to pass a command to devices controlled by a <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minion.
+After this, I’ll cover an example where we do the same thing using a single custom execution module function. We'll use the example function to send a command to devices controlled by a <b>netmiko</b>, <b>napalm</b> or <b>junos</b> proxy minion.
 
 
 The Netmiko proxy minion.
@@ -39,7 +39,7 @@ lab-netmiko-eos:
 The NAPALM proxy minion.
 ========================
 
-Passing a command to a device called `lab-napalm-eos`, which is managed using a NAPALM proxy minion, is done using `net.cli`:
+Sending a command to a device called `lab-napalm-eos`, which is managed using a NAPALM proxy minion, is done using `net.cli`:
 
 ```bash
 / $ salt lab-napalm-eos net.cli 'show version'
@@ -70,7 +70,7 @@ lab-napalm-eos:
 
 As you can see, where the Netmiko proxy minion simply return a string, NAPALM returns a dictionary. 
 
-Side note: the NAPALM proxy minion uses the API to pass the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
+Side note: the NAPALM proxy minion uses the API to send the command to the device. So if you want to use NAPALM to manage an Arista device for instance, you’ll have to enable the API on the device.
 
 
 The Junos proxy minion.
@@ -93,13 +93,13 @@ lab-junos:
 ```
 
 
-Same as with NAPALM, the return is a dictionary and the proxy minion uses the API to pass a command to the device.
+Same as with NAPALM, the return is a dictionary and the proxy minion uses the API to send a command to the device.
 
 
 The custom execution module function.
 =====================================
 
-Let's create a function in an execution module that can work with any proxy minion type. To be able to pass commands to different proxy minion types, we would have to ensure that the function will:
+Let's create a function in an execution module that can work with any proxy minion type. To be able to send commands to different proxy minion types, we would have to ensure that the function will:
 -	Check what proxy minion type it is dealing with
 -	Use the proper execution module to interface with the proxy minion
 -	Handle the output from the different proxy minions
@@ -146,9 +146,9 @@ Next we see a dictionary that is used as a switch statement:
 ```
 
 
-We use this dictionary to check what execution module we should use in order to pass a command to the proxy minion.
+We use this dictionary to check what execution module we should use in order to send a command to the proxy minion.
 
-In this function, we want to be able to pass a command to a NAPALM, Netmiko or Junos proxy minion. The following makes that possible:
+In this function, we want to be able to send a command to a NAPALM, Netmiko or Junos proxy minion. The following makes that possible:
 
 ```python
 device_output = __salt__[send_command[proxytype]](command)
