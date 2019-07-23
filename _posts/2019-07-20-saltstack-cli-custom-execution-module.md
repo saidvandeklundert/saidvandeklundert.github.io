@@ -112,11 +112,8 @@ def cli(command):
     """
     Send a CLI command to a device managed via a netmiko, napalm or Junos proxy minion.    
     """
-    try:
-        proxytype = __pillar__.get('proxy').get('proxytype')
-
-    except:
-        return 'Could not find proxytype in pillar'
+    
+    proxytype = __pillar__.get('proxy').get('proxytype')
 
     send_command = {
         'netmiko': 'netmiko.send_command',
@@ -138,10 +135,7 @@ def cli(command):
 The function starts out checking the proxy minion type by looking at the pillar:
 
 ```python
-    try:
-        proxytype = __pillar__.get('proxy').get('proxytype')
-    except:
-        return 'Could not find proxytype in pillar'
+    proxytype = __pillar__.get('proxy').get('proxytype')
 ```
 
 
