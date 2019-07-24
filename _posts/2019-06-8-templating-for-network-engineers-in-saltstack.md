@@ -369,7 +369,7 @@ It is nice to know that it is possible to make Salt generate a message that will
 {%- do salt.log.warning('debugging jinja 3: got to the inner loop at line 32') -%}{% endraw %}
 ```
 
-Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2':
+Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2`:
 ```
 ..
 proxy_minion:
