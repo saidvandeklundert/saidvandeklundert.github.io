@@ -121,9 +121,9 @@ def cli(command):
 
     if proxytype == 'napalm':
         return device_output['out'].get(command, None)
-    if proxytype == 'junos':        
+    elif proxytype == 'junos':        
         return device_output.get('message', None)
-    if proxytype == 'netmiko':  
+    elif proxytype == 'netmiko':  
         return device_output  
 ```
 
@@ -161,9 +161,9 @@ The output we get in return is stored inside `device_output`. Now, the only thin
 ```python
     if proxytype == 'napalm':
         return device_output['out'].get(command, None)
-    if proxytype == 'junos':        
+    elif proxytype == 'junos':        
         return device_output.get('message', None)
-    if proxytype == 'netmiko':  
+    elif proxytype == 'netmiko':  
         return device_output  
 ```
 
