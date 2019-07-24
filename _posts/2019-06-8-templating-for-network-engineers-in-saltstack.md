@@ -28,7 +28,7 @@ Iterate your template into perfection using slsutil.renderer
 As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device:
  
 ```
-salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2
+salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2 default_renderer='jinja'
 …
 proxy_minion:
     my first template
@@ -40,18 +40,15 @@ Another way I use this `slsutil.renderer` is to render the template inside an ex
 
 ```python
 def render(template):
-    template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')    
-    return template_string        
-      
+    template_string = __salt__['slsutil.renderer'](path=template, default_renderer='jinja')  
+    # do Pythonic things here  
+    return template_string              
 ```
 
 After syncing it to the minion, you can call the function like so:
 ```
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
-
-Most of the time I actually use the `common.render` to render templates from the CLI as well. One of the reasons is that the return of the `slsutil.renderer` does not always show all the newlines.
-
 
 
 The basics
@@ -73,9 +70,9 @@ Here we use the {{ variable }}.{% endraw %}
 ```
 
 This will render as follows:
-```
+
+```yaml
 arista_proxy_minion:
-    
     
     Here we use the string.
 ```
