@@ -256,7 +256,7 @@ We will be able to access the nested dictionary in `some_template` like this:
 {% raw %}{{ nested_dict.some_key }}{% endraw %}
 ```
 
-This will make it possible use the dictionary as an instruction to generate the configuration for a service. You can, for instance, attach an inline pillar when calling a state through the API and use the dictionary to pass whatever you want to the template.
+This will make it possible to use the dictionary as an instruction to generate the configuration for a service. You can, for instance, attach an inline pillar when calling a state through the API and use the dictionary to pass whatever you want to the template.
 
 
 
