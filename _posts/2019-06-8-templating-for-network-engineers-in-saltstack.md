@@ -87,7 +87,8 @@ In the next example, we retrieve grain and pillar data and output that to screen
 ```
 
 After rendering the above template, this is what we get:
-```
+
+```yaml
 arista_proxy_minion:
 
     Arista
@@ -100,6 +101,7 @@ Another thing worth noting is that adding `-` to your statements allows you to d
 - `{% raw %}-%}{% endraw %}` to deal with trailing whitespace
 
 Example on how that works out in templates:
+
 ```
 Line 1.
 {% raw %}{% set variable = 'string' %}
@@ -111,8 +113,10 @@ Line7.
 {%- set variable = 'string' -%}{% endraw %}
 Line 9.
 ```
+
 The above will render as follows:
-```
+
+```yaml
 proxy_minion:
     Line 1.
     
@@ -143,6 +147,7 @@ set configuration for all the other roles
 In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is shown. If it is not, we move on to the next test where we check if the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` reveals what configuration will be applied to all other device types.
 
 The previous example shows a few basic checks, but we can also test for multiple conditions at once. This could look something like this:
+
 ```
     {% raw %}{% if ( software_version in allowed_versions or allowed_versions == 'all' ) and
           ( model in allowed_models or allowed_models == 'all' ) and
@@ -188,11 +193,9 @@ interface eth{{ n }}
 {% endfor %}{% endraw %}
 ```
 
-When we call the exection module, we can see that the template renders as follows:
+Using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2 default_renderer='jinja'`, we can see that the template renders as follows:
 
-```
- # salt proxy_minion common.render salt://templates/my_first_template.j2
-[DEBUG   ] LazyLoaded nested.output
+```yaml
 proxy_minion:
     interface eth0
     description unused
