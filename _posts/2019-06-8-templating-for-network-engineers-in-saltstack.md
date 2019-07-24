@@ -334,7 +334,7 @@ Using grains to perform a lookup in the pillar
 ==============================================
 
 
-Imagine having a dictionary called `datacenters` in the pillar that contains all the autonomous system values for very datacenter you have:
+Imagine having a key called `datacenters` in the pillar that contains a mapping between the autonomous system numbers you are using and your datacenters:
 
 ```yaml
 datacenters:
@@ -346,7 +346,7 @@ datacenters:
     65003
 ```
 
-Now, supose that the datacenter the node is active in is stored as a grains value. What we can do is retrieve the grains value and use that value to perform a lookup in the dictionary that contains the AS numbers. 
+Now, supose that the datacenter in which the node is active, is stored as a grain value. What we can do is retrieve the grains value and use it to perform a lookup in the pillar to grab the AS number the node should be configured with. 
 
 In the next example, we first retrieve the grain value of the datacenter the node is in. Then, we use that variable to perform a lookup in the aformentioned pillar data:
 
