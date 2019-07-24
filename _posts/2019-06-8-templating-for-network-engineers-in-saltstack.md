@@ -329,6 +329,37 @@ interface Ethernet5
 ```
 
 
+Using grains to perform a lookup in the pillar
+==============================================
+
+
+Imagine having a dictionary called `datacenters` in the pillar that contains all the autonomous system values for very datacenter you have:
+
+```yaml
+datacenters:
+  ams:
+    65001
+  tok:
+    65002
+  syd:
+    65003
+```
+
+Now, supose that the datacenter the node is active in is stored as a grains value. What we can do is retrieve the grains value and use that value to perform a lookup in the dictionary that contains the AS numbers. 
+
+In the next example, we first retrieve the grain value of the datacenter the node is in. Then, we use that variable to perform a lookup in the aformentioned pillar data:
+
+```
+{% raw %}{% set dc = grains.facts['datacenter'] %}
+{% set as = pillar.datacenters.public[dc] %}
+{{ as }}{% endraw %}
+```
+
+When we render that against a proxy minion that has the datacenter grain value set to `syd`, the template would render as follows:
+
+```
+65003
+```
 
 Using grains or pillar data to include other files into the template
 ====================================================================
