@@ -12,7 +12,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 [For loop](#for-loop)<br>
 [Stepping through a dictionary](#stepping-through-a-dictionary)<br>
 [Loading external files](#loading-external-files)<br>
-[Using grains to perform a lookup in the pillar](#using-grains-to-perform-a-lookup-in-the-pillar)
+[Using grains to perform a lookup in the pillar](#using-grains-to-perform-a-lookup-in-the-pillar)<br>
 [Using grains or pillar data to include other files into the template](#using-grains-or-pillar-data-to-include-other-files-into-the-template)<br>
 [Debugging the template](#debugging-the-template)<br>
 [Using execution modules inside templates](#using-execution-modules-inside-templates)<br>
