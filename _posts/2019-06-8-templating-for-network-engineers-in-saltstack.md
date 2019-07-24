@@ -352,13 +352,13 @@ In the next example, we first retrieve the grain value of the datacenter the nod
 ```
 {% raw %}{% set dc = grains.facts['datacenter'] %}
 {% set as = pillar.datacenters.public[dc] %}
-{{ as }}{% endraw %}
+set routing-options autonomous-system {{ as }}{% endraw %}
 ```
 
 When we render that against a proxy minion that has the datacenter grain value set to `syd`, the template would render as follows:
 
 ```
-65003
+set routing-options autonomous-system 65003
 ```
 
 Using grains or pillar data to include other files into the template
