@@ -346,9 +346,9 @@ datacenters:
     65003
 ```
 
-Now, supose that the datacenter in which the node is active, is stored as a grain value. What we can do is retrieve the grains value and use it to perform a lookup in the pillar to grab the AS number the node should be configured with. 
+Supose that the datacenter in which the node is active, is stored as a grain value. We can retrieve the grain value and use it to perform a lookup in the pillar to grab the AS number the node should be configured with. 
 
-In the next example, we first retrieve the grain value of the datacenter the node is in. Then, we use that variable to perform a lookup in the aformentioned pillar data:
+In the next example, we first retrieve the grain value of the datacenter the node is in. Then, we use that variable to perform a lookup in the pillar:
 
 ```
 {% raw %}{% set dc = grains.facts['datacenter'] %}
