@@ -702,3 +702,4 @@ Wrapping up
 These were some of the tips and examples that I really could have used when I started templating in Salt myself. I hope this helps clarify a few things and that you have gained some insights.
 
 If you have any additional tips, let me know via mail. Thank you!
+
