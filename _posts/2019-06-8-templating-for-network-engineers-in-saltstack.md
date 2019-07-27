@@ -133,7 +133,30 @@ Conditional statements
 ======================
 
 
-Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
+Most often, I find myself testing strings retrieved from the pillar or grain interface for certain conditions. The following expressions are what I use most often:
+
+```
+{% raw %}{% set hostname = 'ar.core.ams01' %}
+{{ 'ar' in hostname }}
+{{ 'bar' in hostname }}
+{{ 'bar' not in hostname }}
+{{ hostname.startswith('ar') }}
+{{ hostname.endswith('ams01') }}
+{{ hostname.endswith('ams03') }}{% endraw %}
+```
+
+When we render the above template, we get the following returned:
+
+```yaml
+proxy_minion:
+    True
+    False
+    True
+    True
+    True
+    False
+```
+Let's look at some practical examples where we use conditional statements to do something in a tempalte. Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {% raw %}{%- set type = grains.facts.get('type') -%}     
@@ -178,32 +201,6 @@ salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
 juniper_pm:
     set interfaces et-0/0/35 ether-options 802.3ad ae7
 ```
-
-QuiMostte often, I find myself testing strings retrieved from the pillar or grain interface for certain conditions. The following expressions are what I use most often:
-
-```
-{% raw %}{% set hostname = 'ar.core.ams01' %}
-{{ 'ar' in hostname }}
-{{ 'bar' in hostname }}
-{{ 'bar' not in hostname }}
-{{ hostname.startswith('ar') }}
-{{ hostname.endswith('ams01') }}
-{{ hostname.endswith('ams03') }}{% endraw %}
-```
-
-When we render the above template, we get the following returned:
-
-```yaml
-proxy_minion:
-    True
-    False
-    True
-    True
-    True
-    False
-```
-
-
 
 
 For loop
