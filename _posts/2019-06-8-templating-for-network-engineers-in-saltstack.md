@@ -141,7 +141,7 @@ The if statement
 Something I do often is test strings in expressions that evaluate to `True` or `False`:
 
 ```
-{% raw %}{% set hostname = 'ar.core.ams01' %}
+{% raw %}{% set hostname = pillar.get('hostname') %}
 {{ 'ar' in hostname }}
 {{ 'bar' in hostname }}
 {{ 'bar' not in hostname }}
@@ -150,7 +150,7 @@ Something I do often is test strings in expressions that evaluate to `True` or `
 {{ hostname.endswith('ams03') }}{% endraw %}
 ```
 
-When we render the above template, we get the following returned:
+When we render the above template, assuming the hostname is `'ar.core.ams01'`, we get the following returned:
 
 ```yaml
 proxy_minion:
@@ -165,7 +165,7 @@ proxy_minion:
 We can combine these expressions with an `if` statement to show or hide sections of the template. Let's look at the following example:
 
 ```
-{% raw %}{%- set hostname = 'ar.core.ams01' -%}
+{% raw %}{% set hostname = pillar.get('hostname') %}
 {% if 'ar' in hostname -%}  
 Configure something relevant to an 'ar'.
 {% endif %}
@@ -174,7 +174,7 @@ Configure something relevant to ams03.
 {% endif %}{% endraw %}
 ```
 
-When we render this, we get the following:
+When we render this, with the hostname still being `'ar.core.ams01'`, we get the following:
 
 ```yaml
 proxy_minion:
