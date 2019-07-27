@@ -156,7 +156,31 @@ proxy_minion:
     True
     False
 ```
-Let's look at some practical examples where we use conditional statements to do something in a template. Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
+
+Here we see the expressions evaluate to `True` or `False`. We can combine these expressions with an `if` statement to show or hide sections of the template. Let's look at the following example:
+
+```
+{% raw %}
+{%- set hostname = 'ar.core.ams01' -%}
+{% if 'ar' in hostname -%}  
+We found 'ar' in the hostname, configure something relevant to an 'ar'.
+{% endif %}
+{% if hostname.endswith('ams01') -%} 
+The hostname ends with 'ams01', configuring something relevant to ams01.
+{% endif %}
+{% endraw %}
+```
+
+When we render this, we get the following:
+
+```yaml
+proxy_minion:
+    We found 'ar' in the hostname, configure something relevant to an 'ar'.
+    
+    The hostname ends with 'ams01', configuring something relevant to ams01.
+```
+
+Let's look at some other examples where we use conditional statements to test against a grain value. Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {% raw %}{%- set type = grains.facts.get('type') -%}     
