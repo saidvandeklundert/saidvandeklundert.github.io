@@ -298,7 +298,7 @@ proxy_minion:
     ams01
 ```    
 
-When we slice a string, we slice it by referencing the start, stop and stride of the characters in the string. Let's extract `word` from the following example:
+When we slice a string, we slice it by referencing the start, stop and stride of the characters in the string. Let's extract `lost` and `found` from the following example:
 ```
 {% raw %}{% set string = 'floousntd__' %}
 {{ string[1:8:2] }}
