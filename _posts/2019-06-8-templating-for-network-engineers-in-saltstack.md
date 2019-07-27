@@ -24,7 +24,9 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 [Using Jinja in state and pillar files](#using-jinja-in-state-and-pillar-files)<br>
 [Salt has some pretty good additional extensions](#salt-has-some-pretty-good-additional-extensions)<br>
 [Wrapping up](#wrapping-up)<br>
+
 <br>
+
 Iterate your template into perfection using slsutil.renderer
 ============================================================
 
@@ -55,6 +57,7 @@ salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
 <br>
+
 The basics
 ==========
 
@@ -130,6 +133,7 @@ proxy_minion:
 ```    
 
 <br>
+
 The if statement and testing strings for conditions
 ===================================================
 
@@ -180,6 +184,7 @@ proxy_minion:
 ```
 
 <br>
+
 Conditional statements
 ======================
 
@@ -231,6 +236,7 @@ juniper_pm:
 ```
 
 <br>
+
 For loop
 ========
 
@@ -272,6 +278,7 @@ proxy_minion:
 ```
 
 <br>
+
 String slicing
 ==============
 
@@ -308,6 +315,7 @@ proxy_minion:
 ```  
 
 <br>
+
 Splitting a string
 ==================
 
@@ -332,6 +340,7 @@ proxy_minion:
 ```
 
 <br>
+
 Stepping through a dictionary
 =============================
 
@@ -371,6 +380,7 @@ This will make it possible to use the dictionary as an instruction to generate t
 
 
 <br>
+
 Loading external files
 ======================
 
@@ -440,6 +450,7 @@ interface Ethernet5
 ```
 
 <br>
+
 Using grains to perform a lookup in the pillar
 ==============================================
 
@@ -473,6 +484,7 @@ set routing-options autonomous-system 65003
 ```
 
 <br>
+
 Using grains or pillar data to include other files into the template
 ====================================================================
 
@@ -493,6 +505,7 @@ And perhaps some device types do not need any additional prefix-lists. By testin
 
 
 <br>
+
 Debugging the template
 ======================
 
@@ -551,6 +564,7 @@ The logging level is controlled via the master configuration. In this example, t
 
 
 <br>
+
 Using execution modules inside templates
 ========================================
 
@@ -598,6 +612,7 @@ Using the execution modules will enable you to basically do anything you can dre
 
 
 <br>
+
 Passing arguments into your template
 ====================================
 
@@ -619,6 +634,7 @@ I have encountered multiple reasons for wanting to attach inline pillar data. On
 
 
 <br>
+
 Import other templates with context
 ===================================
 
@@ -645,6 +661,7 @@ Additionally, another thing worth noting is that child templates have access to 
 
 
 <br>
+
 Using Jinja in state and pillar files
 =====================================
 
@@ -669,6 +686,7 @@ generate_something:
 
 
 <br>
+
 Salt has some pretty good additional extensions
 ===============================================
 
@@ -695,6 +713,7 @@ In case you just want to read up on Jinja, you can check out this site: [Jinja2 
 
 
 <br>
+
 Wrapping up
 ===========
 
