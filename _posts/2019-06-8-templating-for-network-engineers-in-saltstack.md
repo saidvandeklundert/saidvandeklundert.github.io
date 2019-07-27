@@ -10,6 +10,8 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 [The basics](#the-basics)<br>
 [Conditional statements](#conditional-statements)<br>
 [For loop](#for-loop)<br>
+[String slicing](#string-slicing)<br>
+[Splitting a string](#splitting-a-string)<br>
 [Stepping through a dictionary](#stepping-through-a-dictionary)<br>
 [Loading external files](#loading-external-files)<br>
 [Using grains to perform a lookup in the pillar](#using-grains-to-perform-a-lookup-in-the-pillar)<br>
@@ -127,7 +129,6 @@ proxy_minion:
 ```    
 
 
-
 Conditional statements
 ======================
 
@@ -178,6 +179,31 @@ juniper_pm:
     set interfaces et-0/0/35 ether-options 802.3ad ae7
 ```
 
+QuiMostte often, I find myself testing strings retrieved from the pillar or grain interface for certain conditions. The following expressions are what I use most often:
+
+```
+{% raw %}{% set hostname = 'ar.core.ams01' %}
+{{ 'ar' in hostname }}
+{{ 'bar' in hostname }}
+{{ 'bar' not in hostname }}
+{{ hostname.startswith('ar') }}
+{{ hostname.endswith('ams01') }}
+{{ hostname.endswith('ams03') }}{% endraw %}
+```
+
+When we render the above template, we get the following returned:
+
+```yaml
+proxy_minion:
+    True
+    False
+    True
+    True
+    True
+    False
+```
+
+
 
 
 For loop
@@ -221,6 +247,64 @@ proxy_minion:
 ```
 
 
+String slicing
+==============
+
+
+We can slice strings to work with the part of the string we are interested in. Supose we have information encoded in the device name. Using string slicing, we can access the first and the last part of the string like so:
+
+```
+{% raw %}{% set hostname = 'ar.core.ams01' %}
+{{ hostname[:2] }}
+{{ hostname[-5:] }}{% endraw %}
+```
+
+This would render as follows:
+
+```yaml
+proxy_minion:
+    ar
+    ams01
+```    
+
+When we slice a string, we slice it by referencing the start, stop and stride of the characters in the string. Let's extract `word` from the following example:
+```
+{% raw %}{% set string = 'floousntd__' %}
+{{ string[1:8:2] }}
+{{ string[0:10:2] }}{% endraw %}
+```
+
+When we render this, we get the following:
+
+```yaml
+proxy_minion:
+    lost
+    found
+```  
+
+
+Splitting a string
+==================
+
+You can use `split` to divide a string into items in a list. You can then access the item that you are interested in. 
+
+In the following example, `split` will be used on the string `192.168.1.1/24`. First, we'll print out the list of items created by `split`. After this, we access each individual item:
+
+```
+{% raw %}{% set ip_address = '192.168.1.1/24' %}
+{{ ip_address.split('/') }}
+{{ ip_address.split('/')[0] }}
+{{ ip_address.split('/')[1] }}{% endraw %}
+```
+
+When we render the above template, we get the following:
+
+```yaml
+proxy_minion:    
+    ['192.168.1.1', '24']
+    192.168.1.1
+    24
+```
 
 Stepping through a dictionary
 =============================
