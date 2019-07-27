@@ -24,7 +24,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 [Using Jinja in state and pillar files](#using-jinja-in-state-and-pillar-files)<br>
 [Salt has some pretty good additional extensions](#salt-has-some-pretty-good-additional-extensions)<br>
 [Wrapping up](#wrapping-up)<br>
-
+<br>
 Iterate your template into perfection using slsutil.renderer
 ============================================================
 
@@ -54,7 +54,7 @@ After syncing it to the minion, you can call the function like so:
 salt proxy_minion common.render salt://templates/my_first_template.j2
 ```
 
-
+<br>
 The basics
 ==========
 
@@ -129,7 +129,7 @@ proxy_minion:
     Line7.Line 9.
 ```    
 
-
+<br>
 The if statement and testing strings for conditions
 ===================================================
 
@@ -161,15 +161,13 @@ proxy_minion:
 Here we see the expressions evaluate to `True` or `False`. We can combine these expressions with an `if` statement to show or hide sections of the template. Let's look at the following example:
 
 ```
-{% raw %}
-{%- set hostname = 'ar.core.ams01' -%}
+{% raw %}{%- set hostname = 'ar.core.ams01' -%}
 {% if 'ar' in hostname -%}  
 We found 'ar' in the hostname, configure something relevant to an 'ar'.
 {% endif %}
 {% if hostname.endswith('ams01') -%} 
 The hostname ends with 'ams01', configuring something relevant to ams01.
-{% endif %}
-{% endraw %}
+{% endif %}{% endraw %}
 ```
 
 When we render this, we get the following:
@@ -181,7 +179,7 @@ proxy_minion:
     The hostname ends with 'ams01', configuring something relevant to ams01.
 ```
 
-
+<br>
 Conditional statements
 ======================
 
@@ -232,7 +230,7 @@ juniper_pm:
     set interfaces et-0/0/35 ether-options 802.3ad ae7
 ```
 
-
+<br>
 For loop
 ========
 
@@ -273,7 +271,7 @@ proxy_minion:
     shutdown
 ```
 
-
+<br>
 String slicing
 ==============
 
@@ -309,7 +307,7 @@ proxy_minion:
     found
 ```  
 
-
+<br>
 Splitting a string
 ==================
 
@@ -333,6 +331,7 @@ proxy_minion:
     24
 ```
 
+<br>
 Stepping through a dictionary
 =============================
 
@@ -371,7 +370,7 @@ We will be able to access the nested dictionary in `some_template` like this:
 This will make it possible to use the dictionary as an instruction to generate the configuration for a service. You can, for instance, attach an inline pillar when calling a state through the API and use the dictionary to pass whatever you want to the template.
 
 
-
+<br>
 Loading external files
 ======================
 
@@ -440,7 +439,7 @@ interface Ethernet5
  switchport access vlan 200
 ```
 
-
+<br>
 Using grains to perform a lookup in the pillar
 ==============================================
 
@@ -473,6 +472,7 @@ When we render that against a proxy minion that has the datacenter grain value s
 set routing-options autonomous-system 65003
 ```
 
+<br>
 Using grains or pillar data to include other files into the template
 ====================================================================
 
@@ -492,7 +492,7 @@ When we render this template, the device type is fetched from the grains. After 
 And perhaps some device types do not need any additional prefix-lists. By testing the device type against a list of device types, we prevent the template from failing to try and include a file that does not exist.
 
 
-
+<br>
 Debugging the template
 ======================
 
@@ -550,7 +550,7 @@ The logging level is controlled via the master configuration. In this example, t
 ```
 
 
-
+<br>
 Using execution modules inside templates
 ========================================
 
@@ -597,7 +597,7 @@ proxy_minion:
 Using the execution modules will enable you to basically do anything you can dream up in Python. Things like connecting to an external database, check operational information on the device, run a script someplace else, etc.
 
 
-
+<br>
 Passing arguments into your template
 ====================================
 
@@ -618,7 +618,7 @@ Inside the template, you can access this pillar data in the same way that you wo
 I have encountered multiple reasons for wanting to attach inline pillar data. One reason was to enable users to pass arguments to a state they are running.  Another reason was when I was using the Enterprise API. I found that passing a dictionary to a state is a very easy and neat way to have an external script pass data to templates.
 
 
-
+<br>
 Import other templates with context
 ===================================
 
@@ -644,7 +644,7 @@ The main advantages are that it keeps the templates smaller and the default file
 Additionally, another thing worth noting is that child templates have access to the variables declared in the parent template. So if we import a default template to be able to use variables everywhere, we will also be able to use those in the child templates as well.
 
 
-
+<br>
 Using Jinja in state and pillar files
 =====================================
 
@@ -668,7 +668,7 @@ generate_something:
 ```
 
 
-
+<br>
 Salt has some pretty good additional extensions
 ===============================================
 
@@ -694,7 +694,7 @@ These are just some examples. No point in me covering all of them, just read up 
 In case you just want to read up on Jinja, you can check out this site: [Jinja2 doc](http://jinja.pocoo.org/docs/)
 
 
-
+<br>
 Wrapping up
 ===========
 
