@@ -725,5 +725,8 @@ If you have any additional tips, let me know via mail. Thank you!
 
 <pre>
 Updated:
-2019-07-27: the if statement, string slicing, splitting a string and various other things.
+2019-07-27: 
+- added if statement section
+- addedstring slicing and splitting a string section
+- various improvements / typos
 </pre>
