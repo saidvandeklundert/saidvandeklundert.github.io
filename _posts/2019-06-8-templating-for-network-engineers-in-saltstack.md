@@ -8,6 +8,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 
 [Iterate your template into perfection using slsutil.renderer](#iterate-your-template-into-perfection-using-slsutilrenderer)<br>
 [The basics](#the-basics)<br>
+[The if statement and testing strings for conditions](#the-if-statement)
 [Conditional statements](#conditional-statements)<br>
 [For loop](#for-loop)<br>
 [String slicing](#string-slicing)<br>
@@ -129,11 +130,11 @@ proxy_minion:
 ```    
 
 
-Conditional statements
-======================
+The if statement and testing strings for conditions
+===================================================
 
 
-Most often, I find myself testing strings retrieved from the pillar or grain interface for certain conditions. The following expressions are what I use most often:
+Something I do very oten is test strings retrieved from the pillar or grain interface for a condition. The following expressions are what I use most often:
 
 ```
 {% raw %}{% set hostname = 'ar.core.ams01' %}
@@ -180,7 +181,12 @@ proxy_minion:
     The hostname ends with 'ams01', configuring something relevant to ams01.
 ```
 
-Let's look at some other examples where we use conditional statements to test against a grain value. Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
+
+Conditional statements
+======================
+
+
+Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {% raw %}{%- set type = grains.facts.get('type') -%}     
