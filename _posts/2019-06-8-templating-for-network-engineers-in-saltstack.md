@@ -721,3 +721,9 @@ These were some of the tips and examples that I really could have used when I st
 
 If you have any additional tips, let me know via mail. Thank you!
 
+
+
+<pre>
+Updated:
+2019-07-27: the if statement, string slicing, splitting a string and various other things.
+</pre>
