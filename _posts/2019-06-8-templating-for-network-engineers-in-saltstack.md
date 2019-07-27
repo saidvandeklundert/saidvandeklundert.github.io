@@ -8,7 +8,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 
 [Iterate your template into perfection using slsutil.renderer](#iterate-your-template-into-perfection-using-slsutilrenderer)<br>
 [The basics](#the-basics)<br>
-[The if statement and testing strings for conditions](#the-if-statement-and-testing-strings-for-conditions)<br>
+[The if statement](#the-if-statement)<br>
 [Conditional statements](#conditional-statements)<br>
 [For loop](#for-loop)<br>
 [String slicing](#string-slicing)<br>
@@ -134,11 +134,11 @@ proxy_minion:
 
 <br>
 
-The if statement and testing strings for conditions
-===================================================
+The if statement
+================
 
 
-Something I do very often is test strings retrieved from the pillar or grain interface for a condition. The following expressions are what I use most often:
+Something I do often is test strings in expressions that evaluate to `True` or `False`:
 
 ```
 {% raw %}{% set hostname = 'ar.core.ams01' %}
@@ -162,7 +162,7 @@ proxy_minion:
     False
 ```
 
-Here we see the expressions evaluate to `True` or `False`. We can combine these expressions with an `if` statement to show or hide sections of the template. Let's look at the following example:
+We can combine these expressions with an `if` statement to show or hide sections of the template. Let's look at the following example:
 
 ```
 {% raw %}{%- set hostname = 'ar.core.ams01' -%}
