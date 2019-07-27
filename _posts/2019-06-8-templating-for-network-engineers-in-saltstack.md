@@ -156,7 +156,7 @@ proxy_minion:
     True
     False
 ```
-Let's look at some practical examples where we use conditional statements to do something in a tempalte. Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
+Let's look at some practical examples where we use conditional statements to do something in a template. Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
 ```
 {% raw %}{%- set type = grains.facts.get('type') -%}     
