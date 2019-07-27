@@ -167,10 +167,10 @@ We can combine these expressions with an `if` statement to show or hide sections
 ```
 {% raw %}{%- set hostname = 'ar.core.ams01' -%}
 {% if 'ar' in hostname -%}  
-We found 'ar' in the hostname, configure something relevant to an 'ar'.
+Configure something relevant to an 'ar'.
 {% endif %}
-{% if hostname.endswith('ams01') -%} 
-The hostname ends with 'ams01', configuring something relevant to ams01.
+{% if hostname.endswith('ams03') -%} 
+Configure something relevant to ams03.
 {% endif %}{% endraw %}
 ```
 
@@ -178,9 +178,8 @@ When we render this, we get the following:
 
 ```yaml
 proxy_minion:
-    We found 'ar' in the hostname, configure something relevant to an 'ar'.
-    
-    The hostname ends with 'ams01', configuring something relevant to ams01.
+    Configure something relevant to hosts starting with 'ar'.
+
 ```
 
 <br>
