@@ -138,7 +138,7 @@ The if statement and testing strings for conditions
 ===================================================
 
 
-Something I do very oten is test strings retrieved from the pillar or grain interface for a condition. The following expressions are what I use most often:
+Something I do very often is test strings retrieved from the pillar or grain interface for a condition. The following expressions are what I use most often:
 
 ```
 {% raw %}{% set hostname = 'ar.core.ams01' %}
