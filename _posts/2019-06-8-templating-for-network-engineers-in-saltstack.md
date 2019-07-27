@@ -418,7 +418,7 @@ Using grains to perform a lookup in the pillar
 ==============================================
 
 
-Imagine having a key called `datacenters` in the pillar that contains a mapping between the autonomous system numbers you are using and your datacenters:
+Imagine having a key called `datacenters` in the pillar that contains a mapping between the AS numbers you are using and your datacenters:
 
 ```yaml
 datacenters:
