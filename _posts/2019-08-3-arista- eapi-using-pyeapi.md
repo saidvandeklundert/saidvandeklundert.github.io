@@ -8,6 +8,7 @@ image: /img/arista_logo.jpg
 The Arista EOS command API, or <b>eAPI</b>, allows you use JSON-RPC over HTTP(S). There are different ways to interact with the eAPI and in this article, I am exploring a library that is called <b>pyeapi</b>. The focus will be on information gathering. 
 
 <br>
+
 Enabling the API
 ================
 
@@ -40,6 +41,7 @@ VRFs:               lab
 
 
 <br>
+
 Connecting to the device
 ========================
 
@@ -149,6 +151,7 @@ The resulting output from this addition would be as follows:
 ```
 
 <br>
+
 Using the API module
 ====================
 
