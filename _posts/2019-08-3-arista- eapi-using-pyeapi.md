@@ -251,6 +251,7 @@ acl_d = acl.getall()
 Using the API to scan through configuration is pretty nice, and it beats string methods and regex!
 
 <br>
+
 Closing thoughts
 ================
 
