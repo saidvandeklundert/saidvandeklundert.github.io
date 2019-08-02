@@ -179,7 +179,7 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-Let’s run the script in interactive mode:
+Now we run the script in interactive mode making it easy to check some additional details:
 
 ```python
 {'config': {'domain_id': None,
