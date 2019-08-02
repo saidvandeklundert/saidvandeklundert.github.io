@@ -91,7 +91,37 @@ So let’s run the example script and examine the output:
 
 We get a dictionary in a list, great! 
 
-We can use this example to execute other commands as well. Additionally, while we are on the CLI we can figure out in advance what the response will be using `| json`. Let's look at one more example and check the mlag status on a switch:
+When I started out, the thing I was most interested in was verifying the mlag status in a script. So the next thing I did after `show version` was add `show mlag`:
+
+```python
+mlag_info = eapi.run_commands(['show mlag',])
+pprint.pprint(mlag_info)
+```
+
+The resulting output from this addition to the script was the following:
+
+```python
+[{u'configSanity': u'consistent',
+  u'domainId': u'lr01',
+  u'localInterface': u'Vlan4000',
+  u'localIntfStatus': u'up',
+  u'mlagPorts': {u'Active-full': 7,
+                 u'Active-partial': 1,
+                 u'Configured': 0,
+                 u'Disabled': 0,
+                 u'Inactive': 3},
+  u'negStatus': u'connected',
+  u'peerAddress': u'192.254.1.2',
+  u'peerLink': u'Port-Channel10',
+  u'peerLinkStatus': u'up',
+  u'portsErrdisabled': False,
+  u'reloadDelay': 300,
+  u'reloadDelayNonMlag': 300,
+  u'state': u'active',
+  u'systemId': u'47:3c:b8:44:11:29'}]
+```
+
+Familiarity with the CLI will allow you to quickly add whatever you need digging into. Another thing worth noting is that you can use `| json` on the CLI to figure out the reponse from the eAPI in advance:
 
 
 <pre>
@@ -121,37 +151,7 @@ lr.lon01#show mlag | json
 lr.lon01#
 </pre>
 
-Now we add the following to the script:
-
-```python
-mlag_info = eapi.run_commands(['show mlag',])
-pprint.pprint(mlag_info)
-```
-
-The resulting output from this addition to the script will be as follows:
-
-```python
-[{u'configSanity': u'consistent',
-  u'domainId': u'lr01',
-  u'localInterface': u'Vlan4000',
-  u'localIntfStatus': u'up',
-  u'mlagPorts': {u'Active-full': 7,
-                 u'Active-partial': 1,
-                 u'Configured': 0,
-                 u'Disabled': 0,
-                 u'Inactive': 3},
-  u'negStatus': u'connected',
-  u'peerAddress': u'192.254.1.2',
-  u'peerLink': u'Port-Channel10',
-  u'peerLinkStatus': u'up',
-  u'portsErrdisabled': False,
-  u'reloadDelay': 300,
-  u'reloadDelayNonMlag': 300,
-  u'state': u'active',
-  u'systemId': u'47:3c:b8:44:11:29'}]
-```
-
-Good stuff. Working out how to automate tasks currently done from the CLI is pretty easy.
+Good stuff. This is a nice way to see what return value you will be dealing with in the script and if this particular command would be the best approach.
 
 <br>
 
@@ -214,7 +214,7 @@ Node(connection=EapiConnection(transport=https://lr.lon01:443//command-api))
 ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_connection', '_enablepwd', '_get_version_properties', '_model', '_running_config', '_startup_config', '_version', '_version_number', 'api', 'autorefresh', 'config', 'connection', 'enable', 'enable_authentication', 'get_config', 'model', 'refresh', 'run_commands', 'running_config', 'section', 'settings', 'startup_config', 'version', 'version_number']
 ```
 
-So we see `eapi` is a class with several methods. Previously, we used `run_commands`. This time though, we will use `api`. The APIs available to us is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html.
+So we see `eapi` is a class with several methods. Previously, we used `run_commands`. This time though, we used the `api` method. The APIs available to us is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html.
 
 In our example,  we checked the `mlag` api using `mlag = eapi.api('mlag')`:
 
@@ -252,7 +252,7 @@ Closing thoughts
 ================
 
 
-The eAPI certain looks to be of great value for anything related to operations. I like how easy it is to translate your CLI routines into a script and how you can use the CLI to discover how output will be presented in JSON. 
+The eAPI certain looks to be of great value for anything related to operations. I like how easy it is to translate your CLI routines into a script and how you can use the CLI to discover how output will be presented in JSON. Working out how to automate tasks currently done from the CLI is pretty easy.
 
 
 
