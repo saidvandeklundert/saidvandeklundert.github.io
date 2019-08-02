@@ -39,7 +39,7 @@ VRFs:               lab
 
 After installing `pyeapi` using `pip install pyeapi`, we are now good to go. 
 
-Note: according to the documentation, support for Python 3 is in the works. For now though, it is Python 2 only.
+Note: according to the documentation, support for Python 3 is in the works. For now though, it is Python 2.7 only.
 
 <br>
 
