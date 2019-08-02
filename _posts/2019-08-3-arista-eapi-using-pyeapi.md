@@ -9,8 +9,8 @@ The Arista EOS command API, or <b>eAPI</b>, has been maturing ever since eos 4.1
 
 <br>
 
-Enabling the API
-================
+Enabling the API and installing pyeapi
+======================================
 
 
 According to the documentation, support for Python 3 is in the works. For now though, it is Python 2 only. Installing `pyeapi` is done with `pip install pyeapi`. 
