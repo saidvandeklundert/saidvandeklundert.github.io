@@ -49,7 +49,7 @@ Connecting to the device
 
 A lot of the Arista examples in the documentation seem to steer you towards creating and using a configuration file. I do not really like that and luckily, we do not have to do this. 
 
-The following script will allow us to send a command to the device:
+We can use the following script to send a command to the device:
 
 ```python
 import pyeapi
@@ -68,7 +68,7 @@ version_info = eapi.run_commands(['show version',])
 pprint.pprint(version_info)
 ```
 
-Here, we pass the `eapi_param` to `pyeapi.client.Node()`. As a result, the `eapi` object represents a single device that we can exchange eAPI messages with.
+Here, we pass the `eapi_param` to `pyeapi.client.Node()`. As a result, the `eapi` Node object provides us with an instance to communicate with the device.
  
 After having done this, we call the `run_commands` method, which enables us to send a list of commands to the device. The output is stored in `version_info` and finally, we print that to screen.
 
@@ -91,7 +91,7 @@ So let’s run the example script and examine the output:
 
 We get a dictionary in a list, great! 
 
-We can use this example to execute other commands as well. Additionally, while we are on the CLI we can figure out in advance what the response will be using `| json`:
+We can use this example to execute other commands as well. Additionally, while we are on the CLI we can figure out in advance what the response will be using `| json`. Let's look at one more example and check the mlag status on a switch:
 
 
 <pre>
@@ -121,14 +121,14 @@ lr.lon01#show mlag | json
 lr.lon01#
 </pre>
 
-Let’s add the following to the script:
+Now we add the following to the script:
 
 ```python
 mlag_info = eapi.run_commands(['show mlag',])
 pprint.pprint(mlag_info)
 ```
 
-The resulting output from this addition would be as follows:
+The resulting output from this addition to the script will be as follows:
 
 ```python
 [{u'configSanity': u'consistent',
@@ -151,7 +151,7 @@ The resulting output from this addition would be as follows:
   u'systemId': u'47:3c:b8:44:11:29'}]
 ```
 
-Good stuff. Working out how to automate some tasks currently done from the CLI is pretty easy.
+Good stuff. Working out how to automate tasks currently done from the CLI is pretty easy.
 
 <br>
 
