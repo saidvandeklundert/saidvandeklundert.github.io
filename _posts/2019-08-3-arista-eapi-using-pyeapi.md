@@ -244,7 +244,7 @@ acl = eapi.api('acl')
 acl_d = acl.getall()
 ```
 
-Using the API to scan through configuration is easy and it beats string methods and regex! I'll save working with the other methods available for another time.
+Using the API to scan through configuration is easy and it beats string methods and regex I have been using up untill now! I'll save working with the other methods available for another time.
 
 <br>
 
