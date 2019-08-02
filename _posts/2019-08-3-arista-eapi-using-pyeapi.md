@@ -5,7 +5,7 @@ image: /img/arista_logo.jpg
 ---
 
 
-The Arista EOS command API, or <b>eAPI</b>, has been maturing since eos 4.12. Recently, I started to look into ways to use this API for information retrieval. In this article, I am sharing what I learned when exploring a library that is called <b>pyeapi</b>.
+The Arista EOS command API, or <b>eAPI</b>, has been maturing ever since eos 4.12. Recently, I started to look into ways to use this API for information retrieval. In this article, I am sharing what I learned exploring the eAPI using a library called <b>pyeapi</b>.
 
 <br>
 
