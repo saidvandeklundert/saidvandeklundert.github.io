@@ -216,7 +216,7 @@ Node(connection=EapiConnection(transport=https://lr.lon01:443//command-api))
 
 So we see `eapi` is a class with several methods. Previously, we used `run_commands`. This time though, we will use `api`. The APIs available to us is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html.
 
-In our script,  we only checked the `mlag` api using `mlag = eapi.api('mlag')`:
+In our example,  we checked the `mlag` api using `mlag = eapi.api('mlag')`:
 
 ```python
 >>> type(mlag)
@@ -229,14 +229,7 @@ In our script,  we only checked the `mlag` api using `mlag = eapi.api('mlag')`:
 
 We have several things to work with here. The description of all these methods is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html
 
-In our example, we are using `get` to check the configuration of the mlag. We did that using `mlag_d = mlag.get()` and this gave us:
-
-```python
->>> type(mlag_d)
-<type 'dict'>
->>> mlag_d
-{'interfaces': {'Port-Channel5': {'mlag_id': '5'}, 'Port-Channel6': {'mlag_id': '6'}, 'Port-Channel7': {'mlag_id': '7'}, 'Port-Channel12': {'mlag_id': '12'}, 'Port-Channel13': {'mlag_id': '13'}, 'Port-Channel11': {'mlag_id': '11'}, 'Port-Channel16': {'mlag_id': '16'}, 'Port-Channel17': {'mlag_id': '17'}, 'Port-Channel14': {'mlag_id': '14'}, 'Port-Channel15': {'mlag_id': '15'}, 'Port-Channel18': {'mlag_id': '18'}}, 'config': {'shutdown': False, 'peer_address': '192.254.1.2', 'local_interface': 'Vlan4000', 'domain_id': None, 'peer_link': 'Port-Channel10'}}
-```
+In our example we used `get` to check the configuration of the mlag. We did that using `mlag_d = mlag.get()` which was pretty printed to screen afterwards.
 
 Some insight into how easy it is to extend the script to other parts of the configuration:
 
@@ -251,7 +244,7 @@ acl = eapi.api('acl')
 acl_d = acl.getall()
 ```
 
-Using the API to scan through configuration is pretty nice, and it beats string methods and regex! I'll save working with the other methods available for another time.
+Using the API to scan through configuration is easy and it beats string methods and regex! I'll save working with the other methods available for another time.
 
 <br>
 
