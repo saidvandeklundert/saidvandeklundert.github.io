@@ -23,7 +23,7 @@ management api http-commands
 no shutdown
 </pre>
 
-In case you are accessing the device through an interface that is placed inside a vrf, you need to add configuration to allow API access from that vrf as well. In the following example, we enable the API to the `lab` vrf:
+In case you are accessing the device through an interface that is placed inside a vrf, you need to add configuration to allow API access from that vrf as well. In the following example, we enable the API for the `lab` vrf:
 
 <pre>
    vrf lab
@@ -150,6 +150,8 @@ The resulting output from this addition would be as follows:
   u'systemId': u'47:3c:b8:44:11:29'}]
 ```
 
+Good stuff. Working out how to automate some tasks currently done from the CLI is pretty easy.
+
 <br>
 
 Using the API module
@@ -248,7 +250,7 @@ acl = eapi.api('acl')
 acl_d = acl.getall()
 ```
 
-Using the API to scan through configuration is pretty nice, and it beats string methods and regex!
+Using the API to scan through configuration is pretty nice, and it beats string methods and regex! I'll save working with the other methods available for another time.
 
 <br>
 
