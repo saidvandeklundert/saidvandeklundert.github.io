@@ -173,7 +173,7 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-Now we run the script in interactive mode making it easy to check some additional details:
+When we run this script, we get the following:
 
 ```python
 {'config': {'domain_id': None,
@@ -195,30 +195,13 @@ Now we run the script in interactive mode making it easy to check some additiona
 >>> 
 ```
 
-We get to see the MLAG configuration in dictionary format. So what exactly happened?
-
-Let’s check out `eapi` in more detail:
-
-```python
->>> type(eapi)
-<class 'pyeapi.client.Node'>
->>> eapi
-Node(connection=EapiConnection(transport=https://lr.lon01:443//command-api))
->>> dir(eapi)
-['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_connection', '_enablepwd', '_get_version_properties', '_model', '_running_config', '_startup_config', '_version', '_version_number', 'api', 'autorefresh', 'config', 'connection', 'enable', 'enable_authentication', 'get_config', 'model', 'refresh', 'run_commands', 'running_config', 'section', 'settings', 'startup_config', 'version', 'version_number']
-```
+This gives us the MLAG configuration in dictionary format. 
 
 So we see `eapi` is a class with several methods. Previously, we used `run_commands`. This time though, we used the `api` method. The APIs available to us is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html.
 
 In our example,  we checked the `mlag` api using `mlag = eapi.api('mlag')`:
 
-```python
->>> type(mlag)
-<class 'pyeapi.api.mlag.Mlag'>
->>> mlag
-<pyeapi.api.mlag.Mlag object at 0x7f81eba0a350>
->>> dir(mlag)
-['__abstractmethods__', '__call__', '__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__metaclass__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_abc_cache', '_abc_negative_cache', '_abc_negative_cache_version', '_abc_registry', '_configure_mlag', '_parse_config', '_parse_domain_id', '_parse_interfaces', '_parse_local_interface', '_parse_peer_address', '_parse_peer_link', '_parse_shutdown', 'command_builder', 'config', 'configure', 'configure_interface', 'error', 'get', 'get_block', 'node', 'set_domain_id', 'set_local_interface', 'set_mlag_id', 'set_peer_address', 'set_peer_link', 'set_shutdown']
+
 ```
 
 We have several things to work with here. The description of all these methods is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html
@@ -249,4 +232,22 @@ Closing thoughts
 The eAPI certain looks to be of great value for anything related to operations. I like how easy it is to translate your CLI routines into a script and how you can use the CLI to discover how output will be presented in JSON. Working out how to automate tasks currently done from the CLI is pretty easy.
 
 Note: according to the documentation, support for Python 3 is in the works. For now though, it is Python 2.7 only.
+
+
+
+==
+
+
+Let’s check out `eapi` in more detail:
+
+```python
+>>> type(eapi)
+<class 'pyeapi.client.Node'>
+>>> eapi
+Node(connection=EapiConnection(transport=https://lr.lon01:443//command-api))
+>>> dir(eapi)
+['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_connection', '_enablepwd', '_get_version_properties', '_model', '_running_config', '_startup_config', '_version', '_version_number', 'api', 'autorefresh', 'config', 'connection', 'enable', 'enable_authentication', 'get_config', 'model', 'refresh', 'run_commands', 'running_config', 'section', 'settings', 'startup_config', 'version', 'version_number']
+```
+
+
 
