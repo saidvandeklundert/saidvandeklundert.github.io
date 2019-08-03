@@ -117,7 +117,7 @@ The resulting output from this addition to the script was the following:
   u'systemId': u'47:3c:b8:44:11:29'}]
 ```
 
-Familiarity with the CLI will allow you to quickly add whatever you need digging into. Another thing worth noting is that you can use `| json` on the CLI to figure out the reponse from the eAPI in advance:
+Familiarity with the CLI will allow you to quickly add whatever you need. Another thing worth noting is that you can use `| json` on the CLI to figure out the reponse from the eAPI in advance:
 
 
 <pre>
@@ -147,7 +147,7 @@ lr.lon01#show mlag | json
 lr.lon01#
 </pre>
 
-Good stuff. This is a nice way to see what return value you will be dealing with in the script and if this particular command would be the best approach.
+Good stuff! This is a nice way to see what return value you will be dealing with in the script and if this particular command would be the best approach.
 
 <br>
 
