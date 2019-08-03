@@ -45,7 +45,7 @@ Connecting to the device
 
 A lot of the Arista examples in the documentation seem to steer you towards creating and using a configuration file. I do not really like that and luckily, we do not have to do this. 
 
-After installing `pyeapi` using `pip install pyeapi`, we are now good to go and we can use the following script to send a command to the device:
+After installing `pyeapi` using `pip install pyeapi` we are good to go and we can use the following script to send a command to the device:
 
 ```python
 import pyeapi
