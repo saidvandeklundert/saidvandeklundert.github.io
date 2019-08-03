@@ -43,8 +43,6 @@ Connecting to the device
 ========================
 
 
-A lot of the Arista examples in the documentation seem to steer you towards creating and using a configuration file. I do not really like that and luckily, we do not have to do this. 
-
 After installing `pyeapi` using `pip install pyeapi` we are good to go and we can use the following script to send a command to the device:
 
 ```python
@@ -147,7 +145,7 @@ lr.lon01#show mlag | json
 lr.lon01#
 </pre>
 
-Good stuff! This is a nice way to see what return value you will be dealing with in the script and if this particular command would be the best approach.
+Good stuff! This is a nice way to see what command you should put in your script and what return value you will be dealing with. 
 
 <br>
 
@@ -155,7 +153,7 @@ Using the API module
 ====================
 
 
-So far, we have been sending CLI commands to the device. But Arista also offers API modules to retrieve and manipulate configuration. Let’s look at an example script where we inspect the MLAG configuration of a device: 
+So far, we have been sending CLI commands to the device. But Arista also offers <b>API modules</b> to retrieve and manipulate configuration. Let’s look at an example script where we inspect the MLAG configuration of a device: 
 
 ```python
 import pyeapi
