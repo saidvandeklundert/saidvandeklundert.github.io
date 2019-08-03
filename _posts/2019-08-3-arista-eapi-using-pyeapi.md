@@ -21,14 +21,14 @@ management api http-commands
 no shutdown
 </pre>
 
-In case you are accessing the device through an interface that is placed inside a vrf, you need to add configuration to allow API access from that vrf as well. In the following example, we enable the API for the `lab` vrf:
+In case you are accessing the device through an interface that is placed inside a vrf, you need to add configuration to allow API access from that vrf as well. The following would be required to enable the API for the `lab` vrf:
 
 <pre>
    vrf lab
       no shutdown
 </pre>
 
-You can verify that the API is working using `show management api http-commands`. The resulting output is pretty self-explanatory:
+You can verify that the API is enabled using `show management api http-commands`. The resulting output is pretty self-explanatory:
 
 <pre>
 lr.lon01#show management api  http-commands
@@ -36,10 +36,6 @@ Enabled:            Yes
 < output omitted >
 VRFs:               lab
 </pre>
-
-After installing `pyeapi` using `pip install pyeapi`, we are now good to go. 
-
-Note: according to the documentation, support for Python 3 is in the works. For now though, it is Python 2.7 only.
 
 <br>
 
@@ -49,7 +45,7 @@ Connecting to the device
 
 A lot of the Arista examples in the documentation seem to steer you towards creating and using a configuration file. I do not really like that and luckily, we do not have to do this. 
 
-We can use the following script to send a command to the device:
+After installing `pyeapi` using `pip install pyeapi`, we are now good to go and we can use the following script to send a command to the device:
 
 ```python
 import pyeapi
@@ -254,5 +250,5 @@ Closing thoughts
 
 The eAPI certain looks to be of great value for anything related to operations. I like how easy it is to translate your CLI routines into a script and how you can use the CLI to discover how output will be presented in JSON. Working out how to automate tasks currently done from the CLI is pretty easy.
 
-
+Note: according to the documentation, support for Python 3 is in the works. For now though, it is Python 2.7 only.
 
