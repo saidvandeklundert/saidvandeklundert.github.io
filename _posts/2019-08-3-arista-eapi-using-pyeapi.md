@@ -38,7 +38,7 @@ Connecting to the device
 ========================
 
 
-After installing `pyeapi` using `pip install pyeapi` we are good to go and we can use the following script to send a command to the device:
+After installing `pyeapi` using `pip install pyeapi` we can use the following to send a command to the device:
 
 ```python
 import pyeapi
