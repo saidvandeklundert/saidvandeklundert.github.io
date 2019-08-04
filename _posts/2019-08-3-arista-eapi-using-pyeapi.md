@@ -62,9 +62,7 @@ version_info = eapi.run_commands(['show version',])
 pprint.pprint(version_info)
 ```
 
-Here, we pass the `eapi_param` to `pyeapi.client.Node()`. As a result, we can use the `eapi` object to communicate with the device.
- 
-Then we call the `run_commands` method, which enables us to send a list of commands to the device. The output is stored in `version_info` and finally, we print that to screen.
+Here, we pass the `eapi_param` to `pyeapi.client.Node()`. As a result, we can use the `eapi` object to communicate with the device. Then we call the `run_commands` method, which enables us to send a list of commands to the device. The output is stored in `version_info` and finally, we print that to screen.
 
 When we run the script, we get the following output:
 
