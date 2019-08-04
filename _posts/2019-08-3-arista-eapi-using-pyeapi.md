@@ -191,7 +191,7 @@ When we run the script, we get the following:
                 'Port-Channel7': {'mlag_id': '7'}}}
 ```
 
-This gives us the MLAG configuration in dictionary format. 
+This gives us the MLAG configuration as a dictionary. 
 
 There are plenty of other APIs available to us in addition to `mlag` (https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html). 
 
