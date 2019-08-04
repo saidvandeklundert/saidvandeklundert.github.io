@@ -111,7 +111,7 @@ The resulting output from this addition to the script was the following:
 Familiarity with the CLI will allow you to quickly add whatever you need. Another thing worth noting is that you can use `| json` on the CLI to figure out the reponse from the eAPI in advance:
 
 
-```json
+<pre>
 lr.lon01#show mlag | json 
 {
     "localInterface": "Vlan4000",
@@ -136,7 +136,7 @@ lr.lon01#show mlag | json
     }
 }
 lr.lon01#
-```
+</pre>
 
 This is a nice way to see what what return value you will be dealing with. 
 
