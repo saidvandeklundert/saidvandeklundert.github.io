@@ -193,20 +193,9 @@ When we run this script, we get the following:
 >>> 
 ```
 
-This gives us the MLAG configuration in dictionary format. 
+This gives us the MLAG configuration in dictionary format. The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). We simply used `get` to check the configuration of the mlag. We did that using `mlag_d = mlag.get()` which was pretty printed to screen afterwards.
 
-So we see `eapi` is a class with several methods. Previously, we used `run_commands`. This time though, we used the `api` method. The APIs available to us is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html.
-
-In our example,  we checked the `mlag` api using `mlag = eapi.api('mlag')`:
-
-
-```
-
-We have several things to work with here. The description of all these methods is found here: https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html
-
-In our example we used `get` to check the configuration of the mlag. We did that using `mlag_d = mlag.get()` which was pretty printed to screen afterwards.
-
-Some insight into how easy it is to extend the script to other parts of the configuration:
+In our example, we checked the `mlag` api using `mlag = eapi.api('mlag')` but there are plenty of other APIs available to us and they are found here: https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html. Some insight into how easy it is to extend the script to other parts of the configuration:
 
 ```python
 ospf = eapi.api('ospf')
