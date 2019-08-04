@@ -166,9 +166,9 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-Previously, we used the `run_commands` method that the `'pyeapi.client.Node'` has to offer. This time, we call the `api` method for `mlag` using `mlag = eapi.api('mlag')`.
+Previously, we used the `run_commands` method that the `'pyeapi.client.Node'` offers. This time, we call the `api` method for `mlag` using `mlag = eapi.api('mlag')`.
 
-The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). We simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
+The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). Here, we simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
 
 When we run the script, we get the following:
 
