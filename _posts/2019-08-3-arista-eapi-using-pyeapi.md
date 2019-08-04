@@ -111,7 +111,7 @@ The resulting output from this addition to the script was the following:
 Familiarity with the CLI will allow you to quickly add whatever you need. Another thing worth noting is that you can use `| json` on the CLI to figure out the reponse from the eAPI in advance:
 
 
-<pre>
+```json
 lr.lon01#show mlag | json 
 {
     "localInterface": "Vlan4000",
@@ -136,7 +136,7 @@ lr.lon01#show mlag | json
     }
 }
 lr.lon01#
-</pre>
+```
 
 This is a nice way to see what what return value you will be dealing with. 
 
@@ -166,7 +166,7 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-Previously, we used the `run_commands` method that the `'pyeapi.client.Node'` offers. This time, we call the `api` method for `mlag` using `mlag = eapi.api('mlag')`.
+Previously, we used the `run_commands` method that the `pyeapi.client.Node` offers. This time, we call the `api` method for `mlag` using `mlag = eapi.api('mlag')`.
 
 The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). Here, we simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
 
@@ -214,7 +214,7 @@ Closing thoughts
 ================
 
 
-The eAPI looks pretty neat. Using it to scan through configuration is very easy and I like how simple it is to translate your CLI routines into a script. If you have some basic understanding of Python and some exposure to the Arista CLI, you should be able to quickly build some interesting scripts.
+The eAPI looks pretty neat. Using it to scan through configuration is very easy and I like how simple it is to translate your CLI routines into a script. If you have some basic understanding of Python and some exposure to the Arista CLI, you should be able build interesting scripts quickly.
 
-
+<br>
 Note: according to the documentation, `pyeapi` support for Python 3 is in the works. For now though, it is Python 2.7 only.
