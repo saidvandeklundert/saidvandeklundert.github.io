@@ -5,7 +5,7 @@ image: /img/arista_logo.jpg
 ---
 
 
-The Arista EOS command API, or <b>eAPI</b>, has been maturing ever since eos 4.12. Recently, I started to look into ways to use this API for information retrieval. In this article, I am sharing what I learned exploring the eAPI using a library called <b>pyeapi</b>.
+The Arista EOS command API, or <b>eAPI</b>, has been maturing ever since EOS 4.12. Recently, I started to look into ways to use this API for information retrieval. In this article, I am sharing what I learned exploring the eAPI using a library called <b>pyeapi</b>.
 
 <br>
 
@@ -62,11 +62,11 @@ version_info = eapi.run_commands(['show version',])
 pprint.pprint(version_info)
 ```
 
-Here, we pass the `eapi_param` to `pyeapi.client.Node()`. As a result, the `eapi` Node object provides us with an instance to communicate with the device.
+Here, we pass the `eapi_param` to `pyeapi.client.Node()`. As a result, we can use the `eapi` object to communicate with the device.
  
-After having done this, we call the `run_commands` method, which enables us to send a list of commands to the device. The output is stored in `version_info` and finally, we print that to screen.
+Then we call the `run_commands` method, which enables us to send a list of commands to the device. The output is stored in `version_info` and finally, we print that to screen.
 
-So let’s run the example script and examine the output:
+When we run the script, we get the following output:
 
 ```python
 [{u'architecture': u'i386',
