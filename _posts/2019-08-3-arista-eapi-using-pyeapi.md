@@ -171,7 +171,11 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-When we run this script, we get the following:
+Previously, we used the `run_commands` method that the `'pyeapi.client.Node'` has to offer. This time, we call the `api` method for `mlag` using `mlag = eapi.api('mlag')`.
+
+The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). We simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
+
+When we run the script, we get the following:
 
 ```python
 {'config': {'domain_id': None,
@@ -193,7 +197,7 @@ When we run this script, we get the following:
 >>> 
 ```
 
-This gives us the MLAG configuration in dictionary format. The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). We simply used `get` to check the configuration of the mlag. We did that using `mlag_d = mlag.get()` which was pretty printed to screen afterwards.
+This gives us the MLAG configuration in dictionary format. 
 
 There are plenty of other APIs available to us in addition to `mlag` (https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html). 
 
@@ -234,6 +238,8 @@ Let’s check out `eapi` in more detail:
 <class 'pyeapi.client.Node'>
 >>> eapi
 Node(connection=EapiConnection(transport=https://lr.lon01:443//command-api))
+```
+```
 >>> dir(eapi)
 ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_connection', '_enablepwd', '_get_version_properties', '_model', '_running_config', '_startup_config', '_version', '_version_number', 'api', 'autorefresh', 'config', 'connection', 'enable', 'enable_authentication', 'get_config', 'model', 'refresh', 'run_commands', 'running_config', 'section', 'settings', 'startup_config', 'version', 'version_number']
 ```
