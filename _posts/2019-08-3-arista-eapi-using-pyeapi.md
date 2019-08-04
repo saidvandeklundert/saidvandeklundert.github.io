@@ -214,8 +214,6 @@ acl = eapi.api('acl')
 acl_d = acl.getall()
 ```
 
-Using the API to scan through configuration is easy and it beats string methods and regex I have been using up untill now! I'll save working with the other methods available for another time.
-
 <br>
 
 Closing thoughts
@@ -224,7 +222,9 @@ Closing thoughts
 
 The eAPI certain looks to be of great value for anything related to operations. I like how easy it is to translate your CLI routines into a script and how you can use the CLI to discover how output will be presented in JSON. Working out how to automate tasks currently done from the CLI is pretty easy.
 
-Note: according to the documentation, support for Python 3 is in the works. For now though, it is Python 2.7 only.
+Additionally, using the API to scan through configuration is easy and it beats string methods and regex I have been using up untill now. I'll save working with the other methods available for another time.
+
+Note: according to the documentation, `pyeapi` support for Python 3 is in the works. For now though, it is Python 2.7 only.
 
 
 
