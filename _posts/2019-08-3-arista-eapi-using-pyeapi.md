@@ -76,9 +76,9 @@ Running the script gives us the following output:
   u'version': u'4.18.0F'}]
 ```
 
-Structured data, great! 
+Structured data, great! No more need to create `textfsm` templates.
 
-When I started out, the thing I was most interested in was verifying the mlag status in a script. So the next thing I did after `show version` was add `show mlag`:
+When I started out, the thing I was most interested in was verifying the mlag status in a script. So the first thing I did after `show version` was add `show mlag`:
 
 ```python
 mlag_info = eapi.run_commands(['show mlag',])
