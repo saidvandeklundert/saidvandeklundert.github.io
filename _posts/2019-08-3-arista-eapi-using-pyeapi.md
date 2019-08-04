@@ -13,18 +13,14 @@ Enabling the API
 ================
 
 
-To enable the API on the device, we can apply the following configuration:
+To enable the API on the device and allow access from a vrf called `lab`, I used the following configuration:
 
 <pre>
-configure terminal
 management api http-commands
-no shutdown
-</pre>
-
-In case you are accessing the device through an interface that is placed inside a vrf, you need to add configuration to allow API access from that vrf as well. The following would be required to enable the API for the `lab` vrf:
-
-<pre>
-   vrf lab
+   protocol http
+   no shutdown
+   !
+   vrf labmgmt
       no shutdown
 </pre>
 
