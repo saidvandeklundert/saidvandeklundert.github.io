@@ -138,7 +138,7 @@ lr.lon01#show mlag | json
 lr.lon01#
 </pre>
 
-Good stuff! This is a nice way to see what command you should put in your script and what return value you will be dealing with. 
+This is a nice way to see what what return value you will be dealing with. 
 
 <br>
 
