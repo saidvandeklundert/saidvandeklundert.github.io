@@ -38,7 +38,7 @@ Connecting to the device
 ========================
 
 
-After installing `pyeapi` using `pip install pyeapi` we can use the following to send a command to the device:
+After installing `pyeapi` using `pip install pyeapi`, we can use the following to send a command to the device:
 
 ```python
 import pyeapi
@@ -76,7 +76,7 @@ Running the script gives us the following output:
   u'version': u'4.18.0F'}]
 ```
 
-We get a dictionary in a list, great! 
+Structured data, great! 
 
 When I started out, the thing I was most interested in was verifying the mlag status in a script. So the next thing I did after `show version` was add `show mlag`:
 
