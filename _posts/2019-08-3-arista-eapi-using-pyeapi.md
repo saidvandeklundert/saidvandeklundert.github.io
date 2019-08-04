@@ -17,7 +17,6 @@ To enable the API on the device and allow access from a vrf called `lab`, I used
 
 <pre>
 management api http-commands
-   protocol http
    no shutdown
    !
    vrf labmgmt
