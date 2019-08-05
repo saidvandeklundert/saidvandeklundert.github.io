@@ -146,7 +146,7 @@ Using the API module
 ====================
 
 
-So far, we have been sending CLI commands to the device. But Arista also offers <b>API modules</b> to retrieve and manipulate configuration. Let’s look at an example script where we inspect the MLAG configuration of a device: 
+In addition to sending CLI commands to the device, the eAPI also offers <b>API modules</b> to retrieve and manipulate configuration. Let’s look at an example script where we inspect the MLAG configuration of a device: 
 
 ```python
 import pyeapi
@@ -166,9 +166,7 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-Previously, we used the `run_commands` method that the `pyeapi.client.Node` offers. This time, we call the `api` method for `mlag` using `mlag = eapi.api('mlag')`.
-
-The `mlag` API gives us several methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). Here, we simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
+We call the `api` method for `mlag` using `mlag = eapi.api('mlag')`. This `mlag` object in turn gives us several new methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). Here, we simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
 
 When we run the script, we get the following:
 
@@ -193,7 +191,7 @@ When we run the script, we get the following:
 
 This gives us the MLAG configuration as a dictionary. 
 
-There are plenty of other APIs available to us in addition to `mlag` (https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html). 
+There are plenty of other API modules available to us in addition to `mlag` (https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html). 
 
 Some insight into how easy it is to use the `get` method on the other APIs:
 
