@@ -108,7 +108,7 @@ The resulting output from this addition to the script was the following:
   u'systemId': u'47:3c:b8:44:11:29'}]
 ```
 
-Familiarity with the CLI will allow you to quickly add whatever you need. Another thing worth noting is that you can use `| json` on the CLI to figure out the reponse from the eAPI in advance:
+Familiarity with the CLI will allow you to quickly add whatever you need. Another thing worth noting is that you can use `| json` on the CLI to figure out the response from the eAPI in advance:
 
 
 <pre>
@@ -138,7 +138,7 @@ lr.lon01#show mlag | json
 lr.lon01#
 </pre>
 
-This is a nice way to see what what return value you will be dealing with. 
+This is a nice way to see what return value you will be dealing with. 
 
 <br>
 
@@ -166,7 +166,7 @@ mlag_d = mlag.get()
 pprint.pprint(mlag_d)
 ```
 
-We call the `api` method for `mlag` using `mlag = eapi.api('mlag')`. This `mlag` object in turn gives us several new methods to work with ( https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html ). Here, we simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
+We call the `api` method for `mlag` using `mlag = eapi.api('mlag')`. This `mlag` object in turn gives us several new methods to work with. You can check [here](https://pyeapi.readthedocs.io/en/latest/api_modules/mlag.html) to find out about all of the methods. Right now, we simply use `get` to check the configuration of the mlag using `mlag_d = mlag.get()`. 
 
 When we run the script, we get the following:
 
@@ -191,7 +191,7 @@ When we run the script, we get the following:
 
 This gives us the MLAG configuration as a dictionary. 
 
-There are plenty of other API modules available to us in addition to `mlag` (https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html). 
+There are plenty of other API modules available to us in addition to `mlag` and you can find them [here](https://pyeapi.readthedocs.io/en/latest/api_modules/_list_of_modules.html). 
 
 Some insight into how easy it is to use the `get` method on the other APIs:
 
