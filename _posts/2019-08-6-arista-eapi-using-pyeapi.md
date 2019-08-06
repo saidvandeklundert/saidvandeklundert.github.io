@@ -146,7 +146,7 @@ Using the API module
 ====================
 
 
-In addition to sending CLI commands to the device, the eAPI also offers <b>API modules</b> to retrieve and manipulate configuration. Let’s look at an example script where we inspect the MLAG configuration of a device: 
+In addition to sending CLI commands to the device, the eAPI also offers <b>API modules</b> to inspect and change configuration. Let’s look at an example script where we check out the MLAG configuration of a device: 
 
 ```python
 import pyeapi
