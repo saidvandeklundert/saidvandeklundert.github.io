@@ -4,9 +4,9 @@ title: Using the Junos proxy minion in SaltStack.
 image: /img/salt_stack_logo.jpg
 ---
 
-To enable SaltStack to control devices that cannot run standard salt-minion software, we turn to proxy minions. The proxy minion is a process that Salt controls as if it is a minion. In turn, the proxy minion controls a device through API or CLI commands.
+To enable <b>SaltStack</b> to control devices that cannot run standard salt-minion software, we turn to proxy minions. The proxy minion is a process that Salt controls as if it were a minion. In turn, the proxy minion controls a device through the API or through CLI commands.
 
-When we want to have SaltStack control Juniper devices, we can choose from the following proxy minion software: `netmiko`, `napalm` or `junos`.
+When we want to have SaltStack control <b>Juniper</b> devices, we can choose from the following proxy minion software: `netmiko`, `napalm` or `junos`.
 
 This article is about the <b>Junos</b> proxy minion and the focus is on using the standard functions that the minion provides you with.
 
