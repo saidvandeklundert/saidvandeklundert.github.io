@@ -87,7 +87,8 @@ Exploring the proxy minion
 
 The first thing you'll probably be interested in doing is sending some commands to the device.
 
-`salt dar01-dal05-lab03 junos.cli ' show ospf neighbor interface ae2.2'`
+Let's start issuing the `salt dar01-dal05-lab03 junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command and wait for the return:
+
 ```yaml
 dar01-dal05-lab03:
     ----------
@@ -99,7 +100,8 @@ dar01-dal05-lab03:
         True
 ```        
 
-`salt dar01-dal05-lab03 junos.rpc get-ospf-neighbor-information interface='ae2.2'`
+Instead of a CLI command, we can also use and RPC. Let issue the following `salt dar01-dal05-lab03 junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command anf see the return:
+
 ```yaml
 dar01-dal05-lab03:
     ----------
@@ -125,10 +127,11 @@ dar01-dal05-lab03:
                     Full
 ``` 
 
+Not text, but structured data. By default, the Juniper proxy minion uses `jxmlease` to 'dictify' the return.
 
-Sending ICMP to another device:
+Let's try sending ICMP to another device using `salt dar01-dal05-lab03 junos.ping '50.22.118.15' count=5 rapid=True`:
+
 ```yaml
-/ $ salt dar01-dal05-lab03 junos.ping '50.22.118.15' count=5 rapid=True
 dar01-dal05-lab03:
     ----------
     message:
@@ -155,15 +158,8 @@ dar01-dal05-lab03:
         True
 ```        
 
-Display the facts from the device:
-`salt dar01-dal05-lab03 junos.facts`
+The Junos proxy minion also gathers some facts about the device by default. This facts are set as grains. To display the facts from the device, you can use `salt dar01-dal05-lab03 junos.facts`. These facts do no change that often, but in just in case , you can refresh them using `salt dar01-dal05-lab03 junos.facts_refresh`.
 
-Reload the facts dictionary from the device:
-`salt dar01-dal05-lab03 junos.facts_refresh`
-
-
-The following will give you all the functions available to you in the execution module that Salt provides you with:
-`salt dar01-dal05-lab03 junos`
 
 <br>
 
@@ -328,3 +324,6 @@ admin@dar02.ims> show system commit
 
 
 ( Listed at the top of this module are the two main dependencies: junos-eznc, jxmlease )
+
+The following will give you all the functions available to you in the execution module that Salt provides you with:
+`salt dar01-dal05-lab03 junos`
