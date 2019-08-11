@@ -10,16 +10,15 @@ When we want to have SaltStack control <b>Juniper</b> devices, we can choose fro
 
 This article is about the <b>Junos</b> proxy minion and the focus is on using the standard functions that the minion provides you with.
 
-
+<br>
 Juniper proxy minion background
 ===============================
 
-The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. Junos PyEZ is `a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)` (From the PyEZ developer guide). 
+The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. Junos PyEZ is '<b>a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)</b>' ( from the PyEZ developer guide). 
 
-If you have worked with PyEZ before, the execution module should read as something that contains a lot of familiarities: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py` It provides you with a lot of functions that will see you through the basics getting things done. 
+If you have worked with PyEZ before, the execution module should read as something that seems familiar: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py`. The execution module provides you with a lot of functions that will enable you to get most of the basic things done. Before we dive into that, let's start a proxy minion process first.
 
-( Listed at the top of this module are the two main dependencies: junos-eznc, jxmlease )
-
+<br>
 Setting up the proxy minion
 ===========================
 
@@ -76,7 +75,7 @@ If running the proxy minion in debug mode does not offer you any clues, consider
 - /var/log/salt/proxy
 - /var/log/salt/master
 
-
+<br>
 Exploring the proxy minion
 ==========================
 
@@ -161,6 +160,7 @@ Reload the facts dictionary from the device:
 The following will give you all the functions available to you in the execution module that Salt provides you with:
 `salt dar01-dal05-lab03 junos`
 
+<br>
 Working with the configuration
 ==============================
 
@@ -318,3 +318,7 @@ admin@dar02.ims> show system commit
 1   2019-08-09 20:28:42 UTC by admin via netconf
     yolo
 ```    
+
+
+
+( Listed at the top of this module are the two main dependencies: junos-eznc, jxmlease )
