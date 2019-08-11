@@ -4,26 +4,26 @@ title: Using the Junos proxy minion in SaltStack.
 image: /img/salt_stack_logo.jpg
 ---
 
-To be able control devices that cannot run standard salt-minion software, we turn to proxy minions in SaltStack. The proxy minion is a process that Salt controls as a minion. In turn, the proxy minion controls a device through API or CLI commands. 
+To enable SaltStack to control devices that cannot run standard salt-minion software, we turn to proxy minions. The proxy minion is a process that Salt controls as if it is a minion. In turn, the proxy minion controls a device through API or CLI commands.
 
-Software for these proxy minions does not come from Salt directly. When we want to have SaltStack control Juniper devices, we can choose from the following proxy minion software: `netmiko`, `napalm` and `junos`.
+When we want to have SaltStack control Juniper devices, we can choose from the following proxy minion software: `netmiko`, `napalm` or `junos`.
 
-This article is about the Junos proxy minion and the focus is on using the standard functions that the minion provides you with.
+This article is about the <b>Junos</b> proxy minion and the focus is on using the standard functions that the minion provides you with.
 
 
 Juniper proxy minion background
 ===============================
 
-The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. From the PyEZ developer guide: `Junos PyEZ is a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)`. 
+The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. Junos PyEZ is `a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)` (From the PyEZ developer guide). 
 
-If you have worked with PyEZ before, the execution module should read as something that contains a lot of familiarities: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py`
+If you have worked with PyEZ before, the execution module should read as something that contains a lot of familiarities: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py` It provides you with a lot of functions that will see you through the basics getting things done. 
 
-Dependencies: junos-eznc, jxmlease
+( Listed at the top of this module are the two main dependencies: junos-eznc, jxmlease )
 
 Setting up the proxy minion
 ===========================
 
-Setting up the proxy minion requires that you create a file for the proxy mininon, where you specify the connection details. Using `cat /srv/pillar/dar01_dal05_lab03.sls ` to check the file used for this article gives us the following:
+Setting up the proxy minion requires that you create a file for the proxy mininon, where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/dar01_dal05_lab03.sls `:
 
 ```yaml
 proxy:
@@ -35,7 +35,7 @@ proxy:
 minion_id: dar01-dal05-lab03
 ```  
 
-The proxy minion needs to be reference in the top file. In this case, since the focus is on the proxy minion itself, there is a very simple and straightforward top file. Using `cat /srv/pillar/top.sls`, we see it contains the following:
+The proxy minion needs to be referenced in the top file also. Using `cat /srv/pillar/top.sls`, we see it contains the following:
 
 ```yaml
 base:
@@ -44,7 +44,7 @@ base:
     - lab_pillar
 ```
 
-To start the proxy minion as a daemon, we issue the following command:
+Next, we start start the proxy minion as a daemon. To this end, we issue the following command:
 
 ```
 salt-proxy -d --proxyid=dar01-dal05-lab03                
@@ -52,26 +52,29 @@ salt-proxy -d --proxyid=dar01-dal05-lab03
 
 We can now see that the proxy minion process is running:
 
-```
-/ $ ps ax| grep dar
+```bash
+/ $ ps ax| grep ar
 20862 ?        Sl    88:13 /usr/bin/python2 /usr/bin/salt-proxy -d --proxyid=dar01-dal05-lab03
 ```
 
-Testing to see if the Salt master can communicate with the proxy minion process, we use `salt dar01-dal05-lab03 test.ping`:
+To test and see if the Salt master can communicate with the proxy minion process, we use `salt dar01-dal05-lab03 test.ping`:
 
 ```yaml
 dar01-dal05-lab03:
     True
 ```    
 
-This is not an ICMP ping, and this only proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. 
+This is not an ICMP ping, rather, a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. We can send a CLI command to check and see if the proxy minion process can communicate with the device using `salt dar01-dal05-lab03 junos.cli 'show version'` for instance.
 
-When the proxy minion is not running or responding, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen:
+When the proxy minion is not running or responding, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
 
 ```
-salt-proxy --proxyid=fcs386.sr03.wdc01 -l debug  
+salt-proxy --proxyid=dar01-dal05-lab03 -l debug  
 ```
 
+If running the proxy minion in debug mode does not offer you any clues, consider looking into the proxy minion logs and the log of the Salt master. These log files are the following:
+- /var/log/salt/proxy
+- /var/log/salt/master
 
 
 Exploring the proxy minion
