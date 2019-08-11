@@ -38,7 +38,7 @@ proxy:
 minion_id: dar01-dal05-lab03
 ```  
 
-The proxy minion needs to be referenced in the top file also. Using `cat /srv/pillar/top.sls`, we see it contains the following:
+The proxy minion needs to be referenced in the top file as well. Using `cat /srv/pillar/top.sls`, we see our example contains the following:
 
 ```yaml
 base:
@@ -49,7 +49,7 @@ base:
 
 Next, we start start the proxy minion as a daemon. To this end, we issue the following command:
 
-```
+```bash
 salt-proxy -d --proxyid=dar01-dal05-lab03                
 ```
 
