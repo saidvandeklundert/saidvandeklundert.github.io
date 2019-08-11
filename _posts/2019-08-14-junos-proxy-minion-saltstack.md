@@ -15,7 +15,7 @@ This article is about the <b>Junos</b> proxy minion and the focus is on using th
 Juniper proxy minion background
 ===============================
 
-The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. Junos PyEZ is '<b>a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)</b>' ( from the PyEZ developer guide). 
+The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. Junos PyEZ is '<i>a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)</i>' ( from the PyEZ developer guide). 
 
 The basic functions that come with the proxy minion are found in the execution module. In case you have ever working with PyEZ, some of the things in there should seem familiar: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py`. 
 
