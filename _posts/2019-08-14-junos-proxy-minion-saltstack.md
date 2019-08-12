@@ -337,17 +337,15 @@ admin@dar02.ims> show system commit
 Wrapping up
 ===========
 
-In this article we explored some of the execution module functions that the <b>Junos</b> proxy provides you with. To see all the functions there are, you can either check the documentation use issue the following Salt CLI command: `salt dar01-dal05-lab03 junos`.
+In this article we explored the <b>Junos</b> proxy minion and we investigated some of the execution module functions that it is provided with. 
 
-The execution module functions are great for several reasons:
-- playing around and getting to know the Junos proxy minion
-- ad-hoc information gathering leveraging CLI/RPCs you already know and using Salt's 0MQ to gather information from the network
-- testing and verifying new features you are adding to Salt yourself
+The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ before a running start.
 
-The execution module functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Funny thing though about these state functions, https://github.com/saltstack/salt/blob/develop/salt/states/junos.py, they leverage the custom execution modules also! So building some familiarity with the execution modules will help you better understand the states that come with the minion as well as help you imagine how you could start writing you own custom execution modules and/or custom states.
+The execution module functions are great for several reasons. First of all, they are great playing around and getting to know the Junos proxy minion. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network.
 
+But apart from applying the execution module functions immediately, like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also! 
 
-
+All in all, building some familiarity with the execution module will help you better understand the states that come with the minion. Studying the execution modules in more detail will help you imagine how you could start writing you own custom execution modules and/or custom states to do things your own way.
 
 
 
@@ -355,8 +353,5 @@ The execution module functions can be seen as 'low-level' building blocks. When 
 
 
 
-Note that you cannot use  `|` when you are sending commands to the device. So in case you want to filter parts of the text
-```
-/ $ salt dar01-dal05-lab03 junos.cli 'show version' | grep Junos:
-        Junos: 16.1R3-S8
-``` 
+We did not touch all execution module function. To see all the functions there are, you can either check the documentation use issue the following Salt CLI command: `salt dar01-dal05-lab03 junos`. 
+
