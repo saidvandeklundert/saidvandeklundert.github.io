@@ -199,7 +199,7 @@ These grains are provided right out of the box. Thoug it makes for a nice start,
 Working with the configuration
 ==============================
 
-As far as working with the configuration goes, the execution module has the basics covered. Let's check the template we will be working with in this example using `cat /srv/salt/templates/juniper/arp.set`:
+As far as working with the configuration goes, the `junos` execution module has all the basics covered. Let's check the template we will be working with in this example using `cat /srv/salt/templates/juniper/arp.set`:
 
 ```
 set system arp passive-learning
