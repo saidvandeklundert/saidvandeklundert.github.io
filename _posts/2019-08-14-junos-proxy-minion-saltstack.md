@@ -136,7 +136,7 @@ ar01-lab:
                     Full
 ``` 
 
-Because the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return, we get structured data in dictionary format.
+SaltStack does have to parse the XML Juniper returns because the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return. Anyway, we get structured data in dictionary format. 
 
 Another 'basic' thing would be to have the proxy minion proces make the managed device send ICMPs to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
 
