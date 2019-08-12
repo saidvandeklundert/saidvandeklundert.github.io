@@ -194,7 +194,7 @@ ar01-lab:
             16.1R3-S8
 ```
 
-These grains are provided right out of the box. Though it makes for a nice start, I do think it is worthwhile to consider writing your own for templating and targeting purposes. More on that [here](https://saidvandeklundert.net/2019-05-10-setting-grains-in-saltstack/).
+These grains are provided right out of the box. Though it makes for a nice start, I do think it is worthwhile to consider writing your own functions that set additional grains for templating and targeting purposes. More on that [here](https://saidvandeklundert.net/2019-05-10-setting-grains-in-saltstack/).
 
 <br>
 
