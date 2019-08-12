@@ -328,7 +328,7 @@ ar01-lab:
 / $ 
 ```
 
-Notice 2 optional keywords I used here. First of is the <b>mode</b>. By setting the mode to private, we ensure that the candidate configuration we create is for our current user only. This means we cannot inadvertently include configuration statements that other users have put into their candidate configuration.
+Notice the 2 additional and optional keywords I used here. First of is the <b>mode</b>. By setting the mode to private, we ensure that the candidate configuration we create is for our current user only. This means we cannot inadvertently include configuration statements that other users have put into their candidate configuration.
 Second is the <b>comment</b>. This an optional message for others to read in the commit log using `show system commit`.
 
 After the change, we can see the following on the device:
