@@ -281,7 +281,7 @@ admin@dar02.ims>
 Instead of performing a `rollback`, we could have also used `junos.commit` to commit the candidate configuration and make our changes take effect. Let's take a different approach here and do everything in one go. The following Salt CLI command will render the tempalte and apply it:
 
 ```yaml
-/ $ salt dar01-dal05-lab03 junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='yolo' 
+/ $ salt dar01-dal05-lab03 junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='salty' 
 dar01-dal05-lab03:
     ----------
     message:
@@ -328,15 +328,23 @@ admin@dar02.ims> show configuration system arp
 admin@dar02.ims> show system commit               
 0   2019-08-09 20:31:33 UTC by admin via netconf
 1   2019-08-09 20:28:42 UTC by admin via netconf
-    yolo
+    salty
 ```    
 
 
+Wrapping up
+===========
 
-( Listed at the top of this module are the two main dependencies: junos-eznc, jxmlease )
+In this article we explored some of the the execution module functions that the <b>Junos</b> proxy provides you with. To see all the functions there are, you can either check the documentation use issue the following Salt CLI command: `salt dar01-dal05-lab03 junos`.
 
-The following will give you all the functions available to you in the execution module that Salt provides you with:
-`salt dar01-dal05-lab03 junos`
+The execution module functions are great for several reasons:
+- playing around and getting to know the Junos proxy minion
+- ad-hoc information gathering leveraging CLI/RPCs you already know and using Salt's 0MQ to gather information from the network
+- testing and verifying new features you are adding to Salt yourself
+
+The execution module functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Funny thing though about these state functions, https://github.com/saltstack/salt/blob/develop/salt/states/junos.py, they leverage the custom execution modules also! So building some familiarity with the execution modules will help you better understand the states that come with the minion as well as help you imagine how you could start writing you own custom execution modules and/or custom states.
+
+
 
 
 
