@@ -88,7 +88,7 @@ Exploring the proxy minion
 
 Now that we have the proxy minion running, the first thing you'll probably be interested in doing is sending some commands to the device. 
 
-Let's start by issuing the `salt ar01-lab junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command:
+Let's start by issuing the `salt ar01-lab junos.cli 'show ospf neighbor interface ae2.2'` Salt CLI command:
 
 ```yaml
 ar01-lab:
@@ -107,11 +107,11 @@ Let's go back to the syntax discussed earlier:
 salt <proxy-minion> <execution-module.function> <parameters>
 ```
 
-What we did here was the following:
-- invoke the Salt CLI using `salt`
-- target the `ar01-lab` proxy minion
-- call the `cli` function from the execution `junos` execution module
-- pass the function the `show ospf neighbor interface ae2.2` argument
+In our example interaction with the proxy minion, we:
+- invoked the Salt CLI using `salt`
+- targeted the `ar01-lab` proxy minion
+- called the `cli` function from the `junos` execution module
+- passed `show ospf neighbor interface ae2.2` as an argument to the function
 
 Instead of a CLI command, we can also execute an RPC. Let issue the following `salt ar01-lab junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command:
 
@@ -142,8 +142,7 @@ ar01-lab:
 
 Structured data in dictionary format. By default, the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return.
 
-
-Let's try sending ICMP to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
+In addition to a CLI/RPC, another 'basic' thing would be to have the proxy minion proces make the managed device send ICMPs to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
 
 ```yaml
 ar01-lab:
@@ -172,8 +171,31 @@ ar01-lab:
         True
 ```        
 
-The Junos proxy minion also gathers some facts about the device by default. This facts are stored as grains data. To display the facts from the device, you can use `salt ar01-lab junos.facts`. These facts do no change that often, but you can refresh them using `salt ar01-lab junos.facts_refresh`.
+When the Junos proxy minion starts, it will use RPCs to gather some information about the device it is managing. This information is gathered using the `facts` function and this data is stored as grains data. To display the facts from the device, you can use `salt ar01-lab junos.facts`. These facts do no change that often, but you can refresh them using `salt ar01-lab junos.facts_refresh`. The following sample is part of the output gotten from running `salt ar01-lab junos.facts`:
+```yaml
+ar01-lab:
+    ----------
+    facts:
+        ----------
+        2RE:
+            False
+        RE0:
+            ----------
+            last_reboot_reason:
+                Router rebooted after a normal shutdown.
+            model:
+                RE-S-1800x4
+            up_time:
+                482 days, 17 hours, 3 minutes, 32 seconds
+        model:
+            MX240                
+        serialnumber:
+            JN124999CAFC
+        version:
+            16.1R3-S8
+```
 
+These grains are provided right out of the box. Thoug it makes for a nice start, I do think it is worthwhile to consider writing your own for templating and targeting purposes. More on that [here](https://saidvandeklundert.net/2019-05-10-setting-grains-in-saltstack/).
 
 <br>
 
