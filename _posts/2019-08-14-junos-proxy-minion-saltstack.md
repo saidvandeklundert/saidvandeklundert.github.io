@@ -172,7 +172,9 @@ As far as working with the configuration goes, the execution module has the basi
 set system arp passive-learning
 ```
 
-This configuration is not present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
+This basic example tempalte will be enough to demonstrate the use of the execution modules. For more information on how to template in Salt, check this article: [Templating for network engineers in SaltStack ](https://saidvandeklundert.net/2019-06-08-templating-for-network-engineers-in-saltstack/).
+
+Back to our example. The configuration from the tempalte is not (yet) present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
 
 ```yaml
 / $  salt dar01-dal05-lab03 junos.load salt://templates/juniper/arp.set format='set'
