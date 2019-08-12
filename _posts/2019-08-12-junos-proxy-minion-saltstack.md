@@ -98,7 +98,7 @@ ar01-lab:
     message:
         
         Address          Interface              State     ID               Pri  Dead
-        50.22.118.159    ae2.2                  Full      50.22.118.241      0    30
+        192.22.118.159    ae2.2                  Full      192.22.118.241      0    30
     out:
         True
 ```            
@@ -127,9 +127,9 @@ ar01-lab:
                 interface-name:
                     ae2.2
                 neighbor-address:
-                    50.22.118.159
+                    192.22.118.159
                 neighbor-id:
-                    50.22.118.241
+                    192.22.118.241
                 neighbor-priority:
                     0
                 ospf-neighbor-state:
@@ -138,7 +138,7 @@ ar01-lab:
 
 SaltStack does have to parse the XML Juniper returns because the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return. Anyway, we get structured data in dictionary format. 
 
-Another 'basic' thing would be to have the proxy minion proces make the managed device send ICMPs to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
+Another 'basic' thing would be to have the proxy minion proces make the managed device send ICMPs to another device using `salt ar01-lab junos.ping '192.22.118.15' count=5 rapid=True`:
 
 ```yaml
 ar01-lab:
@@ -160,9 +160,9 @@ ar01-lab:
                 responses-received:
                     0
             target-host:
-                50.22.118.15
+                192.22.118.15
             target-ip:
-                50.22.118.15
+                192.22.118.15
     out:
         True
 ```        
@@ -303,13 +303,13 @@ admin@ar01-lab> monitor start interactive-commands | match NETCONF
 admin@ar01-lab> 
 *** interactive-commands ***
 
-Aug  9 20:13:55  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration action="set" format="text"'
+Aug  11 20:13:55  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration action="set" format="text"'
 
-Aug  9 20:14:00  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'get-configuration compare="rollback" rollback="0" format="text"'
+Aug  11 20:14:00  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'get-configuration compare="rollback" rollback="0" format="text"'
 
-Aug  9 20:14:08  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'commit-configuration check'
+Aug  11 20:14:08  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'commit-configuration check'
 
-Aug  9 20:14:16  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration compare="rollback" rollback="0"'
+Aug  11 20:14:16  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration compare="rollback" rollback="0"'
 
 monitor stop 
 
