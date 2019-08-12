@@ -51,16 +51,19 @@ We can now see that the proxy minion process is running:
 20862 ?        Sl    88:13 /usr/bin/python2 /usr/bin/salt-proxy -d --proxyid=ar01-lab
 ```
 
-To test and see if the Salt master can communicate with the proxy minion process, we use `salt ar01-lab test.ping`:
+Interacting with a proxy minion is done using the following syntax:
+
+```html
+salt <proxy minion> <execution-module.function> <parameters>
+```
+To test and see if the Salt master can communicate with the proxy minion process, we use the `ping` function from the `test` execution module. This would be done by issuing `salt ar01-lab test.ping`:
 
 ```yaml
 ar01-lab:
     True
 ```    
 
-This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. We can send a CLI command to check and see if the proxy minion process can communicate with the device using `salt ar01-lab junos.cli 'show version'` for instance.
-
-When the proxy minion is not running or responding, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
+This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. To see if the proxy minion process can communicate with the device, we can send a CLI command like `salt ar01-lab junos.cli 'show version'` for instance. When the proxy minion is not running or in case it fails to respond, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
 
 ```
 salt-proxy --proxyid=ar01-lab -l debug  
@@ -76,7 +79,7 @@ Exploring the proxy minion
 ==========================
 
 
-Now that we have the proxy minion running, the first thing you'll probably be interested in doing is sending some commands to the device.
+Now that we have the proxy minion running, the first thing you'll probably be interested in doing is sending some commands to the device. 
 
 Let's start by issuing the `salt ar01-lab junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command:
 
@@ -118,7 +121,7 @@ ar01-lab:
                     Full
 ``` 
 
-Structured data in dictionart format because by default, the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return.
+Structured data in dictionary format. By default, the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return.
 
 
 Let's try sending ICMP to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
