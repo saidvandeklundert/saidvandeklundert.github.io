@@ -344,7 +344,7 @@ The proxy minion works really well and allows for a seamless interaction with th
 
 The execution module functions are great for several reasons. First of all, they are great to play around with and will help getting to know the Junos proxy minion a little better. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network. Also note that we did not touch all execution module function. Using `salt ar01-lab junos`, you can see what other functions exists.
 
-Apart applying the execution module functions directly like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also. 
+Apart from applying the execution module functions directly like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also. 
 
 All in all, building some familiarity with the execution module will help you better understand the states that come with the minion and studying the execution modules in more detail will help you imagine how you can start writing you own custom execution modules and/or custom states to do things 100% your own way.
 
