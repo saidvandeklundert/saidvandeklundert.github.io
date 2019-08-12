@@ -26,7 +26,7 @@ The execution module provides you with a lot of functions that will enable you t
 Setting up the proxy minion
 ===========================
 
-Setting up the proxy minion requires that you create a file for the proxy minion where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/dar01_dal05_lab03.sls `:
+Setting up the proxy minion requires that you create a file for the proxy minion where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/ar01_lab.sls `:
 
 ```yaml
 proxy:
@@ -41,37 +41,37 @@ The proxy minion needs to be referenced in the top file as well. Using `cat /srv
 
 ```yaml
 base:
-  dar01-dal05-lab03:
-    - dar01_dal05_lab03
+  ar01-lab:
+    - ar01_lab
     - lab_pillar
 ```
 
 Next, we start start the proxy minion as a daemon. To this end, we issue the following command:
 
 ```bash
-salt-proxy -d --proxyid=dar01-dal05-lab03                
+salt-proxy -d --proxyid=ar01-lab                
 ```
 
 We can now see that the proxy minion process is running:
 
 ```bash
 / $ ps ax| grep ar
-20862 ?        Sl    88:13 /usr/bin/python2 /usr/bin/salt-proxy -d --proxyid=dar01-dal05-lab03
+20862 ?        Sl    88:13 /usr/bin/python2 /usr/bin/salt-proxy -d --proxyid=ar01-lab
 ```
 
-To test and see if the Salt master can communicate with the proxy minion process, we use `salt dar01-dal05-lab03 test.ping`:
+To test and see if the Salt master can communicate with the proxy minion process, we use `salt ar01-lab test.ping`:
 
 ```yaml
-dar01-dal05-lab03:
+ar01-lab:
     True
 ```    
 
-This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. We can send a CLI command to check and see if the proxy minion process can communicate with the device using `salt dar01-dal05-lab03 junos.cli 'show version'` for instance.
+This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. We can send a CLI command to check and see if the proxy minion process can communicate with the device using `salt ar01-lab junos.cli 'show version'` for instance.
 
 When the proxy minion is not running or responding, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
 
 ```
-salt-proxy --proxyid=dar01-dal05-lab03 -l debug  
+salt-proxy --proxyid=ar01-lab -l debug  
 ```
 
 If running the proxy minion in debug mode does not offer you any clues, consider looking into the proxy minion logs and the log of the Salt master. These log files are the following:
@@ -86,10 +86,10 @@ Exploring the proxy minion
 
 The first thing you'll probably be interested in doing is sending some commands to the device.
 
-Let's start by issuing the `salt dar01-dal05-lab03 junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command:
+Let's start by issuing the `salt ar01-lab junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command:
 
 ```yaml
-dar01-dal05-lab03:
+ar01-lab:
     ----------
     message:
         
@@ -99,10 +99,10 @@ dar01-dal05-lab03:
         True
 ```            
 
-Instead of a CLI command, we can also execute an RPC. Let issue the following `salt dar01-dal05-lab03 junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command:
+Instead of a CLI command, we can also execute an RPC. Let issue the following `salt ar01-lab junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command:
 
 ```yaml
-dar01-dal05-lab03:
+ar01-lab:
     ----------
     out:
         True
@@ -129,10 +129,10 @@ dar01-dal05-lab03:
 Not text, but structured data. By default, the Juniper proxy minion uses `jxmlease` to 'dictify' the return.
 
 
-Let's try sending ICMP to another device using `salt dar01-dal05-lab03 junos.ping '50.22.118.15' count=5 rapid=True`:
+Let's try sending ICMP to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
 
 ```yaml
-dar01-dal05-lab03:
+ar01-lab:
     ----------
     message:
         ----------
@@ -158,7 +158,7 @@ dar01-dal05-lab03:
         True
 ```        
 
-The Junos proxy minion also gathers some facts about the device by default. This facts are stored as grains data. To display the facts from the device, you can use `salt dar01-dal05-lab03 junos.facts`. These facts do no change that often, but you can refresh them using `salt dar01-dal05-lab03 junos.facts_refresh`.
+The Junos proxy minion also gathers some facts about the device by default. This facts are stored as grains data. To display the facts from the device, you can use `salt ar01-lab junos.facts`. These facts do no change that often, but you can refresh them using `salt ar01-lab junos.facts_refresh`.
 
 
 <br>
@@ -177,8 +177,8 @@ This basic example template will be enough to demonstrate the use of the executi
 Back to our example. The configuration from the template is not (yet) present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
 
 ```yaml
-/ $  salt dar01-dal05-lab03 junos.load salt://templates/juniper/arp.set format='set'
-dar01-dal05-lab03:
+/ $  salt ar01-lab junos.load salt://templates/juniper/arp.set format='set'
+ar01-lab:
     ----------
     message:
         Successfully loaded the configuration.
@@ -189,12 +189,12 @@ dar01-dal05-lab03:
 The template was rendered and the configuration was _loaded_ as a candidate configuration. We can see this when we examine the device:
 
 ```
-admin@dar02.ims> configure 
+admin@ar01-lab> configure 
 Entering configuration mode
 The configuration has been changed but not committed
 
 [edit]
-admin@dar02.ims# show | compare 
+admin@ar01-lab# show | compare 
 [edit system]
 +   arp {
 +       passive-learning;
@@ -206,8 +206,8 @@ admin@dar02.ims# show | compare
 We logged in and we performed a `show | compare`, which is an easy way of seeing what the difference is between the candidate configuration and the active configuration. But we can do the same thing using the Salt CLI:
 
 ```yaml
-/ $  salt dar01-dal05-lab03 junos.diff 
-dar01-dal05-lab03:
+/ $  salt ar01-lab junos.diff 
+ar01-lab:
     ----------
     message:
         
@@ -222,8 +222,8 @@ dar01-dal05-lab03:
 Before doing an actual commit, we can have the Junos management daemon (`mgd`) see if we can `commit` our configuration. Using a `commit-check`, we can have `mgd` verify the candidate configuration:
 
 ```yaml
-/ $  salt dar01-dal05-lab03 junos.commit_check
-dar01-dal05-lab03:
+/ $  salt ar01-lab junos.commit_check
+ar01-lab:
     ----------
     message:
         Commit check succeeded.
@@ -236,8 +236,8 @@ We see here that `mgd` has no problems with our configuration. What errors you c
 For now, let's undo what we have done so far:
 
 ```yaml        
-/ $  salt dar01-dal05-lab03 junos.rollback
-dar01-dal05-lab03:
+/ $  salt ar01-lab junos.rollback
+ar01-lab:
     ----------
     message:
         Rollback successful
@@ -250,41 +250,41 @@ The `junos.rollback` can be used to load a previous configuration that is availa
 After performing the rollback, the candidate configuration no longer exists:
 
 ```
-admin@dar02.ims> configure 
+admin@ar01-lab> configure 
 Entering configuration mode
 
 [edit]
-admin@dar02.ims# quit 
+admin@ar01-lab# quit 
 Exiting configuration mode
 ```
 
 From the start of the configuration section, I followed along with the `interactive-commands` log on the device. From the logs in there, we can see what exactly how the different functions interacted with the device:
 
 ```
-admin@dar02.ims> monitor start interactive-commands | match NETCONF 
+admin@ar01-lab> monitor start interactive-commands | match NETCONF 
 
-admin@dar02.ims> 
+admin@ar01-lab> 
 *** interactive-commands ***
 
-Aug  9 20:13:55  dar02.ims mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration action="set" format="text"'
+Aug  9 20:13:55  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration action="set" format="text"'
 
-Aug  9 20:14:00  dar02.ims mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'get-configuration compare="rollback" rollback="0" format="text"'
+Aug  9 20:14:00  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'get-configuration compare="rollback" rollback="0" format="text"'
 
-Aug  9 20:14:08  dar02.ims mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'commit-configuration check'
+Aug  9 20:14:08  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'commit-configuration check'
 
-Aug  9 20:14:16  dar02.ims mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration compare="rollback" rollback="0"'
+Aug  9 20:14:16  ar01-lab mgd[29316]: UI_NETCONF_CMD: User 'admin' used NETCONF client to run command 'load-configuration compare="rollback" rollback="0"'
 
 monitor stop 
 
-admin@dar02.ims> 
+admin@ar01-lab> 
 ```
 
 
 Instead of performing a `rollback`, we could have also used `junos.commit` to commit the candidate configuration and make our changes take effect. Let's take a different approach here and do everything in one go. The following Salt CLI command will render the template and apply it:
 
 ```yaml
-/ $ salt dar01-dal05-lab03 junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='salty' 
-dar01-dal05-lab03:
+/ $ salt ar01-lab junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='salty' 
+ar01-lab:
     ----------
     message:
         Successfully loaded and committed!
@@ -299,12 +299,12 @@ Second is the <b>comment</b>. This an optional message for others to read in the
 After the change, we can see the following on the device:
 
 ```
-admin@dar02.ims> show configuration system arp                         
+admin@ar01-lab> show configuration system arp                         
 passive-learning;
 
-admin@dar02.ims> show system commit 
+admin@ar01-lab> show system commit 
 0   2019-08-09 20:28:42 UTC by admin via netconf
-    yolo
+    salty
 ```    
 
 
@@ -312,8 +312,8 @@ admin@dar02.ims> show system commit
 Now, let's rollback:
 
 ```yaml
-/ $ salt dar01-dal05-lab03 junos.rollback id='1'
-dar01-dal05-lab03:
+/ $ salt ar01-lab junos.rollback id='1'
+ar01-lab:
     ----------
     message:
         Rollback successful
@@ -325,14 +325,15 @@ dar01-dal05-lab03:
 Notice that when we used `junos.rollback`, a `rollback 1` was done <i>and</i> it was followed by a commit:
 
 ```
-admin@dar02.ims> show configuration system arp    
+admin@ar01-lab> show configuration system arp    
 
-admin@dar02.ims> show system commit               
+admin@ar01-lab> show system commit               
 0   2019-08-09 20:31:33 UTC by admin via netconf
 1   2019-08-09 20:28:42 UTC by admin via netconf
     salty
 ```    
 
+<br>
 
 Wrapping up
 ===========
@@ -341,7 +342,7 @@ In this article we explored the <b>Junos</b> proxy minion and we investigated so
 
 The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ a running start.
 
-The execution module functions are great for several reasons. First of all, they are great to play around with and will help getting to know the Junos proxy minion a little better. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network.
+The execution module functions are great for several reasons. First of all, they are great to play around with and will help getting to know the Junos proxy minion a little better. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network. We did not touch all execution module function. Using `salt ar01-lab junos`, you can see what other functions exists.
 
 But apart from applying the execution module functions immediately like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also. 
 
@@ -355,5 +356,5 @@ All in all, building some familiarity with the execution module will help you be
 
 
 
-We did not touch all execution module function. To see all the functions there are, you can either check the documentation use issue the following Salt CLI command: `salt dar01-dal05-lab03 junos`. 
+
 
