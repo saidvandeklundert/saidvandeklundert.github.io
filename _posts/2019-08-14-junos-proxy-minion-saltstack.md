@@ -99,7 +99,7 @@ dar01-dal05-lab03:
         True
 ```            
 
-Instead of a CLI command, we can also use and RPC. Let issue the following `salt dar01-dal05-lab03 junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command anf see the return:
+Instead of a CLI command, we can also execute an RPC. Let issue the following `salt dar01-dal05-lab03 junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command:
 
 ```yaml
 dar01-dal05-lab03:
@@ -158,7 +158,7 @@ dar01-dal05-lab03:
         True
 ```        
 
-The Junos proxy minion also gathers some facts about the device by default. This facts are set as grains. To display the facts from the device, you can use `salt dar01-dal05-lab03 junos.facts`. These facts do no change that often, but in just in case , you can refresh them using `salt dar01-dal05-lab03 junos.facts_refresh`.
+The Junos proxy minion also gathers some facts about the device by default. This facts are stored as grains data. To display the facts from the device, you can use `salt dar01-dal05-lab03 junos.facts`. These facts do no change that often, but in just in case , you can refresh them using `salt dar01-dal05-lab03 junos.facts_refresh`.
 
 
 <br>
