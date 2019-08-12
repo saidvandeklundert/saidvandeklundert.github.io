@@ -166,13 +166,16 @@ The Junos proxy minion also gathers some facts about the device by default. This
 Working with the configuration
 ==============================
 
+As far as working with the configuration goes, the execution module has the basics covered. Let's check the template we will be working with in this example using `cat /srv/salt/templates/juniper/arp.set`:
+
 ```
-/ $ cat /srv/salt/templates/juniper/includes/juniper_system__arp.set
 set system arp passive-learning
 ```
 
+This configuration is not present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
+
 ```yaml
-/ $  salt dar01-dal05-lab03 junos.load salt://templates/juniper/includes/juniper_system__arp.set format='set'
+/ $  salt dar01-dal05-lab03 junos.load salt://templates/juniper/arp.set format='set'
 dar01-dal05-lab03:
     ----------
     message:
@@ -181,7 +184,7 @@ dar01-dal05-lab03:
         True
 ```
 
-We can now see the changes on the device as well:
+The template was rendered and the configuration was _loaded_ as a candidate configuration. We can see this when we examine the device:
 
 ```
 admin@dar02.ims> configure 
@@ -198,6 +201,8 @@ admin@dar02.ims# show | compare
 [edit]
 ```
 
+We logged in and we performed a `show | compare`, which is an easy way of seeing what the difference is between the candidate configuration and the active configuration. But we can do the same thing using the Salt CLI:
+
 ```yaml
 / $  salt dar01-dal05-lab03 junos.diff 
 dar01-dal05-lab03:
@@ -212,6 +217,7 @@ dar01-dal05-lab03:
         True
 ```
 
+Before doing an actual commit, we can have the Junos management daemon (`mgd`) see if we can `commit` our configuration. Using a `commit-check`, we can have `mgd` verify the candidate configuration:
 
 ```yaml
 / $  salt dar01-dal05-lab03 junos.commit_check
@@ -223,6 +229,9 @@ dar01-dal05-lab03:
         True
 ```
 
+We see here that `mgd` has no problems with our configuration. What errors you can run into here are syntax errors, references to non-existing configuration constructs (like referencing a non-existing community in a routing-policy) and more. 
+
+For now, let's undo what we have done so far:
 
 ```yaml        
 / $  salt dar01-dal05-lab03 junos.rollback
@@ -234,7 +243,9 @@ dar01-dal05-lab03:
         True        
 ```        
 
-After the rollback, the configuration is no longer changed:
+The `junos.rollback` can be used to load a previous configuration that is available on the device. When we issue a `junos.rollback`, we effectively do a `rollback 0` and we return to the current active configuration and we discard our candidate configuration. By default, any Juniper will allow us to rollback to anything ranging from 0-49.
+
+After performing the rollback, the candidate configuration no longer exists:
 
 ```
 admin@dar02.ims> configure 
@@ -245,7 +256,8 @@ admin@dar02.ims# quit
 Exiting configuration mode
 ```
 
-If we would have been following along with the interactive-commands log on the device:
+From the start of the configuration section, I followed along with the `interactive-commands` log on the device. From the logs in there, we can see what exactly how the different functions interacted with the device:
+
 ```
 admin@dar02.ims> monitor start interactive-commands | match NETCONF 
 
@@ -266,12 +278,10 @@ admin@dar02.ims>
 ```
 
 
-
-
-Alternatively:
+Instead of performing a `rollback`, we could have also used `junos.commit` to commit the candidate configuration and make our changes take effect. Let's take a different approach here and do everything in one go. The following Salt CLI command will render the tempalte and apply it:
 
 ```yaml
-/ $ salt dar01-dal05-lab03 junos.install_config 'salt://templates/juniper/includes/juniper_system__arp.set'  mode='private' comment='yolo' 
+/ $ salt dar01-dal05-lab03 junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='yolo' 
 dar01-dal05-lab03:
     ----------
     message:
@@ -281,12 +291,12 @@ dar01-dal05-lab03:
 / $ 
 ```
 
-After the change:
+Notice 2 optional keywords I used here. First of is the <b>mode</b>. By setting the mode to private, we ensure that the candidate configuration we create is for our current user only. This means we cannot inadvertently include configuration statements that other users have put into their candidate configuration.
+Second is the <b>comment</b>. This an optional message for others to read in the commit log using `show system commit`.
+
+After the change, we can see the following on the device:
+
 ```
-admin@dar02.ims> show configuration system arp  
-
-admin@dar02.ims> 
-
 admin@dar02.ims> show configuration system arp                         
 passive-learning;
 
@@ -310,7 +320,7 @@ dar01-dal05-lab03:
 / $ 
 ```
 
-Rollback 1 was done and followed by a commit:
+Notice that when we used `junos.rollback`, a `rollback 1` was done <i>and</i> it was followed by a commit:
 
 ```
 admin@dar02.ims> show configuration system arp    
