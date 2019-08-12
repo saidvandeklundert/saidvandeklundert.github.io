@@ -339,7 +339,7 @@ Wrapping up
 
 In this article we explored the <b>Junos</b> proxy minion and we investigated some of the execution module functions that it is provided with. 
 
-The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ before a running start.
+The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ a running start.
 
 The execution module functions are great for several reasons. First of all, they are great playing around and getting to know the Junos proxy minion. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network.
 
