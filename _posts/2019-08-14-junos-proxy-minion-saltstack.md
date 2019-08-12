@@ -280,7 +280,7 @@ ar01-lab:
         True        
 ```        
 
-The `junos.rollback` can be used to load a previous configuration that is available on the device. When we issue a `junos.rollback`, we effectively do a `rollback 0` and we return to the current active configuration and we discard our candidate configuration. By default, any Juniper will allow us to rollback to anything ranging from 0-49.
+The `junos.rollback` can be used to load a previous configuration that is available on the device. When we issue a `junos.rollback`, we effectively do a `rollback 0`. This means we return to the current active configuration and we discard our candidate configuration. By default, any Juniper will allow us to rollback to anything ranging from 0-49.
 
 After performing the rollback, the candidate configuration no longer exists:
 
