@@ -26,7 +26,7 @@ The execution module provides you with a lot of functions that will enable you t
 Setting up the proxy minion
 ===========================
 
-Setting up the proxy minion requires that you create a file for the proxy mininon where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/dar01_dal05_lab03.sls `:
+Setting up the proxy minion requires that you create a file for the proxy minion where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/dar01_dal05_lab03.sls `:
 
 ```yaml
 proxy:
@@ -158,7 +158,7 @@ dar01-dal05-lab03:
         True
 ```        
 
-The Junos proxy minion also gathers some facts about the device by default. This facts are stored as grains data. To display the facts from the device, you can use `salt dar01-dal05-lab03 junos.facts`. These facts do no change that often, but in just in case , you can refresh them using `salt dar01-dal05-lab03 junos.facts_refresh`.
+The Junos proxy minion also gathers some facts about the device by default. This facts are stored as grains data. To display the facts from the device, you can use `salt dar01-dal05-lab03 junos.facts`. These facts do no change that often, but you can refresh them using `salt dar01-dal05-lab03 junos.facts_refresh`.
 
 
 <br>
@@ -337,7 +337,7 @@ admin@dar02.ims> show system commit
 Wrapping up
 ===========
 
-In this article we explored some of the the execution module functions that the <b>Junos</b> proxy provides you with. To see all the functions there are, you can either check the documentation use issue the following Salt CLI command: `salt dar01-dal05-lab03 junos`.
+In this article we explored some of the execution module functions that the <b>Junos</b> proxy provides you with. To see all the functions there are, you can either check the documentation use issue the following Salt CLI command: `salt dar01-dal05-lab03 junos`.
 
 The execution module functions are great for several reasons:
 - playing around and getting to know the Junos proxy minion
