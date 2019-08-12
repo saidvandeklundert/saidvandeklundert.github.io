@@ -221,7 +221,9 @@ ar01-lab:
         True
 ```
 
-The template was rendered and the configuration was _loaded_ as a candidate configuration. We can see this when we examine the device:
+We used the `junos.load` function and passed it 2 arguments. The first one is the template that we want to load and the second is the format the template is in. In this case, the file has a `.j2` extension. If we would have given the file a `.set` extension, Salt would still render the template as Jinja but we would not need to pass the `format='set'` argument as the proxy minion software would have 'figured out' the configuration would be in 'set' notation.
+
+After running the function, the template was rendered and the configuration was _loaded_ as a candidate configuration. The configuration was not applied. When we check what happened on the device, we can see the following:
 
 ```
 admin@ar01-lab> configure 
