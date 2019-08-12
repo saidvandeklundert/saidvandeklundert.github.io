@@ -172,9 +172,9 @@ As far as working with the configuration goes, the execution module has the basi
 set system arp passive-learning
 ```
 
-This basic example tempalte will be enough to demonstrate the use of the execution modules. For more information on how to template in Salt, check this article: [Templating for network engineers in SaltStack ](https://saidvandeklundert.net/2019-06-08-templating-for-network-engineers-in-saltstack/).
+This basic example template will be enough to demonstrate the use of the execution modules. For more information on how to template in Salt, check this article: [Templating for network engineers in SaltStack ](https://saidvandeklundert.net/2019-06-08-templating-for-network-engineers-in-saltstack/).
 
-Back to our example. The configuration from the tempalte is not (yet) present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
+Back to our example. The configuration from the template is not (yet) present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
 
 ```yaml
 / $  salt dar01-dal05-lab03 junos.load salt://templates/juniper/arp.set format='set'
@@ -280,7 +280,7 @@ admin@dar02.ims>
 ```
 
 
-Instead of performing a `rollback`, we could have also used `junos.commit` to commit the candidate configuration and make our changes take effect. Let's take a different approach here and do everything in one go. The following Salt CLI command will render the tempalte and apply it:
+Instead of performing a `rollback`, we could have also used `junos.commit` to commit the candidate configuration and make our changes take effect. Let's take a different approach here and do everything in one go. The following Salt CLI command will render the template and apply it:
 
 ```yaml
 / $ salt dar01-dal05-lab03 junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='salty' 
