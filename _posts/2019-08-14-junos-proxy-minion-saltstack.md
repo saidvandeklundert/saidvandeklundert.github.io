@@ -201,7 +201,7 @@ These grains are provided right out of the box. Though it makes for a nice start
 Working with the configuration
 ==============================
 
-As far as working with the configuration goes, the `junos` execution module has all the basics covered. Let's check the template we will be working with in this example using `cat /srv/salt/templates/juniper/arp.set`:
+As far as working with the configuration goes, the `junos` execution module has all the basics covered. Let's check the template we will be working with in this example using `cat /srv/salt/templates/juniper/arp.j2`:
 
 ```
 set system arp passive-learning
@@ -212,7 +212,7 @@ This basic example template will be enough to demonstrate the use of the executi
 Back to our example. The configuration from the template is not (yet) present on the device we are working with. Let's render the template and load the configuration using the `junos.load` function:
 
 ```yaml
-/ $  salt ar01-lab junos.load salt://templates/juniper/arp.set format='set'
+/ $  salt ar01-lab junos.load salt://templates/juniper/arp.j2 format='set'
 ar01-lab:
     ----------
     message:
@@ -318,7 +318,7 @@ admin@ar01-lab>
 Instead of performing a `rollback`, we could have also used `junos.commit` to commit the candidate configuration and make our changes take effect. Let's take a different approach here and do everything in one go. The following Salt CLI command will render the template and apply it:
 
 ```yaml
-/ $ salt ar01-lab junos.install_config 'salt://templates/juniper/arp.set'  mode='private' comment='salty' 
+/ $ salt ar01-lab junos.install_config 'salt://templates/juniper/arp.j2'  mode='private' comment='salty' format='set'
 ar01-lab:
     ----------
     message:
