@@ -341,11 +341,13 @@ In this article we explored the <b>Junos</b> proxy minion and we investigated so
 
 The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ a running start.
 
-The execution module functions are great for several reasons. First of all, they are great playing around and getting to know the Junos proxy minion. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network.
+The execution module functions are great for several reasons. First of all, they are great to play around with and will help getting to know the Junos proxy minion a little better. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network.
 
-But apart from applying the execution module functions immediately, like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also! 
+But apart from applying the execution module functions immediately like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also. 
 
-All in all, building some familiarity with the execution module will help you better understand the states that come with the minion. Studying the execution modules in more detail will help you imagine how you could start writing you own custom execution modules and/or custom states to do things your own way.
+All in all, building some familiarity with the execution module will help you better understand the states that come with the minion and studying the execution modules in more detail will help you imagine how you could start writing you own custom execution modules and/or custom states to do things your own way.
+
+
 
 
 
