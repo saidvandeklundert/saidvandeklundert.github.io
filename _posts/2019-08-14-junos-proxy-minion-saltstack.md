@@ -165,7 +165,10 @@ ar01-lab:
         True
 ```        
 
-When the Junos proxy minion starts, it will use RPCs to gather some information about the device it is managing. This information is gathered using the `facts` function and this data is stored as grains data. To display the facts from the device, you can use `salt ar01-lab junos.facts`. These facts do no change that often, but you can refresh them using `salt ar01-lab junos.facts_refresh`. The following sample is part of the output gotten from running `salt ar01-lab junos.facts`:
+When the Junos proxy minion starts, it will use RPCs to gather some information about the device it is managing. This information is gathered using the `facts` function and this data is stored as grains data. To display the facts from the device, you can use `salt ar01-lab junos.facts`. These facts do no change that often, but you can refresh them using `salt ar01-lab junos.facts_refresh`. 
+
+The following sample is part of the output we get after issuing `salt ar01-lab junos.facts`:
+
 ```yaml
 ar01-lab:
     ----------
