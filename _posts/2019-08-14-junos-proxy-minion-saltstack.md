@@ -15,11 +15,11 @@ This article is about the <b>Junos</b> proxy minion and the focus is on using th
 Juniper proxy minion background
 ===============================
 
-The `Junos` proxy minion is leveraging the <b>PyEZ</b> library to communicate with the Junos API over NETCONF. Junos PyEZ is '<i>a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)</i>' ( from the PyEZ developer guide). 
+The `Junos` proxy minion is leveraging <b>PyEZ</b> to communicate with the Junos API over NETCONF. Junos PyEZ is '<i>a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)</i>' ( from the PyEZ developer guide). 
 
 The basic functions that come with the proxy minion are found in the execution module. In case you have ever working with PyEZ, some of the things in there should seem familiar: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py`. 
 
-The execution module provides you with a lot of functions that will enable you to get most of the basic things done. Sending a CLI, an RPC, changing the configuration, etc. Before we dive into that, let's start a proxy minion process first.
+The execution module provides you with a lot of functions that will enable you to get most of the basic things done. Sending a CLI command, issuing an RPC, changing the configuration, etc. But before diving into all that, let's start a proxy minion process first.
 
 <br>
 
@@ -35,7 +35,6 @@ proxy:
   host: 198.18.60.41
   password: salt123
   port: 830
-minion_id: dar01-dal05-lab03
 ```  
 
 The proxy minion needs to be referenced in the top file as well. Using `cat /srv/pillar/top.sls`, we see our example contains the following:
