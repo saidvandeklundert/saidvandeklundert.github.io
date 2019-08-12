@@ -26,7 +26,7 @@ The execution module provides you with a lot of functions that will enable you t
 Setting up the proxy minion
 ===========================
 
-Setting up the proxy minion requires that you create a file for the proxy mininon, where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/dar01_dal05_lab03.sls `:
+Setting up the proxy minion requires that you create a file for the proxy mininon where you specify the connection details. To check the file we use for the proxy minion in our example, we use `cat /srv/pillar/dar01_dal05_lab03.sls `:
 
 ```yaml
 proxy:
@@ -66,7 +66,7 @@ dar01-dal05-lab03:
     True
 ```    
 
-This is not an ICMP ping, rather, a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. We can send a CLI command to check and see if the proxy minion process can communicate with the device using `salt dar01-dal05-lab03 junos.cli 'show version'` for instance.
+This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. We can send a CLI command to check and see if the proxy minion process can communicate with the device using `salt dar01-dal05-lab03 junos.cli 'show version'` for instance.
 
 When the proxy minion is not running or responding, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
 
@@ -86,7 +86,7 @@ Exploring the proxy minion
 
 The first thing you'll probably be interested in doing is sending some commands to the device.
 
-Let's start issuing the `salt dar01-dal05-lab03 junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command and wait for the return:
+Let's start by issuing the `salt dar01-dal05-lab03 junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command:
 
 ```yaml
 dar01-dal05-lab03:
@@ -97,7 +97,7 @@ dar01-dal05-lab03:
         50.22.118.159    ae2.2                  Full      50.22.118.241      0    30
     out:
         True
-```        
+```            
 
 Instead of a CLI command, we can also use and RPC. Let issue the following `salt dar01-dal05-lab03 junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command anf see the return:
 
@@ -127,6 +127,7 @@ dar01-dal05-lab03:
 ``` 
 
 Not text, but structured data. By default, the Juniper proxy minion uses `jxmlease` to 'dictify' the return.
+
 
 Let's try sending ICMP to another device using `salt dar01-dal05-lab03 junos.ping '50.22.118.15' count=5 rapid=True`:
 
@@ -326,3 +327,16 @@ admin@dar02.ims> show system commit
 
 The following will give you all the functions available to you in the execution module that Salt provides you with:
 `salt dar01-dal05-lab03 junos`
+
+
+
+
+
+
+
+
+Note that you cannot use  `|` when you are sending commands to the device. So in case you want to filter parts of the text
+```
+/ $ salt dar01-dal05-lab03 junos.cli 'show version' | grep Junos:
+        Junos: 16.1R3-S8
+``` 
