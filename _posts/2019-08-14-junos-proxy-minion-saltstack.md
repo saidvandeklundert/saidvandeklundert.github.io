@@ -374,7 +374,7 @@ admin@ar01-lab> show system commit
 Wrapping up
 ===========
 
-In this article we explored the <b>Junos</b> proxy minion and we investigated some of the execution module functions that it is provided with. 
+In this article we explored the <b>Junos</b> proxy minion and the functions that the `junos` execution module provides us with. 
 
 The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ a running start.
 
