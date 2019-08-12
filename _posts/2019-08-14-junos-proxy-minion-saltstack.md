@@ -345,7 +345,7 @@ The execution module functions are great for several reasons. First of all, they
 
 But apart from applying the execution module functions immediately like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also. 
 
-All in all, building some familiarity with the execution module will help you better understand the states that come with the minion and studying the execution modules in more detail will help you imagine how you could start writing you own custom execution modules and/or custom states to do things your own way.
+All in all, building some familiarity with the execution module will help you better understand the states that come with the minion and studying the execution modules in more detail will help you imagine how you can start writing you own custom execution modules and/or custom states to do things 100% your own way.
 
 
 
