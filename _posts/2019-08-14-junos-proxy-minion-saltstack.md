@@ -8,9 +8,9 @@ To enable <b>SaltStack</b> to control devices that cannot run standard salt-mini
 
 When we want to have SaltStack control <b>Juniper</b> devices, we can choose from the following proxy minion software: `netmiko`, `napalm` or `junos`.
 
-This article is about the <b>Junos</b> proxy minion. The `Junos` proxy minion is leveraging <b>PyEZ</b> to communicate with the Junos API over NETCONF. The proxy minion comes with an execution module that provides you several functions. These functions will enable you to get most of the basic things done. Sending a CLI command, issuing an RPC, changing the configuration, etc. But before diving into all that, let's start a proxy minion process first.
+This article is about the <b>Junos</b> proxy minion. The `Junos` proxy minion is leveraging <b>PyEZ</b> to communicate with the Junos API over NETCONF. The proxy minion comes with an execution module that provides you several functions. These functions will enable you to get most of the basic things done. Sending a CLI command, issuing an RPC, changing the configuration, etc. 
 
-But let's get a proxy minion started first.
+But before diving into all that, let's get a proxy minion started first.
 
 
 <br>
