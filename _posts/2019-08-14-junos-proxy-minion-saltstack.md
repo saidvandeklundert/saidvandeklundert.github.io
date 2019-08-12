@@ -54,8 +54,15 @@ We can now see that the proxy minion process is running:
 Interacting with a proxy minion is done using the following syntax:
 
 ```html
-salt <proxy minion> <execution-module.function> <parameters>
+salt <proxy-minion> <execution-module.function> <parameters>
 ```
+
+We can break this down in the following:
+- salt: this invokes the `salt` CLI
+- proxy-minion: this is the name of the proxy minion you want to target
+- execution-module.function: first we specify the name of the execution module we want to use, then following a dot, we name the function we want to call
+- parameters: any parameter (or arguments) you want to pass to the function
+
 To test and see if the Salt master can communicate with the proxy minion process, we use the `ping` function from the `test` execution module. This would be done by issuing `salt ar01-lab test.ping`:
 
 ```yaml
@@ -63,7 +70,7 @@ ar01-lab:
     True
 ```    
 
-This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device. To see if the proxy minion process can communicate with the device, we can send a CLI command like `salt ar01-lab junos.cli 'show version'` for instance. When the proxy minion is not running or in case it fails to respond, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
+This is not an ICMP ping. It is a test that proves the Salt master can communicate with the proxy minion. It does not prove that the proxy minion can communicate with the device.  To see if the proxy minion process can communicate with the device, we can send a CLI command (next section). When the proxy minion is not running or in case it fails to respond, consider running the proxy minion in debug mode. Running the proxy minion in debug mode will output all proxy minion actions to screen. You can see the proxy minion process starting, logging in, issuing RPCs, etc. To run the proxy minion in debug mode, use the following:
 
 ```
 salt-proxy --proxyid=ar01-lab -l debug  
@@ -93,6 +100,18 @@ ar01-lab:
     out:
         True
 ```            
+
+Let's go back to the syntax discussed earlier:
+
+```html
+salt <proxy-minion> <execution-module.function> <parameters>
+```
+
+What we did here was the following:
+- invoke the Salt CLI using `salt`
+- target the `ar01-lab` proxy minion
+- call the `cli` function from the execution `junos` execution module
+- pass the function the `show ospf neighbor interface ae2.2` argument
 
 Instead of a CLI command, we can also execute an RPC. Let issue the following `salt ar01-lab junos.rpc get-ospf-neighbor-information interface='ae2.2'` Salt CLI command:
 
