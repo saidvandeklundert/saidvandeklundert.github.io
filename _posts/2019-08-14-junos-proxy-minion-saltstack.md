@@ -101,13 +101,7 @@ ar01-lab:
         True
 ```            
 
-Let's break down the `salt ar01-lab junos.cli 'show ospf neighbor interface ae2.2'` command according to the syntax we touched earlier:
-
-```html
-salt <proxy-minion> <execution-module.function> <parameters>
-```
-
-In our previous interaction with the proxy minion, we:
+Let's break down the `salt ar01-lab junos.cli 'show ospf neighbor interface ae2.2'` command. In our interaction with the proxy minion, we:
 - invoked the Salt CLI using `salt`
 - targeted the `ar01-lab` proxy minion
 - called the `cli` function from the `junos` execution module
