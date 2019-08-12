@@ -266,7 +266,7 @@ ar01-lab:
         True
 ```
 
-We see here that `mgd` has no problems with our configuration. What errors you can run into here are syntax errors, references to non-existing configuration constructs (like referencing a non-existing community in a routing-policy) and more. 
+We see here that `mgd` has no problems with our configuration. What errors you can run into here are syntax errors, references to non-existing configuration constructs (like referencing a non-existing community in a routing-policy) etc. 
 
 For now, let's undo what we have done so far:
 
