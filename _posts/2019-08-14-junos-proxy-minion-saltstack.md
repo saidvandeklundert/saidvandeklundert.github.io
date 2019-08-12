@@ -8,18 +8,10 @@ To enable <b>SaltStack</b> to control devices that cannot run standard salt-mini
 
 When we want to have SaltStack control <b>Juniper</b> devices, we can choose from the following proxy minion software: `netmiko`, `napalm` or `junos`.
 
-This article is about the <b>Junos</b> proxy minion. First we will get one started. After that, the focus will be on using the standard functions that the minion provides you with.
+This article is about the <b>Junos</b> proxy minion. The `Junos` proxy minion is leveraging <b>PyEZ</b> to communicate with the Junos API over NETCONF. The proxy minion comes with an execution module that provides you several functions. These functions will enable you to get most of the basic things done. Sending a CLI command, issuing an RPC, changing the configuration, etc. But before diving into all that, let's start a proxy minion process first.
 
-<br>
+But let's get a proxy minion started first.
 
-Juniper proxy minion background
-===============================
-
-The `Junos` proxy minion is leveraging <b>PyEZ</b> to communicate with the Junos API over NETCONF. Junos PyEZ is 'a microframework for Python that enables you to manage and automate devices running the Junos operating system (Junos OS)' ( from the PyEZ developer guide). 
-
-The basic functions that come with the proxy minion are found in the execution module. In case you have ever working with PyEZ, some of the things in there should seem familiar: `https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py`. 
-
-The execution module provides you with a lot of functions that will enable you to get most of the basic things done. Sending a CLI command, issuing an RPC, changing the configuration, etc. But before diving into all that, let's start a proxy minion process first.
 
 <br>
 
@@ -84,7 +76,7 @@ Exploring the proxy minion
 ==========================
 
 
-The first thing you'll probably be interested in doing is sending some commands to the device.
+Now that we have the proxy minion running, the first thing you'll probably be interested in doing is sending some commands to the device.
 
 Let's start by issuing the `salt ar01-lab junos.cli ' show ospf neighbor interface ae2.2'` Salt CLI command:
 
@@ -126,7 +118,7 @@ ar01-lab:
                     Full
 ``` 
 
-Not text, but structured data. By default, the Juniper proxy minion uses `jxmlease` to 'dictify' the return.
+Structured data in dictionart format because by default, the Juniper proxy minion uses `jxmlease` to 'dictify' the RPC return.
 
 
 Let's try sending ICMP to another device using `salt ar01-lab junos.ping '50.22.118.15' count=5 rapid=True`:
@@ -342,19 +334,9 @@ In this article we explored the <b>Junos</b> proxy minion and we investigated so
 
 The proxy minion works really well and allows for a seamless interaction with the Juniper API. I think it is pretty smart to tie the whole thing in with the PyEZ microframework. It gives it some maturity to the proxy minion and it will give people that have worked with PyEZ a running start.
 
-The execution module functions are great for several reasons. First of all, they are great to play around with and will help getting to know the Junos proxy minion a little better. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network. Also note that we did not touch all execution module function. Using `salt ar01-lab junos`, you can see what other functions exists.
+The execution module functions are great for several reasons. First of all, they are great to play around with and will help getting to know the Junos proxy minion a little better. Additionally, you can use them for ad-hoc information gathering leveraging CLI/RPCs you already know. Add Salt's 0MQ, and you have quite a powerful tool to instantly check what is going on in your network. Also note that we did not touch all execution module function. Using `salt ar01-lab junos`, you can see what other functions exists. Another way to see what is available is to check the execution module in github, right [ here ](`https://github.com/saltstack/salt/blob/develop/salt/modules/junos.py`).
 
 Apart from applying the execution module functions directly like we have done here, the functions can be seen as 'low-level' building blocks. When you get to writing states, the main thing you will use are the states that the Junos proxy minion comes with. Interestingly enough, these [junos state modules ](https://github.com/saltstack/salt/blob/develop/salt/states/junos.py) leverage the custom execution modules also. 
 
 All in all, building some familiarity with the execution module will help you better understand the states that come with the minion and studying the execution modules in more detail will help you imagine how you can start writing you own custom execution modules and/or custom states to do things 100% your own way.
-
-
-
-
-
-
-
-
-
-
 
