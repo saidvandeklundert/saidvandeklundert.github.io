@@ -158,6 +158,8 @@ set policy-options policy-statement lbpp term 1 then load-balance per-packet
 set routing-options forwarding-table export lbpp
 ```
 
+Do not let the `load-balance per-packet` name fool you. This action will have the Juniper load balance traffic per flow.
+
 After the configuration is applied on both devices, we can start our verification. 
 
 First, we check the OSPF neighbor status on both sides.
@@ -404,22 +406,3 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
 
 
 <br>
-
-Configuring and verifying LDP
-=============================
-
-.
-set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 ldp-synchronization
-<br>
-
-Configuring and verifying BGP
-=============================
-
-.
-
-<br>
-
-Configuring and verifying the MPLS L3VPN
-========================================
-
-.
