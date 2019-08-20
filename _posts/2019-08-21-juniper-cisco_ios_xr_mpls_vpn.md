@@ -406,3 +406,122 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
 
 
 <br>
+
+
+Configuring and verifying LDP
+=============================
+
+Obviously, to get any MPLS L3VPN going, we require an MPLS network. We are going to take the easy pick and settle for LDP. The LDP configuration will be pretty basic and it will include the following:
+- authentication
+- advertisement of an explicit null label
+- advertisement of the loopback IP only
+- FEC deaggregation
+- LDP synchronization
+
+Additionally, we want to ensure that the IGP metrics are reflected in the LDP routes.
+
+The LDP configuration is the same on every router, so again, we focus on the configuration between ios_xr_1 and vMX1. 
+
+
+First, the Cisco MPLS configuration:
+
+```
+mpls ldp
+ router-id 10.0.1.1
+ neighbor
+  password encrypted 15010A00107B7977
+ !
+ address-family ipv4
+  label
+   local
+    allocate for host-routes
+    advertise
+     explicit-null
+    !
+   !
+  !
+ !
+ interface GigabitEthernet0/0/0/1.10
+ !
+!
+router ospf 1
+ area 0
+  interface GigabitEthernet0/0/0/1.10
+   mpls ldp sync
+  !
+ !
+!
+```
+
+Now the Juniper configuration:
+
+```
+set interfaces ge-0/0/3 unit 10 family mpls
+
+set protocols mpls interface ge-0/0/3.10
+
+set protocols ldp track-igp-metric
+set protocols ldp deaggregate
+set protocols ldp explicit-null
+set protocols ldp interface ge-0/0/3.10
+set protocols ldp session-group 0.0.0.0/0 authentication-key "$9$.539AtOEcl0BX7dVY2TzF"
+
+set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 ldp-synchronization
+```
+
+We notice a few things. First of all, specifying the interfaces under LDP is enough for IOS XR. For the Juniper, to enable the interface for OSPF, configuring it under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under  `protocols mpls`.
+
+The other thing we notice is that the defaults for Juniper and Cisco are slighlty different. 
+
+For Juniper, we configured the following options:
+- `track-igp-metric`: this will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 _ascii shrug_
+- `deaggregate`: this will deaggregate the FECs and will cause each prefix to be bound to a separate label. Not the default on Juniper, though it is recommended to configure it by Juniper.
+
+For Cisco, we configured the following options:
+- `mpls ldp address-family ipv4 label local allocate for host-routes`: this causes for the IOS XR router to advertise a label for the lo0 interface only. The default is to advertise a label for every interface.
+
+The other configuration items are pretty similar. Though different in syntac, on both Juniper and Cisco we configure the device to:
+- advertise the explicit null label
+- enable LDP synchronization by specifying that under the OSPF stanza
+- authenticate all LDP sessions through a single configuration command
+
+Both Cisco ass well as Juniper offer ways to inject into LDP whatever routes you want, both offer BFD protection and many more configuration options, but I do not want to go off to far into the weeds here. Instead, we will verify what we have configured so far.
+
+First, we check the Cisco side:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor       
+Tue Aug 20 09:56:36.447 UTC
+
+Peer LDP Identifier: 10.0.0.1:0
+  TCP connection: 10.0.0.1:646 - 10.0.1.1:16353; MD5 on
+  Graceful Restart: No
+  Session Holdtime: 30 sec
+  State: Oper; Msgs sent/rcvd: 144/101; Downstream-Unsolicited
+  Up time: 00:14:11
+  LDP Discovery Sources:
+    IPv4: (1)
+      GigabitEthernet0/0/0/1.10
+    IPv6: (0)
+  Addresses bound to this peer:
+    IPv4: (5)
+      10.0.2.0       10.0.2.2       192.168.1.0    192.168.4.0    
+      192.168.15.0   
+    IPv6: (0)
+```
+
+
+
+<br>
+
+Configuring and verifying BGP
+=============================
+
+.
+
+<br>
+
+Configuring and verifying the MPLS L3VPN
+========================================
+
+.
