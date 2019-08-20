@@ -703,6 +703,38 @@ Configuring and verifying BGP
 
 .
 
+
+The `ios_xr_1` configuration:
+
+```
+router bgp 1
+ bgp router-id 10.0.1.1
+ address-family vpnv4 unicast
+ !
+ neighbor-group rr-client
+  remote-as 1
+  password encrypted 08324D421D485744
+  update-source Loopback0
+  address-family vpnv4 unicast
+   soft-reconfiguration inbound always
+  !
+ !
+ neighbor 10.0.0.14
+  use neighbor-group rr-client
+ !
+ neighbor 10.0.0.15
+  use neighbor-group rr-client
+ !
+ vrf cust-1
+  address-family ipv4 unicast
+   redistribute connected
+   redistribute static
+  !
+ !
+!
+```
+
+
 <br>
 
 Configuring and verifying the MPLS L3VPN
