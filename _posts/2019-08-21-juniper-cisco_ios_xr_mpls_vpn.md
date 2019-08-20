@@ -333,7 +333,75 @@ inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
                     >  to 10.0.2.1 via ge-0/0/3.10
 ```                    
 
-All other interfaces that connect the routers in the topology will have the same OSPF interface configuration.
+Notice the difference in cost. Both Juniper and Cisco assigned a cost of 100 to the link, but the cost assigned to the loopback interface differs. On the Cisco:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show ospf interface loopback 0
+Tue Aug 20 08:58:29.481 UTC
+
+Loopback0 is up, line protocol is up 
+  Internet Address 10.0.1.1/32, Area 0
+  Label stack Primary label 0 Backup label 0 SRTE label 0
+  Process ID 1, Router ID 10.0.1.1, Network Type LOOPBACK, <b>Cost: 1</b>
+  Loopback interface is treated as a stub Host
+```
+
+On the Juniper:
+```
+salt@vmx01:r1> show ospf interface lo0.1 detail 
+Interface           State   Area            DR ID           BDR ID          Nbrs
+lo0.1               DRother 0.0.0.0         0.0.0.0         0.0.0.0            0
+  Type: LAN, Address: 10.0.0.1, Mask: 255.255.255.255, MTU: 65535, <b>Cost: 0</b>
+  Adj count: 0, Passive
+  Hello: 10, Dead: 40, ReXmit: 5, Not Stub
+  Auth type: None
+  Protection type: None
+  Topology default (ID 0) -> Passive, Cost: 0
+```
+
+
+Last thing is to verify load-balancing. On the Cisco, we check the route towards the other IOS XR PE:
+```
+RP/0/RP0/CPU0:ios_xr_1#show route 10.0.1.2
+Tue Aug 20 08:52:31.483 UTC
+
+Routing entry for 10.0.1.2/32
+  Known via "ospf 1", distance 110, metric 201, type intra area
+  Installed Aug 20 08:52:01.911 for 00:00:29
+  Routing Descriptor Blocks
+    10.0.2.0, from 10.0.1.2, via GigabitEthernet0/0/0/1.10
+      Route metric is 201
+    10.0.2.4, from 10.0.1.2, via GigabitEthernet0/0/0/2.12
+      Route metric is 201
+  No advertising protos.
+```  
+
+On the Juniper, we check the route towards R3:
+
+```
+
+salt@vmx01:r1> show route 10.0.0.3                                 
+
+inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
+@ = Routing Use Only, # = Forwarding Use Only
++ = Active Route, - = Last Active, * = Both
+
+10.0.0.3/32        *[OSPF/10] 00:00:12, metric 200
+                       to 192.168.4.1 via ge-0/0/1.4
+                    >  to 192.168.1.1 via ge-0/0/1.1
+
+salt@vmx01:r1> show route forwarding-table destination 10.0.0.3    
+Logical system: r1
+Routing table: default.inet
+Internet:
+Enabled protocols: Bridging, Dual VLAN, 
+Destination        Type RtRef Next hop           Type Index    NhRef Netif
+10.0.0.3/32        user     0                    ulst  1048587     4
+                              192.168.4.1        ucst      843    12 ge-0/0/1.4
+                              192.168.1.1        ucst      842     8 ge-0/0/1.1
+```
+
+
 
 <br>
 
