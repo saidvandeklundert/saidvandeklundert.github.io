@@ -411,7 +411,7 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
 Configuring and verifying LDP
 =============================
 
-Obviously, to get any MPLS L3VPN going, we require an MPLS network. We are going to take the easy pick and settle for LDP. The LDP configuration will be pretty basic and it will include the following:
+To get any MPLS L3VPN going, we require an MPLS network. We are going to take the easy pick and settle for LDP. The LDP configuration will be straightforward and include the following:
 - authentication
 - advertisement of an explicit null label
 - advertisement of the loopback IP only
@@ -487,18 +487,42 @@ The other configuration items are pretty similar. Though different in syntac, on
 
 Both Cisco ass well as Juniper offer ways to inject into LDP whatever routes you want, both offer BFD protection and many more configuration options, but I do not want to go off to far into the weeds here. Instead, we will verify what we have configured so far.
 
-First, we check the Cisco side:
+First, we check the LDP adjacency state on Cisco:
 
 ```
-RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor       
-Tue Aug 20 09:56:36.447 UTC
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp discovery 
+Tue Aug 20 11:56:56.417 UTC
+
+Local LDP Identifier: 10.0.1.1:0
+Discovery Sources:
+  Interfaces:
+    GigabitEthernet0/0/0/1.10 : xmit/recv
+      VRF: 'default' (0x60000000)
+      LDP Id: 10.0.0.1:0, Transport address: 10.0.0.1
+          Hold time: 15 sec (local:15 sec, peer:15 sec)
+          Established: Aug 20 11:56:03.380 (00:00:53 ago)
+
+```
+
+Next on Juniper:
+```
+salt@vmx01:r1> show ldp neighbor                 
+Address                             Interface       Label space ID     Hold time
+10.0.2.1                            ge-0/0/3.10     10.0.1.1:0           10
+```
+
+After forming this adjaceny, an LDP session is established. To verify the LDP session, we issue the following command on the Cisco device:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor  
+Tue Aug 20 11:57:06.842 UTC
 
 Peer LDP Identifier: 10.0.0.1:0
-  TCP connection: 10.0.0.1:646 - 10.0.1.1:16353; MD5 on
+  TCP connection: 10.0.0.1:646 - 10.0.1.1:53366; MD5 on
   Graceful Restart: No
   Session Holdtime: 30 sec
-  State: Oper; Msgs sent/rcvd: 144/101; Downstream-Unsolicited
-  Up time: 00:14:11
+  State: Oper; Msgs sent/rcvd: 19/18; Downstream-Unsolicited
+  Up time: 00:00:59
   LDP Discovery Sources:
     IPv4: (1)
       GigabitEthernet0/0/0/1.10
@@ -508,7 +532,167 @@ Peer LDP Identifier: 10.0.0.1:0
       10.0.2.0       10.0.2.2       192.168.1.0    192.168.4.0    
       192.168.15.0   
     IPv6: (0)
+
 ```
+
+And on the Juniper device:
+```
+salt@vmx01:r1> show ldp session detail      
+Address: 10.0.1.1, State: Operational, Connection: Open, Hold time: 25
+  Session ID: 10.0.0.1:0--10.0.1.1:0
+  Next keepalive in 8 seconds
+  Passive, Maximum PDU: 4096, Hold time: 30, Neighbor count: 1
+  Neighbor types: discovered
+  Keepalive interval: 10, Connect retry interval: 1
+  Local address: 10.0.0.1, Remote address: 10.0.1.1
+  Up for 00:07:49
+  Capabilities advertised: none
+  Capabilities received: p2mp
+  Protection: disabled
+  Session flags: none
+  Authentication type: MD5 (0.0.0.0/0)
+  Local - Restart: disabled, Helper mode: enabled
+  Remote - Restart: disabled, Helper mode: disabled
+  Local maximum neighbor reconnect time: 120000 msec
+  Local maximum neighbor recovery time: 240000 msec
+  Local Label Advertisement mode: Downstream unsolicited
+  Remote Label Advertisement mode: Downstream unsolicited
+  Negotiated Label Advertisement mode: Downstream unsolicited
+  MTU discovery: disabled
+  Nonstop routing state: Not in sync
+  Next-hop addresses received:
+    10.0.1.1
+    10.0.2.1
+    10.0.2.5
+
+```
+
+Next we check the LDP synchronization. It was configured under OSPF, and on both Cisco as well as Juniper, that is the place where we verify it as well. First, we check the Cisco:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show ospf interface GigabitEthernet0/0/0/1.10 | include LDP
+Tue Aug 20 12:07:51.833 UTC
+  LDP Sync Enabled, Sync Status: Achieved
+```
+
+Then we check the Juniper:
+
+```
+salt@vmx01:r1> show ospf interface ge-0/0/3.10 extensive | match ldp 
+  LDP sync state: in sync, for: 00:13:39, reason: LDP session up
+```
+
+If all is well, both devices have now signaled an LDP LSP between them. Let's verify this on the Cisco side:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show cef 10.0.0.1
+Tue Aug 20 12:19:48.209 UTC
+10.0.0.1/32, version 5, internal 0x1000001 0x0 (ptr 0xe1cbd88) [1], 0x0 (0xe3900a8), 0xa28 (0xea28328)
+ Updated Aug 20 11:56:54.109 
+ remote adjacency to GigabitEthernet0/0/0/1.10
+ Prefix Len 32, traffic index 0, precedence n/a, priority 3
+   via 10.0.2.0/32, GigabitEthernet0/0/0/1.10, 2 dependencies, weight 0, class 0 [flags 0x0]
+    path-idx 0 NHID 0x0 [0xf1412f0 0x0]
+    next hop 10.0.2.0/32
+    remote adjacency
+     local label 24000      labels imposed {ExpNullv4}
+
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp ipv4 forwarding 10.0.0.1/32
+Tue Aug 20 12:20:40.101 UTC
+
+Codes: 
+  - = GR label recovering, (!) = LFA FRR pure backup path 
+  {} = Label stack with multi-line output for a routing path
+  G = GR, S = Stale, R = Remote LFA FRR backup
+
+Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
+                In      Out            Interface                        G S R
+--------------- ------- -------------- ------------ ------------------- -----
+10.0.0.1/32     24000   ExpNullv4      Gi0/0/0/1.10 10.0.2.0                  
+```
+
+And now on the Juniper side:
+
+```
+salt@vmx01:r1> show route 10.0.1.2/32 
+
+inet.0: 31 destinations, 40 routes (31 active, 0 holddown, 0 hidden)
+@ = Routing Use Only, # = Forwarding Use Only
++ = Active Route, - = Last Active, * = Both
+
+10.0.1.2/32        @[OSPF/10] 00:26:33, metric 101
+                    >  to 10.0.2.3 via ge-0/0/3.11
+                   #[LDP/9] 00:26:33, metric 1
+                    >  to 10.0.2.3 via ge-0/0/3.11, Push 0
+
+inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.0.1.2/32        *[LDP/9] 00:26:33, metric 1
+                    >  to 10.0.2.3 via ge-0/0/3.11, Push 0
+```
+
+
+The LDP configuration is the same for every device in the topology. After enabling the configuration on every device, we can start verifying whether or not we have all the required routes.
+
+We can check this on the Cisco using the following commands:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp ipv4 forwarding
+Tue Aug 20 12:42:01.827 UTC
+
+Codes: 
+  - = GR label recovering, (!) = LFA FRR pure backup path 
+  {} = Label stack with multi-line output for a routing path
+  G = GR, S = Stale, R = Remote LFA FRR backup
+
+Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
+                In      Out            Interface                        G S R
+--------------- ------- -------------- ------------ ------------------- -----
+10.0.0.1/32     24000   ExpNullv4      Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.2/32     24001   ExpNullv4      Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.3/32     24002   92             Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.4/32     24003   37             Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.5/32     24004   38             Gi0/0/0/1.10 10.0.2.0                 
+                        94             Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.6/32     24005   39             Gi0/0/0/1.10 10.0.2.0                 
+                        95             Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.14/32    24006   40             Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.15/32    24007   49             Gi0/0/0/1.10 10.0.2.0                 
+10.0.1.2/32     24008   62             Gi0/0/0/1.10 10.0.2.0                 
+                        243            Gi0/0/0/2.12 10.0.2.4 
+```
+
+Next, we check the the same thing on the Juniper:
+
+```
+salt@vmx01:r1> show route protocol ldp table inet.3 
+
+inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.0.0.2/32        *[LDP/9] 00:10:22, metric 1
+                    >  to 192.168.1.1 via ge-0/0/1.1, Push 0
+10.0.0.3/32        *[LDP/9] 00:10:22, metric 1
+                       to 192.168.4.1 via ge-0/0/1.4, Push 64
+                    >  to 192.168.1.1 via ge-0/0/1.1, Push 92
+10.0.0.4/32        *[LDP/9] 00:10:22, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 0
+10.0.0.5/32        *[LDP/9] 00:10:22, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 66
+10.0.0.6/32        *[LDP/9] 00:10:22, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 67
+10.0.0.14/32       *[LDP/9] 00:10:22, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 68
+10.0.0.15/32       *[LDP/9] 00:10:22, metric 1
+                    >  to 192.168.15.1 via ge-0/0/1.15, Push 0
+10.0.1.1/32        *[LDP/9] 00:02:22, metric 1
+                    >  to 10.0.2.1 via ge-0/0/3.10, Push 0
+10.0.1.2/32        *[LDP/9] 00:10:22, metric 1
+                    >  to 10.0.2.3 via ge-0/0/3.11, Push 0
+```
+
+Both devices offer plenty of other commands to really get into the nitty gritty but I am going to skip that here. Additional verification of label information will be done when the VPN is setup.
 
 
 
