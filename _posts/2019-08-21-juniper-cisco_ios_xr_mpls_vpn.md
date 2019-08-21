@@ -411,16 +411,16 @@ On the `ios_xr_1`, we issue the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route ipv4 ospf | include 32 
-Wed Aug 21 09:51:25.380 UTC
-O    10.0.0.1/32 [110/100] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
-O    10.0.0.2/32 [110/200] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
-O    10.0.0.3/32 [110/300] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
-O    10.0.0.4/32 [110/200] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
-O    10.0.0.5/32 [110/300] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
-O    10.0.0.6/32 [110/300] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
-O    10.0.0.14/32 [110/300] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
-O    10.0.0.15/32 [110/200] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
-O    10.0.1.2/32 [110/201] via 10.0.2.0, 00:56:28, GigabitEthernet0/0/0/1.10
+Wed Aug 21 10:20:24.232 UTC
+O    10.0.0.1/32 [110/100] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.0.2/32 [110/100] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.3/32 [110/200] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.4/32 [110/200] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.0.5/32 [110/300] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.6/32 [110/300] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.14/32 [110/300] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.0.15/32 [110/200] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.1.2/32 [110/201] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
 ```
 
 On `r1`, we issue the following command:
