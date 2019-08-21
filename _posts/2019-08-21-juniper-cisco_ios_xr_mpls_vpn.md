@@ -23,7 +23,7 @@ The interface, OSPF and LDP configuration is going to be the same on every devic
 
 ![ios_xr_1 to vmx1](ios_xr_1_vmx_1.jpg "ios_xr_1 to vmx1")
 
-Configuring the interfaces on the `IOS XR`:
+First we configure the interfaces on `ios_xr_1`:
 
 ```
 interface Loopback0
@@ -38,7 +38,7 @@ interface GigabitEthernet0/0/0/1.10
  encapsulation dot1q 1
 ```
 
-Configuring the interface on the `Juniper vMX`:
+Then we move on to `vmx1`:
 
 ```
 set interfaces ge-0/0/3 flexible-vlan-tagging
@@ -50,11 +50,11 @@ set interfaces ge-0/0/3 unit 10 family inet address 10.0.2.0/31
 set interfaces lo0 unit 1 family inet address 10.0.0.1/32
 ```
 
-Apart from the obvious difference in syntax, there are two items here to consider. The Cisco interfaces need to be enabled before they can be used. After working with Juniper for so long, I actually forgot about this when I was trying to get the IOS XR going on KVM.
+Apart from the obvious difference in syntax, there are two things here to consider. The Cisco interfaces need to be enabled using `no shutdown` before they can be used. After working with Juniper for so long, I actually forgot about this when I was trying to get the IOS XR going on KVM.
 
 On the Juniper device, we need to ready the interface to allow different encapsulation on the main interface. Because `flexible-vlan-tagging` and `encapsulation flexible-ethernet-services` will enable most of the scenario's, I generally default to using that.
 
-To verify the interface status on the `IOS XR`, we issue to the following command:
+To verify the interface status on `ios_xr_1`, we issue to the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show interface GigabitEthernet0/0/0/1.10      
@@ -81,7 +81,7 @@ GigabitEthernet0/0/0/1.10 is up, line protocol is up
 ```     
 
 
-Same thing on the `Juniper`:
+To verify the interface on `vmx1`:
 
 ```
 salt@vmx01:r1> show interfaces ge-0/0/3.10    
@@ -114,14 +114,14 @@ round-trip min/avg/max/stddev = 3.581/4.794/5.613/0.668 ms
 Configuring and verifying the IGP
 =================================
 
-We are going with several options common to most networks I worked on. What will be included in the IGP configuration is the following:
+We are going to configure several options that are common to most networks I worked on. What will be included in the IGP configuration is the following:
 - OSPF area 0 interface configuration
 - calculate the link cost factoring in future 100G links
 - authentication
 - BFD
 - load-balancing
 
-The following is the `IOS XR` configuration:
+The following is the `ios_xr_1` configuration:
 
 ```
 router ospf 1
@@ -142,7 +142,7 @@ router ospf 1
 ```
 
 
-The equivalant configuration on the `Juniper` is the following:
+The equivalant configuration for `vmx1` is as follows:
 
 ```
 set protocols ospf reference-bandwidth 100g
@@ -153,7 +153,7 @@ set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 bfd-liveness-detection min
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 bfd-liveness-detection multiplier 5
 ```
 
-Since load balancing is not something that is automatically enabled on Juniper devices, we need to add the following to `vmx01`:
+Since load balancing is not something that is automatically enabled on Juniper devices, we need to add the following to `vmx1`:
 
 ```
 set policy-options policy-statement lbpp term 1 then load-balance per-packet
@@ -272,23 +272,31 @@ Let's verify the same things on the Juniper side and start off checking the OSPF
 ```
 salt@vmx01:r1> show ospf neighbor 10.0.1.1 extensive        
 Address          Interface              State     ID               Pri  Dead
-10.0.2.1         ge-0/0/3.10            Full      10.0.1.1           1    37
+10.0.2.1         ge-0/0/3.10            <b>Full</b>      <b>10.0.1.1</b>           1    37
   Area 0.0.0.0, opt 0x52, DR 0.0.0.0, BDR 0.0.0.0
   Up 23:08:38, adjacent 23:08:38
   Topology default (ID 0) -> Bidirectional
 ```
 
+The neighbor state is `Full`. To verify some of the other features we configured, we check the following:
+
 ```
 salt@vmx01:r1> show ospf interface ge-0/0/3.10 extensive    
 Interface           State   Area            DR ID           BDR ID          Nbrs
 ge-0/0/3.10         PtToPt  0.0.0.0         0.0.0.0         0.0.0.0            1
-  Type: P2P, Address: 10.0.2.0, Mask: 255.255.255.254, MTU: 1500, Cost: 1
+  Type: <b>P2P</b>, Address: 10.0.2.0, Mask: 255.255.255.254, MTU: 1500, Cost: 1
   Adj count: 1
   Hello: 10, Dead: 40, ReXmit: 5, Not Stub
-  Auth type: MD5, Active key ID: 1, Start time: 1970 Jan  1 00:00:00 UTC
+  <b>Auth type: MD5</b>, Active key ID: 1, Start time: 1970 Jan  1 00:00:00 UTC
   Protection type: None
   Topology default (ID 0) -> <b>Cost: 100</b>
+```
 
+The previous output reveals the interface is acting as a `P2P` OSPF interface, we have have `MD5` authentication enabled and the cost for the link is `100`.
+
+BFD can be verified using the following:
+
+```
 salt@vmx01:r1> show bfd session extensive                   
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
@@ -309,7 +317,7 @@ Address                  State     Interface      Time     Interval  Multiplier
   Session ID: 0x16f
 ```  
 
-Both routers should have an OSPF route towards their neighboring loopback IP now. We can verify things on the IOS XR like so:
+Both routers should have an OSPF route towards their neighboring loopback IP now. We can verify things on `ios_xr_1` like so:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route 10.0.0.1
@@ -324,7 +332,7 @@ Routing entry for 10.0.0.1/32
   No advertising protos.  
 ```
 
-On the Juniper:
+On `vmx1`, we do the following:
 
 ```
 salt@vmx01:r1> show route 10.0.1.1    
@@ -351,6 +359,7 @@ Loopback0 is up, line protocol is up
 ```
 
 On the Juniper:
+
 ```
 salt@vmx01:r1> show ospf interface lo0.1 detail 
 Interface           State   Area            DR ID           BDR ID          Nbrs
@@ -364,7 +373,41 @@ lo0.1               DRother 0.0.0.0         0.0.0.0         0.0.0.0            0
 ```
 
 
-Last thing is to verify load-balancing. On the Cisco, we check the route towards the other IOS XR PE:
+After enabling the same OSPF configuration on every device in our topology, we can check the route table to see if we have an OSPF route towards the loopback interface of every other device.
+
+On the `ios_xr_1`, we issue the following command:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show route ipv4 ospf | include 32 
+Wed Aug 21 10:20:24.232 UTC
+O    10.0.0.1/32 [110/100] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.0.2/32 [110/100] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.3/32 [110/200] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.4/32 [110/200] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.0.5/32 [110/300] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.6/32 [110/300] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+O    10.0.0.14/32 [110/300] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.0.15/32 [110/200] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
+O    10.0.1.2/32 [110/201] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
+```
+
+On `vmx1`, we issue the following command:
+
+```
+salt@vmx01:r1> show route protocol ospf | match 32                                              
+10.0.0.2/32        *[OSPF/10] 00:00:05, metric 100
+10.0.0.3/32        *[OSPF/10] 00:00:05, metric 200
+10.0.0.4/32        *[OSPF/10] 00:00:05, metric 100
+10.0.0.5/32        *[OSPF/10] 00:00:05, metric 200
+10.0.0.6/32        *[OSPF/10] 00:00:05, metric 200
+10.0.0.14/32       *[OSPF/10] 00:00:05, metric 200
+10.0.0.15/32       *[OSPF/10] 00:00:05, metric 100
+10.0.1.1/32        *[OSPF/10] 00:00:05, metric 101
+10.0.1.2/32        *[OSPF/10] 00:00:05, metric 101
+```
+
+Last thing is to verify load-balancing. Since there is only 1 link between `ios_xr_1` and `vmx1`, we check the routes towards a node in the network to which the devices have multiple equal cost paths. On the Cisco, we check the route towards `ios_xr_2`:
+
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route 10.0.1.2
 Tue Aug 20 08:52:31.483 UTC
@@ -380,7 +423,7 @@ Routing entry for 10.0.1.2/32
   No advertising protos.
 ```  
 
-On the Juniper, we check the route towards R3:
+On the Juniper, we check the route towards `vmx3`:
 
 ```
 
@@ -403,39 +446,6 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
 10.0.0.3/32        user     0                    ulst  1048587     4
                               192.168.4.1        ucst      843    12 ge-0/0/1.4
                               192.168.1.1        ucst      842     8 ge-0/0/1.1
-```
-
-After enabling the same OSPF configuration on every device in our topology, we can check the route table to see if we have an OSPF route towards the loopback interface of every other device.
-
-On the `ios_xr_1`, we issue the following command:
-
-```
-RP/0/RP0/CPU0:ios_xr_1#show route ipv4 ospf | include 32 
-Wed Aug 21 10:20:24.232 UTC
-O    10.0.0.1/32 [110/100] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
-O    10.0.0.2/32 [110/100] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
-O    10.0.0.3/32 [110/200] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
-O    10.0.0.4/32 [110/200] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
-O    10.0.0.5/32 [110/300] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
-O    10.0.0.6/32 [110/300] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
-O    10.0.0.14/32 [110/300] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
-O    10.0.0.15/32 [110/200] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
-O    10.0.1.2/32 [110/201] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
-```
-
-On `r1`, we issue the following command:
-
-```
-salt@vmx01:r1> show route protocol ospf | match 32                                              
-10.0.0.2/32        *[OSPF/10] 00:00:05, metric 100
-10.0.0.3/32        *[OSPF/10] 00:00:05, metric 200
-10.0.0.4/32        *[OSPF/10] 00:00:05, metric 100
-10.0.0.5/32        *[OSPF/10] 00:00:05, metric 200
-10.0.0.6/32        *[OSPF/10] 00:00:05, metric 200
-10.0.0.14/32       *[OSPF/10] 00:00:05, metric 200
-10.0.0.15/32       *[OSPF/10] 00:00:05, metric 100
-10.0.1.1/32        *[OSPF/10] 00:00:05, metric 101
-10.0.1.2/32        *[OSPF/10] 00:00:05, metric 101
 ```
 
 <br>
