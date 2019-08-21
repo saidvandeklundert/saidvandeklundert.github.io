@@ -21,7 +21,7 @@ Interface configuration
 
 The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
 
-![ios_xr_1 to vmx1](ios_xr_1_vmx_1.jpg "ios_xr_1 to vmx1")
+![ios_xr_1 to vmx1](/img/ios_xr_1_vmx_1.jpg "ios_xr_1 to vmx1")
 
 First we configure the interfaces on `ios_xr_1`:
 
