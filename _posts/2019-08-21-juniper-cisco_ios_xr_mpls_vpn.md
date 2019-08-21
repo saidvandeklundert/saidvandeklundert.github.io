@@ -21,6 +21,8 @@ Interface configuration
 
 The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
 
+![ios_xr_1 to vmx1](ios_xr_1_vmx_1.jpg "ios_xr_1 to vmx1")
+
 Configuring the interfaces on the `IOS XR`:
 
 ```
@@ -403,7 +405,38 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
                               192.168.1.1        ucst      842     8 ge-0/0/1.1
 ```
 
+After enabling the same OSPF configuration on every device in our topology, we can check the route table to see if we have an OSPF route towards the loopback interface of every other device.
 
+On the `ios_xr_1`, we issue the following command:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show route ipv4 ospf | include 32 
+Wed Aug 21 09:51:25.380 UTC
+O    10.0.0.1/32 [110/100] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
+O    10.0.0.2/32 [110/200] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
+O    10.0.0.3/32 [110/300] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
+O    10.0.0.4/32 [110/200] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
+O    10.0.0.5/32 [110/300] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
+O    10.0.0.6/32 [110/300] via 10.0.2.0, 04:56:31, GigabitEthernet0/0/0/1.10
+O    10.0.0.14/32 [110/300] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
+O    10.0.0.15/32 [110/200] via 10.0.2.0, 05:59:17, GigabitEthernet0/0/0/1.10
+O    10.0.1.2/32 [110/201] via 10.0.2.0, 00:56:28, GigabitEthernet0/0/0/1.10
+```
+
+On `r1`, we issue the following command:
+
+```
+salt@vmx01:r1> show route protocol ospf | match 32                                              
+10.0.0.2/32        *[OSPF/10] 00:00:05, metric 100
+10.0.0.3/32        *[OSPF/10] 00:00:05, metric 200
+10.0.0.4/32        *[OSPF/10] 00:00:05, metric 100
+10.0.0.5/32        *[OSPF/10] 00:00:05, metric 200
+10.0.0.6/32        *[OSPF/10] 00:00:05, metric 200
+10.0.0.14/32       *[OSPF/10] 00:00:05, metric 200
+10.0.0.15/32       *[OSPF/10] 00:00:05, metric 100
+10.0.1.1/32        *[OSPF/10] 00:00:05, metric 101
+10.0.1.2/32        *[OSPF/10] 00:00:05, metric 101
+```
 
 <br>
 
@@ -1004,4 +1037,527 @@ Save for the fact that the session is authenticated, we can see most of the same
 Configuring and verifying the MPLS L3VPN
 ========================================
 
-.
+The MPLS L3VPN we will configure will be a very basic one. On every PE, we will configure a vrf called `cust-1`. We will place 1 interface inside the VRF and we will configure a single static route towards the customer device. We will cover the example configuration on `ios_xr_1` and on `r5`.
+
+
+Let's check out the configuration on `ios_xr_1` first. We start by configuring the vrf:
+
+```
+vrf cust-1
+ rd 1:1
+ address-family ipv4 unicast
+  import route-target
+   1:1
+  !
+  export route-target
+   1:1
+  !
+ !
+!
+```
+
+Next, we configure the interface and place that interface in the vrf:
+
+```
+interface GigabitEthernet0/0/0/3.2002
+ vrf cust-1
+ ipv4 address 10.0.0.9 255.255.255.252
+ encapsulation dot1q 2002
+```
+
+After this, we configure a static route for the vrf under `router static`:
+
+```
+router static
+ vrf cust-1
+  address-family ipv4 unicast
+   192.168.1.1/32 10.0.0.10
+  !
+ !
+!
+```
+
+Finaly, we need to configure BGP to advertise the connected routes and the static for this vrf:
+
+```
+router bgp 1
+  vrf cust-1
+  address-family ipv4 unicast
+   label mode per-vrf
+   redistribute connected
+   redistribute static
+  !
+ !
+!
+```
+
+You'll also notice the `label mode per-vrf`. This is not really necessary, but I configured it since I will also use per vrf label allocation on the Juniper.
+
+Now we move to the Juniper configuration on `r5`. The configuration components are the same, but everything is organized a bit differently:
+
+```
+set interfaces ge-0/0/1 unit 2000 vlan-id 2000
+set interfaces ge-0/0/1 unit 2000 family inet address 10.0.0.1/30
+
+set routing-instances cust-1 instance-type vrf
+set routing-instances cust-1 interface ge-0/0/1.2000
+set routing-instances cust-1 route-distinguisher 1:1
+set routing-instances cust-1 vrf-target target:1:1
+set routing-instances cust-1 vrf-table-label
+set routing-instances cust-1 routing-options static route 192.168.1.3/32 next-hop 10.0.0.2
+```
+
+The first thing you'll notice is that the interface configuration is no different from one that is not part of any vrf. After the interface, there is the `routing-instance` configuration. Basically, on a Juniper, everything that has to do with the routing-instance is configured there. From routing-protocols to RDs and RTs.
+
+In our example, we start out specifying what type of vrf it is by specifying the `instance-type`. For MPLS L3VPN, we define the instance as a `vrf`.
+
+Next, we define the interfaces that should be part of the vrf. This is followed by the route-target and route-distinguisher. Through the use of `vrf-target`, we tell the device to export and import the route-target community that is referenced. 
+
+After this is `vrf-table-label`, which ensures the creation of a logical internal interface that enables per vrf label allocation and simplified configuration.
+
+The last configuration item is the static route, which is configured under the routing-options in the routing-instance. 
+
+Now that we have configured the vrf everywhere, we can start our verification. First we verify connectivity from a test device I have connected to the vrf on `ios_xr_1`:
+
+```
+salt@vmx01> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.2    
+PING 192.168.1.2 (192.168.1.2): 56 data bytes
+!!!!!
+--- 192.168.1.2 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 1.715/1.964/2.244/0.229 ms
+
+salt@vmx01> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.3    
+PING 192.168.1.3 (192.168.1.3): 56 data bytes
+!!!!!
+--- 192.168.1.3 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 3.084/3.295/3.457/0.138 ms
+
+salt@vmx01> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.4    
+PING 192.168.1.4 (192.168.1.4): 56 data bytes
+!!!!!
+--- 192.168.1.4 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 3.004/3.490/5.213/0.863 ms
+```
+
+So we can exchange ICMP. But there is a lot more to check. Let's check the routing tables on `ios_xr_1` and `r5` first:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-1      
+Wed Aug 21 07:06:09.656 UTC
+
+Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
+       U - per-user static route, o - ODR, L - local, G  - DAGR, l - LISP
+       A - access/subscriber, a - Application route
+       M - mobile route, r - RPL, t - Traffic Engineering, (!) - FRR Backup path
+
+Gateway of last resort is not set
+
+B    10.0.0.0/30 [200/0] via 10.0.0.5 (nexthop in vrf default), 00:28:14
+B    10.0.0.4/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:27:58
+C    10.0.0.8/30 is directly connected, 18:26:55, GigabitEthernet0/0/0/3.2002
+L    10.0.0.9/32 is directly connected, 18:26:55, GigabitEthernet0/0/0/3.2002
+B    10.0.0.12/30 [200/0] via 10.0.1.2 (nexthop in vrf default), 00:03:55
+S    192.168.1.1/32 [1/0] via 10.0.0.10, 18:26:55
+B    192.168.1.2/32 [200/0] via 10.0.1.2 (nexthop in vrf default), 00:03:55
+B    192.168.1.3/32 [200/0] via 10.0.0.5 (nexthop in vrf default), 00:28:14
+B    192.168.1.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:27:58
+```
+
+Now on the Juniper:
+
+```
+salt@vmx01:r5> show route table cust-1          
+
+cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.0.0.0/30        *[Direct/0] 00:28:54
+                    >  via ge-0/0/1.2000
+10.0.0.1/32        *[Local/0] 00:28:54
+                       Local via ge-0/0/1.2000
+10.0.0.4/30        *[BGP/170] 00:28:38, localpref 100, from 10.0.0.14
+                      AS path: I, validation-state: unverified
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
+                    [BGP/170] 00:28:38, localpref 100, from 10.0.0.15
+                      AS path: I, validation-state: unverified
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
+10.0.0.8/30        *[BGP/170] 00:28:54, MED 0, localpref 100, from 10.0.0.14
+                      AS path: ?, validation-state: unverified
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
+                    [BGP/170] 00:28:54, MED 0, localpref 100, from 10.0.0.15
+                      AS path: ?, validation-state: unverified
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
+10.0.0.12/30       *[BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.14
+                      AS path: ?, validation-state: unverified
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
+                       to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
+                    [BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.15
+                      AS path: ?, validation-state: unverified
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
+                       to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
+192.168.1.1/32     *[BGP/170] 00:15:17, MED 0, localpref 100, from 10.0.0.14
+                      AS path: ?, validation-state: unverified
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
+                    [BGP/170] 00:15:17, MED 0, localpref 100, from 10.0.0.15
+                      AS path: ?, validation-state: unverified
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
+192.168.1.2/32     *[BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.14
+                      AS path: ?, validation-state: unverified
+                       to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
+                    [BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.15
+                      AS path: ?, validation-state: unverified
+                       to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
+192.168.1.3/32     *[Static/5] 00:28:54
+                    >  to 10.0.0.2 via ge-0/0/1.2000
+192.168.1.4/32     *[BGP/170] 00:28:38, localpref 100, from 10.0.0.14
+                      AS path: I, validation-state: unverified
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
+                    [BGP/170] 00:28:38, localpref 100, from 10.0.0.15
+                      AS path: I, validation-state: unverified
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
+```                    
+
+
+On both PE devices, we can see that we have learned all of the static routes. Let's check things in a little more detail now and move on to check the route-advertisements and forwarding entries. 
+
+First, we check the signaling from the Juniper to the Cisco and the forwarding from the Cisco to the Juniper. For this reasons, we start out on the Juniper `r5` router. We can check the following to see what information is advertised to the route reflector:
+
+```
+salt@vmx01:r5> show route advertising-protocol bgp 10.0.0.15 table cust-1 detail 
+
+cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
+* 10.0.0.0/30 (1 entry, 1 announced)
+ BGP group rr-client type Internal
+     Route Distinguisher: 1:1
+     VPN Label: 282
+     Nexthop: Self
+     Flags: Nexthop Change
+     Localpref: 100
+     AS path: [1] I 
+     Communities: target:1:1
+
+* 192.168.1.3/32 (1 entry, 1 announced)
+ BGP group rr-client type Internal
+     Route Distinguisher: 1:1
+     VPN Label: 282
+     Nexthop: Self
+     Flags: Nexthop Change
+     Localpref: 100
+     AS path: [1] I 
+     Communities: target:1:1
+```
+
+When we move to the `ios_xr_1`, we can use the following to see the routes that were advertised by `r5`:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 192.168.1.3/32
+Wed Aug 21 07:17:45.638 UTC
+BGP routing table entry for 192.168.1.3/32, Route Distinguisher: 1:1
+Versions:
+  Process           bRIB/RIB  SendTblVer
+  Speaker                952         952
+Last Modified: Aug 21 06:37:56.439 for 00:39:49
+Paths: (2 available, best #1)
+  Not advertised to any peer
+  Path #1: Received by speaker 0
+  Not advertised to any peer
+  Local, (received & used)
+    10.0.0.5 (metric 300) from 10.0.0.14 (10.0.0.5)
+      Received Label 282 
+      Origin IGP, localpref 100, valid, internal, best, group-best, import-candidate, imported
+      Received Path ID 0, Local Path ID 1, version 950
+      Extended community: RT:1:1 
+      Originator: 10.0.0.5, Cluster list: 0.0.0.1
+      Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
+  Path #2: Received by speaker 0
+  Not advertised to any peer
+  Local, (received & used)
+    10.0.0.5 (metric 300) from 10.0.0.15 (10.0.0.5)
+      Received Label 282 
+      Origin IGP, localpref 100, valid, internal, import-candidate, imported
+      Received Path ID 0, Local Path ID 0, version 0
+      Extended community: RT:1:1 
+      Originator: 10.0.0.5, Cluster list: 0.0.0.1
+      Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
+
+RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 10.0.0.0/30   
+Wed Aug 21 07:19:11.794 UTC
+BGP routing table entry for 10.0.0.0/30, Route Distinguisher: 1:1
+Versions:
+  Process           bRIB/RIB  SendTblVer
+  Speaker                951         951
+Last Modified: Aug 21 06:37:56.439 for 00:41:15
+Paths: (2 available, best #1)
+  Not advertised to any peer
+  Path #1: Received by speaker 0
+  Not advertised to any peer
+  Local, (received & used)
+    10.0.0.5 (metric 300) from 10.0.0.14 (10.0.0.5)
+      Received Label 282 
+      Origin IGP, localpref 100, valid, internal, best, group-best, import-candidate, imported
+      Received Path ID 0, Local Path ID 1, version 949
+      Extended community: RT:1:1 
+      Originator: 10.0.0.5, Cluster list: 0.0.0.1
+      Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
+  Path #2: Received by speaker 0
+  Not advertised to any peer
+  Local, (received & used)
+    10.0.0.5 (metric 300) from 10.0.0.15 (10.0.0.5)
+      Received Label 282 
+      Origin IGP, localpref 100, valid, internal, import-candidate, imported
+      Received Path ID 0, Local Path ID 0, version 0
+      Extended community: RT:1:1 
+      Originator: 10.0.0.5, Cluster list: 0.0.0.1
+      Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
+```
+
+So we received the routes with VPN label `282`. If we wanted to understand what the device will do with this information, we can check the following:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show cef vrf cust-1 192.168.1.3
+Wed Aug 21 07:15:41.277 UTC
+192.168.1.3/32, version 515, internal 0x5000001 0x0 (ptr 0xe1c9834) [1], 0x0 (0xe38fa68), 0xa08 (0xea285e8)
+ Updated Aug 21 06:37:55.968
+ Prefix Len 32, traffic index 0, precedence n/a, priority 3
+   via 10.0.0.5/32, 3 dependencies, recursive [flags 0x6000]
+    path-idx 0 NHID 0x0 [0xd490dc8 0x0]
+    recursion-via-/32
+    next hop VRF - 'default', table - 0xe0000000
+    next hop 10.0.0.5/32 via 24004/0/21
+     next hop 10.0.2.0/32 Gi0/0/0/1.10 labels imposed {38 282}
+```
+
+The `282` label makes sense, we just saw that one in the BGP advertisement. The `38` is the transport label, which is associated with the LSP towards `r5`. We can see that using:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp forwarding 10.0.0.5/32                                  
+Wed Aug 21 07:15:32.263 UTC
+
+Codes: 
+  - = GR label recovering, (!) = LFA FRR pure backup path 
+  {} = Label stack with multi-line output for a routing path
+  G = GR, S = Stale, R = Remote LFA FRR backup
+
+Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
+                In      Out            Interface                        G S R
+--------------- ------- -------------- ------------ ------------------- -----
+10.0.0.5/32     24004   38             Gi0/0/0/1.10 10.0.2.0                 
+```
+
+Following that label is pretty easy. The outgoing interface leads us to `r1`, so we hop on over to that router and use the following:
+
+```
+salt@vmx01:r1> show route table mpls label 38 
+
+mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+38                 *[LDP/9] 00:29:58, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Swap 66
+```                    
+
+This leads us to `r4`:
+
+```
+salt@vmx01:r4> show route table mpls label 66    
+
+mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+66                 *[LDP/9] 22:13:44, metric 1
+                    >  to 192.168.5.0 via ge-0/0/2.5, Swap 0
+66(S=0)            *[LDP/9] 22:13:44, metric 1
+                    >  to 192.168.5.0 via ge-0/0/2.5, Pop      
+
+```
+
+Prior to sending traffic to `r5`, the outer label is swapped to `0`. On `r5`,  the router will only have to deal with the VPN label (`282`):
+
+```
+salt@vmx01:r5> show route table mpls label 282   
+
+mpls.0: 16 destinations, 16 routes (16 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+282                *[VPN/0] 00:48:36
+                    >  via lsi.117440513 (cust-1), Pop    
+```
+
+The label is popped and further route lookups are done inside the vrf. Following the path to `192.168.1.3`, we would issue the following:
+
+```
+salt@vmx01:r5> show route 192.168.1.3 
+
+cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+192.168.1.3/32     *[Static/5] 00:59:53
+                    >  to 10.0.0.2 via ge-0/0/1.2000
+```                    
+
+Let's go the other way around and vertify the routing information advertised by `ios_xr_1`, check what is received on `r5` and then finish up tracing the forwarding path from `r5` to `ios_xr_1`.
+
+So first, we check the route advertiesment from `ios_xr_1` by issuing the following command:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show bgp vpnv4 unicast vrf cust-1 advertised neighbor 10.0.0.15
+Wed Aug 21 07:00:06.956 UTC
+Route Distinguisher: 1:1
+10.0.0.8/30 is advertised to 10.0.0.15
+  Path info:
+    neighbor: Local           neighbor router id: 10.0.1.1
+    valid  redistributed  best  import-candidate  
+Received Path ID 0, Local Path ID 1, version 903
+  Attributes after inbound policy was applied:
+    next hop: 0.0.0.0
+    MET ORG AS EXTCOMM 
+    origin: incomplete  metric: 0  
+    aspath: 
+    extended community: RT:1:1 
+  Attributes after outbound policy was applied:
+    next hop: 10.0.1.1
+    MET ORG AS EXTCOMM 
+    origin: incomplete  metric: 0  
+    aspath: 
+    extended community: RT:1:1 
+
+Route Distinguisher: 1:1
+192.168.1.1/32 is advertised to 10.0.0.15
+  Path info:
+    neighbor: Local           neighbor router id: 10.0.1.1
+    valid  redistributed  best  import-candidate  
+Received Path ID 0, Local Path ID 1, version 969
+  Attributes after inbound policy was applied:
+    next hop: 10.0.0.10
+    MET ORG AS EXTCOMM 
+    origin: incomplete  metric: 0  
+    aspath: 
+    extended community: RT:1:1 
+  Attributes after outbound policy was applied:
+    next hop: 10.0.1.1
+    MET ORG AS EXTCOMM 
+    origin: incomplete  metric: 0  
+    aspath: 
+    extended community: RT:1:1 
+```
+
+To see the local label, we can use the following:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls forwarding vrf cust-1         
+Wed Aug 21 07:42:52.962 UTC
+Local  Outgoing    Prefix             Outgoing     Next Hop        Bytes       
+Label  Label       or ID              Interface                    Switched    
+------ ----------- ------------------ ------------ --------------- ------------
+24009  Aggregate   cust-1: Per-VRF Aggr[V]   \
+                                      cust-1                       3024 
+```
+
+To check what routing information is received on the Juniper device, we can issue the following command on `r5`:
+
+```
+salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 192.168.1.1/32 detail 
+
+cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
+  192.168.1.1/32 (2 entries, 1 announced)
+     Import Accepted
+     Route Distinguisher: 1:1
+     VPN Label: 24009
+     Nexthop: 10.0.1.1
+     MED: 0
+     Localpref: 100
+     AS path: ?  (Originator)
+     Cluster list:  0.0.0.1
+     Originator ID: 10.0.1.1
+     Communities: target:1:1
+
+salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 10.0.0.8/30 detail       
+
+cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
+  10.0.0.8/30 (2 entries, 1 announced)
+     Import Accepted
+     Route Distinguisher: 1:1
+     VPN Label: 24009
+     Nexthop: 10.0.1.1
+     MED: 0
+     Localpref: 100
+     AS path: ?  (Originator)
+     Cluster list:  0.0.0.1
+     Originator ID: 10.0.1.1
+     Communities: target:1:1
+```
+
+The corresponding forwarding entry can be checked like this:
+
+```
+
+salt@vmx01:r5> show route forwarding-table vpn cust-1 destination 192.168.1.1                  
+Logical system: r5
+Routing table: cust-1.inet
+Internet:
+Enabled protocols: Bridging, All VLANs, 
+Destination        Type RtRef Next hop           Type Index    NhRef Netif
+192.168.1.1/32     user     0                    indr  1048591     3
+                              192.168.5.1       Push 24009, Push 253(top)     1549     2 ge-0/0/1.5
+```
+
+We just saw that the VPN label, `24009`, was learned through BGP. The top label, `253`, is the transport label. We can see this when we check the routing information to the `ios_xr_1` device (which the VPN routes will resolve to):
+
+```
+salt@vmx01:r5> show route 10.0.1.1 table inet.3    
+
+inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.0.1.1/32        *[LDP/9] 02:51:31, metric 301
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 253
+```
+
+Next would be `r4`:
+
+```
+salt@vmx01:r4> show route table mpls.0 label 253     
+
+mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+253                *[LDP/9] 04:00:16, metric 1
+                    >  to 192.168.4.0 via ge-0/0/2.4, Swap 94
+
+```
+
+Then `r1`:
+
+```
+salt@vmx01:r1> show route table mpls.0 label 94     
+
+mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+94                 *[LDP/9] 00:08:47, metric 1
+                    >  to 10.0.2.1 via ge-0/0/3.10, Swap 0
+94(S=0)            *[LDP/9] 00:08:47, metric 1
+                    >  to 10.0.2.1 via ge-0/0/3.10, Pop 
+```
+
+This will leave the Cisco to deal with the explicit null label and the VPN label we saw earlier(`24009`).
+
+
+Summary
+=======
+
+These are the basics to get a VRF going between Juniper and Cisco IOS XR. There are differences in configuration constructs, but coming from a Juniper background and having done some IOS a long time ago, I found the IOS XR not too difficult to understand or work with. 
