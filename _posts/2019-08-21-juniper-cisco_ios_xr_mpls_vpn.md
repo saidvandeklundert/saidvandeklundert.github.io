@@ -423,7 +423,7 @@ Routing entry for 10.0.1.2/32
   No advertising protos.
 ```  
 
-On the Juniper, we check the route towards `vmx3`:
+On `vmx1`, we check the route towards `vmx3`:
 
 ```
 
@@ -436,17 +436,24 @@ inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
 10.0.0.3/32        *[OSPF/10] 00:00:12, metric 200
                        to 192.168.4.1 via ge-0/0/1.4
                     >  to 192.168.1.1 via ge-0/0/1.1
+```
 
+Here we see two equal cost routes are available. To see if they are acually being used, we need to issue the following command:
+
+```
 salt@vmx01:r1> show route forwarding-table destination 10.0.0.3    
 Logical system: r1
 Routing table: default.inet
 Internet:
 Enabled protocols: Bridging, Dual VLAN, 
 Destination        Type RtRef Next hop           Type Index    NhRef Netif
-10.0.0.3/32        user     0                    ulst  1048587     4
+10.0.0.3/32        user     0                    <b>ulst</b>  1048587     4
                               192.168.4.1        ucst      843    12 ge-0/0/1.4
                               192.168.1.1        ucst      842     8 ge-0/0/1.1
 ```
+
+The `ulst` is indicative of a `List of unicast next hops` that will be used to forward traffic.
+
 
 <br>
 
@@ -454,19 +461,18 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
 Configuring and verifying LDP
 =============================
 
-To get any MPLS L3VPN going, we require an MPLS network. We are going to take the easy pick and settle for LDP. The LDP configuration will be straightforward and include the following:
+In order to get any MPLS L3VPN going, we require an MPLS network. We'll take the easy route and settle for LDP. The LDP configuration will include the following:
 - authentication
 - advertisement of an explicit null label
 - advertisement of the loopback IP only
 - FEC deaggregation
 - LDP synchronization
 
-Additionally, we want to ensure that the IGP metrics are reflected in the LDP routes.
+Additionally, we want to ensure that the IGP metrics are reflected in the LDP routes on the Juniper device.
 
-The LDP configuration is the same on every router, so again, we focus on the configuration between ios_xr_1 and vMX1. 
+The LDP configuration is the same on every router, so again, we focus on the configuration between `ios_xr_1` and `vmx1`. 
 
-
-First, the Cisco MPLS configuration:
+First, the MPLS configuration on the Cisco device:
 
 ```
 mpls ldp
@@ -496,7 +502,7 @@ router ospf 1
 !
 ```
 
-Now the Juniper configuration:
+Now the configuration on the Juniper device:
 
 ```
 set interfaces ge-0/0/3 unit 10 family mpls
@@ -512,12 +518,12 @@ set protocols ldp session-group 0.0.0.0/0 authentication-key "$9$.539AtOEcl0BX7d
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 ldp-synchronization
 ```
 
-We notice a few things. First of all, specifying the interfaces under LDP is enough for IOS XR. For the Juniper, to enable the interface for OSPF, configuring it under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under  `protocols mpls`.
+Notice how specifying the interfaces under LDP is enough for IOS XR. For the Juniper, to enable the interface for OSPF, configuring it under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under  `protocols mpls`.
 
-The other thing we notice is that the defaults for Juniper and Cisco are slighlty different. 
+Another thing worth knowing is that the defaults for Juniper and Cisco are slightly different. 
 
 For Juniper, we configured the following options:
-- `track-igp-metric`: this will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 _ascii shrug_
+- `track-igp-metric`: this will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 (_ascii shrug_)
 - `deaggregate`: this will deaggregate the FECs and will cause each prefix to be bound to a separate label. Not the default on Juniper, though it is recommended to configure it by Juniper.
 
 For Cisco, we configured the following options:
