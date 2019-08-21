@@ -701,10 +701,81 @@ Both devices offer plenty of other commands to really get into the nitty gritty 
 Configuring and verifying BGP
 =============================
 
-.
+We configure BGP on the route reflectors and on the PE routers. Let's examine the configuration on the route reflectors first.
 
+On `r14`:
+```
+set protocols bgp group rr type internal
+set protocols bgp group rr local-address 10.0.0.14
+set protocols bgp group rr family inet-vpn unicast
+set protocols bgp group rr authentication-key "$9$SKwe87-dsoJDwYP5zF/9KMW"
+set protocols bgp group rr cluster 0.0.0.1
+set protocols bgp group rr neighbor 10.0.1.1
+set protocols bgp group rr neighbor 10.0.1.2
+set protocols bgp group rr neighbor 10.0.0.5
+set protocols bgp group rr neighbor 10.0.0.6
+set protocols bgp log-updown
 
-The `ios_xr_1` configuration:
+routing-options autonomous-system 1
+```
+
+On `r15`:
+```
+set protocols bgp group rr type internal
+set protocols bgp group rr local-address 10.0.0.15
+set protocols bgp group rr family inet-vpn unicast
+set protocols bgp group rr authentication-key "$9$SKwe87-dsoJDwYP5zF/9KMW"
+set protocols bgp group rr cluster 0.0.0.1
+set protocols bgp group rr neighbor 10.0.1.1
+set protocols bgp group rr neighbor 10.0.1.2
+set protocols bgp group rr neighbor 10.0.0.5
+set protocols bgp group rr neighbor 10.0.0.6
+set protocols bgp log-updown
+
+routing-options autonomous-system 1
+```
+
+We name the BGP group RR and specify the neighbors configured under it will be IBGP neighbors by using `type internal`. Using `local-address` we source the session from the loopback address 
+
+The `family inet-vpn unicast` ensures that the BGP session will be signaled with the proper address family. The `authentication-key` knob authenticates the BGP session.
+
+The `cluster 0.0.0.1` statement is what turns this router into a route reflector. 
+
+The `log-updown` statement is to have the system log BGP session state changes and finally, we notice that the autonomous system itself is configured under the routing-options.
+
+Now on to the Juniper PE configurations. 
+
+On `r5`:
+
+```
+set protocols bgp group rr-client type internal
+set protocols bgp group rr-client local-address 10.0.0.5
+set protocols bgp group rr-client family inet-vpn unicast
+set protocols bgp group rr-client authentication-key "$9$SKwe87-dsoJDwYP5zF/9KMW"
+set protocols bgp group rr-client neighbor 10.0.0.15
+set protocols bgp group rr-client neighbor 10.0.0.14
+set protocols bgp log-updown
+
+routing-options autonomous-system 1
+```
+
+On `r6`:
+
+```
+set protocols bgp group rr-client type internal
+set protocols bgp group rr-client local-address 10.0.0.6
+set protocols bgp group rr-client family inet-vpn unicast
+set protocols bgp group rr-client authentication-key "$9$SKwe87-dsoJDwYP5zF/9KMW"
+set protocols bgp group rr-client neighbor 10.0.0.15
+set protocols bgp group rr-client neighbor 10.0.0.14
+set protocols bgp log-updown
+
+routing-options autonomous-system 1
+```
+
+Except for the `cluster` statement, the configuration is pretty much the same.
+
+Now, on to the Cisco PE configurations. On `ios_xr_1`, we have the following configuration:
 
 ```
 router bgp 1
@@ -725,14 +796,207 @@ router bgp 1
  neighbor 10.0.0.15
   use neighbor-group rr-client
  !
- vrf cust-1
-  address-family ipv4 unicast
-   redistribute connected
-   redistribute static
+!
+```
+
+On `ios_xr_2`, we have the following configuration:
+
+```
+router bgp 1
+ bgp router-id 10.0.1.2
+ address-family vpnv4 unicast
+ !
+ neighbor-group rr-client
+  remote-as 1
+  password encrypted 08324D421D485744
+  update-source Loopback0
+  address-family vpnv4 unicast
+   soft-reconfiguration inbound always
   !
+ !
+ neighbor 10.0.0.14
+  use neighbor-group rr-client
+ !
+ neighbor 10.0.0.15
+  use neighbor-group rr-client
  !
 !
 ```
+
+To verify that all the BGP sessions properly formed, the easiest thing is to check out the route reflectors.
+
+First we check `r14`:
+
+```
+salt@vmx01:r14> show bgp summary    
+Threading mode: BGP I/O
+Groups: 1 Peers: 4 Down peers: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+inet.0               
+                       0          0          0          0          0          0
+inet6.0              
+                       0          0          0          0          0          0
+bgp.l3vpn.0          
+                       8          8          0          0          0          0
+Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
+10.0.0.5                  1          4          5       0       4           2 Establ
+  bgp.l3vpn.0: 2/2/2/0
+10.0.0.6                  1          4          5       0       4           2 Establ
+  bgp.l3vpn.0: 2/2/2/0
+10.0.1.1                  1          4          4       0       1           8 Establ
+  bgp.l3vpn.0: 2/2/2/0
+10.0.1.2                  1          4          4       0       1          11 Establ
+```
+
+Then we check `r15`:
+
+```
+salt@vmx01:r15> show bgp summary    
+Threading mode: BGP I/O
+Groups: 1 Peers: 4 Down peers: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+inet.0               
+                       0          0          0          0          0          0
+inet6.0              
+                       0          0          0          0          0          0
+bgp.l3vpn.0          
+                       8          8          0          0          0          0
+Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
+10.0.0.5                  1          4          5       0       2          20 Establ
+  bgp.l3vpn.0: 2/2/2/0
+10.0.0.6                  1          4          5       0       2          20 Establ
+  bgp.l3vpn.0: 2/2/2/0
+10.0.1.1                  1          4          4       0       1          22 Establ
+  bgp.l3vpn.0: 2/2/2/0
+10.0.1.2                  1          4          4       0       1          24 Establ
+```
+
+After verifying that all sessions are established, we can start verifying that the BGP sessions were properly configured. As an example, we will verify the session between `r15` and `ios_xr_1`. The rest of the BGP session configuration will be the same. 
+
+First, we check `r15`:
+
+```
+salt@vmx01:r15> show bgp neighbor 10.0.1.1 
+Peer: <b>10.0.1.1+35276 AS 1</b>      Local: <b>10.0.0.15+179 AS 1</b>
+  Group: rr                    Routing-Instance: master
+  Forwarding routing-instance: master  
+  Type: <b>Internal</b>    State: <b>Established</b>  (route reflector client)Flags: <Sync>
+  Last State: OpenConfirm   Last Event: RecvKeepAlive
+  Last Error: Cease
+  Options: <Preference LocalAddress AuthKey LogUpDown Cluster AddressFamily Rib-group Refresh>
+  <b>Authentication key is configured</b>
+  Address families configured: <b>inet-vpn-unicast</b>
+  Local Address: 10.0.0.15 Holdtime: 90 Preference: 170
+  Number of flaps: 1
+  Last flap event: Stop
+  Error: 'Cease' Sent: 1 Recv: 0
+  Peer ID: 10.0.1.1        Local ID: 10.0.0.15         Active Holdtime: 90
+  Keepalive Interval: 30         Group index: 0    Peer index: 0    SNMP index: 0     
+  I/O Session Thread: bgpio-0 State: Enabled
+  BFD: disabled, down
+  <b>NLRI for restart configured on peer: inet-vpn-unicast</b>
+  <b>NLRI advertised by peer: inet-vpn-unicast</b>
+  <b>NLRI for this session: inet-vpn-unicast</b>
+  Peer supports Refresh capability (2)
+  Stale routes from peer are kept for: 300
+  Peer does not support Restarter functionality
+  Peer does not support Receiver functionality
+  Peer does not support LLGR Restarter or Receiver functionality
+  Peer supports 4 byte AS extension (peer-as 1)
+  Peer does not support Addpath
+  NLRI that peer supports extended nexthop encoding for: inet-unicast inet-multicast inet-vpn-unicast
+  Table bgp.l3vpn.0 Bit: 40000
+    RIB State: BGP restart is complete
+    RIB State: VPN restart is complete
+    Send state: in sync
+    Active prefixes:              2
+    Received prefixes:            2
+    Accepted prefixes:            2
+    Suppressed due to damping:    0
+    Advertised prefixes:          6
+  Last traffic (seconds): Received 15   Sent 20   Checked 380 
+  Input messages:  Total 16     Updates 2       Refreshes 0     Octets 459
+  Output messages: Total 17     Updates 3       Refreshes 0     Octets 618
+  Output Queue[3]: 0            (bgp.l3vpn.0, inet-vpn-unicast)
+
+```
+
+This output reveals all we need to know. It displays the source and destination IP for the BGP session as well as the AS that is configured on both routers. Additionally, we can see the state of the BGP session as well as the configuration options for this session. We see that the session is authenticated and we can see that the BGP session supports the `inet-vpn-unicast` address family.
+
+
+Let's move to `ios_xr_1` and check the session from there:
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show bgp neighbors 10.0.0.15
+Wed Aug 21 03:47:05.585 UTC
+
+BGP neighbor is 10.0.0.15
+ <b>Remote AS 1, local AS 1, internal link</b>
+ <b>Remote router ID 10.0.0.15</b>
+  <b>BGP state = Established, up for 14:07:55</b>
+  NSR State: None
+  Last read 00:00:02, Last read before reset 14:08:09
+  Hold time is 90, keepalive interval is 30 seconds
+  Configured hold time: 180, keepalive: 60, min acceptable hold time: 3
+  Last write 00:00:17, attempted 19, written 19
+  Second last write 00:00:47, attempted 19, written 19
+  Last write before reset 14:08:36, attempted 19, written 19
+  Second last write before reset 14:09:06, attempted 19, written 19
+  Last write pulse rcvd  Aug 21 03:47:03.536 last full not set pulse count 3879
+  Last write pulse rcvd before reset 14:08:22
+  Socket not armed for io, armed for read, armed for write
+  Last write thread event before reset 14:08:22, second last 14:08:23
+  Last KA expiry before reset 14:08:36, second last 14:09:06
+  Last KA error before reset 00:00:00, KA not sent 00:00:00
+  Last KA start before reset 14:08:36, second last 14:09:06
+  Precedence: internet
+  Non-stop routing is enabled
+  Multi-protocol capability received
+  Neighbor capabilities:
+    Route refresh: advertised (old + new) and received (old + new)
+    Graceful Restart (GR Awareness): received
+    4-byte AS: advertised and received
+    <b>Address family VPNv4 Unicast: advertised and received</b>
+  Received 2074 messages, 1 notifications, 0 in queue
+  Sent 1838 messages, 1 notifications, 0 in queue
+  Minimum time between advertisement runs is 0 secs
+  Inbound message logging enabled, 3 messages buffered
+  Outbound message logging enabled, 3 messages buffered
+
+ For Address Family: VPNv4 Unicast
+  BGP neighbor version 846
+  Update group: 0.1 Filter-group: 0.2  No Refresh request being processed
+  Inbound soft reconfiguration allowed (override route-refresh)
+    Extended Nexthop Encoding: advertised
+  Route refresh request: received 0, sent 0
+  6 accepted prefixes, 0 are bestpaths
+  Exact no. of prefixes denied : 0.
+  Cumulative no. of prefixes denied: 0. 
+  Prefix advertised 2, suppressed 0, withdrawn 0
+  Maximum prefixes allowed 2097152
+  Threshold for warning message 75%, restart interval 0 min
+  AIGP is enabled
+  An EoR was received during read-only mode
+  Last ack version 846, Last synced ack version 0
+  Outstanding version objects: current 0, max 1, refresh 0
+  Additional-paths operation: None
+  Send Multicast Attributes
+
+  Connections established 8; dropped 7
+  Local host: 10.0.1.1, Local port: 179, IF Handle: 0x00000000
+  Foreign host: 10.0.0.15, Foreign port: 51470
+  Last reset 14:08:09, due to BGP Notification received: peer unconfigured
+  Time since last notification sent to neighbor: 14:15:05
+  Error Code: configuration change
+  Notification data sent:
+    None
+  Time since last notification received from neighbor: 14:08:09
+  Error Code: peer unconfigured
+  Notification data received:
+    None
+```    
+
+Save for the fact that the session is authenticated, we can see most of the same information in this output.
 
 
 <br>
