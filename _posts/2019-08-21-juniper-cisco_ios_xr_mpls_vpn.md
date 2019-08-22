@@ -6,6 +6,7 @@ image: /img/juniper_logo.jpg
 
 The topology
 
+
 The setup:
 - OSPF IGP: p2p links, authentication, BFD, load-balaning
 - MPLS LDP: explicit null, session authenticaiton, ldp sync
