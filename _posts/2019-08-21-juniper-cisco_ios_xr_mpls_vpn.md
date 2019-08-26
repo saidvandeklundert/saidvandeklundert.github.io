@@ -4,16 +4,24 @@ title: MPLS L3VPN between Juniper MX and Cisco IOS XR
 image: /img/juniper_logo.jpg
 ---
 
-The topology
+Lately, I have been playing around with a lab that involves Cisco IOS XR and Juniper devices. The main intention I have with it is to be able to quicky test something or to check how I could automate something.
 
+The topology I am using is the following:
 
-The setup:
+![juniper and ios xr topology](/img/topology_juniper_ios_xr.png "topology")
+
+Nodes in this small SP lab have the following functions:
+- rr: `vmx14` and `vmx15`
+- p: `vmx1` - `vmx4`
+- pe: `ios_xr_1`, `ios_xr_2`, `vmx5` and `vmx6`
+
+The features I will walk through it this post are the following:
 - OSPF IGP: p2p links, authentication, BFD, load-balaning
-- MPLS LDP: explicit null, session authenticaiton, ldp sync
+- MPLS LDP: session authenticaiton, ldp sync
 - BGP: 2 RRs, VPNv4 AF, authenticaiton
 - VRF with static routes
-- VRF dynamic routing
-- adding v6 everywhere
+
+Possible future posts will include include technologies such as 6VPE and VPN topologies that are more interesting then this one.
 
 <br>
 
@@ -22,7 +30,7 @@ Interface configuration
 
 The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
 
-![ios_xr_1 to vmx1](/img/ios_xr_1_vmx_1.jpg "ios_xr_1 to vmx1")
+![ios_xr_1 to vmx1](/img/juniper_ios_xr.png "ios_xr_1 to vmx1")
 
 First we configure the interfaces on `ios_xr_1`:
 
@@ -464,10 +472,7 @@ Configuring and verifying LDP
 
 In order to get any MPLS L3VPN going, we require an MPLS network. We'll take the easy route and settle for LDP. The LDP configuration will include the following:
 - authentication
-- advertisement of an explicit null label
 - advertisement of the loopback IP only
-- FEC deaggregation
-- LDP synchronization
 
 Additionally, we want to ensure that the IGP metrics are reflected in the LDP routes on the Juniper device.
 
@@ -485,8 +490,6 @@ mpls ldp
   label
    local
     allocate for host-routes
-    advertise
-     explicit-null
     !
    !
   !
@@ -511,8 +514,6 @@ set interfaces ge-0/0/3 unit 10 family mpls
 set protocols mpls interface ge-0/0/3.10
 
 set protocols ldp track-igp-metric
-set protocols ldp deaggregate
-set protocols ldp explicit-null
 set protocols ldp interface ge-0/0/3.10
 set protocols ldp session-group 0.0.0.0/0 authentication-key "$9$.539AtOEcl0BX7dVY2TzF"
 
@@ -525,7 +526,6 @@ Another thing worth knowing is that the defaults for Juniper and Cisco are sligh
 
 For Juniper, we configured the following options:
 - `track-igp-metric`: this will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 (_ascii shrug_)
-- `deaggregate`: this will deaggregate the FECs and will cause each prefix to be bound to a separate label. Not the default on Juniper, though it is recommended to configure it by Juniper.
 
 For Cisco, we configured the following options:
 - `mpls ldp address-family ipv4 label local allocate for host-routes`: this causes for the IOS XR router to advertise a label for the lo0 interface only. The default is to advertise a label for every interface.
@@ -1054,7 +1054,11 @@ Save for the fact that the session is authenticated, we can see most of the same
 Configuring and verifying the MPLS L3VPN
 ========================================
 
-The MPLS L3VPN we will configure will be a very basic one. On every PE, we will configure a vrf called `cust-1`. We will place 1 interface inside the VRF and we will configure a single static route towards the customer device. We will cover the example configuration on `ios_xr_1` and on `r5`.
+The MPLS L3VPN we will configure will be a very basic one:
+
+![juniper and ios xr vpn topology](/img/vpn_topology_juniper_ios_xr.png "vpn topology")
+
+ On every PE, we will configure a vrf called `cust-1`. We will place 1 interface inside the VRF and we will configure a single static route towards the customer device. We will cover the example configuration on `ios_xr_1` and on `r5`. 
 
 
 Let's check out the configuration on `ios_xr_1` first. We start by configuring the vrf:
