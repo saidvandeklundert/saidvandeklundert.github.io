@@ -561,15 +561,15 @@ Address                             Interface       Label space ID     Hold time
 After forming this adjaceny, an LDP session is established. To verify the LDP session, we issue the following command on the Cisco device:
 
 ```
-RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor  
-Tue Aug 20 11:57:06.842 UTC
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor 
+Mon Aug 26 19:29:28.633 UTC
 
 Peer LDP Identifier: 10.0.0.1:0
-  TCP connection: 10.0.0.1:646 - 10.0.1.1:53366; MD5 on
+  TCP connection: 10.0.0.1:646 - 10.0.1.1:33317; MD5 on
   Graceful Restart: No
   Session Holdtime: 30 sec
-  State: Oper; Msgs sent/rcvd: 19/18; Downstream-Unsolicited
-  Up time: 00:00:59
+  State: Oper; Msgs sent/rcvd: 25/23; Downstream-Unsolicited
+  Up time: 00:01:52
   LDP Discovery Sources:
     IPv4: (1)
       GigabitEthernet0/0/0/1.10
@@ -584,15 +584,15 @@ Peer LDP Identifier: 10.0.0.1:0
 
 And on the Juniper device:
 ```
-salt@vmx01:r1> show ldp session detail      
-Address: 10.0.1.1, State: Operational, Connection: Open, Hold time: 25
+salt@vmx01:r1> show ldp session detail 
+Address: 10.0.1.1, State: Operational, Connection: Open, Hold time: 29
   Session ID: 10.0.0.1:0--10.0.1.1:0
-  Next keepalive in 8 seconds
+  Next keepalive in 7 seconds
   Passive, Maximum PDU: 4096, Hold time: 30, Neighbor count: 1
   Neighbor types: discovered
   Keepalive interval: 10, Connect retry interval: 1
   Local address: 10.0.0.1, Remote address: 10.0.1.1
-  Up for 00:07:49
+  Up for 00:02:32
   Capabilities advertised: none
   Capabilities received: p2mp
   Protection: disabled
@@ -608,10 +608,9 @@ Address: 10.0.1.1, State: Operational, Connection: Open, Hold time: 25
   MTU discovery: disabled
   Nonstop routing state: Not in sync
   Next-hop addresses received:
-    10.0.1.1
+    10.0.1.1                            
     10.0.2.1
     10.0.2.5
-
 ```
 
 Next we check the LDP synchronization. It was configured under OSPF, and on both Cisco as well as Juniper, that is the place where we verify it as well. First, we check the Cisco:
@@ -633,19 +632,18 @@ If all is well, both devices have now signaled an LDP LSP between them. Let's ve
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show cef 10.0.0.1
-Tue Aug 20 12:19:48.209 UTC
-10.0.0.1/32, version 5, internal 0x1000001 0x0 (ptr 0xe1cbd88) [1], 0x0 (0xe3900a8), 0xa28 (0xea28328)
- Updated Aug 20 11:56:54.109 
+Mon Aug 26 19:31:10.772 UTC
+10.0.0.1/32, version 7, internal 0x1000001 0x0 (ptr 0xdf13d88) [1], 0x0 (0xe0d79e8), 0xa20 (0xe710228)
+ Updated Aug 26 19:27:52.930 
  remote adjacency to GigabitEthernet0/0/0/1.10
  Prefix Len 32, traffic index 0, precedence n/a, priority 3
-   via 10.0.2.0/32, GigabitEthernet0/0/0/1.10, 2 dependencies, weight 0, class 0 [flags 0x0]
-    path-idx 0 NHID 0x0 [0xf1412f0 0x0]
+   via 10.0.2.0/32, GigabitEthernet0/0/0/1.10, 8 dependencies, weight 0, class 0 [flags 0x0]
+    path-idx 0 NHID 0x0 [0xf141140 0xf141380]
     next hop 10.0.2.0/32
     remote adjacency
-     local label 24000      labels imposed {ExpNullv4}
-
+     local label 24002      labels imposed {ImplNull}
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp ipv4 forwarding 10.0.0.1/32
-Tue Aug 20 12:20:40.101 UTC
+Mon Aug 26 19:31:23.649 UTC
 
 Codes: 
   - = GR label recovering, (!) = LFA FRR pure backup path 
@@ -655,7 +653,7 @@ Codes:
 Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
                 In      Out            Interface                        G S R
 --------------- ------- -------------- ------------ ------------------- -----
-10.0.0.1/32     24000   ExpNullv4      Gi0/0/0/1.10 10.0.2.0                  
+10.0.0.1/32     24002   ImpNull        Gi0/0/0/1.10 10.0.2.0                       
 ```
 
 And now on the Juniper side:
@@ -667,16 +665,16 @@ inet.0: 31 destinations, 40 routes (31 active, 0 holddown, 0 hidden)
 @ = Routing Use Only, # = Forwarding Use Only
 + = Active Route, - = Last Active, * = Both
 
-10.0.1.2/32        @[OSPF/10] 00:26:33, metric 101
+10.0.1.2/32        @[OSPF/10] 00:03:22, metric 101
                     >  to 10.0.2.3 via ge-0/0/3.11
-                   #[LDP/9] 00:26:33, metric 1
-                    >  to 10.0.2.3 via ge-0/0/3.11, Push 0
+                   #[LDP/9] 00:02:48, metric 1
+                    >  to 10.0.2.3 via ge-0/0/3.11
 
 inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-10.0.1.2/32        *[LDP/9] 00:26:33, metric 1
-                    >  to 10.0.2.3 via ge-0/0/3.11, Push 0
+10.0.1.2/32        *[LDP/9] 00:02:48, metric 1
+                    >  to 10.0.2.3 via ge-0/0/3.11
 ```
 
 
@@ -686,7 +684,7 @@ We can check this on the Cisco using the following commands:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp ipv4 forwarding
-Tue Aug 20 12:42:01.827 UTC
+Mon Aug 26 19:32:38.913 UTC
 
 Codes: 
   - = GR label recovering, (!) = LFA FRR pure backup path 
@@ -696,18 +694,18 @@ Codes:
 Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
                 In      Out            Interface                        G S R
 --------------- ------- -------------- ------------ ------------------- -----
-10.0.0.1/32     24000   ExpNullv4      Gi0/0/0/1.10 10.0.2.0                 
-10.0.0.2/32     24001   ExpNullv4      Gi0/0/0/2.12 10.0.2.4                 
-10.0.0.3/32     24002   92             Gi0/0/0/2.12 10.0.2.4                 
-10.0.0.4/32     24003   37             Gi0/0/0/1.10 10.0.2.0                 
-10.0.0.5/32     24004   38             Gi0/0/0/1.10 10.0.2.0                 
-                        94             Gi0/0/0/2.12 10.0.2.4                 
-10.0.0.6/32     24005   39             Gi0/0/0/1.10 10.0.2.0                 
-                        95             Gi0/0/0/2.12 10.0.2.4                 
-10.0.0.14/32    24006   40             Gi0/0/0/1.10 10.0.2.0                 
-10.0.0.15/32    24007   49             Gi0/0/0/1.10 10.0.2.0                 
-10.0.1.2/32     24008   62             Gi0/0/0/1.10 10.0.2.0                 
-                        243            Gi0/0/0/2.12 10.0.2.4 
+10.0.0.1/32     24002   ImpNull        Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.2/32     24000   ImpNull        Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.3/32     24001   338            Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.4/32     24003   175            Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.5/32     24004   176            Gi0/0/0/1.10 10.0.2.0                 
+                        340            Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.6/32     24005   177            Gi0/0/0/1.10 10.0.2.0                 
+                        341            Gi0/0/0/2.12 10.0.2.4                 
+10.0.0.14/32    24006   178            Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.15/32    24007   172            Gi0/0/0/1.10 10.0.2.0                 
+10.0.1.2/32     24008   182            Gi0/0/0/1.10 10.0.2.0                 
+                        348            Gi0/0/0/2.12 10.0.2.4                 
 ```
 
 Next, we check the the same thing on the Juniper:
@@ -718,25 +716,25 @@ salt@vmx01:r1> show route protocol ldp table inet.3
 inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-10.0.0.2/32        *[LDP/9] 00:10:22, metric 1
-                    >  to 192.168.1.1 via ge-0/0/1.1, Push 0
-10.0.0.3/32        *[LDP/9] 00:10:22, metric 1
-                       to 192.168.4.1 via ge-0/0/1.4, Push 64
-                    >  to 192.168.1.1 via ge-0/0/1.1, Push 92
-10.0.0.4/32        *[LDP/9] 00:10:22, metric 1
-                    >  to 192.168.4.1 via ge-0/0/1.4, Push 0
-10.0.0.5/32        *[LDP/9] 00:10:22, metric 1
-                    >  to 192.168.4.1 via ge-0/0/1.4, Push 66
-10.0.0.6/32        *[LDP/9] 00:10:22, metric 1
-                    >  to 192.168.4.1 via ge-0/0/1.4, Push 67
-10.0.0.14/32       *[LDP/9] 00:10:22, metric 1
-                    >  to 192.168.4.1 via ge-0/0/1.4, Push 68
-10.0.0.15/32       *[LDP/9] 00:10:22, metric 1
-                    >  to 192.168.15.1 via ge-0/0/1.15, Push 0
-10.0.1.1/32        *[LDP/9] 00:02:22, metric 1
-                    >  to 10.0.2.1 via ge-0/0/3.10, Push 0
-10.0.1.2/32        *[LDP/9] 00:10:22, metric 1
-                    >  to 10.0.2.3 via ge-0/0/3.11, Push 0
+10.0.0.2/32        *[LDP/9] 00:14:32, metric 1
+                    >  to 192.168.1.1 via ge-0/0/1.1
+10.0.0.3/32        *[LDP/9] 00:14:32, metric 1
+                       to 192.168.4.1 via ge-0/0/1.4, Push 316
+                    >  to 192.168.1.1 via ge-0/0/1.1, Push 338
+10.0.0.4/32        *[LDP/9] 00:14:32, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4
+10.0.0.5/32        *[LDP/9] 00:14:32, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 318
+10.0.0.6/32        *[LDP/9] 00:14:32, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 319
+10.0.0.14/32       *[LDP/9] 00:14:32, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Push 320
+10.0.0.15/32       *[LDP/9] 00:14:32, metric 1
+                    >  to 192.168.15.1 via ge-0/0/1.15
+10.0.1.1/32        *[LDP/9] 00:05:04, metric 1
+                    >  to 10.0.2.1 via ge-0/0/3.10
+10.0.1.2/32        *[LDP/9] 00:04:02, metric 1
+                    >  to 10.0.2.3 via ge-0/0/3.11
 ```
 
 Both devices offer plenty of other commands to really get into the nitty gritty but I am going to skip that here. Additional verification of label information will be done when the VPN is setup.
@@ -1163,8 +1161,8 @@ round-trip min/avg/max/stddev = 3.004/3.490/5.213/0.863 ms
 So we can exchange ICMP. But there is a lot more to check. Let's check the routing tables on `ios_xr_1` and `r5` first:
 
 ```
-RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-1      
-Wed Aug 21 07:06:09.656 UTC
+RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-1 
+Mon Aug 26 19:34:54.483 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
        D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
@@ -1178,75 +1176,79 @@ Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
 
 Gateway of last resort is not set
 
-B    10.0.0.0/30 [200/0] via 10.0.0.5 (nexthop in vrf default), 00:28:14
-B    10.0.0.4/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:27:58
-C    10.0.0.8/30 is directly connected, 18:26:55, GigabitEthernet0/0/0/3.2002
-L    10.0.0.9/32 is directly connected, 18:26:55, GigabitEthernet0/0/0/3.2002
-B    10.0.0.12/30 [200/0] via 10.0.1.2 (nexthop in vrf default), 00:03:55
-S    192.168.1.1/32 [1/0] via 10.0.0.10, 18:26:55
-B    192.168.1.2/32 [200/0] via 10.0.1.2 (nexthop in vrf default), 00:03:55
-B    192.168.1.3/32 [200/0] via 10.0.0.5 (nexthop in vrf default), 00:28:14
-B    192.168.1.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:27:58
+B    10.0.0.0/30 [200/0] via 10.0.0.5 (nexthop in vrf default), 00:06:36
+B    10.0.0.4/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:06:36
+C    10.0.0.8/30 is directly connected, 00:07:22, GigabitEthernet0/0/0/3.2002
+L    10.0.0.9/32 is directly connected, 00:07:22, GigabitEthernet0/0/0/3.2002
+B    10.0.0.12/30 [200/0] via 10.0.1.2 (nexthop in vrf default), 00:05:05
+S    192.168.1.1/32 [1/0] via 10.0.0.10, 00:07:22
+B    192.168.1.2/32 [200/0] via 10.0.1.2 (nexthop in vrf default), 00:05:05
+B    192.168.1.3/32 [200/0] via 10.0.0.5 (nexthop in vrf default), 00:06:36
+B    192.168.1.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:06:36
 ```
 
 Now on the Juniper:
 
 ```
-salt@vmx01:r5> show route table cust-1          
+salt@vmx01:r5> show route table cust-1 
 
 cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-10.0.0.0/30        *[Direct/0] 00:28:54
+10.0.0.0/30        *[Direct/0] 5d 12:57:01
                     >  via ge-0/0/1.2000
-10.0.0.1/32        *[Local/0] 00:28:54
+10.0.0.1/32        *[Local/0] 5d 12:57:01
                        Local via ge-0/0/1.2000
-10.0.0.4/30        *[BGP/170] 00:28:38, localpref 100, from 10.0.0.14
+10.0.0.4/30        *[BGP/170] 00:55:09, localpref 100, from 10.0.0.14
                       AS path: I, validation-state: unverified
-                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
-                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
-                    [BGP/170] 00:28:38, localpref 100, from 10.0.0.15
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 319(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 327(top)
+                    [BGP/170] 00:55:09, localpref 100, from 10.0.0.15
                       AS path: I, validation-state: unverified
-                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
-                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
-10.0.0.8/30        *[BGP/170] 00:28:54, MED 0, localpref 100, from 10.0.0.14
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 319(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 327(top)
+10.0.0.8/30        *[BGP/170] 00:06:42, MED 0, localpref 100, from 10.0.0.14
                       AS path: ?, validation-state: unverified
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
-                    [BGP/170] 00:28:54, MED 0, localpref 100, from 10.0.0.15
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 325(top)
+                       to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 333(top)
+                    [BGP/170] 00:06:42, MED 0, localpref 100, from 10.0.0.15
                       AS path: ?, validation-state: unverified
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
-10.0.0.12/30       *[BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.14
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 325(top)
+                       to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 333(top)
+10.0.0.12/30       *[BGP/170] 00:05:21, MED 0, localpref 100, from 10.0.0.14
                       AS path: ?, validation-state: unverified
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
-                       to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
-                    [BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.15
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 326(top)
+                       to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 334(top)
+                    [BGP/170] 00:05:21, MED 0, localpref 100, from 10.0.0.15
                       AS path: ?, validation-state: unverified
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
-                       to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
-192.168.1.1/32     *[BGP/170] 00:15:17, MED 0, localpref 100, from 10.0.0.14
+                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 326(top)
+                       to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 334(top)
+192.168.1.1/32     *[BGP/170] 00:06:42, MED 0, localpref 100, from 10.0.0.14
                       AS path: ?, validation-state: unverified
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
-                    [BGP/170] 00:15:17, MED 0, localpref 100, from 10.0.0.15
+                       to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 325(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 333(top)
+                    [BGP/170] 00:06:42, MED 0, localpref 100, from 10.0.0.15
                       AS path: ?, validation-state: unverified
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 253(top)
-192.168.1.2/32     *[BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.14
+                       to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 325(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 333(top)
+192.168.1.2/32     *[BGP/170] 00:05:21, MED 0, localpref 100, from 10.0.0.14
                       AS path: ?, validation-state: unverified
-                       to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
-                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
-                    [BGP/170] 00:04:34, MED 0, localpref 100, from 10.0.0.15
+                       to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 326(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 334(top)
+                    [BGP/170] 00:05:21, MED 0, localpref 100, from 10.0.0.15
                       AS path: ?, validation-state: unverified
-                       to 192.168.5.1 via ge-0/0/1.5, Push 24021, Push 258(top)
-                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24021, Push 266(top)
-192.168.1.3/32     *[Static/5] 00:28:54
+                       to 192.168.5.1 via ge-0/0/1.5, Push 24009, Push 326(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 24009, Push 334(top)
+192.168.1.3/32     *[Static/5] 5d 12:57:01
                     >  to 10.0.0.2 via ge-0/0/1.2000
-192.168.1.4/32     *[BGP/170] 00:28:38, localpref 100, from 10.0.0.14
+192.168.1.4/32     *[BGP/170] 00:55:09, localpref 100, from 10.0.0.14
                       AS path: I, validation-state: unverified
-                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
-                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
-                    [BGP/170] 00:28:38, localpref 100, from 10.0.0.15
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 319(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 327(top)
+                    [BGP/170] 00:55:09, localpref 100, from 10.0.0.15
                       AS path: I, validation-state: unverified
-                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 67(top)
-                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 69(top)
+                       to 192.168.5.1 via ge-0/0/1.5, Push 273, Push 319(top)
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 273, Push 327(top)
 ```                    
 
 
@@ -1283,12 +1285,12 @@ When we move to the `ios_xr_1`, we can use the following to see the routes that 
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 192.168.1.3/32
-Wed Aug 21 07:17:45.638 UTC
+Mon Aug 26 19:38:02.222 UTC
 BGP routing table entry for 192.168.1.3/32, Route Distinguisher: 1:1
 Versions:
   Process           bRIB/RIB  SendTblVer
-  Speaker                952         952
-Last Modified: Aug 21 06:37:56.439 for 00:39:49
+  Speaker                 12          12
+Last Modified: Aug 26 19:28:18.892 for 00:09:43
 Paths: (2 available, best #1)
   Not advertised to any peer
   Path #1: Received by speaker 0
@@ -1297,7 +1299,7 @@ Paths: (2 available, best #1)
     10.0.0.5 (metric 300) from 10.0.0.14 (10.0.0.5)
       Received Label 282 
       Origin IGP, localpref 100, valid, internal, best, group-best, import-candidate, imported
-      Received Path ID 0, Local Path ID 1, version 950
+      Received Path ID 0, Local Path ID 1, version 12
       Extended community: RT:1:1 
       Originator: 10.0.0.5, Cluster list: 0.0.0.1
       Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
@@ -1311,14 +1313,14 @@ Paths: (2 available, best #1)
       Extended community: RT:1:1 
       Originator: 10.0.0.5, Cluster list: 0.0.0.1
       Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
-
-RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 10.0.0.0/30   
-Wed Aug 21 07:19:11.794 UTC
+RP/0/RP0/CPU0:ios_xr_1#
+RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 10.0.0.0/30 
+Mon Aug 26 19:38:15.994 UTC
 BGP routing table entry for 10.0.0.0/30, Route Distinguisher: 1:1
 Versions:
   Process           bRIB/RIB  SendTblVer
-  Speaker                951         951
-Last Modified: Aug 21 06:37:56.439 for 00:41:15
+  Speaker                 10          10
+Last Modified: Aug 26 19:28:18.892 for 00:09:57
 Paths: (2 available, best #1)
   Not advertised to any peer
   Path #1: Received by speaker 0
@@ -1327,7 +1329,7 @@ Paths: (2 available, best #1)
     10.0.0.5 (metric 300) from 10.0.0.14 (10.0.0.5)
       Received Label 282 
       Origin IGP, localpref 100, valid, internal, best, group-best, import-candidate, imported
-      Received Path ID 0, Local Path ID 1, version 949
+      Received Path ID 0, Local Path ID 1, version 10
       Extended community: RT:1:1 
       Originator: 10.0.0.5, Cluster list: 0.0.0.1
       Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
@@ -1347,23 +1349,24 @@ So we received the routes with VPN label `282`. If we wanted to understand what 
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show cef vrf cust-1 192.168.1.3
-Wed Aug 21 07:15:41.277 UTC
-192.168.1.3/32, version 515, internal 0x5000001 0x0 (ptr 0xe1c9834) [1], 0x0 (0xe38fa68), 0xa08 (0xea285e8)
- Updated Aug 21 06:37:55.968
+Mon Aug 26 19:38:42.838 UTC
+192.168.1.3/32, version 8, internal 0x5000001 0x0 (ptr 0xdf127ec) [1], 0x0 (0xe0d7b28), 0xa08 (0xe7103a8)
+ Updated Aug 26 19:28:18.664
  Prefix Len 32, traffic index 0, precedence n/a, priority 3
    via 10.0.0.5/32, 3 dependencies, recursive [flags 0x6000]
-    path-idx 0 NHID 0x0 [0xd490dc8 0x0]
+    path-idx 0 NHID 0x0 [0xd436d90 0x0]
     recursion-via-/32
     next hop VRF - 'default', table - 0xe0000000
     next hop 10.0.0.5/32 via 24004/0/21
-     next hop 10.0.2.0/32 Gi0/0/0/1.10 labels imposed {38 282}
+     next hop 10.0.2.0/32 Gi0/0/0/1.10 labels imposed {176 282}
+     next hop 10.0.2.4/32 Gi0/0/0/2.12 labels imposed {340 282}
 ```
 
 The `282` label makes sense, we just saw that one in the BGP advertisement. The `38` is the transport label, which is associated with the LSP towards `r5`. We can see that using:
 
 ```
-RP/0/RP0/CPU0:ios_xr_1#show mpls ldp forwarding 10.0.0.5/32                                  
-Wed Aug 21 07:15:32.263 UTC
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp forwarding 10.0.0.5/32
+Mon Aug 26 19:39:03.225 UTC
 
 Codes: 
   - = GR label recovering, (!) = LFA FRR pure backup path 
@@ -1373,46 +1376,46 @@ Codes:
 Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
                 In      Out            Interface                        G S R
 --------------- ------- -------------- ------------ ------------------- -----
-10.0.0.5/32     24004   38             Gi0/0/0/1.10 10.0.2.0                 
+10.0.0.5/32     24004   176            Gi0/0/0/1.10 10.0.2.0                 
+                        340            Gi0/0/0/2.12 10.0.2.4                  
 ```
 
 Following that label is pretty easy. The outgoing interface leads us to `r1`, so we hop on over to that router and use the following:
 
 ```
-salt@vmx01:r1> show route table mpls label 38 
+salt@vmx01:r1> show route table mpls.0 label 176           
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-38                 *[LDP/9] 00:29:58, metric 1
-                    >  to 192.168.4.1 via ge-0/0/1.4, Swap 66
+176                *[LDP/9] 00:23:18, metric 1
+                    >  to 192.168.4.1 via ge-0/0/1.4, Swap 318
 ```                    
 
 This leads us to `r4`:
 
 ```
-salt@vmx01:r4> show route table mpls label 66    
+salt@vmx01:r4> show route table mpls.0 label 318    
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-66                 *[LDP/9] 22:13:44, metric 1
-                    >  to 192.168.5.0 via ge-0/0/2.5, Swap 0
-66(S=0)            *[LDP/9] 22:13:44, metric 1
+318                *[LDP/9] 01:02:12, metric 1
                     >  to 192.168.5.0 via ge-0/0/2.5, Pop      
-
+318(S=0)           *[LDP/9] 01:02:12, metric 1
+                    >  to 192.168.5.0 via ge-0/0/2.5, Pop      
 ```
 
 Prior to sending traffic to `r5`, the outer label is swapped to `0`. On `r5`,  the router will only have to deal with the VPN label (`282`):
 
 ```
-salt@vmx01:r5> show route table mpls label 282   
+salt@vmx01:r5> show route table mpls.0 label 282 
 
 mpls.0: 16 destinations, 16 routes (16 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-282                *[VPN/0] 00:48:36
-                    >  via lsi.117440513 (cust-1), Pop    
+282                *[VPN/0] 5d 13:04:17
+                    >  via lsi.117440513 (cust-1), Pop     
 ```
 
 The label is popped and further route lookups are done inside the vrf. Following the path to `192.168.1.3`, we would issue the following:
@@ -1427,19 +1430,19 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
                     >  to 10.0.0.2 via ge-0/0/1.2000
 ```                    
 
-Let's go the other way around and vertify the routing information advertised by `ios_xr_1`, check what is received on `r5` and then finish up tracing the forwarding path from `r5` to `ios_xr_1`.
+Let's go the other way around and verify the routing information advertised by `ios_xr_1`, check what is received on `r5` and then finish up tracing the forwarding path from `r5` to `ios_xr_1`.
 
 So first, we check the route advertiesment from `ios_xr_1` by issuing the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show bgp vpnv4 unicast vrf cust-1 advertised neighbor 10.0.0.15
-Wed Aug 21 07:00:06.956 UTC
+Mon Aug 26 19:42:52.761 UTC
 Route Distinguisher: 1:1
 10.0.0.8/30 is advertised to 10.0.0.15
   Path info:
     neighbor: Local           neighbor router id: 10.0.1.1
     valid  redistributed  best  import-candidate  
-Received Path ID 0, Local Path ID 1, version 903
+Received Path ID 0, Local Path ID 1, version 17
   Attributes after inbound policy was applied:
     next hop: 0.0.0.0
     MET ORG AS EXTCOMM 
@@ -1458,7 +1461,7 @@ Route Distinguisher: 1:1
   Path info:
     neighbor: Local           neighbor router id: 10.0.1.1
     valid  redistributed  best  import-candidate  
-Received Path ID 0, Local Path ID 1, version 969
+Received Path ID 0, Local Path ID 1, version 18
   Attributes after inbound policy was applied:
     next hop: 10.0.0.10
     MET ORG AS EXTCOMM 
@@ -1476,22 +1479,22 @@ Received Path ID 0, Local Path ID 1, version 969
 To see the local label, we can use the following:
 
 ```
-RP/0/RP0/CPU0:ios_xr_1#show mpls forwarding vrf cust-1         
-Wed Aug 21 07:42:52.962 UTC
+RP/0/RP0/CPU0:ios_xr_1#show mpls forwarding vrf cust-1 
+Mon Aug 26 19:43:29.726 UTC
 Local  Outgoing    Prefix             Outgoing     Next Hop        Bytes       
 Label  Label       or ID              Interface                    Switched    
 ------ ----------- ------------------ ------------ --------------- ------------
 24009  Aggregate   cust-1: Per-VRF Aggr[V]   \
-                                      cust-1                       3024 
+                                      cust-1                       1260  
 ```
 
 To check what routing information is received on the Juniper device, we can issue the following command on `r5`:
 
 ```
-salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 192.168.1.1/32 detail 
+salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 next-hop 10.0.1.1 detail 
 
 cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
-  192.168.1.1/32 (2 entries, 1 announced)
+  10.0.0.8/30 (2 entries, 1 announced)
      Import Accepted
      Route Distinguisher: 1:1
      VPN Label: 24009
@@ -1503,10 +1506,7 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
      Originator ID: 10.0.1.1
      Communities: target:1:1
 
-salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 10.0.0.8/30 detail       
-
-cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
-  10.0.0.8/30 (2 entries, 1 announced)
+  192.168.1.1/32 (2 entries, 1 announced)
      Import Accepted
      Route Distinguisher: 1:1
      VPN Label: 24009
@@ -1522,54 +1522,56 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 The corresponding forwarding entry can be checked like this:
 
 ```
-
-salt@vmx01:r5> show route forwarding-table vpn cust-1 destination 192.168.1.1                  
+salt@vmx01:r5> show route forwarding-table vpn cust-1 destination 192.168.1.1 
 Logical system: r5
 Routing table: cust-1.inet
 Internet:
 Enabled protocols: Bridging, All VLANs, 
 Destination        Type RtRef Next hop           Type Index    NhRef Netif
-192.168.1.1/32     user     0                    indr  1048591     3
-                              192.168.5.1       Push 24009, Push 253(top)     1549     2 ge-0/0/1.5
+192.168.1.1/32     user     0                    indr  1048604     3
+                                                 ulst  1048602     2
+                              192.168.5.1       Push 24009, Push 325(top)     1690     2 ge-0/0/1.5
+                              192.168.7.1       Push 24009, Push 333(top)     1691     2 ge-0/0/1.7
 ```
 
 We just saw that the VPN label, `24009`, was learned through BGP. The top label, `253`, is the transport label. We can see this when we check the routing information to the `ios_xr_1` device (which the VPN routes will resolve to):
 
 ```
-salt@vmx01:r5> show route 10.0.1.1 table inet.3    
+salt@vmx01:r5> show route 10.0.1.1 table inet.3     
 
 inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-10.0.1.1/32        *[LDP/9] 02:51:31, metric 301
-                    >  to 192.168.5.1 via ge-0/0/1.5, Push 253
+10.0.1.1/32        *[LDP/9] 00:18:20, metric 301
+                       to 192.168.5.1 via ge-0/0/1.5, Push 325
+                    >  to 192.168.7.1 via ge-0/0/1.7, Push 333
 ```
 
 Next would be `r4`:
 
 ```
-salt@vmx01:r4> show route table mpls.0 label 253     
+salt@vmx01:r4> show route table mpls.0 label 325 
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-253                *[LDP/9] 04:00:16, metric 1
-                    >  to 192.168.4.0 via ge-0/0/2.4, Swap 94
+325                *[LDP/9] 00:18:49, metric 1
+                    >  to 192.168.4.0 via ge-0/0/2.4, Swap 181
 
 ```
 
 Then `r1`:
 
 ```
-salt@vmx01:r1> show route table mpls.0 label 94     
+salt@vmx01:r1> show route table mpls.0 label 181 
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-94                 *[LDP/9] 00:08:47, metric 1
-                    >  to 10.0.2.1 via ge-0/0/3.10, Swap 0
-94(S=0)            *[LDP/9] 00:08:47, metric 1
-                    >  to 10.0.2.1 via ge-0/0/3.10, Pop 
+181                *[LDP/9] 00:19:07, metric 1
+                    >  to 10.0.2.1 via ge-0/0/3.10, Pop      
+181(S=0)           *[LDP/9] 00:19:07, metric 1
+                    >  to 10.0.2.1 via ge-0/0/3.10, Pop  
 ```
 
 This will leave the Cisco to deal with the explicit null label and the VPN label we saw earlier(`24009`).
