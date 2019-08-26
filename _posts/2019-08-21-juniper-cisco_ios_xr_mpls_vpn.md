@@ -520,18 +520,15 @@ set protocols ldp session-group 0.0.0.0/0 authentication-key "$9$.539AtOEcl0BX7d
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 ldp-synchronization
 ```
 
-Notice how specifying the interfaces under LDP is enough for IOS XR. For the Juniper, to enable the interface for OSPF, configuring it under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under  `protocols mpls`.
+Notice how specifying the interfaces under LDP is enough for IOS XR. For the Juniper, to enable the interface for OSPF, configuring it under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under `protocols mpls`.
 
 Another thing worth knowing is that the defaults for Juniper and Cisco are slightly different. 
 
-For Juniper, we configured the following options:
-- `track-igp-metric`: this will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 (_ascii shrug_)
+For Juniper, we configured the `track-igp-metric` option. This will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 (_ascii shrug_)
 
-For Cisco, we configured the following options:
-- `mpls ldp address-family ipv4 label local allocate for host-routes`: this causes for the IOS XR router to advertise a label for the lo0 interface only. The default is to advertise a label for every interface.
+For Cisco, we configured the `mpls ldp address-family ipv4 label local allocate for host-routes` option. This causes for the IOS XR router to advertise a label for the lo0 interface only. The default is to advertise a label for every interface.
 
 The other configuration items are pretty similar. Though different in syntac, on both Juniper and Cisco we configure the device to:
-- advertise the explicit null label
 - enable LDP synchronization by specifying that under the OSPF stanza
 - authenticate all LDP sessions through a single configuration command
 
