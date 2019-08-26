@@ -1257,7 +1257,11 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 
 On both PE devices, we can see that we have learned all of the static routes. Let's check things in a little more detail now and move on to check the route-advertisements and forwarding entries. 
 
-First, we check the signaling from the Juniper to the Cisco and the forwarding from the Cisco to the Juniper. For this reasons, we start out on the Juniper `vmx5` router. We can check the following to see what information is advertised to the route reflector:
+First, we check the signaling from the Juniper to the Cisco and the forwarding from the Cisco to the Juniper. 
+
+![IOS XR to Juniper forwarding](/img/ios_xr_to_vmx_fwd.png "Juniper and IOS XR")
+
+For this reasons, we start out on the Juniper `vmx5` router. We can check the following to see what information is advertised to the route reflector:
 
 ```
 salt@vmx01:r5> show route advertising-protocol bgp 10.0.0.15 table cust-1 detail 
@@ -1434,6 +1438,8 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 ```                    
 
 Let's go the other way around and verify the routing information advertised by `ios_xr_1`, check what is received on `vmx5` and then finish up tracing the forwarding path from `vmx5` to `ios_xr_1`.
+
+![Juniper to IOS XR forwarding](/img/vmx_to_ios_xr_fwd.png "Juniper and IOS XR")
 
 So first, we check the route advertisement from `ios_xr_1` by issuing the following command:
 
