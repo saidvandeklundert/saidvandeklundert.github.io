@@ -15,11 +15,12 @@ Nodes in this small SP lab have the following functions:
 - p: `vmx1` - `vmx4`
 - pe: `ios_xr_1`, `ios_xr_2`, `vmx5` and `vmx6`
 
-The features I will walk through it this post are the following:
-- OSPF IGP: p2p links, authentication, BFD, load-balaning
-- MPLS LDP: session authenticaiton, ldp sync
-- BGP: 2 RRs, VPNv4 AF, authenticaiton
-- VRF with static routes
+In this post, I will walk you through the following configuration and verification:
+- interfaces
+- OSPF IGP configuration with p2p links, authentication, BFD and load-balaning
+- MPLS LDP configuration with session authentication and ldp syncronization
+- BGP session configuration with route reflection, the VPNv4 AF and authentication
+- MPLS L3VPN with static routes
 
 Possible future posts will include include technologies such as 6VPE and VPN topologies that are more interesting then this one.
 
