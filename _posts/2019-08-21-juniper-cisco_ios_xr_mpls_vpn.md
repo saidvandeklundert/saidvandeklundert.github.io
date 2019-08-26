@@ -4,7 +4,7 @@ title: MPLS L3VPN between Juniper MX and Cisco IOS XR
 image: /img/juniper_logo.jpg
 ---
 
-Lately, I have been playing around with a lab that involves Cisco IOS XR and Juniper devices. The main intention I have with it is to be able to quicky test something or to check how I could automate something.
+Lately, I have been playing around with a lab that involves Cisco IOS XR and Juniper devices. The main intention I have with it is to be able to quickly test something or to check how I could automate something.
 
 The topology I am using is the following:
 
@@ -16,13 +16,13 @@ Nodes in this small SP lab have the following functions:
 - pe: `ios_xr_1`, `ios_xr_2`, `vmx5` and `vmx6`
 
 In this post, I will walk you through the following configuration and verification:
-- interfaces
-- OSPF IGP configuration with p2p links, authentication, BFD and load-balaning
-- MPLS LDP configuration with session authentication and ldp syncronization
+- Interfaces
+- OSPF IGP configuration with p2p links, authentication, BFD and load-balancing
+- MPLS LDP configuration with session authentication and ldp synchronization
 - BGP session configuration with route reflection, the VPNv4 AF and authentication
 - MPLS L3VPN with static routes
 
-Possible future posts will include include technologies such as 6VPE and VPN topologies that are more interesting then this one.
+Possible future posts will include technologies such as 6VPE and VPN topologies that are more interesting than this one.
 
 <br>
 
@@ -108,7 +108,7 @@ salt@vmx01:r1> show interfaces ge-0/0/3.10
     Protocol multiservice, MTU: Unlimited
 ```    
 
-To wrap up interfaces configuration, we verify that we are able to ping accross the interface:
+To wrap up interfaces configuration, we verify that we are able to ping across the interface:
 
 ```
 salt@vmx01:r1> ping 10.0.2.1 rapid 
@@ -152,7 +152,7 @@ router ospf 1
 ```
 
 
-The equivalant configuration for `vmx1` is as follows:
+The equivalent configuration for `vmx1` is as follows:
 
 ```
 set protocols ospf reference-bandwidth 100g
@@ -204,7 +204,7 @@ Neighbors for OSPF 1
     <b>Neighbor BFD status: Session up</b>
 ```
 
-The neighbor state is `FULL` and the the BFD session that provides us with fast failure detection is also up. Other details can be verified by issuing the `show ospf 1 interface` command, like so:
+The neighbor state is `FULL` and the BFD session that provides us with fast failure detection is also up. Other details can be verified by issuing the `show ospf 1 interface` command, like so:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show ospf 1 interface GigabitEthernet0/0/0/1.10             
@@ -302,7 +302,7 @@ ge-0/0/3.10         PtToPt  0.0.0.0         0.0.0.0         0.0.0.0            1
   Topology default (ID 0) -> <b>Cost: 100</b>
 ```
 
-The previous output reveals the interface is acting as a `P2P` OSPF interface, we have have `MD5` authentication enabled and the cost for the link is `100`.
+The previous output reveals the interface is acting as a `P2P` OSPF interface, we have `MD5` authentication enabled and the cost for the link is `100`.
 
 BFD can be verified using the following:
 
@@ -450,7 +450,7 @@ inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
                     >  to 192.168.1.1 via ge-0/0/1.1
 ```
 
-Here we see two equal cost routes are available. To see if they are acually being used, we need to issue the following command:
+Here we see two equal cost routes are available. To see if they are actually being used, we need to issue the following command:
 
 ```
 salt@vmx01:r1> show route forwarding-table destination 10.0.0.3    
@@ -531,11 +531,11 @@ For Juniper, we configured the `track-igp-metric` option. This will copy the IGP
 
 For Cisco, we configured the `mpls ldp address-family ipv4 label local allocate for host-routes` option. This causes for the IOS XR router to advertise a label for the lo0 interface only. The default is to advertise a label for every interface.
 
-The other configuration items are pretty similar. Though different in syntac, on both Juniper and Cisco we configure the device to:
+The other configuration items are pretty similar. Though different in syntax, on both Juniper and Cisco we configure the device to:
 - enable LDP synchronization by specifying that under the OSPF stanza
 - authenticate all LDP sessions through a single configuration command
 
-Both Cisco ass well as Juniper offer ways to inject into LDP whatever routes you want, both offer BFD protection and many more configuration options, but I do not want to go off to far into the weeds here. Instead, we will verify what we have configured so far.
+Both Cisco as well as Juniper offer ways to inject into LDP whatever routes you want, both offer BFD protection and many more configuration options, but I do not want to go off to far into the weeds here. Instead, we will verify what we have configured so far.
 
 First, we check the LDP adjacency state on Cisco:
 
@@ -561,7 +561,7 @@ Address                             Interface       Label space ID     Hold time
 10.0.2.1                            ge-0/0/3.10     10.0.1.1:0           10
 ```
 
-After forming this adjaceny, an LDP session is established. To verify the LDP session, we issue the following command on the Cisco device:
+After forming this adjacency, an LDP session is established. To verify the LDP session, we issue the following command on the Cisco device:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor 
@@ -1096,7 +1096,7 @@ router static
 !
 ```
 
-Finaly, we need to configure BGP to advertise the connected routes and the static for this vrf:
+Finally, we need to configure BGP to advertise the connected routes and the static for this vrf:
 
 ```
 router bgp 1
@@ -1435,7 +1435,7 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 
 Let's go the other way around and verify the routing information advertised by `ios_xr_1`, check what is received on `vmx5` and then finish up tracing the forwarding path from `vmx5` to `ios_xr_1`.
 
-So first, we check the route advertiesment from `ios_xr_1` by issuing the following command:
+So first, we check the route advertisement from `ios_xr_1` by issuing the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show bgp vpnv4 unicast vrf cust-1 advertised neighbor 10.0.0.15
@@ -1577,7 +1577,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
                     >  to 10.0.2.1 via ge-0/0/3.10, Pop  
 ```
 
-This will leave the Cisco to deal with the explicit null label and the VPN label we saw earlier(`24009`).
+This will leave the Cisco to deal with the explicit null label and the VPN label we saw earlier (`24009`).
 
 
 Summary
