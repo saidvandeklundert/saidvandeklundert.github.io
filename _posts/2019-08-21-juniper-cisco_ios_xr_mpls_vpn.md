@@ -31,6 +31,8 @@ Interface configuration
 
 The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
 
+The `vmx1` and `ios_xr_1` device are connected together using the following interface:
+
 ![ios_xr_1 to vmx1](/img/juniper_ios_xr.png "ios_xr_1 to vmx1")
 
 First we configure the interfaces on `ios_xr_1`:
@@ -60,9 +62,7 @@ set interfaces ge-0/0/3 unit 10 family inet address 10.0.2.0/31
 set interfaces lo0 unit 1 family inet address 10.0.0.1/32
 ```
 
-Apart from the obvious difference in syntax, there are two things here to consider. The Cisco interfaces need to be enabled using `no shutdown` before they can be used. After working with Juniper for so long, I actually forgot about this when I was trying to get the IOS XR going on KVM.
-
-On the Juniper device, we need to ready the interface to allow different encapsulation on the main interface. Because `flexible-vlan-tagging` and `encapsulation flexible-ethernet-services` will enable most of the scenario's, I generally default to using that.
+Apart from the obvious difference in syntax, there are two things here to consider. The Cisco interfaces need to be enabled using `no shutdown` before they can be used. On the Juniper device, we need to ready the interface to allow different encapsulation on the main interface. Because `flexible-vlan-tagging` and `encapsulation flexible-ethernet-services` will enable most of the scenario's, I generally default to using that.
 
 To verify the interface status on `ios_xr_1`, we issue to the following command:
 
@@ -124,7 +124,7 @@ round-trip min/avg/max/stddev = 3.581/4.794/5.613/0.668 ms
 Configuring and verifying the IGP
 =================================
 
-We are going to configure several options that are common to most networks I worked on. What will be included in the IGP configuration is the following:
+What will be included in the IGP configuration is the following:
 - OSPF area 0 interface configuration
 - calculate the link cost factoring in future 100G links
 - authentication
@@ -355,7 +355,9 @@ inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
                     >  to 10.0.2.1 via ge-0/0/3.10
 ```                    
 
-Notice the difference in cost. Both Juniper and Cisco assigned a cost of 100 to the link, but the cost assigned to the loopback interface differs. On the Cisco:
+Notice the difference in cost. Both Juniper and Cisco assigned a cost of 100 to the link, but the cost assigned to the loopback interface differs. 
+
+We can see the following on `ios_xr_1`:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show ospf interface loopback 0
@@ -368,7 +370,7 @@ Loopback0 is up, line protocol is up
   Loopback interface is treated as a stub Host
 ```
 
-On the Juniper:
+On `vmx1`, we see the following:
 
 ```
 salt@vmx01:r1> show ospf interface lo0.1 detail 
@@ -738,7 +740,7 @@ inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
                     >  to 10.0.2.3 via ge-0/0/3.11
 ```
 
-Both devices offer plenty of other commands to really get into the nitty gritty but I am going to skip that here. Additional verification of label information will be done when the VPN is setup.
+Additional verification of label information will be done when the VPN is setup.
 
 
 
@@ -749,7 +751,7 @@ Configuring and verifying BGP
 
 We configure BGP on the route reflectors and on the PE routers. Let's examine the configuration on the route reflectors first.
 
-On `r14`:
+On `vmx14`:
 ```
 set protocols bgp group rr type internal
 set protocols bgp group rr local-address 10.0.0.14
@@ -765,7 +767,7 @@ set protocols bgp log-updown
 routing-options autonomous-system 1
 ```
 
-On `r15`:
+On `vmx15`:
 ```
 set protocols bgp group rr type internal
 set protocols bgp group rr local-address 10.0.0.15
@@ -791,7 +793,7 @@ The `log-updown` statement is to have the system log BGP session state changes a
 
 Now on to the Juniper PE configurations. 
 
-On `r5`:
+On `vmx5`:
 
 ```
 set protocols bgp group rr-client type internal
@@ -805,7 +807,7 @@ set protocols bgp log-updown
 routing-options autonomous-system 1
 ```
 
-On `r6`:
+On `vmx6`:
 
 ```
 set protocols bgp group rr-client type internal
@@ -871,7 +873,7 @@ router bgp 1
 
 To verify that all the BGP sessions properly formed, the easiest thing is to check out the route reflectors.
 
-First we check `r14`:
+First we check `vmx14`:
 
 ```
 salt@vmx01:r14> show bgp summary    
@@ -894,7 +896,7 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 10.0.1.2                  1          4          4       0       1          11 Establ
 ```
 
-Then we check `r15`:
+Then we check `vmx15`:
 
 ```
 salt@vmx01:r15> show bgp summary    
@@ -917,9 +919,9 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 10.0.1.2                  1          4          4       0       1          24 Establ
 ```
 
-After verifying that all sessions are established, we can start verifying that the BGP sessions were properly configured. As an example, we will verify the session between `r15` and `ios_xr_1`. The rest of the BGP session configuration will be the same. 
+After verifying that all sessions are established, we can start verifying that the BGP sessions were properly configured. As an example, we will verify the session between `vmx15` and `ios_xr_1`. The rest of the BGP session configuration will be the same. 
 
-First, we check `r15`:
+First, we check `vmx15`:
 
 ```
 salt@vmx01:r15> show bgp neighbor 10.0.1.1 
@@ -1054,7 +1056,7 @@ The MPLS L3VPN we will configure will be a very basic one:
 
 ![juniper and ios xr vpn topology](/img/vpn_topology_juniper_ios_xr.png "vpn topology")
 
- On every PE, we will configure a vrf called `cust-1`. We will place 1 interface inside the VRF and we will configure a single static route towards the customer device. We will cover the example configuration on `ios_xr_1` and on `r5`. 
+ On every PE, we will configure a vrf called `cust-1`. We will place 1 interface inside the VRF and we will configure a single static route towards the customer device. We will cover the example configuration on `ios_xr_1` and on `vmx5`. 
 
 
 Let's check out the configuration on `ios_xr_1` first. We start by configuring the vrf:
@@ -1110,7 +1112,7 @@ router bgp 1
 
 You'll also notice the `label mode per-vrf`. This is not really necessary, but I configured it since I will also use per vrf label allocation on the Juniper.
 
-Now we move to the Juniper configuration on `r5`. The configuration components are the same, but everything is organized a bit differently:
+Now we move to the Juniper configuration on `vmx5`. The configuration components are the same, but everything is organized a bit differently:
 
 ```
 set interfaces ge-0/0/1 unit 2000 vlan-id 2000
@@ -1159,7 +1161,7 @@ PING 192.168.1.4 (192.168.1.4): 56 data bytes
 round-trip min/avg/max/stddev = 3.004/3.490/5.213/0.863 ms
 ```
 
-So we can exchange ICMP. But there is a lot more to check. Let's check the routing tables on `ios_xr_1` and `r5` first:
+So we can exchange ICMP. But there is a lot more to check. Let's check the routing tables on `ios_xr_1` and `vmx5` first:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-1 
@@ -1255,7 +1257,7 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 
 On both PE devices, we can see that we have learned all of the static routes. Let's check things in a little more detail now and move on to check the route-advertisements and forwarding entries. 
 
-First, we check the signaling from the Juniper to the Cisco and the forwarding from the Cisco to the Juniper. For this reasons, we start out on the Juniper `r5` router. We can check the following to see what information is advertised to the route reflector:
+First, we check the signaling from the Juniper to the Cisco and the forwarding from the Cisco to the Juniper. For this reasons, we start out on the Juniper `vmx5` router. We can check the following to see what information is advertised to the route reflector:
 
 ```
 salt@vmx01:r5> show route advertising-protocol bgp 10.0.0.15 table cust-1 detail 
@@ -1282,7 +1284,7 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
      Communities: target:1:1
 ```
 
-When we move to the `ios_xr_1`, we can use the following to see the routes that were advertised by `r5`:
+When we move to the `ios_xr_1`, we can use the following to see the routes that were advertised by `vmx5`:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 192.168.1.3/32
@@ -1363,7 +1365,7 @@ Mon Aug 26 19:38:42.838 UTC
      next hop 10.0.2.4/32 Gi0/0/0/2.12 labels imposed {340 282}
 ```
 
-The `282` label makes sense, we just saw that one in the BGP advertisement. The `38` is the transport label, which is associated with the LSP towards `r5`. We can see that using:
+The `282` label makes sense, we just saw that one in the BGP advertisement. The `38` is the transport label, which is associated with the LSP towards `vmx5`. We can see that using:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp forwarding 10.0.0.5/32
@@ -1381,7 +1383,7 @@ Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
                         340            Gi0/0/0/2.12 10.0.2.4                  
 ```
 
-Following that label is pretty easy. The outgoing interface leads us to `r1`, so we hop on over to that router and use the following:
+Following that label is pretty easy. The outgoing interface leads us to `vmx1`, so we hop on over to that router and use the following:
 
 ```
 salt@vmx01:r1> show route table mpls.0 label 176           
@@ -1393,7 +1395,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
                     >  to 192.168.4.1 via ge-0/0/1.4, Swap 318
 ```                    
 
-This leads us to `r4`:
+This leads us to `vmx4`:
 
 ```
 salt@vmx01:r4> show route table mpls.0 label 318    
@@ -1407,7 +1409,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
                     >  to 192.168.5.0 via ge-0/0/2.5, Pop      
 ```
 
-Prior to sending traffic to `r5`, the outer label is swapped to `0`. On `r5`,  the router will only have to deal with the VPN label (`282`):
+Prior to sending traffic to `vmx5`, the outer label is swapped to `0`. On `vmx5`,  the router will only have to deal with the VPN label (`282`):
 
 ```
 salt@vmx01:r5> show route table mpls.0 label 282 
@@ -1431,7 +1433,7 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
                     >  to 10.0.0.2 via ge-0/0/1.2000
 ```                    
 
-Let's go the other way around and verify the routing information advertised by `ios_xr_1`, check what is received on `r5` and then finish up tracing the forwarding path from `r5` to `ios_xr_1`.
+Let's go the other way around and verify the routing information advertised by `ios_xr_1`, check what is received on `vmx5` and then finish up tracing the forwarding path from `vmx5` to `ios_xr_1`.
 
 So first, we check the route advertiesment from `ios_xr_1` by issuing the following command:
 
@@ -1489,7 +1491,7 @@ Label  Label       or ID              Interface                    Switched
                                       cust-1                       1260  
 ```
 
-To check what routing information is received on the Juniper device, we can issue the following command on `r5`:
+To check what routing information is received on the Juniper device, we can issue the following command on `vmx5`:
 
 ```
 salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 next-hop 10.0.1.1 detail 
@@ -1548,7 +1550,7 @@ inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
                     >  to 192.168.7.1 via ge-0/0/1.7, Push 333
 ```
 
-Next would be `r4`:
+Next would be `vmx4`:
 
 ```
 salt@vmx01:r4> show route table mpls.0 label 325 
@@ -1561,7 +1563,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 
 ```
 
-Then `r1`:
+Then `vmx1`:
 
 ```
 salt@vmx01:r1> show route table mpls.0 label 181 
