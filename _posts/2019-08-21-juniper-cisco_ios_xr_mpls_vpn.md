@@ -30,7 +30,7 @@ Interface configuration
 
 The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration for these sections will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
 
-The `vmx1` and `ios_xr_1` device are connected together using the following interface:
+The `vmx1` and `ios_xr_1` device are connected together using the following interfaces:
 
 ![ios_xr_1 to vmx1](/img/juniper_ios_xr.png "ios_xr_1 to vmx1")
 
@@ -61,7 +61,7 @@ set interfaces ge-0/0/3 unit 10 family inet address 10.0.2.0/31
 set interfaces lo0 unit 1 family inet address 10.0.0.1/32
 ```
 
-Apart from the obvious difference in syntax, there are two things here to consider. The Cisco interfaces need to be enabled using `no shutdown` before they can be used. On the Juniper device, we need to ready the interface to allow different encapsulation on the main interface. Because `flexible-vlan-tagging` and `encapsulation flexible-ethernet-services` will enable most of the scenario's, I generally default to using that.
+Apart from the obvious difference in syntax, we notice two things. The Cisco interfaces need to be enabled using `no shutdown` before they can be used. On the Juniper device, we need to ready the interface to allow different encapsulation on the main interface as well as on the sub-interface. Because `flexible-vlan-tagging` and `encapsulation flexible-ethernet-services` will enable most of the scenario's, I generally default to using that.
 
 To verify the interface status on `ios_xr_1`, we issue to the following command:
 
@@ -124,10 +124,10 @@ Configuring and verifying the IGP
 
 What will be included in the IGP configuration is the following:
 - OSPF area 0 interface configuration
-- calculate the link cost factoring in future 100G links
-- authentication
+- Take into account an OSPF reference bandwidth of 100G
+- Authentication
 - BFD
-- load-balancing
+- Load-balancing
 
 The following is the `ios_xr_1` configuration:
 
@@ -228,7 +228,7 @@ GigabitEthernet0/0/0/1.10 is up, line protocol is up
   Multi-area interface Count is 0
 ```
 
-Here we see that the interface is of the type `POINT_TO_POINT`. We can also see the BFD settings here. And lastly, we see what authentication is configured.
+Here we see that the interface is of the type `POINT_TO_POINT` and that the link has a cost of 100. We can also see the BFD settings here. And lastly, we see what authentication is configured.
 
 In case we really wanted to know about all the details on the BFD session, we should turn to the following command:
 ```
@@ -329,7 +329,7 @@ RP/0/RP0/CPU0:ios_xr_1#show route 10.0.0.1
 
 Routing entry for 10.0.0.1/32
   Known via "ospf 1", distance 110, metric 100, type intra area
-  Installed Aug 20 08:23:57.320 for 00:04:51
+  Installed Aug 26 08:23:57.320 for 00:04:51
   Routing Descriptor Blocks
     10.0.2.0, from 10.0.0.1, via GigabitEthernet0/0/0/1.10
       Route metric is 100
@@ -410,7 +410,7 @@ salt@vmx1> show route protocol ospf | match 32
 10.0.1.2/32        *[OSPF/10] 00:00:05, metric 101
 ```
 
-Last thing is to verify load-balancing. Since there is only 1 link between `ios_xr_1` and `vmx1`, we check the routes towards a node in the network to which the devices have multiple equal cost paths. On the Cisco, we check the route towards `ios_xr_2`:
+The last thing we can do is verify load-balancing. Since there is only 1 link between `ios_xr_1` and `vmx1`, we check the routes towards a node in the network to which the devices have multiple equal cost paths. On the Cisco, we check the route towards `ios_xr_2`:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route 10.0.1.2
@@ -470,9 +470,7 @@ In order to get any MPLS L3VPN going, we require an MPLS network. We'll take the
 
 Additionally, we want to ensure that the IGP metrics are reflected in the LDP routes on the Juniper device.
 
-The LDP configuration is the same on every router, so again, we focus on the configuration between `ios_xr_1` and `vmx1`. 
-
-First, the MPLS configuration on the Cisco device:
+The LDP configuration is the same on every router, so again, we focus on the configuration between `ios_xr_1` and `vmx1`. First, we check the MPLS configuration on `ios_xr_1`:
 
 ```
 mpls ldp
@@ -500,7 +498,7 @@ router ospf 1
 !
 ```
 
-Now the configuration on the Juniper device:
+Now the configuration on `vmx1`:
 
 ```
 set interfaces ge-0/0/3 unit 10 family mpls
@@ -514,13 +512,13 @@ set protocols ldp session-group 0.0.0.0/0 authentication-key "$9$.539AtOEcl0BX7d
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 ldp-synchronization
 ```
 
-Notice how specifying the interfaces under LDP is enough for IOS XR. For the Juniper, to enable the interface for OSPF, configuring it under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under `protocols mpls`.
+Notice how specifying the interfaces under LDP is enough for IOS XR. For the Juniper, configuring the interfaces under LDP is not enough. We also need to enable the interfaces for MPLS processing by specifying the MPLS address family under the interface configuration and under `protocols mpls`.
 
 Another thing worth knowing is that the defaults for Juniper and Cisco are slightly different. 
 
-For Juniper, we configured the `track-igp-metric` option. This will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1 (_ascii shrug_)
+For Juniper, we configured the `track-igp-metric` option. This will copy the IGP metric into the `inet.3` table. Normally, Juniper will default all LDP routes to 1.
 
-For Cisco, we configured the `mpls ldp address-family ipv4 label local allocate for host-routes` option. This causes for the IOS XR router to advertise a label for the lo0 interface only. The default is to advertise a label for every interface.
+For Cisco, we configured the `mpls ldp address-family ipv4 label local allocate for host-routes` option. This causes for the IOS XR router to advertise a label for the lo0 interface only. Unlike on a Juniper, the default is to advertise a label for every interface.
 
 The other configuration items are pretty similar. Though different in syntax, on both Juniper and Cisco we configure the device to:
 - enable LDP synchronization by specifying that under the OSPF stanza
@@ -724,8 +722,107 @@ inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
                     >  to 10.0.2.3 via ge-0/0/3.11
 ```
 
-Additional verification of label information will be done when the VPN is setup.
+In case we wanted to see the labels advertised/received acrros the LDP session, we can use the following command on `ios_xr_1`:
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp bindings neighbor 10.0.0.1
+Mon Aug 26 20:27:15.289 UTC
 
+10.0.0.1/32, rev 16
+        Local binding: label: 24002
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          ImpNull 
+10.0.0.2/32, rev 12
+        Local binding: label: 24000
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          173     
+10.0.0.3/32, rev 14
+        Local binding: label: 24001
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          174     
+10.0.0.4/32, rev 18
+        Local binding: label: 24003
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          175     
+10.0.0.5/32, rev 20
+        Local binding: label: 24004
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          176     
+10.0.0.6/32, rev 22
+        Local binding: label: 24005
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          177     
+10.0.0.14/32, rev 24
+        Local binding: label: 24006
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          178     
+10.0.0.15/32, rev 26
+        Local binding: label: 24007
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          172     
+10.0.1.1/32, rev 10
+        Local binding: label: ImpNull
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          181     
+10.0.1.2/32, rev 28
+        Local binding: label: 24008
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          182     
+```        
+
+On `vmx1`, we can issue the following command:
+
+```
+salt@vmx01:r1> show ldp database session 10.0.1.1     
+Input label database, 10.0.0.1:0--10.0.1.1:0
+Labels received: 10
+  Label     Prefix
+  24002      10.0.0.1/32
+  24000      10.0.0.2/32
+  24001      10.0.0.3/32
+  24003      10.0.0.4/32
+  24004      10.0.0.5/32
+  24005      10.0.0.6/32
+  24006      10.0.0.14/32
+  24007      10.0.0.15/32
+      3      10.0.1.1/32
+  24008      10.0.1.2/32
+
+Output label database, 10.0.0.1:0--10.0.1.1:0
+Labels advertised: 10
+  Label     Prefix
+      3      10.0.0.1/32
+    173      10.0.0.2/32
+    174      10.0.0.3/32
+    175      10.0.0.4/32
+    176      10.0.0.5/32
+    177      10.0.0.6/32
+    178      10.0.0.14/32
+    172      10.0.0.15/32
+    181      10.0.1.1/32
+    182      10.0.1.2/32
+```
+
+Additional verification of label information will be done when the VPN configuration is completed.
 
 
 <br>
@@ -733,7 +830,13 @@ Additional verification of label information will be done when the VPN is setup.
 Configuring and verifying BGP
 =============================
 
-We configure BGP on the route reflectors and on the PE routers. Let's examine the configuration on the route reflectors first.
+In this section, we will configure the following BGP sessions:
+
+![juniper and ios xr BGP configuration](/img/rr_bgp_configuration.png "BGP configuration")
+
+We will enable the BGP session to carry VPN routes and we will authenticate the sessions.
+
+Let's examine the configuration on the route reflectors first.
 
 On `vmx14`:
 
@@ -1580,100 +1683,5 @@ These are the basics to get a VRF going between Juniper and Cisco IOS XR. There 
 
 
 
-```
-salt@vmx01:r1> show ldp database session 10.0.1.1     
-Input label database, 10.0.0.1:0--10.0.1.1:0
-Labels received: 10
-  Label     Prefix
-  24002      10.0.0.1/32
-  24000      10.0.0.2/32
-  24001      10.0.0.3/32
-  24003      10.0.0.4/32
-  24004      10.0.0.5/32
-  24005      10.0.0.6/32
-  24006      10.0.0.14/32
-  24007      10.0.0.15/32
-      3      10.0.1.1/32
-  24008      10.0.1.2/32
 
-Output label database, 10.0.0.1:0--10.0.1.1:0
-Labels advertised: 10
-  Label     Prefix
-      3      10.0.0.1/32
-    173      10.0.0.2/32
-    174      10.0.0.3/32
-    175      10.0.0.4/32
-    176      10.0.0.5/32
-    177      10.0.0.6/32
-    178      10.0.0.14/32
-    172      10.0.0.15/32
-    181      10.0.1.1/32
-    182      10.0.1.2/32
-```
-
-
-```
-RP/0/RP0/CPU0:ios_xr_1#show mpls ldp bindings neighbor 10.0.0.1
-Mon Aug 26 20:27:15.289 UTC
-
-10.0.0.1/32, rev 16
-        Local binding: label: 24002
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          ImpNull 
-10.0.0.2/32, rev 12
-        Local binding: label: 24000
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          173     
-10.0.0.3/32, rev 14
-        Local binding: label: 24001
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          174     
-10.0.0.4/32, rev 18
-        Local binding: label: 24003
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          175     
-10.0.0.5/32, rev 20
-        Local binding: label: 24004
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          176     
-10.0.0.6/32, rev 22
-        Local binding: label: 24005
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          177     
-10.0.0.14/32, rev 24
-        Local binding: label: 24006
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          178     
-10.0.0.15/32, rev 26
-        Local binding: label: 24007
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          172     
-10.0.1.1/32, rev 10
-        Local binding: label: ImpNull
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          181     
-10.0.1.2/32, rev 28
-        Local binding: label: 24008
-        Remote bindings: (2 peers)
-            Peer                Label    
-            -----------------   ---------
-            10.0.0.1:0          182     
-```            
+    
