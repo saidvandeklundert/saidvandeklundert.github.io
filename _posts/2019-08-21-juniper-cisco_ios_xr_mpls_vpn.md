@@ -18,18 +18,17 @@ Nodes in this small SP lab have the following functions:
 In this post, I will walk you through the following configuration and verification:
 - Interfaces
 - OSPF IGP configuration with p2p links, authentication, BFD and load-balancing
-- MPLS LDP configuration with session authentication and ldp synchronization
-- BGP session configuration with route reflection, the VPNv4 AF and authentication
+- MPLS LDP with authentication and LDP synchronization
+- BGP sessions that supports VPN routes and MD5 authentication
 - MPLS L3VPN with static routes
 
-Possible future posts will include technologies such as 6VPE and VPN topologies that are more interesting than this one.
 
 <br>
 
 Interface configuration
 =======================
 
-The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
+The interface, OSPF and LDP configuration is going to be the same on every device. For that reason, the example configuration for these sections will include the configuration and verification steps on `ios_xr_1` and `vmx1`. 
 
 The `vmx1` and `ios_xr_1` device are connected together using the following interface:
 
@@ -68,7 +67,6 @@ To verify the interface status on `ios_xr_1`, we issue to the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show interface GigabitEthernet0/0/0/1.10      
-Mon Aug 19 09:20:26.399 UTC
 GigabitEthernet0/0/0/1.10 is up, line protocol is up 
   Interface state transitions: 1
   Hardware is VLAN sub-interface(s), address is 5246.8457.a004
@@ -94,7 +92,7 @@ GigabitEthernet0/0/0/1.10 is up, line protocol is up
 To verify the interface on `vmx1`:
 
 ```
-salt@vmx01:r1> show interfaces ge-0/0/3.10    
+salt@vmx1> show interfaces ge-0/0/3.10    
   Logical interface ge-0/0/3.10 (Index 414) (SNMP ifIndex 584)
     Description: ios_xr_1
     Flags: Up SNMP-Traps 0x4000 VLAN-Tag [ 0x8100.10 ]  Encapsulation: ENET2
@@ -111,7 +109,7 @@ salt@vmx01:r1> show interfaces ge-0/0/3.10
 To wrap up interfaces configuration, we verify that we are able to ping across the interface:
 
 ```
-salt@vmx01:r1> ping 10.0.2.1 rapid 
+salt@vmx1> ping 10.0.2.1 rapid 
 PING 10.0.2.1 (10.0.2.1): 56 data bytes
 !!!!!
 --- 10.0.2.1 ping statistics ---
@@ -180,7 +178,6 @@ On the Cisco, we check the following:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show ospf neighbor 10.0.0.1 
-Sat Aug 17 19:40:19.729 UTC
 
 * Indicates MADJ interface
 # Indicates Neighbor awaiting BFD session up
@@ -208,7 +205,6 @@ The neighbor state is `FULL` and the BFD session that provides us with fast fail
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show ospf 1 interface GigabitEthernet0/0/0/1.10             
-Sat Aug 17 19:59:51.843 UTC
 
 GigabitEthernet0/0/0/1.10 is up, line protocol is up 
   Internet Address 10.0.2.1/31, Area 0
@@ -237,7 +233,6 @@ Here we see that the interface is of the type `POINT_TO_POINT`. We can also see 
 In case we really wanted to know about all the details on the BFD session, we should turn to the following command:
 ```
 RP/0/RP0/CPU0:ios_xr_1#show bfd session interface GigabitEthernet0/0/0/1.10 detail 
-Mon Aug 19 14:20:59.517 UTC
 I/f: GigabitEthernet0/0/0/1.10, Location: 0/0/CPU0
 Dest: 10.0.2.0
 Src: 10.0.2.1
@@ -280,7 +275,7 @@ Session owner information:
 Let's verify the same things on the Juniper side and start off checking the OSPF neighbor state:
 
 ```
-salt@vmx01:r1> show ospf neighbor 10.0.1.1 extensive        
+salt@vmx1> show ospf neighbor 10.0.1.1 extensive        
 Address          Interface              State     ID               Pri  Dead
 10.0.2.1         ge-0/0/3.10            <b>Full</b>      <b>10.0.1.1</b>           1    37
   Area 0.0.0.0, opt 0x52, DR 0.0.0.0, BDR 0.0.0.0
@@ -291,7 +286,7 @@ Address          Interface              State     ID               Pri  Dead
 The neighbor state is `Full`. To verify some of the other features we configured, we check the following:
 
 ```
-salt@vmx01:r1> show ospf interface ge-0/0/3.10 extensive    
+salt@vmx1> show ospf interface ge-0/0/3.10 extensive    
 Interface           State   Area            DR ID           BDR ID          Nbrs
 ge-0/0/3.10         PtToPt  0.0.0.0         0.0.0.0         0.0.0.0            1
   Type: <b>P2P</b>, Address: 10.0.2.0, Mask: 255.255.255.254, MTU: 1500, Cost: 1
@@ -307,7 +302,7 @@ The previous output reveals the interface is acting as a `P2P` OSPF interface, w
 BFD can be verified using the following:
 
 ```
-salt@vmx01:r1> show bfd session extensive                   
+salt@vmx1> show bfd session extensive                   
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
 10.0.2.1                 Up        ge-0/0/3.10    0.500     0.100        5   
@@ -331,7 +326,6 @@ Both routers should have an OSPF route towards their neighboring loopback IP now
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route 10.0.0.1
-Tue Aug 20 08:28:48.387 UTC
 
 Routing entry for 10.0.0.1/32
   Known via "ospf 1", distance 110, metric 100, type intra area
@@ -345,7 +339,7 @@ Routing entry for 10.0.0.1/32
 On `vmx1`, we do the following:
 
 ```
-salt@vmx01:r1> show route 10.0.1.1    
+salt@vmx1> show route 10.0.1.1    
 
 inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
 @ = Routing Use Only, # = Forwarding Use Only
@@ -361,7 +355,6 @@ We can see the following on `ios_xr_1`:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show ospf interface loopback 0
-Tue Aug 20 08:58:29.481 UTC
 
 Loopback0 is up, line protocol is up 
   Internet Address 10.0.1.1/32, Area 0
@@ -373,7 +366,7 @@ Loopback0 is up, line protocol is up
 On `vmx1`, we see the following:
 
 ```
-salt@vmx01:r1> show ospf interface lo0.1 detail 
+salt@vmx1> show ospf interface lo0.1 detail 
 Interface           State   Area            DR ID           BDR ID          Nbrs
 lo0.1               DRother 0.0.0.0         0.0.0.0         0.0.0.0            0
   Type: LAN, Address: 10.0.0.1, Mask: 255.255.255.255, MTU: 65535, <b>Cost: 0</b>
@@ -391,7 +384,6 @@ On the `ios_xr_1`, we issue the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route ipv4 ospf | include 32 
-Wed Aug 21 10:20:24.232 UTC
 O    10.0.0.1/32 [110/100] via 10.0.2.0, 00:15:27, GigabitEthernet0/0/0/1.10
 O    10.0.0.2/32 [110/100] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
 O    10.0.0.3/32 [110/200] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
@@ -406,7 +398,7 @@ O    10.0.1.2/32 [110/201] via 10.0.2.4, 00:02:24, GigabitEthernet0/0/0/2.12
 On `vmx1`, we issue the following command:
 
 ```
-salt@vmx01:r1> show route protocol ospf | match 32                                              
+salt@vmx1> show route protocol ospf | match 32                                              
 10.0.0.2/32        *[OSPF/10] 00:00:05, metric 100
 10.0.0.3/32        *[OSPF/10] 00:00:05, metric 200
 10.0.0.4/32        *[OSPF/10] 00:00:05, metric 100
@@ -422,7 +414,6 @@ Last thing is to verify load-balancing. Since there is only 1 link between `ios_
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route 10.0.1.2
-Tue Aug 20 08:52:31.483 UTC
 
 Routing entry for 10.0.1.2/32
   Known via "ospf 1", distance 110, metric 201, type intra area
@@ -439,7 +430,7 @@ On `vmx1`, we check the route towards `vmx3`:
 
 ```
 
-salt@vmx01:r1> show route 10.0.0.3                                 
+salt@vmx1> show route 10.0.0.3                                 
 
 inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
 @ = Routing Use Only, # = Forwarding Use Only
@@ -453,7 +444,7 @@ inet.0: 30 destinations, 30 routes (30 active, 0 holddown, 0 hidden)
 Here we see two equal cost routes are available. To see if they are actually being used, we need to issue the following command:
 
 ```
-salt@vmx01:r1> show route forwarding-table destination 10.0.0.3    
+salt@vmx1> show route forwarding-table destination 10.0.0.3    
 Logical system: r1
 Routing table: default.inet
 Internet:
@@ -541,7 +532,6 @@ First, we check the LDP adjacency state on Cisco:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp discovery 
-Tue Aug 20 11:56:56.417 UTC
 
 Local LDP Identifier: 10.0.1.1:0
 Discovery Sources:
@@ -556,7 +546,7 @@ Discovery Sources:
 
 Next on Juniper:
 ```
-salt@vmx01:r1> show ldp neighbor                 
+salt@vmx1> show ldp neighbor                 
 Address                             Interface       Label space ID     Hold time
 10.0.2.1                            ge-0/0/3.10     10.0.1.1:0           10
 ```
@@ -565,7 +555,6 @@ After forming this adjacency, an LDP session is established. To verify the LDP s
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp neighbor 
-Mon Aug 26 19:29:28.633 UTC
 
 Peer LDP Identifier: 10.0.0.1:0
   TCP connection: 10.0.0.1:646 - 10.0.1.1:33317; MD5 on
@@ -587,7 +576,7 @@ Peer LDP Identifier: 10.0.0.1:0
 
 And on the Juniper device:
 ```
-salt@vmx01:r1> show ldp session detail 
+salt@vmx1> show ldp session detail 
 Address: 10.0.1.1, State: Operational, Connection: Open, Hold time: 29
   Session ID: 10.0.0.1:0--10.0.1.1:0
   Next keepalive in 7 seconds
@@ -620,14 +609,13 @@ Next we check the LDP synchronization. It was configured under OSPF, and on both
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show ospf interface GigabitEthernet0/0/0/1.10 | include LDP
-Tue Aug 20 12:07:51.833 UTC
   LDP Sync Enabled, Sync Status: Achieved
 ```
 
 Then we check the Juniper:
 
 ```
-salt@vmx01:r1> show ospf interface ge-0/0/3.10 extensive | match ldp 
+salt@vmx1> show ospf interface ge-0/0/3.10 extensive | match ldp 
   LDP sync state: in sync, for: 00:13:39, reason: LDP session up
 ```
 
@@ -635,9 +623,7 @@ If all is well, both devices have now signaled an LDP LSP between them. Let's ve
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show cef 10.0.0.1
-Mon Aug 26 19:31:10.772 UTC
 10.0.0.1/32, version 7, internal 0x1000001 0x0 (ptr 0xdf13d88) [1], 0x0 (0xe0d79e8), 0xa20 (0xe710228)
- Updated Aug 26 19:27:52.930 
  remote adjacency to GigabitEthernet0/0/0/1.10
  Prefix Len 32, traffic index 0, precedence n/a, priority 3
    via 10.0.2.0/32, GigabitEthernet0/0/0/1.10, 8 dependencies, weight 0, class 0 [flags 0x0]
@@ -646,7 +632,6 @@ Mon Aug 26 19:31:10.772 UTC
     remote adjacency
      local label 24002      labels imposed {ImplNull}
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp ipv4 forwarding 10.0.0.1/32
-Mon Aug 26 19:31:23.649 UTC
 
 Codes: 
   - = GR label recovering, (!) = LFA FRR pure backup path 
@@ -662,7 +647,7 @@ Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
 And now on the Juniper side:
 
 ```
-salt@vmx01:r1> show route 10.0.1.2/32 
+salt@vmx1> show route 10.0.1.2/32 
 
 inet.0: 31 destinations, 40 routes (31 active, 0 holddown, 0 hidden)
 @ = Routing Use Only, # = Forwarding Use Only
@@ -687,7 +672,6 @@ We can check this on the Cisco using the following commands:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp ipv4 forwarding
-Mon Aug 26 19:32:38.913 UTC
 
 Codes: 
   - = GR label recovering, (!) = LFA FRR pure backup path 
@@ -714,7 +698,7 @@ Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
 Next, we check the the same thing on the Juniper:
 
 ```
-salt@vmx01:r1> show route protocol ldp table inet.3 
+salt@vmx1> show route protocol ldp table inet.3 
 
 inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -752,6 +736,7 @@ Configuring and verifying BGP
 We configure BGP on the route reflectors and on the PE routers. Let's examine the configuration on the route reflectors first.
 
 On `vmx14`:
+
 ```
 set protocols bgp group rr type internal
 set protocols bgp group rr local-address 10.0.0.14
@@ -768,6 +753,7 @@ routing-options autonomous-system 1
 ```
 
 On `vmx15`:
+
 ```
 set protocols bgp group rr type internal
 set protocols bgp group rr local-address 10.0.0.15
@@ -876,7 +862,7 @@ To verify that all the BGP sessions properly formed, the easiest thing is to che
 First we check `vmx14`:
 
 ```
-salt@vmx01:r14> show bgp summary    
+salt@vmx14> show bgp summary    
 Threading mode: BGP I/O
 Groups: 1 Peers: 4 Down peers: 0
 Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
@@ -899,7 +885,7 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 Then we check `vmx15`:
 
 ```
-salt@vmx01:r15> show bgp summary    
+salt@vmx15> show bgp summary    
 Threading mode: BGP I/O
 Groups: 1 Peers: 4 Down peers: 0
 Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
@@ -924,7 +910,7 @@ After verifying that all sessions are established, we can start verifying that t
 First, we check `vmx15`:
 
 ```
-salt@vmx01:r15> show bgp neighbor 10.0.1.1 
+salt@vmx15> show bgp neighbor 10.0.1.1 
 Peer: <b>10.0.1.1+35276 AS 1</b>      Local: <b>10.0.0.15+179 AS 1</b>
   Group: rr                    Routing-Instance: master
   Forwarding routing-instance: master  
@@ -976,7 +962,6 @@ Let's move to `ios_xr_1` and check the session from there:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show bgp neighbors 10.0.0.15
-Wed Aug 21 03:47:05.585 UTC
 
 BGP neighbor is 10.0.0.15
  <b>Remote AS 1, local AS 1, internal link</b>
@@ -1139,21 +1124,21 @@ The last configuration item is the static route, which is configured under the r
 Now that we have configured the vrf everywhere, we can start our verification. First we verify connectivity from a test device I have connected to the vrf on `ios_xr_1`:
 
 ```
-salt@vmx01> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.2    
+salt@test-vmx> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.2    
 PING 192.168.1.2 (192.168.1.2): 56 data bytes
 !!!!!
 --- 192.168.1.2 ping statistics ---
 5 packets transmitted, 5 packets received, 0% packet loss
 round-trip min/avg/max/stddev = 1.715/1.964/2.244/0.229 ms
 
-salt@vmx01> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.3    
+salt@test-vmx> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.3    
 PING 192.168.1.3 (192.168.1.3): 56 data bytes
 !!!!!
 --- 192.168.1.3 ping statistics ---
 5 packets transmitted, 5 packets received, 0% packet loss
 round-trip min/avg/max/stddev = 3.084/3.295/3.457/0.138 ms
 
-salt@vmx01> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.4    
+salt@test-vmx> ping routing-instance c1-1 rapid source 192.168.1.1 192.168.1.4    
 PING 192.168.1.4 (192.168.1.4): 56 data bytes
 !!!!!
 --- 192.168.1.4 ping statistics ---
@@ -1165,7 +1150,6 @@ So we can exchange ICMP. But there is a lot more to check. Let's check the routi
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-1 
-Mon Aug 26 19:34:54.483 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
        D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
@@ -1193,7 +1177,7 @@ B    192.168.1.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 00:06:36
 Now on the Juniper:
 
 ```
-salt@vmx01:r5> show route table cust-1 
+salt@vmx5> show route table cust-1 
 
 cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1264,7 +1248,7 @@ First, we check the signaling from the Juniper to the Cisco and the forwarding f
 For this reasons, we start out on the Juniper `vmx5` router. We can check the following to see what information is advertised to the route reflector:
 
 ```
-salt@vmx01:r5> show route advertising-protocol bgp 10.0.0.15 table cust-1 detail 
+salt@vmx5> show route advertising-protocol bgp 10.0.0.15 table cust-1 detail 
 
 cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 * 10.0.0.0/30 (1 entry, 1 announced)
@@ -1292,7 +1276,6 @@ When we move to the `ios_xr_1`, we can use the following to see the routes that 
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 192.168.1.3/32
-Mon Aug 26 19:38:02.222 UTC
 BGP routing table entry for 192.168.1.3/32, Route Distinguisher: 1:1
 Versions:
   Process           bRIB/RIB  SendTblVer
@@ -1320,9 +1303,8 @@ Paths: (2 available, best #1)
       Extended community: RT:1:1 
       Originator: 10.0.0.5, Cluster list: 0.0.0.1
       Source AFI: VPNv4 Unicast, Source VRF: cust-1, Source Route Distinguisher: 1:1
-RP/0/RP0/CPU0:ios_xr_1#
+
 RP/0/RP0/CPU0:ios_xr_1#show  bgp vpnv4 unicast vrf cust-1 10.0.0.0/30 
-Mon Aug 26 19:38:15.994 UTC
 BGP routing table entry for 10.0.0.0/30, Route Distinguisher: 1:1
 Versions:
   Process           bRIB/RIB  SendTblVer
@@ -1356,7 +1338,6 @@ So we received the routes with VPN label `282`. If we wanted to understand what 
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show cef vrf cust-1 192.168.1.3
-Mon Aug 26 19:38:42.838 UTC
 192.168.1.3/32, version 8, internal 0x5000001 0x0 (ptr 0xdf127ec) [1], 0x0 (0xe0d7b28), 0xa08 (0xe7103a8)
  Updated Aug 26 19:28:18.664
  Prefix Len 32, traffic index 0, precedence n/a, priority 3
@@ -1373,7 +1354,6 @@ The `282` label makes sense, we just saw that one in the BGP advertisement. The 
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp forwarding 10.0.0.5/32
-Mon Aug 26 19:39:03.225 UTC
 
 Codes: 
   - = GR label recovering, (!) = LFA FRR pure backup path 
@@ -1390,7 +1370,7 @@ Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
 Following that label is pretty easy. The outgoing interface leads us to `vmx1`, so we hop on over to that router and use the following:
 
 ```
-salt@vmx01:r1> show route table mpls.0 label 176           
+salt@vmx1> show route table mpls.0 label 176           
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1402,7 +1382,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 This leads us to `vmx4`:
 
 ```
-salt@vmx01:r4> show route table mpls.0 label 318    
+salt@vmx4> show route table mpls.0 label 318    
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1416,7 +1396,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 Prior to sending traffic to `vmx5`, the outer label is swapped to `0`. On `vmx5`,  the router will only have to deal with the VPN label (`282`):
 
 ```
-salt@vmx01:r5> show route table mpls.0 label 282 
+salt@vmx5> show route table mpls.0 label 282 
 
 mpls.0: 16 destinations, 16 routes (16 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1428,7 +1408,7 @@ mpls.0: 16 destinations, 16 routes (16 active, 0 holddown, 0 hidden)
 The label is popped and further route lookups are done inside the vrf. Following the path to `192.168.1.3`, we would issue the following:
 
 ```
-salt@vmx01:r5> show route 192.168.1.3 
+salt@vmx5> show route 192.168.1.3 
 
 cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1445,7 +1425,6 @@ So first, we check the route advertisement from `ios_xr_1` by issuing the follow
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show bgp vpnv4 unicast vrf cust-1 advertised neighbor 10.0.0.15
-Mon Aug 26 19:42:52.761 UTC
 Route Distinguisher: 1:1
 10.0.0.8/30 is advertised to 10.0.0.15
   Path info:
@@ -1489,7 +1468,6 @@ To see the local label, we can use the following:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls forwarding vrf cust-1 
-Mon Aug 26 19:43:29.726 UTC
 Local  Outgoing    Prefix             Outgoing     Next Hop        Bytes       
 Label  Label       or ID              Interface                    Switched    
 ------ ----------- ------------------ ------------ --------------- ------------
@@ -1500,7 +1478,7 @@ Label  Label       or ID              Interface                    Switched
 To check what routing information is received on the Juniper device, we can issue the following command on `vmx5`:
 
 ```
-salt@vmx01:r5> show route receive-protocol bgp 10.0.0.15 table cust-1 next-hop 10.0.1.1 detail 
+salt@vmx5> show route receive-protocol bgp 10.0.0.15 table cust-1 next-hop 10.0.1.1 detail 
 
 cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
   10.0.0.8/30 (2 entries, 1 announced)
@@ -1531,7 +1509,7 @@ cust-1.inet.0: 9 destinations, 15 routes (9 active, 0 holddown, 0 hidden)
 The corresponding forwarding entry can be checked like this:
 
 ```
-salt@vmx01:r5> show route forwarding-table vpn cust-1 destination 192.168.1.1 
+salt@vmx5> show route forwarding-table vpn cust-1 destination 192.168.1.1 
 Logical system: r5
 Routing table: cust-1.inet
 Internet:
@@ -1546,7 +1524,7 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
 We just saw that the VPN label, `24009`, was learned through BGP. The top label, `253`, is the transport label. We can see this when we check the routing information to the `ios_xr_1` device (which the VPN routes will resolve to):
 
 ```
-salt@vmx01:r5> show route 10.0.1.1 table inet.3     
+salt@vmx5> show route 10.0.1.1 table inet.3     
 
 inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1559,7 +1537,7 @@ inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 Next would be `vmx4`:
 
 ```
-salt@vmx01:r4> show route table mpls.0 label 325 
+salt@vmx4> show route table mpls.0 label 325 
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1572,7 +1550,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 Then `vmx1`:
 
 ```
-salt@vmx01:r1> show route table mpls.0 label 181 
+salt@vmx1> show route table mpls.0 label 181 
 
 mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -1590,3 +1568,112 @@ Summary
 =======
 
 These are the basics to get a VRF going between Juniper and Cisco IOS XR. There are differences in configuration constructs, but coming from a Juniper background and having done some IOS a long time ago, I found the IOS XR not too difficult to understand or work with. 
+
+
+
+
+
+
+
+
+
+
+
+
+```
+salt@vmx01:r1> show ldp database session 10.0.1.1     
+Input label database, 10.0.0.1:0--10.0.1.1:0
+Labels received: 10
+  Label     Prefix
+  24002      10.0.0.1/32
+  24000      10.0.0.2/32
+  24001      10.0.0.3/32
+  24003      10.0.0.4/32
+  24004      10.0.0.5/32
+  24005      10.0.0.6/32
+  24006      10.0.0.14/32
+  24007      10.0.0.15/32
+      3      10.0.1.1/32
+  24008      10.0.1.2/32
+
+Output label database, 10.0.0.1:0--10.0.1.1:0
+Labels advertised: 10
+  Label     Prefix
+      3      10.0.0.1/32
+    173      10.0.0.2/32
+    174      10.0.0.3/32
+    175      10.0.0.4/32
+    176      10.0.0.5/32
+    177      10.0.0.6/32
+    178      10.0.0.14/32
+    172      10.0.0.15/32
+    181      10.0.1.1/32
+    182      10.0.1.2/32
+```
+
+
+```
+RP/0/RP0/CPU0:ios_xr_1#show mpls ldp bindings neighbor 10.0.0.1
+Mon Aug 26 20:27:15.289 UTC
+
+10.0.0.1/32, rev 16
+        Local binding: label: 24002
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          ImpNull 
+10.0.0.2/32, rev 12
+        Local binding: label: 24000
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          173     
+10.0.0.3/32, rev 14
+        Local binding: label: 24001
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          174     
+10.0.0.4/32, rev 18
+        Local binding: label: 24003
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          175     
+10.0.0.5/32, rev 20
+        Local binding: label: 24004
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          176     
+10.0.0.6/32, rev 22
+        Local binding: label: 24005
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          177     
+10.0.0.14/32, rev 24
+        Local binding: label: 24006
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          178     
+10.0.0.15/32, rev 26
+        Local binding: label: 24007
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          172     
+10.0.1.1/32, rev 10
+        Local binding: label: ImpNull
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          181     
+10.0.1.2/32, rev 28
+        Local binding: label: 24008
+        Remote bindings: (2 peers)
+            Peer                Label    
+            -----------------   ---------
+            10.0.0.1:0          182     
+```            
