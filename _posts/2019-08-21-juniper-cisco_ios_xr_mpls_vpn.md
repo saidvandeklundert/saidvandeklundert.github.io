@@ -872,11 +872,11 @@ set protocols bgp log-updown
 routing-options autonomous-system 1
 ```
 
-We name the BGP group RR and specify the neighbors configured under it will be IBGP neighbors by using `type internal`. Using `local-address` we source the session from the loopback address 
+We name the BGP group `rr` and specify the neighbors configured under it will be IBGP neighbors by using `type internal`. Using `local-address` we source the session from the loopback address 
 
 The `family inet-vpn unicast` ensures that the BGP session will be signaled with the proper address family. The `authentication-key` knob authenticates the BGP session.
 
-The `cluster 0.0.0.1` statement is what turns this router into a route reflector. 
+The `cluster 0.0.0.1` statement is what turns a Juniper router into a route reflector. 
 
 The `log-updown` statement is to have the system log BGP session state changes and finally, we notice that the autonomous system itself is configured under the routing-options.
 
@@ -912,7 +912,7 @@ routing-options autonomous-system 1
 
 Except for the `cluster` statement, the configuration is pretty much the same.
 
-Now, on to the Cisco PE configurations. On `ios_xr_1`, we have the following configuration:
+On to the Cisco PE configurations. On `ios_xr_1`, we configure the following:
 
 ```
 router bgp 1
@@ -936,7 +936,7 @@ router bgp 1
 !
 ```
 
-On `ios_xr_2`, we have the following configuration:
+On `ios_xr_2`:
 
 ```
 router bgp 1
