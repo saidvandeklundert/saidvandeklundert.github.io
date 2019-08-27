@@ -1008,7 +1008,7 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 10.0.1.2                  1          4          4       0       1          24 Establ
 ```
 
-After verifying that all sessions are established, we can start verifying that the BGP sessions were properly configured. As an example, we will verify the session between `vmx15` and `ios_xr_1`. The rest of the BGP session configuration will be the same. 
+After verifying that all sessions are established, we can start verifying that the BGP sessions were properly configured. Since the rest of the BGP session verification will be the same, we will only verify the session between `vmx15` and `ios_xr_1`
 
 First, we check `vmx15`:
 
@@ -1453,7 +1453,7 @@ RP/0/RP0/CPU0:ios_xr_1#show cef vrf cust-1 192.168.1.3
      next hop 10.0.2.4/32 Gi0/0/0/2.12 labels imposed {340 282}
 ```
 
-The `282` label makes sense, we just saw that one in the BGP advertisement. The `38` is the transport label, which is associated with the LSP towards `vmx5`. We can see that using:
+The `282` label makes sense, we just saw that one in the BGP advertisement. The `176` and `340` are transport labels towards `vmx5`. We can see that using:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show mpls ldp forwarding 10.0.0.5/32
@@ -1470,7 +1470,7 @@ Prefix          Label   Label(s)       Outgoing     Next Hop            Flags
                         340            Gi0/0/0/2.12 10.0.2.4                  
 ```
 
-Following that label is pretty easy. The outgoing interface leads us to `vmx1`, so we hop on over to that router and use the following:
+Following that label is pretty easy. Let's follow the `176` label. The outgoing interface leads us to `vmx1`, so we hop on over to that router and use the following:
 
 ```
 salt@vmx1> show route table mpls.0 label 176           
@@ -1524,7 +1524,7 @@ Let's go the other way around and verify the routing information advertised by `
 
 ![Juniper to IOS XR forwarding](/img/vmx_to_ios_xr_fwd.png "Juniper and IOS XR")
 
-So first, we check the route advertisement from `ios_xr_1` by issuing the following command:
+First, we check the route advertisement from `ios_xr_1` by issuing the following command:
 
 ```
 RP/0/RP0/CPU0:ios_xr_1#show bgp vpnv4 unicast vrf cust-1 advertised neighbor 10.0.0.15
@@ -1624,7 +1624,7 @@ Destination        Type RtRef Next hop           Type Index    NhRef Netif
                               192.168.7.1       Push 24009, Push 333(top)     1691     2 ge-0/0/1.7
 ```
 
-We just saw that the VPN label, `24009`, was learned through BGP. The top label, `253`, is the transport label. We can see this when we check the routing information to the `ios_xr_1` device (which the VPN routes will resolve to):
+We just saw that the VPN label, `24009`, was learned through BGP. The top labels, `325` and `333`, are the transport labels. We can see this when we check the routing information to the `ios_xr_1` device (which the VPN routes will resolve to):
 
 ```
 salt@vmx5> show route 10.0.1.1 table inet.3     
@@ -1637,7 +1637,7 @@ inet.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
                     >  to 192.168.7.1 via ge-0/0/1.7, Push 333
 ```
 
-Next would be `vmx4`:
+Let's follow label `325`, which is send to `vmx4`:
 
 ```
 salt@vmx4> show route table mpls.0 label 325 
@@ -1650,7 +1650,7 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 
 ```
 
-Then `vmx1`:
+This is forwarded to `vmx1`:
 
 ```
 salt@vmx1> show route table mpls.0 label 181 
