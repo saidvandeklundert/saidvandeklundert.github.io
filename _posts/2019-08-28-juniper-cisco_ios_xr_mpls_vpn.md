@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MPLS L3VPN between Juniper MX and Cisco IOS XR
-image: /img/juniper_logo.jpg
+image: /img/cisco_juniper_logo.png
 ---
 
 Lately, I have been playing around with a lab that involves Cisco IOS XR and Juniper devices. The main intention I have with it is to be able to quickly test something or to check how I could automate something.
