@@ -65,7 +65,7 @@ Apart from the obvious difference in syntax, we notice two things. The Cisco int
 
 To verify the interface status on `ios_xr_1`, we issue to the following command:
 
-```
+<pre>
 RP/0/RP0/CPU0:ios_xr_1#show interface GigabitEthernet0/0/0/1.10      
 GigabitEthernet0/0/0/1.10 is up, line protocol is up 
   Interface state transitions: 1
@@ -86,12 +86,12 @@ GigabitEthernet0/0/0/1.10 is up, line protocol is up
      Received 9 broadcast packets, 1939 multicast packets
      62790 packets output, 4514492 bytes, 0 total output drops
      Output 2 broadcast packets, 1819 multicast packets
-```     
+</pre>
 
 
 To verify the interface on `vmx1`:
 
-```
+<pre>
 salt@vmx1> show interfaces ge-0/0/3.10    
   Logical interface ge-0/0/3.10 (Index 414) (SNMP ifIndex 584)
     Description: ios_xr_1
@@ -104,7 +104,7 @@ salt@vmx1> show interfaces ge-0/0/3.10
       Addresses, Flags: Is-Preferred Is-Primary
         Destination: 10.0.2.0/31, Local: 10.0.2.0
     Protocol multiservice, MTU: Unlimited
-```    
+</pre>  
 
 To wrap up interfaces configuration, we verify that we are able to ping across the interface:
 
@@ -1667,10 +1667,12 @@ mpls.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
 This will leave the Cisco to deal with the explicit null label and the VPN label we saw earlier (`24009`).
 
 
-Summary
-=======
+Closing thoughts
+================
 
 These are the basics to get a VRF going between Juniper and Cisco IOS XR. There are differences in configuration constructs, but coming from a Juniper background and having done some IOS a long time ago, I found the IOS XR not too difficult to understand or work with. 
+
+
 
 
 
