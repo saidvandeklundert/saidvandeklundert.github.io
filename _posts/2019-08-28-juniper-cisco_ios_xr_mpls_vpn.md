@@ -108,14 +108,14 @@ salt@vmx1> show interfaces ge-0/0/3.10
 
 To wrap up interfaces configuration, we verify that we are able to ping across the interface:
 
-```
+<pre>
 salt@vmx1> ping 10.0.2.1 rapid 
 PING 10.0.2.1 (10.0.2.1): 56 data bytes
 !!!!!
 --- 10.0.2.1 ping statistics ---
 5 packets transmitted, 5 packets received, 0% packet loss
 round-trip min/avg/max/stddev = 3.581/4.794/5.613/0.668 ms
-```
+</pre>
 
 
 
@@ -131,7 +131,7 @@ What will be included in the IGP configuration is the following:
 
 The following is the `ios_xr_1` configuration:
 
-```
+<pre>
 router ospf 1
  router-id 10.0.1.1
  auto-cost reference-bandwidth 100000
@@ -147,26 +147,26 @@ router ospf 1
    message-digest-key 1 md5 encrypted 04480A0A1B701E1D
    network point-to-point
   !
-```
+</pre>
 
 
 The equivalent configuration for `vmx1` is as follows:
 
-```
+<pre>
 set protocols ospf reference-bandwidth 100g
 set protocols ospf area 0.0.0.0 interface lo0.1 passive
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 interface-type p2p
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 authentication md5 1 key "$9$HmQn/9p1RStuWL7NbwP5T"
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 bfd-liveness-detection minimum-interval 100
 set protocols ospf area 0.0.0.0 interface ge-0/0/3.10 bfd-liveness-detection multiplier 5
-```
+</pre>
 
 Since load balancing is not something that is automatically enabled on Juniper devices, we need to add the following to `vmx1`:
 
-```
+<pre>
 set policy-options policy-statement lbpp term 1 then load-balance per-packet
 set routing-options forwarding-table export lbpp
-```
+</pre>
 
 Do not let the `load-balance per-packet` name fool you. This action will have the Juniper load balance traffic per flow.
 
@@ -176,7 +176,7 @@ First, we check the OSPF neighbor status on both sides.
 
 On the Cisco, we check the following:
 
-```
+<pre>
 RP/0/RP0/CPU0:ios_xr_1#show ospf neighbor 10.0.0.1 
 
 * Indicates MADJ interface
@@ -199,7 +199,7 @@ Neighbors for OSPF 1
     Last retransmission scan time is 0 msec, maximum is 0 msec
     LS Ack list: NSR-sync pending 0, high water mark 0
     <b>Neighbor BFD status: Session up</b>
-```
+</pre>
 
 The neighbor state is `FULL` and the BFD session that provides us with fast failure detection is also up. Other details can be verified by issuing the `show ospf 1 interface` command, like so:
 
