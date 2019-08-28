@@ -1022,7 +1022,7 @@ Peer: <b>10.0.1.1+35276 AS 1</b>      Local: <b>10.0.0.15+179 AS 1</b>
   Type: <b>Internal</b>    State: <b>Established</b>  (route reflector client)Flags: <Sync>
   Last State: OpenConfirm   Last Event: RecvKeepAlive
   Last Error: Cease
-  Options: <Preference LocalAddress AuthKey LogUpDown Cluster AddressFamily Rib-group Refresh>
+  Options: &lt;Preference LocalAddress AuthKey LogUpDown Cluster AddressFamily Rib-group Refresh&gt;
   <b>Authentication key is configured</b>
   Address families configured: <b>inet-vpn-unicast</b>
   Local Address: 10.0.0.15 Holdtime: 90 Preference: 170
