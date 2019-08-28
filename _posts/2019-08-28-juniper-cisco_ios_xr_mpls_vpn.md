@@ -1019,7 +1019,7 @@ salt@vmx15> show bgp neighbor 10.0.1.1
 Peer: <b>10.0.1.1+35276 AS 1</b>      Local: <b>10.0.0.15+179 AS 1</b>
   Group: rr                    Routing-Instance: master
   Forwarding routing-instance: master  
-  Type: <b>Internal</b>    State: <b>Established</b>  (route reflector client)Flags: <Sync>
+  Type: <b>Internal</b>    State: <b>Established</b>  (route reflector client)Flags: &lt;Sync&gt;
   Last State: OpenConfirm   Last Event: RecvKeepAlive
   Last Error: Cease
   Options: &lt;Preference LocalAddress AuthKey LogUpDown Cluster AddressFamily Rib-group Refresh&gt;
