@@ -28,34 +28,12 @@ To enable the CE-facing interface on `ios_xr_1` for IPv6, we add the following:
 interface GigabitEthernet0/0/0/3.2002
  ipv6 address 2001:db8:1::1/127
 ```
-For `ios_xr_1`, we now have the following interface configuration:
-
-```
-interface GigabitEthernet0/0/0/3.2002
- description c1-1
- vrf cust-1
- ipv4 address 10.0.0.9 255.255.255.252
- ipv6 address 2001:db8:1::1/127
- encapsulation dot1q 2002
-```
-
 
 On `vmx5`, we add the following:
 
 ```
 set interfaces ge-0/0/1 unit 2000 family inet6 address 2001:db8:1::5/127
 ```
-
-This entire CE-facing interface configuration on `vmx5` is the following now:
-
-```
-set interfaces ge-0/0/1 flexible-vlan-tagging
-set interfaces ge-0/0/1 encapsulation flexible-ethernet-services
-set interfaces ge-0/0/1 unit 2000 vlan-id 2000
-set interfaces ge-0/0/1 unit 2000 family inet address 10.0.0.1/30
-set interfaces ge-0/0/1 unit 2000 family inet6 address 2001:db8:1::5/127
-```
-
 
 To verify the IOS XR configuration, we issue the following command:
 
