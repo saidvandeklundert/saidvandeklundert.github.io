@@ -123,7 +123,7 @@ vrf cust-1
 !
 ```
 
-On `ios_xr_1`, we issue the following command:
+To verify this configuration, we issue the following command on `ios_xr_1`:
 
 <pre>
 RP/0/RP0/CPU0:ios_xr_1#<b>show vrf cust-1 detail </b>
@@ -217,7 +217,7 @@ On `vmx5` and `vmx6`, we add the following configuration:
 set protocols bgp group rr-client family inet6-vpn unicast
 ```
 
-To verify the BGP session with the RR from `ios_xr_1`:
+To verify that the BGP session can now carry the VPNv6 routes, we issue the following command on `ios_xr_1`:
 
 <pre>
 RP/0/RP0/CPU0:ios_xr_1#<b>show bgp neighbor 10.0.0.15 | include VPNv6</b>
@@ -356,7 +356,7 @@ Route Distinguisher: 1:1 (default for vrf cust-1)
 Processed 6 prefixes, 6 paths
 </pre>
 
-We see the `ios_xr_1` device has advertised hte connected as well as the static route. In additional to that, we see all the other routes in the VPN have been learned from the route reflector.
+We see the `ios_xr_1` device has advertised the connected as well as the static route. In additional to that, we see all the other routes in the VPN have been learned from the route reflector.
 
 To verify the same thing on `vmx5`, we issue the following command:
 
@@ -463,7 +463,7 @@ ff02::2/128        *[INET6/0] 1w5d 07:28:53
                        MultiRecv
 </pre>
 
-Both `ios_xr_1` as well as `vmx5` advertised a static route to the RRs. Before checking the forwarding entries on `ios_xr_1` and `vmx5`, we check the routes in deailt on the `vmx15` RR:
+Both `ios_xr_1` as well as `vmx5` advertised a static route to the RRs. Before checking the forwarding entries on `ios_xr_1` and `vmx5`, we check the routes in detail on the `vmx15` RR:
 
 <pre>
 salt@vmx15> <b>show route receive-protocol bgp 10.0.1.1 2001:db8::1/128 detail</b>
