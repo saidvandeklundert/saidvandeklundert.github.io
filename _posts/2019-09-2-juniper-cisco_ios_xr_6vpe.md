@@ -308,6 +308,7 @@ inet6.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
                     >  to 192.168.7.1 via ge-0/0/1.7, Push 334
 </pre>
 
+From the previous device output, we can see that all IPv4 destinations in the `inet.3` table have an equivalent in the `inet6.3` table.
 
 <br>
 
