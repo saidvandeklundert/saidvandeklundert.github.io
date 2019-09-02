@@ -16,6 +16,7 @@ The steps to get to this working VPN are as follows:
 - enable IPv6 tunneling
 - verify the 6VPE VPN
 
+PE examples will cover `ios_xr_1` and `vmx5`.
 
 <br>
 
