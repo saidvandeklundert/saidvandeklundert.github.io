@@ -8,7 +8,7 @@ In this post, we will enable an existing <b>MPLS L3VPN</b> for IPv6 using <b>6VP
 
 ![juniper and ios xr 6vpe vpn topology](/img/vpn_topology_juniper_ios_xr_6vpe.png "6vpe vpn topology")
 
-The steps to get to this working VPN are as follows:
+The steps to enable 6VPE here are as follows:
 - enable the CE-facing PE interfaces for IPv6
 - configure the IPv6 static routes
 - ready the VRF configuration for IPv6
