@@ -580,4 +580,4 @@ round-trip min/avg/max/std-dev = 3.546/14.598/25.601/8.149 ms
 Closing thoughts.
 =================
 
-Have not wrestled with it in production yet but setting up 6VPE accross Juniper MX and Cisco IOS XR in a lab is easy enough. As was the case with the regular MPLS L3VPN, even though the configuration constructs vary and some details differ, the underlying technology is the same.
+Have not wrestled with it in production yet, but setting up 6VPE accross Juniper MX and Cisco IOS XR in a lab is easy enough. As was the case with the regular MPLS L3VPN, even though the configuration constructs vary and some details differ, the underlying technology is the same.
