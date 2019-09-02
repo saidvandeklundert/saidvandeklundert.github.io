@@ -4,11 +4,11 @@ title: 6VPE between Juniper MX and Cisco IOS XR
 image: /img/cisco_juniper_logo.png
 ---
 
+In this post, we will enable the a VPN for IPv6 using 6VPE. The VPN topology is the following:
+![juniper and ios xr 6vpe vpn topology](/img/vpn_topology_juniper_ios_xr_6vpe.png "6vp vpn topology")
 
 Previously, I got an MPLS L3VPN going in this post:
-[MPLS L3VPN between Juniper MX and Cisco IOS XR](http://saidvandeklundert.net/2019-08-28-juniper-cisco_ios_xr_mpls_vpn/ ) 
-
-In this post, the aim right is to enable the same VPN for IPv6 using 6VPE. The topology is the same:
+[MPLS L3VPN between Juniper MX and Cisco IOS XR](http://saidvandeklundert.net/2019-08-28-juniper-cisco_ios_xr_mpls_vpn/ ). In this post, we will use the same topology, which was this one: 
 
 ![juniper and ios xr topology](/img/topology_juniper_ios_xr.png "topology")
 
