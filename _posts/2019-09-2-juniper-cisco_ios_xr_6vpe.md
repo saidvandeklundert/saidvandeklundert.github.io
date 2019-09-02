@@ -9,6 +9,7 @@ In this post, we will enable the a VPN for IPv6 using 6VPE. We will use the same
 ![juniper and ios xr topology](/img/topology_juniper_ios_xr.png "topology")
 
 For 6VPE, we will create the following VPN topology:
+
 ![juniper and ios xr 6vpe vpn topology](/img/vpn_topology_juniper_ios_xr_6vpe.png "6vpe vpn topology")
 
 
