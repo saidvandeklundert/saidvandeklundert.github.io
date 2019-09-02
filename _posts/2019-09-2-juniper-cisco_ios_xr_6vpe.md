@@ -5,7 +5,7 @@ image: /img/cisco_juniper_logo.png
 ---
 
 In this post, we will enable the a VPN for IPv6 using 6VPE. The VPN topology is the following:
-![juniper and ios xr 6vpe vpn topology](/img/vpn_topology_juniper_ios_xr_6vpe.png "6vp vpn topology")
+![juniper and ios xr 6vpe vpn topology](/img/vpn_topology_juniper_ios_xr_6vpe.png "6vpe vpn topology")
 
 Previously, I got an MPLS L3VPN going in this post:
 [MPLS L3VPN between Juniper MX and Cisco IOS XR](http://saidvandeklundert.net/2019-08-28-juniper-cisco_ios_xr_mpls_vpn/ ). In this post, we will use the same topology, which was this one: 
@@ -19,10 +19,10 @@ The steps to enable the topology for 6VPE are the following:
 - enable the BGP sessions to carry VPN-IPv6 addresses
 - enable IPv6 tunneling
 - verify the 6VPE VPN
-- review the complete VPN configuration
 
+We will finish up with the complete VPN configuration and a quick review.
 
-For the PE configuration, the samples I will show are from `ios_xr_1` and `vmx5`.
+For the PE configuration and verification, most the samples I will show are from `ios_xr_1` and `vmx5`.
 
 <br>
 
@@ -209,17 +209,17 @@ cust-1:
 Enable the BGP sessions to carry VPN-IPv6 addresses
 ===================================================
 
-The BGP sessions between the PEs and the RRs have been configured to carry MPLS VPN routes previously. We now need to enable the BGP sessions for an additional address family so that the PEs can carry VPN-IPv6 routes. We need to add the address faily to the following BGP sessions:
+The BGP sessions between the PEs and the RRs have been configured to carry MPLS VPN routes previously. We now need to enable the BGP sessions for an additional address family so that the PEs can carry VPN-IPv6 routes. We need to add the address family to the following BGP sessions:
 
 ![juniper and ios xr BGP configuration](/img/rr_bgp_configuration.png "BGP configuration")
 
-First, we enable the BGP sessions on the route-reflectors for the proper address family. On `vmx14` and `vmx15`, we configure the following:
+First, we enable the BGP sessions on the route-reflectors for the proper address family. On `vmx14` and `vmx15`, we add the following configuration:
 
 ```
 set protocols bgp group rr family inet6-vpn unicast
 ```
 
-After this, we move to `ios_xr_1` and `ios_xr_2`:
+After this, we move to `ios_xr_1` and `ios_xr_2` where we add the following:
 
 ```
 router bgp 1
@@ -266,11 +266,11 @@ salt@vmx01:r5> <b>show bgp neighbor 10.0.0.15 | match NLRI.*session</b>
 Enable IPv6 tunneling
 =====================
 
-This step is required on Juniper devices only. When the PEs advertise the IPv6 route for the VRF, the next-hop attribute is an IPv4-mapped IPv6 address that is automatically derived from the loopback IP address of the advertising PE. 
+When the PEs advertise the IPv6 route for the VRF, the next-hop attribute is an IPv4-mapped IPv6 address that is automatically derived from the loopback IP address of the advertising PE. 
 
-When we configure IPv6 tunneling on a Juniper device, we copy all the IPv4 destinations from the `inet.3` table to the `inet6.3` table.
+When we configure IPv6 tunneling on a Juniper device, we copy all the IPv4 destinations from the `inet.3` table to the `inet6.3` table. This step is required on Juniper devices only. No equivalent configuration is required to enable an IOS XR to resolve IPv4 mapped IPv6 addresses.
 
-On `vmx5`, `vmx6`, `vmx14` and `vmx15`, we configure the following:
+The only device participating with 6VPE are the RRs and the PEs. For that reasons, on `vmx5`, `vmx6`, `vmx14` and `vmx15`, we configure the following:
 
 ```
 set protocols mpls ipv6-tunneling
@@ -342,7 +342,9 @@ inet6.3: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
 Verify the 6VPE VPN
 ===================
 
-To verify 6VPE operations, we focus on `ios_xr_1` and `vmx5` and start off checking the routes that have been exchanged with the route-reflectors.
+To verify 6VPE operations, we focus on `ios_xr_1` and `vmx5` and start off checking the routes that have been exchanged with the `vmx15` route-reflector.
+
+![juniper and ios xr Verify the 6VPE VPN](/img/vpn_topology_juniper_ios_xr_6vpe_ios_xr_1_vmx_5.png "Verify the 6VPE VPN")
 
 On `ios_xr_1`, we check the following:
 
@@ -383,6 +385,8 @@ Route Distinguisher: 1:1 (default for vrf cust-1)
 Processed 6 prefixes, 6 paths
 </pre>
 
+We see the `ios_xr_1` device has advertised hte connected as well as the static route. In additional to that, we see all the other routes in the VPN have been learned from the route reflector.
+
 To verify the same thing on `vmx5`, we issue the following command:
 
 <pre>
@@ -406,7 +410,7 @@ cust-1.inet6.0: 11 destinations, 11 routes (11 active, 0 holddown, 0 hidden)
 </pre>
 
 
-Verifying the routes in the VPN on `ios_xr_1`:
+To check the routing table on for the routes on `ios_xr_1`, we issue the following command:
 
 <pre>
 RP/0/RP0/CPU0:ios_xr_1#<b>show route vrf cust-1 ipv6</b>
@@ -443,7 +447,7 @@ B    2001:db8:1::6/127
       [200/0] via ::ffff:10.0.0.6 (nexthop in vrf default), 2d03h
 </pre>
 
-Verifying the routing table on `vmx5`:
+Verifying the routing table on `vmx5` is done like so:
 
 <pre>
 salt@vmx5> <b>show route table cust-1.inet6.0</b>
@@ -488,17 +492,17 @@ ff02::2/128        *[INET6/0] 1w5d 07:28:53
                        MultiRecv
 </pre>
 
-Both `ios_xr_1` as well as `vmx5` advertised a static route to the `vmx15` RR, these were the following addresses:
+Both `ios_xr_1` as well as `vmx5` advertised a static route to the RRs. Before checking the forwarding entries on `ios_xr_1` and `vmx5`, we check the routes in deailt on the `vmx15` RR:
 
 <pre>
 salt@vmx15> <b>show route receive-protocol bgp 10.0.1.1 2001:db8::1/128 detail</b>
 
 bgp.l3vpn-inet6.0: 8 destinations, 8 routes (8 active, 0 holddown, 0 hidden)
-* 1:1:2001:db8::1/128 (1 entry, 1 announced)
+* 1:1:<b>2001:db8::1</b> /128 (1 entry, 1 announced)
      Accepted
      Route Distinguisher: 1:1
-     VPN Label: 24011
-     Nexthop: ::ffff:10.0.1.1
+     VPN Label: <b>24011</b> 
+     Nexthop: <b>::ffff:10.0.1.1</b> 
      MED: 0
      Localpref: 100
      AS path: ? 
@@ -507,11 +511,11 @@ bgp.l3vpn-inet6.0: 8 destinations, 8 routes (8 active, 0 holddown, 0 hidden)
 salt@vmx15> <b>show route receive-protocol bgp 10.0.0.5 2001:db8::3/128 detail</b> 
 
 bgp.l3vpn-inet6.0: 8 destinations, 8 routes (8 active, 0 holddown, 0 hidden)
-* 1:1:2001:db8::3/128 (1 entry, 1 announced)
+* 1:1:<b>2001:db8::3</b> /128 (1 entry, 1 announced)
      Accepted
      Route Distinguisher: 1:1
-     VPN Label: 282
-     Nexthop: ::ffff:10.0.0.5
+     VPN Label: <b>282</b> 
+     Nexthop: <b>::ffff:10.0.0.5</b> 
      Localpref: 100
      AS path: I 
      Communities: target:1:1
