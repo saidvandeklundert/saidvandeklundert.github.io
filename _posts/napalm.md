@@ -4,10 +4,11 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, I have become a bit more interested in NAPALM. Up untill this point, most of my scripting efforts involved PyEZ, paramiko and Netmiko. After having to work with multiple vendors and SaltStack, NAPALM started to come up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
+Recently, I have become a bit more interested in NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside SaltStack, NAPALM started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
 
-![NAPALM](/img/napalm_logo.png "NAPALM")
-
+<p align="center">
+  <img width="460" height="300" src="http://https://saidvandeklundert.net/img/napalm_logo.png">
+</p>
 <br>
 
 NAPALM in a nutshell
