@@ -152,6 +152,79 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF c
 ```
 <br>
 
+The beauty here is that you do not need to know all the specifics with regards to the Juniper API. Let's change the example code to something that works for IOS XR:
+```python
+import napalm
+from pprint import pprint as pp
+driver = napalm.get_network_driver('iosxr')
+device = driver(hostname='169.50.169.170', username='salt', password='salt123')
+device.open()
+pp(device.get_facts())
+pp(device.get_bgp_neighbors())
+device.close()
+```
+
+The only thing we changed is the value of the driver and running this in the interpretor would give the following:
+
+```python
+bash-4.4$ python
+Python 2.7.16 (default, May  6 2019, 19:35:26) 
+[GCC 8.3.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import napalm
+>>> from pprint import pprint as pp
+>>> driver = napalm.get_network_driver('iosxr')
+>>> device = driver(hostname='169.50.169.170', username='salt', password='salt123')
+>>> device.open()
+pp(device.get_facts())
+>>> pp(device.get_facts())
+
+{u'fqdn': u'ios_xr_1',
+ u'hostname': u'ios_xr_1',
+ u'interface_list': [u'GigabitEthernet0/0/0/0',
+                     u'GigabitEthernet0/0/0/0.1156',
+                     u'GigabitEthernet0/0/0/1',
+                     u'GigabitEthernet0/0/0/1.10',
+                     u'GigabitEthernet0/0/0/2',
+                     u'GigabitEthernet0/0/0/2.12',
+                     u'GigabitEthernet0/0/0/3',
+                     u'GigabitEthernet0/0/0/3.2002',
+                     u'Loopback0',
+                     u'MgmtEth0/RP0/CPU0/0',
+                     u'Null0'],
+ u'model': u'R-IOSXRV9000-CC',
+ u'os_version': u'6.6.2',
+ u'serial_number': u'9E478CB8391',
+ u'uptime': 20724,
+ u'vendor': u'Cisco'}
+>>> 
+>>> pp(device.get_bgp_neighbors())
+{u'cust-1': {u'peers': {}, u'router_id': u'10.0.1.1'},
+ u'global': {u'peers': {u'10.0.0.14': {u'address_family': {u'ipv4': {u'accepted_prefixes': 6,
+                                                                     u'received_prefixes': 6,
+                                                                     u'sent_prefixes': 2}},
+                                       u'description': u'',
+                                       u'is_enabled': False,
+                                       u'is_up': True,
+                                       u'local_as': 1,
+                                       u'remote_as': 1,
+                                       u'remote_id': u'10.0.0.14',
+                                       u'uptime': 20573},
+                        u'10.0.0.15': {u'address_family': {u'ipv4': {u'accepted_prefixes': 6,
+                                                                     u'received_prefixes': 6,
+                                                                     u'sent_prefixes': 2}},
+                                       u'description': u'',
+                                       u'is_enabled': False,
+                                       u'is_up': True,
+                                       u'local_as': 1,
+                                       u'remote_as': 1,
+                                       u'remote_id': u'10.0.0.15',
+                                       u'uptime': 20573}},
+             u'router_id': u'10.0.1.1'}}
+>>> device.close()
+>>> 
+```
+
 NAPALM outside of a Python script
 =================================
 
