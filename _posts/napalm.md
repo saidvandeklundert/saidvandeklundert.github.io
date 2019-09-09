@@ -162,7 +162,9 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-The only thing we changed is the value of the driver and running this in the interpretor would give the following:
+The only thing we changed is the value of the driver!!
+
+When we run this in the interpretor, we get the following:
 
 ```python
 bash-4.4$ python
