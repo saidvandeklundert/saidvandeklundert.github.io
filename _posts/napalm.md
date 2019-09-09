@@ -58,7 +58,7 @@ NAPALM provides you with several basic functions that you can use to interact wi
 - display information that describes the device
 - display information about the BGP neighbors
 
-Doing this using NAPALM is pretty easy.
+Doing this using NAPALM is very straightforward.
 
 <p align="center" >
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
