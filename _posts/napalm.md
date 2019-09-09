@@ -35,24 +35,23 @@ At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) ind
 - Cisco NX-OS
 - Juniper JunOS
 
-These devices are managed through 'core' drivers that are supported and maintained by the people working on NAPALM. In addition to the core drivers, there are also some 'community drivers'. These are maintained under their own repository and can be used by NAPALM and are not listed here.
-
+These devices are managed through the 'core' drivers that are supported and maintained by the people working on NAPALM. 
 These drivers are libraries that have been written to deal with the different vendor APIs and they allow NAPALM to deal with different devices. The following table displays the current core libraries:
 
   
   |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
   | ------------------- | --------- | ------------- | ---------- | --------- | ---------- | ---- 
   | **Driver Name**     | eos       | junos         | iosxr      | nxos      | nxos_ssh   | ios
-  | **Backend library** | `pyeapi`_ | `junos-eznc`_ | `pyIOSXR`_ | `pynxos`_ | `netmiko`_ | `netmiko`_
+  | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-.. _pyeapi: https://github.com/arista-eosplus/pyeapi
-.. _junos-eznc: https://github.com/Juniper/py-junos-eznc
-.. _pyIOSXR: https://github.com/fooelisa/pyiosxr
-.. _pynxos: https://github.com/networktocode/pynxos
-.. _netmiko: https://github.com/ktbyers/netmiko
+
+
 
 As explained earlier, these backend libraries are used by NAPALM to communicate with the different vendors. The two backend libraries that stood out to me were `junos-eznc` and `netmiko`. The first one is familiar through earlier work with PyEZ. The latter was familiar for some scripting I did against several other vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a `Multi-vendor library to simplify Paramiko SSH connections to network devices`. To enable NAPALM to work with NX-OS over SSH and IOS (which does not have an API), they opted to use this as a backend library.
+
+In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM.
+
 
 <br>
 
