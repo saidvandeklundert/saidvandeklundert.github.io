@@ -4,7 +4,7 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, I have become a bit more interested in NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, <b>NAPALM</b> started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
+Recently, NAPALM and I crossed paths. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, <b>NAPALM</b> started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
@@ -14,7 +14,7 @@ Recently, I have become a bit more interested in NAPALM. Up untill this point, m
 NAPALM in a nutshell
 ====================
 
-Different networking vendors ship their boxes/software with their own specific OS and every OS has its own interfaces. By now, most vendors have ensured their software ships with an API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
+Different networking vendors ship their software with their own specific OS and every OS has its own interfaces. By now, most vendors have ensured their software ships with an API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
 
 Wouldn’t it be nice if there was some sort of library you could import and be done with it? Like a wrapper around all the vendor-specific things.
 
@@ -24,20 +24,20 @@ Though it does not abstract everything away, it is quite convenient for a lot of
 
 <br>
 
-NAPALM, Network Automation and Programmability Abstraction Layer with Multivendor support
-=========================================================================================
+What does NAPALM support?
+=========================
 
 
-At the time of writing, the docs ( https://napalm.readthedocs.io/en/latest/ ) indicate the NAPALM offers support for the following devices:
+At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) indicate that NAPALM offers support for the following devices:
 - Arista EOS
 - Cisco IOS
 - Cisco IOS-XR
 - Cisco NX-OS
 - Juniper JunOS
 
-These 'core' drivers are supported and maintained by the people working on NAPALM. In addition to the core drivers, there are also some 'community drivers'. These are maintained under their own repository and can be used by NAPALM.
+These devices are managed through 'core' drivers that are supported and maintained by the people working on NAPALM. In addition to the core drivers, there are also some 'community drivers'. These are maintained under their own repository and can be used by NAPALM and are not listed here.
 
-The core drivers in NAPALM allow it to deal with the different devices. These drivers are libraries written to deal with the different vendor APIs. The following picture shows the current core libraries:
+These drivers are libraries that have been written to deal with the different vendor APIs and they allow NAPALM to deal with different devices. The following table displays the current core libraries:
 
   
   |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
