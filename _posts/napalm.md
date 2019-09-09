@@ -62,7 +62,9 @@ NAPALM in a Python script
 So when you use NAPALM in a Python script, what exactly happens? Since I am most familiar with Juniper, I thought I'd explain it from a Juniper point of view:
 
 ![NAPALM talking to Junos](/img/napalm_talking_to_junos.png "NAPALM talking to Junos")
-
+<p align="center" >
+  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_talking_to_junos.png">
+</p>
 At the top is your Python script, this is where you import NAPALM. When you talk to a Juniper device, you tell NAPALM to use the `junos` driver, which will in turn reference to the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. This API is an interface of `MGD` that exposes `Junos` and allows you to pass instructions or retreive information.
 
 <br>
