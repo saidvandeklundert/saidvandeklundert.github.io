@@ -7,7 +7,7 @@ image: /img/napalm_logo.png.png
 Recently, I have become a bit more interested in NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside SaltStack, NAPALM started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
-  <img width="460" height="300" src="http://https://saidvandeklundert.net/img/napalm_logo.png">
+  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
 </p>
 <br>
 
