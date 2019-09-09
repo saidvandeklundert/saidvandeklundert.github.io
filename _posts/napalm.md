@@ -59,14 +59,97 @@ As explained earlier, these backend libraries are used by NAPALM to communicate 
 NAPALM in a Python script
 =========================
 
-So when you use NAPALM in a Python script, what exactly happens? Since I am most familiar with Juniper, I thought I'd explain it from a Juniper point of view:
+So when you use NAPALM in a Python script, what exactly happens? Since I am most familiar with Juniper, I thought I'd explain it from a Juniper point of view. Let's use NAPALM to do the following:
+- connect to a Juniper device
+- display information that describes the device
+- display information about the BGP neighbors
+- close the connection to the device
+
+The python required to perform the above is the following:
+
+```python
+import napalm
+from pprint import pprint as pp
+driver = napalm.get_network_driver('junos')
+device = driver(hostname='169.50.169.171', username='salt-r6', password='salt123')
+device.open()
+pp(device.get_facts())
+pp(device.get_bgp_neighbors())
+device.close()
+```
+
+Only NAPALM, no PyEZ in the script. 
 
 <p align="center" >
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_talking_to_junos.png">
 </p>
 
-At the top is your Python script, this is where you import NAPALM. When you talk to a Juniper device, you tell NAPALM to use the `junos` driver, which will in turn reference to the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. This API is an interface of `MGD` that exposes `Junos` and allows you to pass instructions or retreive information.
+When you talk to a Juniper device, you tell NAPALM to use the `junos` driver, which will in turn reference to the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. This API is an interface of `MGD` that exposes `Junos` and allows you to pass instructions or retreive information.
 
+When we run this in the interpreter, we get the following:
+
+```python
+bash-4.4$ python
+Python 2.7.16 (default, May  6 2019, 19:35:26) 
+[GCC 8.3.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import napalm                  
+>>> from pprint import pprint as pp
+>>> driver = napalm.get_network_driver('junos')
+>>> device = driver(hostname='169.50.169.171', username='salt-r6', password='salt123')
+>>> device.open()
+>>> pp(device.get_facts())
+{u'fqdn': u'vmx01',
+ u'hostname': u'vmx01',
+ u'interface_list': ['ge-0/0/1', '.local.', 'lo0', 'lsi'],
+ u'model': u'VMX',
+ u'os_version': u'19.1R1.6',
+ u'serial_number': u'VM5CB1E69517',
+ u'uptime': 12351159,
+ u'vendor': u'Juniper'}
+>>> pp(device.get_bgp_neighbors())
+{u'global': {u'peers': {u'10.0.0.14': {u'address_family': {u'ipv4': {u'accepted_prefixes': -1,
+                                                                     u'received_prefixes': -1,
+                                                                     u'sent_prefixes': -1},
+                                                           u'ipv6': {u'accepted_prefixes': -1,
+                                                                     u'received_prefixes': -1,
+                                                                     u'sent_prefixes': -1}},
+                                       u'description': u'',
+                                       u'is_enabled': True,
+                                       u'is_up': True,
+                                       u'local_as': 1,
+                                       u'remote_as': 1,
+                                       u'remote_id': u'10.0.0.14',
+                                       u'uptime': 885023},
+                        '10.0.0.15': {u'address_family': {u'ipv4': {u'accepted_prefixes': -1,
+                                                                    u'received_prefixes': -1,
+                                                                    u'sent_prefixes': -1},
+                                                          u'ipv6': {u'accepted_prefixes': -1,
+                                                                    u'received_prefixes': -1,
+                                                                    u'sent_prefixes': -1}},
+                                      u'description': u'',
+                                      u'is_enabled': True,
+                                      u'is_up': True,
+                                      u'local_as': 1,
+                                      u'remote_as': 1,
+                                      u'remote_id': u'10.0.0.15',
+                                      u'uptime': 789397}},
+             u'router_id': u'10.0.0.6'}}
+>>> device.close()
+>>> 
+```
+
+If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see all the RPCs our NAPALM script called:
+
+```
+Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-instance-information'
+Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-neighbor-information instance=master'
+Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-summary-information instance=master'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-neighbor-information instance=cust-1'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-summary-information instance=cust-1'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-neighbor-information instance=mgmt_junos'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-summary-information instance=mgmt_junos'
+```
 <br>
 
 NAPALM outside of a Python script
