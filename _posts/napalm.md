@@ -45,47 +45,43 @@ These drivers are libraries that have been written to deal with the different ve
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
+You can also use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS over SSH and IOS (which does not have an API).
 
-
-
-As explained earlier, these backend libraries are used by NAPALM to communicate with the different vendors. The two backend libraries that stood out to me were `junos-eznc` and `netmiko`. The first one is familiar through earlier work with PyEZ. The latter was familiar for some scripting I did against several other vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a `Multi-vendor library to simplify Paramiko SSH connections to network devices`. To enable NAPALM to work with NX-OS over SSH and IOS (which does not have an API), they opted to use this as a backend library.
-
-In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM.
-
+In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
 <br>
 
 NAPALM in a Python script
 =========================
 
-So when you use NAPALM in a Python script, what exactly happens? Since I am most familiar with Juniper, I thought I'd explain it from a Juniper point of view. Let's use NAPALM to do the following:
-- connect to a Juniper device
+NAPALM provides you with several basic functions that you can use to interact with different vendors. Let's look at an example where we retrieve information from a Juniper and a Cisco and use NAPALM to do the following:
+- connect to a device
 - display information that describes the device
 - display information about the BGP neighbors
 - close the connection to the device
 
-The python required to perform the above is the following:
+The Python required to perform the above when connection to a Juniper device will be something like the following:
 
 ```python
 import napalm
 from pprint import pprint as pp
 driver = napalm.get_network_driver('junos')
-device = driver(hostname='169.50.169.171', username='salt-r6', password='salt123')
+device = driver(hostname='169.50.169.100', username='salt', password='salt123')
 device.open()
 pp(device.get_facts())
 pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Only NAPALM, no PyEZ in the script. 
+Notice how we only see NAPALM references in this Python and no PyEZ. 
 
 <p align="center" >
-  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_talking_to_junos.png">
+  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
 </p>
 
-When you talk to a Juniper device, you tell NAPALM to use the `junos` driver, which will in turn reference to the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. This API is an interface of `MGD` that exposes `Junos` and allows you to pass instructions or retreive information.
+When connecting to a Juniper device using NAPALM, you need to use the `junos` driver. This will in turn reference the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. 
 
-When we run this in the interpreter, we get the following:
+When we run this example in the interpreter, we get the following:
 
 ```python
 bash-4.4$ python
@@ -152,11 +148,12 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF c
 <br>
 
 The beauty here is that you do not need to know all the specifics with regards to the Juniper API. Let's change the example code to something that works for IOS XR:
+
 ```python
 import napalm
 from pprint import pprint as pp
 driver = napalm.get_network_driver('iosxr')
-device = driver(hostname='169.50.169.170', username='salt', password='salt123')
+device = driver(hostname='169.50.169.101', username='salt', password='salt123')
 device.open()
 pp(device.get_facts())
 pp(device.get_bgp_neighbors())
@@ -224,16 +221,28 @@ pp(device.get_facts())
 >>> 
 ```
 
+Notice how we the only thing we needed to change was the driver. We changed it from `junos` to `iosxr` and after that, we were good to go.
+
+In the example, I used `get_bgp_neighbors` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out though.
+
 NAPALM outside of a Python script
 =================================
 
 
-As it says on the NAPALM website (https://napalm-automation.net/ ), `Napalm plays nice with others!`. Efforts have been made to enable the use of NAPALM outside of a Python script. You can use it for Ansible, Stackstorm and SaltStack. In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM.
+As it says on the [NAPALM website](https://napalm-automation.net/), `Napalm plays nice with others!`. Efforts have been made to enable the use of NAPALM outside of a Python script. You can use it for Ansible, Stackstorm and SaltStack. In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM.
 
 
 
 
 
+Closing
+============
+
+my connection
+- SaltStack
+- IOS XR
+- Junos
+- Arista
 
 
 
@@ -246,37 +255,3 @@ https://napalm.readthedocs.io/en/latest/support/index.html
 IOS caveats:
 https://napalm.readthedocs.io/en/latest/support/ios.html
 
-
-
-
-In this post,
-
-main link: https://github.com/napalm-automation/napalm
-
-
-
-
-
-NAPALM:
-- Napalm is a vendor neutral, cross-platform open source project that provides a unified API to network devices.
-- Napalm plays nice with others! Ansible, SaltStack, StackStorm
-
-
-IOS-XR uses pyIOSXR:
-https://github.com/napalm-automation/napalm/blob/develop/napalm/iosxr/iosxr.py
-
-Junos uses PyEZ:
-https://github.com/napalm-automation/napalm/blob/develop/napalm/junos/junos.py
-
-EOS uses pyeapi:
-https://github.com/napalm-automation/napalm/blob/develop/napalm/eos/eos.py
-
-
-Closing
-============
-
-my connection
-- SaltStack
-- IOS XR
-- Junos
-- Arista
