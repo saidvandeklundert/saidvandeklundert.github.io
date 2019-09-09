@@ -55,10 +55,16 @@ NAPALM in a Python script
 =========================
 
 NAPALM provides you with several basic functions that you can use to interact with different vendors. Let's look at an example where we retrieve information from a Juniper and a Cisco and use NAPALM to do the following:
-- connect to a device
 - display information that describes the device
 - display information about the BGP neighbors
-- close the connection to the device
+
+Doing this using NAPALM is pretty easy.
+
+<p align="center" >
+  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
+</p>
+
+Pretty much, the only thing we need to do is displayed above. First, we need to select the proper driver. After that, we call the `getters` we are interested in. In this case, we are going for `get_facts` and `get_bgp_neighbors`.
 
 The Python required to perform the above when connection to a Juniper device will be something like the following:
 
@@ -74,10 +80,6 @@ device.close()
 ```
 
 Notice how we only see NAPALM references in this Python and no PyEZ. 
-
-<p align="center" >
-  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
-</p>
 
 When connecting to a Juniper device using NAPALM, you need to use the `junos` driver. This will in turn reference the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. 
 
