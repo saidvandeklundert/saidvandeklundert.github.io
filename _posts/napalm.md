@@ -61,7 +61,7 @@ NAPALM in a Python script
 
 So when you use NAPALM in a Python script, what exactly happens? Since I am most familiar with Juniper, I thought I'd explain it from a Juniper point of view:
 
-![NAPALM talking to Junos](/img/napalm_talking_to_junos.png "NAPALM talking to Junos"){:height="50%" width="50%"}
+![NAPALM talking to Junos](/img/napalm_talking_to_junos.png "NAPALM talking to Junos")
 <p align="center" >
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_talking_to_junos.png">
 </p>
