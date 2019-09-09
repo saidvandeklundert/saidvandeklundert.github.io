@@ -4,7 +4,7 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, I have become a bit more interested in NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside SaltStack, NAPALM started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
+Recently, I have become a bit more interested in NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, <b>NAPALM</b> started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
@@ -39,12 +39,12 @@ These 'core' drivers are supported and maintained by the people working on NAPAL
 
 The core drivers in NAPALM allow it to deal with the different devices. These drivers are libraries written to deal with the different vendor APIs. The following picture shows the current core libraries:
 
-  =====================   ==========  =============   ============ ============  ============ ============
-                          EOS         Junos           IOS-XR       NX-OS         NX-OS SSH    IOS
-  =====================   ==========  =============   ============ ============  ============ ============
-  **Driver Name**         eos         junos           iosxr        nxos          nxos_ssh     ios
-  **Backend library**     `pyeapi`_   `junos-eznc`_   `pyIOSXR`_   `pynxos`_     `netmiko`_   `netmiko`_
-  =====================   ==========  =============   ============ ============  ============ ============
+  
+  |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
+  | ------------------- | --------- | ------------- | ---------- | --------- | ---------- | ---- 
+  | **Driver Name**     | eos       | junos         | iosxr      | nxos      | nxos_ssh   | ios
+  | **Backend library** | `pyeapi`_ | `junos-eznc`_ | `pyIOSXR`_ | `pynxos`_ | `netmiko`_ | `netmiko`_
+  
 
 .. _pyeapi: https://github.com/arista-eosplus/pyeapi
 .. _junos-eznc: https://github.com/Juniper/py-junos-eznc
