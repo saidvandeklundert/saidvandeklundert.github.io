@@ -58,13 +58,14 @@ NAPALM provides you with several basic functions that you can use to interact wi
 - display information that describes the device
 - display information about the BGP neighbors
 
-Doing this using NAPALM is very straightforward.
+Doing this using NAPALM is very straightforward. We need to do the following:
+- import napalm
+- select the proper driver
+- use the `get_facts` and `get_bgp_neighbors`
 
 <p align="center" >
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
 </p>
-
-Pretty much, the only thing we need to do is displayed above. First, we need to select the proper driver. After that, we call the `getters` we are interested in. In this case, we are going for `get_facts` and `get_bgp_neighbors`.
 
 The Python required to perform the above when connection to a Juniper device will be something like the following:
 
@@ -79,29 +80,24 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Notice how we only see NAPALM references in this Python and no PyEZ. 
-
-When connecting to a Juniper device using NAPALM, you need to use the `junos` driver. This will in turn reference the PyEZ backend library (`junos-eznc`).This library uses NETCONF to communicate with the Juniper XML API. 
+Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. NAPALM manages to completely hide this fact.
 
 When we run this example in the interpreter, we get the following:
 
 ```python
 bash-4.4$ python
-Python 2.7.16 (default, May  6 2019, 19:35:26) 
-[GCC 8.3.0] on linux2
-Type "help", "copyright", "credits" or "license" for more information.
 >>> import napalm                  
 >>> from pprint import pprint as pp
 >>> driver = napalm.get_network_driver('junos')
->>> device = driver(hostname='169.50.169.171', username='salt-r6', password='salt123')
+>>> device = driver(hostname='169.50.169.171', username='salt', password='salt123')
 >>> device.open()
 >>> pp(device.get_facts())
-{u'fqdn': u'vmx01',
- u'hostname': u'vmx01',
+{u'fqdn': u'vmx6',
+ u'hostname': u'vmx6',
  u'interface_list': ['ge-0/0/1', '.local.', 'lo0', 'lsi'],
  u'model': u'VMX',
  u'os_version': u'19.1R1.6',
- u'serial_number': u'VM5CB1E69517',
+ u'serial_number': u'VM5CB1EEE555',
  u'uptime': 12351159,
  u'vendor': u'Juniper'}
 >>> pp(device.get_bgp_neighbors())
@@ -149,7 +145,9 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF c
 ```
 <br>
 
-The beauty here is that you do not need to know all the specifics with regards to the Juniper API. Let's change the example code to something that works for IOS XR:
+The beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs and used the return values to create a nice dictionary for us.
+
+Let's change the example code to something that works for IOS XR:
 
 ```python
 import napalm
@@ -168,9 +166,6 @@ When we run this in the interpretor, we get the following:
 
 ```python
 bash-4.4$ python
-Python 2.7.16 (default, May  6 2019, 19:35:26) 
-[GCC 8.3.0] on linux2
-Type "help", "copyright", "credits" or "license" for more information.
 >>> import napalm
 >>> from pprint import pprint as pp
 >>> driver = napalm.get_network_driver('iosxr')
@@ -194,7 +189,7 @@ pp(device.get_facts())
                      u'Null0'],
  u'model': u'R-IOSXRV9000-CC',
  u'os_version': u'6.6.2',
- u'serial_number': u'9E478CB8391',
+ u'serial_number': u'9E478CCC333',
  u'uptime': 20724,
  u'vendor': u'Cisco'}
 >>> 
@@ -225,37 +220,20 @@ pp(device.get_facts())
 >>> 
 ```
 
-Notice how we the only thing we needed to change was the driver. We changed it from `junos` to `iosxr` and after that, we were good to go.
+The only thing we needed to do was change the driver from `junos` to `iosxr` and we were good to go!
 
-In the example, I used `get_bgp_neighbors` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out though.
+In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out.
+
+In addition to these getters, NAPALM also enables you to [configure the devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix).
+
+<br>
 
 NAPALM outside of a Python script
 =================================
 
 
-As it says on the [NAPALM website](https://napalm-automation.net/), `Napalm plays nice with others!`. Efforts have been made to enable the use of NAPALM outside of a Python script. You can use it for Ansible, Stackstorm and SaltStack. In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM.
+As it says on the [NAPALM website](https://napalm-automation.net/), `Napalm plays nice with others!`. Efforts have been made to enable the use of NAPALM outside of a Python script. You can use it for Ansible, Stackstorm and SaltStack. 
 
+In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM. This ensures you will have an easy time gathering data from supported devices, configure them and all that even comes included with some grains.
 
-
-
-
-Closing
-============
-
-my connection
-- SaltStack
-- IOS XR
-- Junos
-- Arista
-
-
-
-
-
-
-Supported devices:
-https://napalm.readthedocs.io/en/latest/support/index.html
-
-IOS caveats:
-https://napalm.readthedocs.io/en/latest/support/ios.html
 
