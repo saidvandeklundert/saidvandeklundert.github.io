@@ -4,7 +4,7 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, NAPALM and I crossed paths. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, <b>NAPALM</b> started coming up more and more. This post is a short summary of what I have learned so far about NAPALM in general.  
+Recently, or finally, I had to work with NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, <b>NAPALM</b> seemed like the best choice. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
@@ -24,8 +24,8 @@ Though it does not abstract everything away, it is quite convenient for a lot of
 
 <br>
 
-What does NAPALM support?
-=========================
+What devices does NAPALM support?
+=================================
 
 
 At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) indicate that NAPALM offers support for the following devices:
@@ -45,7 +45,7 @@ These drivers are libraries that have been written to deal with the different ve
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-You can also use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS over SSH and IOS (which does not have an API).
+You can also use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS over SSH and IOS.
 
 In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
@@ -54,7 +54,7 @@ In addition to the core drivers, there are also various 'community drivers'. Com
 NAPALM in a Python script
 =========================
 
-NAPALM provides you with several basic functions that you can use to interact with different vendors. Let's look at an example where we retrieve information from a Juniper and a Cisco and use NAPALM to do the following:
+NAPALM provides you with several basic functions that you can use to interact with different vendors. Let's look at an example where we retrieve information from a Juniper and a Cisco device. In the example, we will have NAPALM do the following:
 - display information that describes the device
 - display information about the BGP neighbors
 
@@ -236,4 +236,7 @@ As it says on the [NAPALM website](https://napalm-automation.net/), `Napalm play
 
 In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM. This ensures you will have an easy time gathering data from supported devices, configure them and all that even comes included with some grains.
 
+<br>
 
+Closing thoughts
+================
