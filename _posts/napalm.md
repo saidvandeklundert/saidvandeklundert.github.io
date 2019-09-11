@@ -45,7 +45,7 @@ These devices are managed through the 'core' drivers that are supported and main
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-You could choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS (over SSH) and IOS (that does not have an API).
+You could choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS (over SSH) and IOS.
 
 In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
@@ -61,13 +61,13 @@ NAPALM provides you with several basic functions that you can use to interact wi
 Doing this using NAPALM is very easy. All we need to do the following:
 - import napalm
 - select the proper driver
-- use the `get_facts` and `get_bgp_neighbors`
+- use `get_facts` and `get_bgp_neighbors`
 
 <p align="center" >
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
 </p>
 
-The Python required to perform the above when connection to a Juniper device will be something like the following:
+The Python required to perform the above when connecting to a Juniper device could be something like the following:
 
 ```python
 import napalm
@@ -243,4 +243,6 @@ What NAPALM has achieved so far is very impressive. A lot of work has been invol
 
 They have had quite the impact on the networking community and I can see why this is. It is very convenient to work with and you can get things done quickly. 
 
-There is also some risk involved though. It is still a good idea to educate someone on the team on the device specific API and backend library that is in use. Imagine having to go to release X on a product because of some bug. This is not uncommon and might lead to not having one of NAPALMs functions available to you because of changes in the API on the vendor side breaking the way NAPALM does something. In such cases, at least for a little while, you will be on your own again.
+There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Supose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. 
+
+In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate persons on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
