@@ -4,7 +4,7 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, or finally, I had to work with NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, <b>NAPALM</b> seemed like the best choice. This post is a short summary of what I have learned so far about NAPALM in general.  
+Recently, or finally, I had to work with NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, I started looking into <b>NAPALM</b> as it seemed like the best choice. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
@@ -14,13 +14,14 @@ Recently, or finally, I had to work with NAPALM. Up untill this point, most of m
 NAPALM in a nutshell
 ====================
 
-Different networking vendors ship their software with their own specific OS and every OS has its own interfaces. By now, most vendors have ensured their software ships with an API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
+Different networking vendors ship their software with their own specific OS and every OS comes with its own interfaces. By now, most vendors have ensured their software ships with an API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
 
 Wouldn’t it be nice if there was some sort of library you could import and be done with it? Like a wrapper around all the vendor-specific things.
 
-Enter NAPALM.
+Enter <b>NAPALM</b>.
 
-Though it does not abstract everything away, it is quite convenient for a lot of basic operations.
+Though it does not abstract everything away, it is quite convenient for a lot of basic operations and it will enable you to get somewhere quickly.
+
 
 <br>
 
@@ -58,7 +59,7 @@ NAPALM provides you with several basic functions that you can use to interact wi
 - display information that describes the device
 - display information about the BGP neighbors
 
-Doing this using NAPALM is very straightforward. We need to do the following:
+Doing this using NAPALM is very easy. All we need to do the following:
 - import napalm
 - select the proper driver
 - use the `get_facts` and `get_bgp_neighbors`
@@ -80,9 +81,7 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. NAPALM manages to completely hide this fact.
-
-When we run this example in the interpreter, we get the following:
+Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we run this example in the interpreter, we get the following:
 
 ```python
 bash-4.4$ python
@@ -145,7 +144,7 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF c
 ```
 <br>
 
-The beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs and used the return values to create a nice dictionary for us.
+NAPALM manages to completely hide this fact and the beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs, parsed the return values and created a nice dictionary for us to work with.
 
 Let's change the example code to something that works for IOS XR:
 
@@ -162,7 +161,7 @@ device.close()
 
 The only thing we changed is the value of the driver!!
 
-When we run this in the interpretor, we get the following:
+When we run this in the interpreter, we get the following:
 
 ```python
 bash-4.4$ python
@@ -224,7 +223,7 @@ The only thing we needed to do was change the driver from `junos` to `iosxr` and
 
 In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out.
 
-In addition to these getters, NAPALM also enables you to [configure the devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix).
+And in case you are looking to do more then information gathering, NAPALM also enables you to [configure the devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix).
 
 <br>
 
@@ -240,3 +239,9 @@ In the case of SaltStack, the automation framework I am most familiar with, this
 
 Closing thoughts
 ================
+
+What NAPALM has achieved so far is very impressive. A lot of work has been involved in the creation of the backend libraries and getting NAPALM to play nice with several frameworks. 
+
+They have had quite the impact on the networking community and I can see why this is. It is very convenient to work with and you can get things done quickly. 
+
+There is also some risk involved though. It is still a good idea to educate someone on the team on the device specific API and backend library that is in use. Imagine having to go to release X on a product because of some bug. This is not uncommon and might lead to not having one of NAPALMs functions available to you because of changes in the API on the vendor side breaking the way NAPALM does something. In such cases, at least for a little while, you will be on your own again.
