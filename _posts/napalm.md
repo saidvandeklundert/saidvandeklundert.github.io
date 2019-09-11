@@ -45,7 +45,7 @@ These devices are managed through the 'core' drivers that are supported and main
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-You can also use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS over SSH and IOS.
+You could choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS (over SSH) and IOS (that does not have an API).
 
 In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
