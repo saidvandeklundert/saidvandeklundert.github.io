@@ -36,7 +36,7 @@ At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) ind
 - Cisco NX-OS
 - Juniper JunOS
 
-These devices are managed through the 'core' drivers that are supported and maintained by the people working on NAPALM. These drivers are libraries that have been written to deal with the vendor APIs. They allow NAPALM to deal with the differences that exist between the different vendors. The following table displays the current core libraries:
+These devices are managed through the 'core' drivers that are supported and maintained by the people working on NAPALM. These drivers are libraries that have been written to deal with the differences that exist between the vendor APIs. The following table displays the current core libraries:
 
   
   |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
