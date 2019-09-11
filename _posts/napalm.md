@@ -4,7 +4,7 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, or finally, I had to work with NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, I started looking into <b>NAPALM</b> as it seemed like the best choice. This post is a short summary of what I have learned so far about NAPALM in general.  
+Recently, I got to work with NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, I started looking into <b>NAPALM</b> as it seemed like the best choice. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
@@ -20,7 +20,7 @@ Wouldn’t it be nice if there was some sort of library you could import and be 
 
 Enter <b>NAPALM</b>.
 
-Though it does not abstract everything away, it is quite convenient for a lot of basic operations and it will enable you to get somewhere quickly.
+Though it does not abstract everything away, it is quite convenient for a lot of basic operations and it will enable you to really get somewhere quickly.
 
 
 <br>
