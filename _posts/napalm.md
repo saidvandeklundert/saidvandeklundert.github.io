@@ -37,7 +37,7 @@ At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) ind
 - Juniper JunOS
 
 These devices are managed through the 'core' drivers that are supported and maintained by the people working on NAPALM. 
-These drivers are libraries that have been written to deal with the different vendor APIs and they allow NAPALM to deal with different devices. The following table displays the current core libraries:
+These drivers are libraries that have been written to deal with the different vendor APIs and allow NAPALM to deal with these different devices. The following table displays the current core libraries:
 
   
   |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
