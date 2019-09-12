@@ -45,7 +45,7 @@ These devices are managed through the 'core' drivers that are supported and main
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-You could choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against several different vendors. The `netmiko` library, when used outside of NAPALM as standalone library, is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, it is used to get NAPALM to talk to NX-OS (over SSH) and IOS.
+You could even choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against devices from several different vendors. The `netmiko` library is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM though, it is used to get NAPALM to talk to NX-OS (over SSH) and IOS.
 
 In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
@@ -220,9 +220,73 @@ pp(device.get_facts())
 
 The only thing we needed to do was change the driver from `junos` to `iosxr` and we were good to go!
 
-In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out.
+In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. 
 
-And in case you are looking to do more then information gathering, NAPALM also enables you to [configure the devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix).
+And in case you are looking to do more then information gathering, NAPALM also enables you to [configure the devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix). 
+
+When using NAPALM to configure devices, some of the options available to you are the following:
+- replace: removes the entire configuration and puts in a completely new one
+- merge: add configuration statements to the current configuration
+- compare: see how the configuration would look if you were to apply configuration statements. 
+- rollback: change the device configuration to a previous one
+- commit: apply any staged configuration changes to the device
+- discard: abort configuration efforts and remove staged configuration from the device
+
+As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using this. However, it comes in very handy on devices that do support these capabilities. I have several of these functions on on Juniper, Arista and Cisco IOS XR. Every vendor has a slightly different approach and they all have their own terminology. The backend libraries hide all these things and allow us to use the same code to talk to these different vendors.
+
+A short example on how to use this againt a Juniper device. We have the following configuration file:
+
+```bash
+bash-4.4$ cat /var/tmp/iosxr.cfg
+interface loopback 0 description description TESTING-1
+interface GigabitEthernet0/0/0/1.10 description TESTING-2
+interface GigabitEthernet0/0/0/2.12 description TESTING-3
+```
+
+In order to load this configuration file, we can do the following:
+
+```python
+>>> import napalm
+>>> driver = napalm.get_network_driver('iosxr')
+>>> device = driver(hostname='169.50.169.170', username='salt', password='salt123')
+>>> device.open()
+>>> 
+>>> device.load_merge_candidate(filename='/var/tmp/iosxr.cfg')
+>>> 
+>>> print(device.compare_config())
+--- 
++++ 
+@@ -44,6 +44,7 @@
+  10 permit ipv4 host 10.0.1.1 any
+ !
+ interface Loopback0
++ description description TESTING-1
+  ipv4 address 10.0.1.1 255.255.255.255
+ !
+ interface MgmtEth0/RP0/CPU0/0
+@@ -61,6 +62,7 @@
+  description common
+ !
+ interface GigabitEthernet0/0/0/1.10
++ description TESTING-2
+  ipv4 address 10.0.2.1 255.255.255.254
+  encapsulation dot1q 10
+ !
+@@ -68,6 +70,7 @@
+  description common
+ !
+ interface GigabitEthernet0/0/0/2.12
++ description TESTING-3
+  ipv4 address 10.0.2.5 255.255.255.254
+  encapsulation dot1q 12
+ !
+>>> device.commit_config()
+```
+
+If, after loading the configuration, the `compare_config()` would have shown us something that indicated we should back off, we could have used `device.discard_config()` to discard our configuration efforts. 
+
+Same as when we retrieved information from the device, NAPALM takes care of the device specifics here. We do not need to know that IOS XR has a target configuraiton, Juniper has a candidate configuration, etc. 
+
 
 <br>
 
