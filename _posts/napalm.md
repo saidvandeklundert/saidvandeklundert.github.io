@@ -51,8 +51,12 @@ In addition to the core drivers, there are also various 'community drivers'. Com
 
 <br>
 
-NAPALM in a Python script
+NAPALM in a Python script: 
 =========================
+
+The NAPALM drivers allow you to gather information from different vendors and it offers a variety of functions to help you with your configuration efforts. Let's explore how we can use NAPALM for both these topics.
+
+## Using NAPALM for information retrieval
 
 NAPALM provides you with several basic functions that you can use to interact with different vendors. Let's look at an example where we retrieve information from a Juniper and a Cisco device. In the example, we will have NAPALM do the following:
 - display information that describes the device
@@ -222,19 +226,24 @@ The only thing we needed to do was change the driver from `junos` to `iosxr` and
 
 In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. 
 
-And in case you are looking to do more then information gathering, NAPALM also enables you to [configure the devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix). 
+## Using NAPALM to configure devices
 
-When using NAPALM to configure devices, some of the options available to you are the following:
-- replace: removes the entire configuration and puts in a completely new one
+We can also use NAPALM to [configure devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix). 
+
+When we do this, some of the options available to us are the following:
+- replace: puts in a completely configuration and removes the all of the existing configuration 
 - merge: add configuration statements to the current configuration
-- compare: see how the configuration would look if you were to apply configuration statements. 
-- rollback: change the device configuration to a previous one
+- compare: see how the configuration would look _if_ you were to apply configuration statements. 
+- rollback: change the device configuration to a previous version
 - commit: apply any staged configuration changes to the device
-- discard: abort configuration efforts and remove staged configuration from the device
+- discard: abort configuration efforts and 'discard' the staged configuration
 
-As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using this. However, it comes in very handy on devices that do support these capabilities. I have several of these functions on on Juniper, Arista and Cisco IOS XR. Every vendor has a slightly different approach and they all have their own terminology. The backend libraries hide all these things and allow us to use the same code to talk to these different vendors.
+As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using this. 
 
-A short example on how to use this againt a Juniper device. We have the following configuration file:
+However, it comes in very handy on devices that do support these capabilities. I have successfully used several of these functions on Juniper, Arista and Cisco IOS XR. All of the aforementioned vendors have a slightly different approach and they all have their own terminology. The backend libraries hide all these things and allow us to use the same code to talk to these different vendors without having to write or maintain any Python of our own.
+
+
+Next is a short example on how we could use NAPALM when configuring a Cisco IOS XR. In the example, we will use the following configuration file:
 
 ```bash
 bash-4.4$ cat /var/tmp/iosxr.cfg
@@ -285,7 +294,7 @@ In order to load this configuration file, we can do the following:
 
 If, after loading the configuration, the `compare_config()` would have shown us something that indicated we should back off, we could have used `device.discard_config()` to discard our configuration efforts. 
 
-Same as when we retrieved information from the device, NAPALM takes care of the device specifics here. We do not need to know that IOS XR has a target configuraiton, Juniper has a candidate configuration, etc. 
+Same as when we retrieved information from the device, NAPALM takes care of the device specifics here. We do not need to know that IOS XR has a target configuration and that Juniper has a candidate configuration, etc. We can call the same function and use it for the different vendors that NAPALM supports.
 
 
 <br>
@@ -294,9 +303,9 @@ NAPALM outside of a Python script
 =================================
 
 
-As it says on the [NAPALM website](https://napalm-automation.net/), `Napalm plays nice with others!`. Efforts have been made to enable the use of NAPALM outside of a Python script. You can use it for Ansible, Stackstorm and SaltStack. 
+As it says on the [NAPALM website](https://napalm-automation.net/), `Napalm plays nice with others!`. Efforts have been made to enable the use of NAPALM outside of a Python script. You can use NAPALM for Ansible, Stackstorm and SaltStack. 
 
-In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM. This ensures you will have an easy time gathering data from supported devices, configure them and all that even comes included with some grains.
+In the case of SaltStack, the automation framework I am most familiar with, this was done through the creation of a proxy minion and several modules that exposes most of the methods available in NAPALM. This ensures you will have an easy time gathering data from supported devices, configuring them and all that even comes included with some grains.
 
 <br>
 
