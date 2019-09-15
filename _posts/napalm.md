@@ -37,7 +37,7 @@ At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) ind
 - Cisco NX-OS
 - Juniper JunOS
 
-NAPALM uses a set of <br>core drivers</br> to be able to deal with all these vendors. These core drivers are the backend libraries that NAPALM uses to communicate with different operating systems. Currently, the core libraries are the following:
+NAPALM uses a set of <b>core drivers</b> to be able to deal with all these vendors. These core drivers are the backend libraries that NAPALM uses to communicate with different operating systems. Currently, the core libraries are the following:
 
   
   |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
@@ -50,7 +50,7 @@ Notice that in NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS ov
 
 Another thing worth mentioning is that you can also choose to use these backend libraries directly in your scripts. This can be quite usefull to know when you run into situations where NAPALM does not have a certain function available for you. 
 
-Finally, in addition to the core drivers, which are supported and maintained by the people working on NAPALM, there are also various <br>community drivers</br>. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
+Finally, in addition to the core drivers, which are supported and maintained by the people working on NAPALM, there are also various <b>community drivers</b>. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
 <br>
 
