@@ -58,7 +58,7 @@ Using NAPALM in a Python script
 ===============================
 
 <p align="center" >
-  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/python-log.png">
+  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/python-logo.png">
 </p>
 
 NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, the information that is returned by NAPALM is structured in the same way reagardless of the vendor you request the information from. And lastly, again, you are not bothered by the vendor-specifics of these devices.
