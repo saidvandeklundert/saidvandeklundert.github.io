@@ -57,16 +57,14 @@ Finally, in addition to the core drivers, which are supported and maintained by 
 NAPALM in a Python script: 
 =========================
 
-NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. 
-
-First, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, when you use the functions to retrieve information, the information that is returned by NAPALM is structured data that is the same for these different vendors. And lastly, again, you are not bothered by the vendor-specifics of these devices.
+NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, when you use the functions to retrieve information, the information that is returned by NAPALM is structured data that is the same for these different vendors. And lastly, again, you are not bothered by the vendor-specifics of these devices.
 
 Let’s explore the use of several methods NAPALM has to offer when working with Juniper and Cisco (IOS XR).
 
 
 ## Using NAPALM for information retrieval
 
-NAPALM provides you with several basic functions that you can use to interact with different vendors. Let's look at an example where we retrieve information from a Juniper and a Cisco device. In the example, we will have NAPALM do the following:
+In the example, we will have NAPALM do the following with a Juniper and a Cisco device:
 - display information that describes the device
 - display information about the BGP neighbors
 
@@ -79,7 +77,7 @@ Doing this using NAPALM is very easy. All we need to do the following:
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
 </p>
 
-The Python required to perform the above when connecting to a Juniper device could be something like the following:
+The Python required to perform the above when connecting to a Juniper device could be something like the following `junos-example.py`:
 
 ```python
 import napalm
@@ -92,25 +90,17 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we run this example in the interpreter, we get the following:
+Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we do `python junos-example.py`, we get the following:
 
-```python
-bash-4.4$ python
->>> import napalm                  
->>> from pprint import pprint as pp
->>> driver = napalm.get_network_driver('junos')
->>> device = driver(hostname='169.50.169.171', username='salt', password='salt123')
->>> device.open()
->>> pp(device.get_facts())
-{u'fqdn': u'vmx6',
- u'hostname': u'vmx6',
+```python           
+{u'fqdn': u'vmx06',
+ u'hostname': u'vmx06',
  u'interface_list': ['ge-0/0/1', '.local.', 'lo0', 'lsi'],
  u'model': u'VMX',
  u'os_version': u'19.1R1.6',
- u'serial_number': u'VM5CB1EEE555',
- u'uptime': 12351159,
+ u'serial_number': u'VM5CB1E69517',
+ u'uptime': 12859273,
  u'vendor': u'Juniper'}
->>> pp(device.get_bgp_neighbors())
 {u'global': {u'peers': {u'10.0.0.14': {u'address_family': {u'ipv4': {u'accepted_prefixes': -1,
                                                                      u'received_prefixes': -1,
                                                                      u'sent_prefixes': -1},
@@ -123,23 +113,21 @@ bash-4.4$ python
                                        u'local_as': 1,
                                        u'remote_as': 1,
                                        u'remote_id': u'10.0.0.14',
-                                       u'uptime': 885023},
-                        '10.0.0.15': {u'address_family': {u'ipv4': {u'accepted_prefixes': -1,
-                                                                    u'received_prefixes': -1,
-                                                                    u'sent_prefixes': -1},
-                                                          u'ipv6': {u'accepted_prefixes': -1,
-                                                                    u'received_prefixes': -1,
-                                                                    u'sent_prefixes': -1}},
-                                      u'description': u'',
-                                      u'is_enabled': True,
-                                      u'is_up': True,
-                                      u'local_as': 1,
-                                      u'remote_as': 1,
-                                      u'remote_id': u'10.0.0.15',
-                                      u'uptime': 789397}},
+                                       u'uptime': 1393131},
+                        u'10.0.0.15': {u'address_family': {u'ipv4': {u'accepted_prefixes': -1,
+                                                                     u'received_prefixes': -1,
+                                                                     u'sent_prefixes': -1},
+                                                           u'ipv6': {u'accepted_prefixes': -1,
+                                                                     u'received_prefixes': -1,
+                                                                     u'sent_prefixes': -1}},
+                                       u'description': u'',
+                                       u'is_enabled': True,
+                                       u'is_up': True,
+                                       u'local_as': 1,
+                                       u'remote_as': 1,
+                                       u'remote_id': u'10.0.0.15',
+                                       u'uptime': 1297505}},
              u'router_id': u'10.0.0.6'}}
->>> device.close()
->>> 
 ```
 
 If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see all the RPCs our NAPALM script called:
@@ -157,7 +145,7 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF c
 
 NAPALM manages to completely hide this fact and the beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs, parsed the return values and created a nice dictionary for us to work with.
 
-Let's change the example code to something that works for IOS XR:
+Let's change the example code to something that works for IOS XR and create our new `iosxr-example.py` script:
 
 ```python
 import napalm
@@ -172,20 +160,11 @@ device.close()
 
 The only thing we changed is the value of the driver!!
 
-When we run this in the interpreter, we get the following:
+When we run our new `iosxr-example.py`, we get the following:
 
 ```python
-bash-4.4$ python
->>> import napalm
->>> from pprint import pprint as pp
->>> driver = napalm.get_network_driver('iosxr')
->>> device = driver(hostname='169.50.169.170', username='salt', password='salt123')
->>> device.open()
-pp(device.get_facts())
->>> pp(device.get_facts())
-
-{u'fqdn': u'ios_xr_1',
- u'hostname': u'ios_xr_1',
+{u'fqdn': u'iosxr_1',
+ u'hostname': u'iosxr_1',
  u'interface_list': [u'GigabitEthernet0/0/0/0',
                      u'GigabitEthernet0/0/0/0.1156',
                      u'GigabitEthernet0/0/0/1',
@@ -199,11 +178,9 @@ pp(device.get_facts())
                      u'Null0'],
  u'model': u'R-IOSXRV9000-CC',
  u'os_version': u'6.6.2',
- u'serial_number': u'9E478CCC333',
- u'uptime': 20724,
+ u'serial_number': u'9E478CB8391',
+ u'uptime': 269989,
  u'vendor': u'Cisco'}
->>> 
->>> pp(device.get_bgp_neighbors())
 {u'cust-1': {u'peers': {}, u'router_id': u'10.0.1.1'},
  u'global': {u'peers': {u'10.0.0.14': {u'address_family': {u'ipv4': {u'accepted_prefixes': 6,
                                                                      u'received_prefixes': 6,
@@ -214,7 +191,7 @@ pp(device.get_facts())
                                        u'local_as': 1,
                                        u'remote_as': 1,
                                        u'remote_id': u'10.0.0.14',
-                                       u'uptime': 20573},
+                                       u'uptime': 269826},
                         u'10.0.0.15': {u'address_family': {u'ipv4': {u'accepted_prefixes': 6,
                                                                      u'received_prefixes': 6,
                                                                      u'sent_prefixes': 2}},
@@ -224,10 +201,8 @@ pp(device.get_facts())
                                        u'local_as': 1,
                                        u'remote_as': 1,
                                        u'remote_id': u'10.0.0.15',
-                                       u'uptime': 20573}},
+                                       u'uptime': 269826}},
              u'router_id': u'10.0.1.1'}}
->>> device.close()
->>> 
 ```
 
 The only thing we needed to do was change the driver from `junos` to `iosxr` and we were good to go!
