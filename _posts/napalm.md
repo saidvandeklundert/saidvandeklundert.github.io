@@ -130,9 +130,9 @@ Because we are connecting to a Juniper device, we selected the `junos` driver. T
              u'router_id': u'10.0.0.6'}}         
 ```
 
-Without having to write any complex code, we get some basic device information as well as some additional information about the BGP peers that the device is configured with.
+Without having to write any complex code, we get some basic device information as well as some information about the BGP peers that the device is configured with.
 
-At the start of the script, after importing the libraries, we defined the driver and we created a device object:
+Just to briefly go over the example script, after importing the libraries, we defined the driver and we created a device object:
 
 ```python
 driver = napalm.get_network_driver('junos')
@@ -140,6 +140,7 @@ device = driver(hostname='169.50.169.100', username='salt', password='salt123')
 ```
 
 After this, we used several NAPALM methods:
+
 ```python
 device.open()
 pp(device.get_facts())
