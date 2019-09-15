@@ -133,7 +133,7 @@ Because we are connecting to a Juniper device, we selected the `junos` driver. T
 
 Without having to write any complex code, we get some basic device information as well as some information about the BGP peers that the device is configured with.
 
-Just to briefly go over the example script, after importing the libraries, we defined the driver and we created a device object:
+So what happens in the script? After importing the libraries, we defined the driver and we created a device object:
 
 ```python
 driver = napalm.get_network_driver('junos')
