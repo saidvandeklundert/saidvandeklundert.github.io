@@ -164,6 +164,7 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF clie
 ```
 <br>
 
+This
 NAPALM manages to completely hide this fact and the beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs, parsed the return values and created a nice dictionary for us to work with.
 
 Let's change the example code to something that works for IOS XR and create a new `iosxr-example.py` script:
