@@ -54,8 +54,8 @@ Finally, in addition to the core drivers, which are supported and maintained by 
 
 <br>
 
-NAPALM in a Python script: 
-=========================
+Using NAPALM in a Python script 
+===============================
 
 NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, the information that is returned by NAPALM is structured in the same way reagardless of the vendor you request the information from. And lastly, again, you are not bothered by the vendor-specifics of these devices.
 
@@ -91,7 +91,7 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we do `python -i junos-example.py`, we get the following:
+Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we run the script using `python junos-example.py`, we get the following:
 
 ```python           
 {u'fqdn': u'vmx06',
@@ -131,7 +131,7 @@ Because we are connecting to a Juniper device, we selected the `junos` driver. T
              u'router_id': u'10.0.0.6'}}         
 ```
 
-Without having to write any complex code, we get some basic device information as well as some information about the BGP peers that the device is configured with.
+Without having to write any complex code, we get some information about the device as well as some information about the BGP peers that the device is configured with.
 
 So what happens in the script? After importing the libraries, we specified what driver we wanted to use and instantiated a device object:
 
