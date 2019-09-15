@@ -64,9 +64,7 @@ Let’s explore the use of several methods NAPALM has to offer when working with
 
 ## Using NAPALM for information retrieval
 
-In this example, we will have NAPALM do the following with a Juniper and a Cisco device:
-- display information that describes the device
-- display information about the BGP neighbors
+In this example, we will have NAPALM talk to a Juniper and a Cisco device and display information that describes the device. In addition to that, we will also have it display information about the BGP neighbors.
 
 Doing this using NAPALM is very easy. All we need to do the following:
 - import napalm
@@ -82,15 +80,17 @@ The Python required to perform the above when connecting to a Juniper device cou
 ```python
 import napalm
 from pprint import pprint as pp
+
 driver = napalm.get_network_driver('junos')
 device = driver(hostname='169.50.169.100', username='salt', password='salt123')
+
 device.open()
 pp(device.get_facts())
 pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we do `python junos-example.py`, we get the following:
+Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we do `python -i junos-example.py`, we get the following:
 
 ```python           
 {u'fqdn': u'vmx06',
@@ -127,8 +127,27 @@ Because we are connecting to a Juniper device, we selected the `junos` driver. T
                                        u'remote_as': 1,
                                        u'remote_id': u'10.0.0.15',
                                        u'uptime': 1297505}},
-             u'router_id': u'10.0.0.6'}}
+             u'router_id': u'10.0.0.6'}}         
 ```
+
+Without dealing with anything complicated, we get some basic device information as well as some additional information about the BGP peers that the device is configured with.
+
+At the start of the script, after importing the libraries, we defined the driver and we created a device object:
+
+```python
+driver = napalm.get_network_driver('junos')
+device = driver(hostname='169.50.169.100', username='salt', password='salt123')
+```
+
+After this, we used several NAPALM methods:
+```python
+device.open()
+pp(device.get_facts())
+pp(device.get_bgp_neighbors())
+device.close()
+```
+
+The `device.open()` and `device.close()` were used to intiate and close a connection to the device. The `device.get_facts()` and `device.get_bgp_neighbors()` were used to retrieve information from the device.
 
 If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see all the RPCs our NAPALM script called:
 
@@ -150,8 +169,10 @@ Let's change the example code to something that works for IOS XR and create a ne
 ```python
 import napalm
 from pprint import pprint as pp
+
 driver = napalm.get_network_driver('iosxr')
 device = driver(hostname='169.50.169.101', username='salt', password='salt123')
+
 device.open()
 pp(device.get_facts())
 pp(device.get_bgp_neighbors())
