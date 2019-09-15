@@ -231,10 +231,6 @@ In the previous examples, I used `get_facts` and `get_bgp_neighbors`. But these 
 
 
 ```python
-import napalm
-
-
-
 >>> import napalm
 >>> driver = napalm.get_network_driver('iosxr')
 >>> device = driver(hostname='169.50.169.101', username='salt', password='salt123')
@@ -261,7 +257,7 @@ import napalm
 <output omitted>
 ```
 
-With `dir(device)`, we listed all the methods we have available. After having opened the connection to the device using `device.open()`, we can see that examining the output it is just a matter of issuing the 'getter' one by one.
+With `dir(device)`, we listed all the methods we have available. After having opened the connection to the device using `device.open()`, we can see that examining the output it is just a matter of issuing the 'getter' methods one by one.
 
 
 ## Using NAPALM to configure devices
