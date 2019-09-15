@@ -57,7 +57,12 @@ Finally, in addition to the core drivers, which are supported and maintained by 
 NAPALM in a Python script: 
 =========================
 
-The NAPALM drivers allow you to gather information from different vendors and it offers a variety of functions to help you with your configuration efforts. Let's explore how we can use NAPALM for both these topics.
+NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. 
+
+First, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, when you use the functions to retrieve information, the information that is returned by NAPALM is structured data that is the same for these different vendors. And lastly, again, you are not bothered by the vendor-specifics of these devices.
+
+Let’s explore the use of several methods NAPALM has to offer when working with Juniper and Cisco (IOS XR).
+
 
 ## Using NAPALM for information retrieval
 
