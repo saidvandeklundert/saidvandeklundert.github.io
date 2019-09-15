@@ -151,7 +151,7 @@ device.close()
 
 The `device.open()` and `device.close()` were used to intiate and close a connection to the device. The `device.get_facts()` and `device.get_bgp_neighbors()` were used to retrieve information from the device.
 
-If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see all the RPCs our NAPALM script called:
+If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see the following:
 
 ```
 Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-instance-information'
@@ -164,8 +164,7 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF clie
 ```
 <br>
 
-This
-NAPALM manages to completely hide this fact and the beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs, parsed the return values and created a nice dictionary for us to work with.
+These were all the RPCs our NAPALM script called. NAPALM completely hides the fact that this happened and the nice thing is that you do not need to know any specifics about the Juniper API. NAPALM issued these RPCs, parsed the return values and created a nice dictionary for us to work with.
 
 Let's change the example code to something that works for IOS XR and create a new `iosxr-example.py` script:
 
