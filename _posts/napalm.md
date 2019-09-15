@@ -227,7 +227,7 @@ The only thing we needed to do was change the driver from `junos` to `iosxr` and
 
 
 
-In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. A nice way to check them out is by simply running them from the interpreter.
+In the previous examples, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. A nice way to check them out is by simply running them from the interpreter.
 
 
 ```python
