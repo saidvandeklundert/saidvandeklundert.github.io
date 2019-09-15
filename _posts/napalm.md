@@ -154,13 +154,13 @@ The `device.open()` and `device.close()` were used to intiate and close a connec
 If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see all the RPCs our NAPALM script called:
 
 ```
-Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-instance-information'
-Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-neighbor-information instance=master'
-Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-summary-information instance=master'
-Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-neighbor-information instance=cust-1'
-Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-summary-information instance=cust-1'
-Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-neighbor-information instance=mgmt_junos'
-Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF client to run command 'get-bgp-summary-information instance=mgmt_junos'
+Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-instance-information'
+Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-bgp-neighbor-information instance=master'
+Sep  9 13:20:50  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-bgp-summary-information instance=master'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-bgp-neighbor-information instance=cust-1'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-bgp-summary-information instance=cust-1'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-bgp-neighbor-information instance=mgmt_junos'
+Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF client to run command 'get-bgp-summary-information instance=mgmt_junos'
 ```
 <br>
 
