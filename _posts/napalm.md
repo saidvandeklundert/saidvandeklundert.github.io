@@ -14,7 +14,7 @@ Up until this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Param
 NAPALM in a nutshell
 ====================
 
-Different networking vendors ship their software with their own specific OS and every OS comes with its own interfaces. By now, most vendors have ensured their software ships with an API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
+Different networking vendors each have their own OS that comes with its own API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
 
 Wouldn’t it be nice if there was some sort of library you could import and be done with it? Like a wrapper around all the vendor-specific things.
 
