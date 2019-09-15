@@ -130,7 +130,7 @@ Because we are connecting to a Juniper device, we selected the `junos` driver. T
              u'router_id': u'10.0.0.6'}}         
 ```
 
-Without dealing with anything complicated, we get some basic device information as well as some additional information about the BGP peers that the device is configured with.
+Without having to write any complex code, we get some basic device information as well as some additional information about the BGP peers that the device is configured with.
 
 At the start of the script, after importing the libraries, we defined the driver and we created a device object:
 
