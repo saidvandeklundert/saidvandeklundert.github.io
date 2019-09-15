@@ -61,6 +61,7 @@ NAPALM offers you a variety of methods that gather information from devices and 
 
 Let’s explore the use of several methods NAPALM has to offer when working with Juniper and Cisco (IOS XR).
 
+<br>
 
 ## Using NAPALM for information retrieval
 
@@ -259,6 +260,7 @@ In the previous examples, I used `get_facts` and `get_bgp_neighbors`. But these 
 
 With `dir(device)`, we listed all the methods we have available. After having opened the connection to the device using `device.open()`, we can see that examining the output it is just a matter of issuing the 'getter' methods one by one.
 
+<br>
 
 ## Using NAPALM to configure devices
 
