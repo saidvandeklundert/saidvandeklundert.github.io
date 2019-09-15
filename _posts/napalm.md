@@ -9,12 +9,14 @@ Up until this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Param
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
 </p>
+
 <br>
 
 NAPALM in a nutshell
 ====================
 
 Every networking vendor has its own operating system and all those operating systems have their own APIs. In case you are running a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
+
 Wouldn’t it be nice if there was some sort of library you could import and have that library deal with all those differences? Like a wrapper around all the vendor-specific things.
 
 Enter <b>NAPALM</b>.
@@ -35,7 +37,7 @@ At the time of writing, the [docs](https://napalm.readthedocs.io/en/latest/) ind
 - Cisco NX-OS
 - Juniper JunOS
 
-These devices are managed through the 'core' drivers that are supported and maintained by the people working on NAPALM. These drivers are libraries that have been written to deal with the differences that exist between the vendor APIs. The following table displays the current core libraries:
+NAPALM uses a set of 'core' drivers to be able to deal with all these vendors. These core drivers are the backend libraries that NAPALM uses to communicate with different operating systems. Currently, the core libraries are the following:
 
   
   |                     | EOS       | Junos         | IOS-XR     | NX-OS     | NX-OS SSH  | IOS
@@ -48,7 +50,7 @@ You can also choose to use these backend libraries in your scripts. Two backend 
 
 I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of scripting I did against devices from several different vendors. The `netmiko` library is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS over SSH. In te case of IOS, this is as good as it get's due to the fact that Cisco never made an API for that OS.
 
-In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
+ In addition to the core drivers, which are supported and maintained by the people working on NAPALM, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
 <br>
 
