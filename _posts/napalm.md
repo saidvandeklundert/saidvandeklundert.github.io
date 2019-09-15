@@ -273,13 +273,12 @@ We can choose to manipulate the configuration using either of the following meth
 Using the previous methods to manipulate the configuration does not change the configuration that is active on the device. It (in Junospeak) alters the candidate configuration but it does not commit it. Once we have altered this candidate configuration, we can use the following NAPALM methods:
 - <b>compare</b>: see how the configuration would look _if_ you were to apply configuration statements. 
 - <b>rollback</b>: change the device configuration to a previous version
-- <b>commit</b>: apply any staged configuration changes to the device
 - <b>discard</b>: abort configuration efforts and 'discard' the staged configuration
+- <b>commit</b>: apply any staged configuration changes to the device
 
-As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using this. 
+As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using this. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
 
-However, it comes in very handy on devices that do support these capabilities. I have successfully used several of these functions on Juniper, Arista and Cisco IOS XR. All of the aforementioned vendors have a slightly different approach and they all have their own terminology. The backend libraries hide all these things and allow us to use the same code to talk to these different vendors without having to write or maintain any Python of our own.
-
+Same as with information gathering, the backend libraries hide all vendor specifics and allow us to use the same code to work with configurations on different vendors. All this without having to write or maintain any Python of our own or without the need to be bothered by their own terminology.
 
 Next is a short example on how we could use NAPALM when configuring a Cisco IOS XR. In the example, we will use the following configuration file:
 
