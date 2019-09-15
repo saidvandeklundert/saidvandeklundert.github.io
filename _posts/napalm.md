@@ -226,7 +226,42 @@ The only thing we needed to do was change the driver from `junos` to `iosxr` and
 
 
 
-In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. 
+In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. A nice way to check them out is by simply running them from the interpreter.
+
+
+```python
+import napalm
+
+
+
+>>> import napalm
+>>> driver = napalm.get_network_driver('iosxr')
+>>> device = driver(hostname='169.50.169.101', username='salt', password='salt123')
+>>> 
+>>> dir(device)
+['__class__', '__del__', '__delattr__', '__dict__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_canonical_int', '_netmiko_close', '_netmiko_open', 'cli', 'close', 'commit_config', 'compare_config', 'compliance_report', 'connection_tests', 'device', 'discard_config', 'get_arp_table', 'get_bgp_config', 'get_bgp_neighbors', 'get_bgp_neighbors_detail', 'get_config', 'get_environment', 'get_facts', 'get_firewall_policies', 'get_interfaces', 'get_interfaces_counters', 'get_interfaces_ip', 'get_ipv6_neighbors_table', 'get_lldp_neighbors', 'get_lldp_neighbors_detail', 'get_mac_address_table', 'get_network_instances', 'get_ntp_peers', 'get_ntp_servers', 'get_ntp_stats', 'get_optics', 'get_probes_config', 'get_probes_results', 'get_route_to', 'get_snmp_information', 'get_users', 'hostname', 'is_alive', 'load_merge_candidate', 'load_replace_candidate', 'load_template', 'lock_on_connect', 'netmiko_optional_args', 'open', 'password', 'pending_changes', 'ping', 'platform', 'port', 'post_connection_tests', 'pre_connection_tests', 'replace', 'rollback', 'timeout', 'traceroute', 'username']
+>>> 
+>>> device.open()
+>>> device.get_interfaces_ip()
+{u'GigabitEthernet0/0/0/1.10': {u'ipv4': {u'172.0.2.1': {u'prefix_length': 30}, u'10.0.2.1': {u'prefix_length': 31}}}, u'GigabitEthernet0/0/0/0.1156': {u'ipv4': {u'169.50.169.101': {u'prefix_length': 28}}}, u'GigabitEthernet0/0/0/3.2002': {u'ipv4': {u'10.0.0.9': {u'prefix_length': 30}}, u'ipv6': {u'2001:db8:1::1': {u'prefix_length': 127}}}, u'Loopback0': {u'ipv4': {u'10.0.1.1': {u'prefix_length': 32}}}, u'GigabitEthernet0/0/0/2.12': {u'ipv4': {u'10.0.2.5': {u'prefix_length': 31}}}}
+>>> device.get_arp_table()
+<output omitted>
+>>> device.get_bgp_config()
+<output omitted>
+>>> device.get_bgp_neighbors()
+<output omitted>
+>>> device.get_bgp_neighbors_detail()
+<output omitted>
+>>> device.get_config()
+<output omitted>
+>>> device.get_interfaces_ip()
+<output omitted>
+>>> device.get_lldp_neighbors()
+<output omitted>
+```
+
+With `dir(device)`, we listed all the methods we have available. After having opened the connection to the device using `device.open()`, we can see that examining the output it is just a matter of issuing the 'getter' one by one.
+
 
 ## Using NAPALM to configure devices
 
