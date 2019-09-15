@@ -276,7 +276,7 @@ Using the previous methods to manipulate the configuration does not change the c
 - <b>discard</b>: abort configuration efforts and 'discard' the staged configuration
 - <b>commit</b>: apply any staged configuration changes to the device
 
-As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using this. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
+As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using them. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
 
 Same as with information gathering, the backend libraries hide all vendor specifics and allow us to use the same code to work with configurations on different vendors. All this without having to write or maintain any Python of our own or without the need to be bothered by their own terminology.
 
