@@ -64,7 +64,7 @@ Let’s explore the use of several methods NAPALM has to offer when working with
 
 ## Using NAPALM for information retrieval
 
-In the example, we will have NAPALM do the following with a Juniper and a Cisco device:
+In this example, we will have NAPALM do the following with a Juniper and a Cisco device:
 - display information that describes the device
 - display information about the BGP neighbors
 
@@ -145,7 +145,7 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt-r6' used NETCONF c
 
 NAPALM manages to completely hide this fact and the beauty here is that you do not need to know all the specifics with regards to the Juniper API. NAPALM issued these RPCs, parsed the return values and created a nice dictionary for us to work with.
 
-Let's change the example code to something that works for IOS XR and create our new `iosxr-example.py` script:
+Let's change the example code to something that works for IOS XR and create a new `iosxr-example.py` script:
 
 ```python
 import napalm
@@ -158,9 +158,7 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-The only thing we changed is the value of the driver!!
-
-When we run our new `iosxr-example.py`, we get the following:
+The only thing we needed to do was change the driver from `junos` to `iosxr` and we are good to go! When we run our new `iosxr-example.py`, we get the following:
 
 ```python
 {u'fqdn': u'iosxr_1',
@@ -205,7 +203,7 @@ When we run our new `iosxr-example.py`, we get the following:
              u'router_id': u'10.0.1.1'}}
 ```
 
-The only thing we needed to do was change the driver from `junos` to `iosxr` and we were good to go!
+
 
 In the example, I used `get_facts` and `get_bgp_neighbors`. But these are not the only `getters` that NAPALM provides us with. There are many more [NAPALM getters](https://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix) for you to check out. 
 
