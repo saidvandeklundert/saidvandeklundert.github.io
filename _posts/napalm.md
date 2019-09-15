@@ -266,11 +266,11 @@ With `dir(device)`, we listed all the methods we have available. After having op
 
 We can also use NAPALM to [configure devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix). 
 
-We can choose to manipulate the configuration using either of:
+We can choose to manipulate the configuration using either of the following methods:
 - <b>replace</b>: puts in a completely configuration and removes the all of the existing configuration 
 - <b>merge</b>: add configuration statements to the current configuration
 
-Using the previous methods to manipulate the configuration does not change the running, or active, configuration on the device. It alters a candidate (in Junos speak) configuration but it does not commit this. Once we have altered this candidate configuration, we can use the following NAPALM methods:
+Using the previous methods to manipulate the configuration does not change the configuration that is active on the device. It (in Junospeak) alters the candidate configuration but it does not commit it. Once we have altered this candidate configuration, we can use the following NAPALM methods:
 - <b>compare</b>: see how the configuration would look _if_ you were to apply configuration statements. 
 - <b>rollback</b>: change the device configuration to a previous version
 - <b>commit</b>: apply any staged configuration changes to the device
