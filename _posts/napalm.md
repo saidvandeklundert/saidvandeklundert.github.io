@@ -14,9 +14,8 @@ Up until this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Param
 NAPALM in a nutshell
 ====================
 
-Different networking vendors each have their own OS that comes with its own API. In case you have a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
-
-Wouldn’t it be nice if there was some sort of library you could import and be done with it? Like a wrapper around all the vendor-specific things.
+Every networking vendor has its own operating system and all those operating systems have their own APIs. In case you are running a multivendor network, one of the challenges you will run into when you want to start automating, is figuring out how all these different APIs work.
+Wouldn’t it be nice if there was some sort of library you could import and have that library deal with all those differences? Like a wrapper around all the vendor-specific things.
 
 Enter <b>NAPALM</b>.
 
@@ -45,7 +44,9 @@ These devices are managed through the 'core' drivers that are supported and main
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-You could even choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of some scripting I did against devices from several different vendors. The `netmiko` library is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM though, it is used to get NAPALM to talk to NX-OS (over SSH) and IOS.
+You can also choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. 
+
+I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of scripting I did against devices from several different vendors. The `netmiko` library is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS over SSH. In te case of IOS, this is as good as it get's due to the fact that Cisco never made an API for that OS.
 
 In addition to the core drivers, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
