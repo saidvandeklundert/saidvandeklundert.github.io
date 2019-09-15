@@ -21,7 +21,7 @@ Wouldn’t it be nice if there was some sort of library you could import and hav
 
 Enter <b>NAPALM</b>.
 
-Though it does not abstract everything away, it is quite convenient for a lot of basic operations and it will enable you to really get somewhere quickly.
+Though it does not abstract everything away, it is quite convenient for a lot of basic operations and it will enable you to get somewhere quickly.
 
 
 <br>
@@ -46,11 +46,11 @@ NAPALM uses a set of 'core' drivers to be able to deal with all these vendors. T
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-You can also choose to use these backend libraries in your scripts. Two backend libraries were actually pretty familiar to me already. 
+Notice that in NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS over SSH. In the case of IOS, this is as good as it get's due to the fact that Cisco never made an API for that OS.
 
-I worked with `junos-eznc`, a.k.a. PyEZ, when managing Juniper devices. And `netmiko` was familiar because of scripting I did against devices from several different vendors. The `netmiko` library is a ```Multi-vendor library to simplify Paramiko SSH connections to network devices```. In NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS over SSH. In te case of IOS, this is as good as it get's due to the fact that Cisco never made an API for that OS.
+Another thing worth mentioning is that you can also choose to use these backend libraries directly in your scripts in case NAPALM does not have a certain function available for you. 
 
- In addition to the core drivers, which are supported and maintained by the people working on NAPALM, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
+In addition to the core drivers, which are supported and maintained by the people working on NAPALM, there are also various 'community drivers'. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
 <br>
 
