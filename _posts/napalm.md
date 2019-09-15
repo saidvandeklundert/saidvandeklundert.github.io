@@ -4,7 +4,7 @@ title: NAPALM
 image: /img/napalm_logo.png.png
 ---
 
-Recently, I got to work with NAPALM. Up untill this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, I started looking into <b>NAPALM</b> as it seemed like the best choice. This post is a short summary of what I have learned so far about NAPALM in general.  
+Up until this point, most of my scripting efforts involved <b>PyEZ</b>, <b>Paramiko</b> and <b>Netmiko</b>. But after having to work with multiple vendors inside <b>SaltStack</b>, I started looking into <b>NAPALM</b>. This post is a short summary of what I have learned so far about NAPALM in general.  
 
 <p align="center">
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_logo.png">
