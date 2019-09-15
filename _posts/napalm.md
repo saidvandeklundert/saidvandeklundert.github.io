@@ -57,6 +57,10 @@ Finally, in addition to the core drivers, which are supported and maintained by 
 Using NAPALM in a Python script 
 ===============================
 
+<p align="center" >
+  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/python-log.png">
+</p>
+
 NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, the information that is returned by NAPALM is structured in the same way reagardless of the vendor you request the information from. And lastly, again, you are not bothered by the vendor-specifics of these devices.
 
 Let’s explore the use of several methods NAPALM has to offer when working with Juniper and Cisco (IOS XR).
@@ -71,10 +75,6 @@ Doing this using NAPALM is very easy. All we need to do the following:
 - import napalm
 - select the proper driver
 - use `get_facts` and `get_bgp_neighbors`
-
-<p align="center" >
-  <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/napalm_information_example.png">
-</p>
 
 The Python required to perform the above when connecting to a Juniper device could be something like the following `junos-example.py`:
 
