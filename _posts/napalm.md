@@ -353,6 +353,4 @@ What NAPALM has achieved so far is very impressive. A lot of work has been invol
 
 They have had quite the impact on the networking community and I can see why this is. It is very convenient to work with and you can get things done quickly. 
 
-There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Supose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. 
-
-In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
+There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Supose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
