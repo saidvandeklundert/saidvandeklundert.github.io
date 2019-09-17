@@ -270,7 +270,7 @@ We can choose to manipulate the configuration using either of the following meth
 - <b>replace</b>: puts in a completely configuration and removes the all of the existing configuration 
 - <b>merge</b>: add configuration statements to the current configuration
 
-Using the previous methods to manipulate the configuration does not change the configuration that is active on the device. It (in Junospeak) alters the candidate configuration but it does not commit it. Once we have altered this candidate configuration, we can use the following NAPALM methods:
+Using the previous methods to manipulate the configuration does not change the configuration that is active on the device. It (in Junospeak) alters the candidate configuration but it does not commit. Once we have altered this candidate configuration, we can use the following NAPALM methods:
 - <b>compare</b>: see how the configuration would look _if_ you were to apply configuration statements. 
 - <b>rollback</b>: change the device configuration to a previous version
 - <b>discard</b>: abort configuration efforts and 'discard' the staged configuration
@@ -355,4 +355,4 @@ They have had quite the impact on the networking community and I can see why thi
 
 There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Supose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. 
 
-In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate persons on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
+In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
