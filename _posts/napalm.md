@@ -71,10 +71,11 @@ Let’s explore the use of several methods NAPALM has to offer when working with
 
 In this example, we will have NAPALM talk to a Juniper and a Cisco device and display information that describes the device. In addition to that, we will also have it display information about the BGP neighbors.
 
-Doing this using NAPALM is very easy. All we need to do the following:
-- import napalm
-- select the proper driver
+Doing this using NAPALM is very easy. Roughly all we need to do the following:
+- select the proper driver and create a device object
+- open a connection to the device
 - use `get_facts` and `get_bgp_neighbors`
+- close the connection to the device
 
 The Python required to perform the above when connecting to a Juniper device could be something like the following `junos-example.py`:
 
@@ -91,7 +92,7 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-Because we are connecting to a Juniper device, we selected the `junos` driver. This will make NAPALM use the `junos-eznc` backend library to communicate with the Juniper XML API. When we run the script using `python junos-example.py`, we get the following:
+When we run the script using `python junos-example.py`, we get the following:
 
 ```python           
 {u'fqdn': u'vmx06',
@@ -164,7 +165,7 @@ Sep  9 13:20:51  vmx01 mgd[10297]: UI_NETCONF_CMD: User 'salt' used NETCONF clie
 ```
 <br>
 
-These were all the RPCs our NAPALM script called. NAPALM completely hides the fact that this happened and the nice thing is that you do not need to know any specifics about the Juniper API. NAPALM issued these RPCs, parsed the return values and created a dictionary for us to work with.
+NAPALM used the `junos-eznc` backend library to communicate with the Juniper XML API and these were all the RPCs our NAPALM script called. NAPALM completely hides the fact that this happened and the nice thing is that you do not need to know any specifics about the Juniper API. NAPALM issued these RPCs, parsed the return values and created a dictionary for us to work with.
 
 Let's change the example code to something that works for IOS XR and create a new `iosxr-example.py` script:
 
