@@ -289,17 +289,22 @@ interface GigabitEthernet0/0/0/1.10 description TESTING-2
 interface GigabitEthernet0/0/0/2.12 description TESTING-3
 ```
 
-In order to load this configuration file, we can do the following:
+To load this configuration, we can use the following `napalm_config.py` script:
 
 ```python
->>> import napalm
->>> driver = napalm.get_network_driver('iosxr')
->>> device = driver(hostname='169.50.169.170', username='salt', password='salt123')
->>> device.open()
->>> 
->>> device.load_merge_candidate(filename='/var/tmp/iosxr.cfg')
->>> 
->>> print(device.compare_config())
+import napalm
+driver = napalm.get_network_driver('iosxr')
+device = driver(hostname='169.50.169.101', username='salt', password='salt123')
+device.open()
+device.load_merge_candidate(filename='/var/tmp/iosxr.cfg')
+print(device.compare_config())
+device.commit_config()
+```
+
+In order to load this configuration file, we can do the following:
+
+```bash
+bash-4.4# python /var/tmp/napalm_config.py
 --- 
 +++ 
 @@ -44,6 +44,7 @@
@@ -326,7 +331,6 @@ In order to load this configuration file, we can do the following:
   ipv4 address 10.0.2.5 255.255.255.254
   encapsulation dot1q 12
  !
->>> device.commit_config()
 ```
 
 If, after loading the configuration, the `compare_config()` would have shown us something that indicated we should back off, we could have used `device.discard_config()` to discard our configuration efforts. 
