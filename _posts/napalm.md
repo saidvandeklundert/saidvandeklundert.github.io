@@ -321,9 +321,7 @@ for command,output in return_dictionary.items():
 
 ## Using NAPALM to configure devices
 
-We can also use NAPALM to [configure devices](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix). 
-
-We can choose to manipulate the configuration using either of the following methods:
+We can also use NAPALM to configure devices. We can choose to manipulate the configuration using either of the following methods:
 - <b>replace</b>: puts in a completely configuration and removes the all of the existing configuration 
 - <b>merge</b>: add configuration statements to the current configuration
 
@@ -333,7 +331,7 @@ Using the previous methods to manipulate the configuration does not change the c
 - <b>discard</b>: abort configuration efforts and 'discard' the staged configuration
 - <b>commit</b>: apply any staged configuration changes to the device
 
-As noted in the NAPALM documentation, not all options are available on every device and there are some caveats to using them. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
+As noted in the NAPALM [documentation](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix), not all options are available on every device and there are some caveats to using them. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
 
 Same as with information gathering, the backend libraries hide all vendor specifics and allow us to use the same code to work with configurations on different vendors. All this without having to write or maintain any Python of our own or without the need to be bothered by their own terminology.
 
