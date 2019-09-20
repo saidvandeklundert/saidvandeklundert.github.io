@@ -63,15 +63,13 @@ Using NAPALM in a Python script
 
 NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, the information that is returned by NAPALM is structured in the same way regardless of the vendor you request the information from. And lastly, again, you are not bothered by the vendor-specifics of these devices.
 
-Let’s explore the use of several methods NAPALM has to offer and try them out on a Juniper and a Cisco (IOS XR).
-
 <br>
 
 ## Using NAPALM for information retrieval
 
-In this example, we will have NAPALM talk to a Juniper and a Cisco device and display information that describes the device. In addition to that, we will also have it display information about the BGP neighbors.
+Let’s explore the use of several methods NAPALM has to offer and try them out on a Juniper and a Cisco (IOS XR). In the following examples, we will have NAPALM talk to a Juniper and a Cisco device and display information that describes the device. We will start out displaying device and BGP information. After this, we will explore some of the other methods and we will finish up sending some CLI commands to a device.
 
-Doing this using NAPALM is very easy. Roughly all we need to do the following:
+First up is checking device data and retrieving some BGP information. Doing this using NAPALM is very easy. Roughly all we need to do the following:
 - select the proper driver and create a device object
 - open a connection to the device
 - use `get_facts` and `get_bgp_neighbors`
