@@ -331,7 +331,7 @@ Using the previous methods to manipulate the configuration does not change the c
 - <b>discard</b>: abort any configuration efforts
 - <b>commit</b>: apply the configuration changes to the device
 
-As noted in the NAPALM [documentation](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix), not all options are available on every device and there are some caveats to using them. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
+As noted in the NAPALM [documentation](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix), not all options are available on every device and there are some caveats. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
 
 Same as with information gathering, the backend libraries hide all vendor specifics and allow us to use the same code to work with configurations on different vendors. All this without having to write or maintain any Python of our own or without the need to be bothered by their own terminology.
 
@@ -390,7 +390,7 @@ bash-4.4# python /var/tmp/napalm_config.py
 
 If, after loading the configuration, the `compare_config()` would have shown us something that indicated we should back off, we could have used `device.discard_config()` to discard our configuration efforts. 
 
-Same as when we retrieved information from the device, NAPALM takes care of the device specifics here. We do not need to know that IOS XR has a target configuration and that Juniper has a candidate configuration, etc. We can call the same function and use it for the different vendors that NAPALM supports.
+Same as when we retrieved information from the device, NAPALM takes care of the device specifics here. We do not need to know that IOS XR has a target configuration and that Juniper has a candidate configuration, etc. We can call the same functions and use them for the different vendors that NAPALM supports.
 
 
 <br>
@@ -412,4 +412,7 @@ What NAPALM has achieved so far is very impressive. A lot of work has been invol
 
 They have had quite the impact on the networking community and I can see why this is. It is very convenient to work with and you can get things done quickly. 
 
-There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Suppose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
+There is also some risk involved though. Imagine having to go to another release on a product because of some bug (which is not uncommon). Suppose that on this new version, one of the NAPALMs functions no longer works because of changes in the API on the vendor side breaking the way NAPALM does something. In such cases, at least for a little while, you will be on your own again. 
+
+Another thing worth noting is that not everything is available through NAPALM. For instance, you might be running a protocol for which there are no getters. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, might come to rely on.
+
