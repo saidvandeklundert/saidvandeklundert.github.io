@@ -328,7 +328,7 @@ We can also use NAPALM to configure devices. We can choose to manipulate the con
 Using the previous methods to manipulate the configuration does not change the configuration that is active on the device. It (in Junospeak) alters the candidate configuration but it does not commit. Once we have altered this candidate configuration, we can use the following NAPALM methods:
 - <b>compare</b>: see how the configuration would look _if_ you were to apply configuration statements. 
 - <b>rollback</b>: change the device configuration to a previous version
-- <b>discard</b>: abort configuration efforts and discard the candidate configuration
+- <b>discard</b>: abort any configuration efforts
 - <b>commit</b>: apply the configuration changes to the device
 
 As noted in the NAPALM [documentation](https://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix), not all options are available on every device and there are some caveats to using them. However, it comes in very handy on devices that do support these capabilities. I have been able to use these methods on Juniper, Arista and Cisco IOS XR. On these devices, the methods work really well. 
