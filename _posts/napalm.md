@@ -46,9 +46,9 @@ NAPALM uses a set of <b>core drivers</b> to be able to deal with all these vendo
   | **Backend library** | [pyeapi](https://github.com/arista-eosplus/pyeapi)  | [junos-eznc](https://github.com/Juniper/py-junos-eznc)  | [pyIOSXR](https://github.com/fooelisa/pyiosxr)  | [pynxos](https://github.com/networktocode/pynxos)  | [netmiko](https://github.com/ktbyers/netmiko)  | [netmiko](https://github.com/ktbyers/netmiko)
   
 
-Notice that in NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS over SSH. In the case of IOS, this is as good as it get's due to the fact that Cisco never made an API for that OS.
+Notice that in NAPALM, Netmiko is used to get NAPALM to talk to NX-OS and IOS over SSH. In the case of IOS, this is as good as it gets due to the fact that Cisco never made an API for that OS.
 
-Another thing worth mentioning is that you can also choose to use these backend libraries directly in your scripts. This can be quite usefull to know when you run into situations where NAPALM does not have a certain function available for you. 
+Another thing worth mentioning is that you can also choose to use these backend libraries directly in your scripts. This can be quite useful to know when you run into situations where NAPALM does not have a certain function available for you. 
 
 Finally, in addition to the core drivers, which are supported and maintained by the people working on NAPALM, there are also various <b>community drivers</b>. Community drivers are maintained under their own repository and can be used by NAPALM. I found a list of community drivers [here](https://github.com/napalm-automation-community).
 
@@ -61,9 +61,9 @@ Using NAPALM in a Python script
   <img src="https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/napalm/img/python-logo.png">
 </p>
 
-NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, the information that is returned by NAPALM is structured in the same way reagardless of the vendor you request the information from. And lastly, again, you are not bothered by the vendor-specifics of these devices.
+NAPALM offers you a variety of methods that gather information from devices and another set of methods that can help you with your configuration efforts. There a few really nice things about these methods. First of all, you can use them against all the supported vendors. You only have to make sure that you select the proper driver when you use NAPALM to connect to a device. In addition to that, the information that is returned by NAPALM is structured in the same way regardless of the vendor you request the information from. And lastly, again, you are not bothered by the vendor-specifics of these devices.
 
-Let’s explore the use of several methods NAPALM has to offer when working with Juniper and Cisco (IOS XR).
+Let’s explore the use of several methods NAPALM has to offer and try them out on a Juniper and a Cisco (IOS XR).
 
 <br>
 
@@ -150,7 +150,7 @@ pp(device.get_bgp_neighbors())
 device.close()
 ```
 
-The `device.open()` and `device.close()` were used to intiate and close a connection to the device. The `device.get_facts()` and `device.get_bgp_neighbors()` were used to retrieve information from the device.
+The `device.open()` and `device.close()` were used to initiate and close a connection to the device. The `device.get_facts()` and `device.get_bgp_neighbors()` were used to retrieve information from the device.
 
 If we were to check the log on the device during the time where we gathered the BGP neighbor information, we can see the following:
 
@@ -259,7 +259,53 @@ In the previous examples, I used `get_facts` and `get_bgp_neighbors`. But these 
 <output omitted>
 ```
 
-With `dir(device)`, we listed all the methods we have available. After having opened the connection to the device using `device.open()`, we can see that examining the output it is just a matter of issuing the 'getter' methods one by one.
+After having opened the connection to the device using `device.open()`, we used `dir(device)` to list all the methods we have available. We can see that examining the output it is just a matter of issuing the 'getter' methods one by one.
+
+To finish up this section, there is of course also a method that allows you to issue CLI commands. To do this, we use the `cli` method. When we use this method, we pass it a list of CLI commands that we want to send to the device. What the method returns is a dictionary where the key is the CLI command and the value is what the device returned.
+
+A quick example on how to send 2 commands to a Cisco IOS XR device:
+
+```python
+import napalm
+driver = napalm.get_network_driver('iosxr')
+device = driver(hostname='169.50.169.101', username='salt', password='salt123')
+device.open()
+return_dictionary = device.cli(['show ospf neighbor', 'show ip interface brief', ])
+device.close()
+print(return_dictionary['show ospf neighbor'])
+print(return_dictionary['show ip interface brief'])
+```
+The data returned by the `cli` method is stored in the `return_dictionary` and at the end of the script, we print the 2 command to screen. Running the script presents us with the following output:
+
+```
+<output omitted>
+
+Neighbors for OSPF 1
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.0.1        128   FULL/  -        00:00:37    10.0.2.0        GigabitEthernet0/0/0/1.10
+    Neighbor is up for 1w0d
+10.0.0.2        128   FULL/  -        00:00:34    10.0.2.4        GigabitEthernet0/0/0/2.12
+    Neighbor is up for 1w0d
+
+Total neighbor count: 2
+
+Interface                      IP-Address      Status          Protocol Vrf-Name
+Loopback0                      10.0.1.1        Up              Up       default 
+MgmtEth0/RP0/CPU0/0            unassigned      Up              Up       mgmt    
+GigabitEthernet0/0/0/0         unassigned      Up              Up       default 
+GigabitEthernet0/0/0/0.1156    169.50.169.170  Up              Up       mgmt    
+
+<output omitted>
+```
+
+Instead of printing the keys of the dictionary that `cli` returns, you can also step through it and do with each command or value what you like:
+
+```python
+for command,output in return_dictionary.items():
+  print(command)
+  print(output)
+```
 
 <br>
 
@@ -358,4 +404,4 @@ What NAPALM has achieved so far is very impressive. A lot of work has been invol
 
 They have had quite the impact on the networking community and I can see why this is. It is very convenient to work with and you can get things done quickly. 
 
-There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Supose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
+There is also some risk involved though. Imagine having to go to release X on a product because of some bug  (which is not uncommon). Suppose that on this new version, one of the NAPALMs functions no longer works because changes in the API on the vendor side breaks a certain way NAPALM does something. In such cases, at least for a little while, you will be on your own again. In addition to this, it is also good to realize that not everything is available through NAPALM. For these reasons, it is still a good idea to educate someone on the team on the device specific APIs and backend libraries that NAPALM, and you, relies on.
