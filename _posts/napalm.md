@@ -69,7 +69,7 @@ NAPALM offers you a variety of methods that gather information from devices and 
 
 Let’s explore the use of several methods NAPALM has to offer and try them out. In the following examples, we will have NAPALM talk to a Juniper and a Cisco device. We will start by using NAPALM to display some information about the device and BGP. After this, we will explore some of the other methods we have available to us and we will finish up sending some CLI commands to a device.
 
-First up is checking device data and retrieving some BGP information. Doing this using NAPALM is very easy. Roughly all we need to do the following:
+First up is checking device data and retrieving some BGP information. Doing this using NAPALM is very easy. All we need to do the following:
 - select the proper driver and create a device object
 - open a connection to the device
 - use `get_facts` and `get_bgp_neighbors`
