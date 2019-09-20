@@ -322,7 +322,7 @@ for command,output in return_dictionary.items():
 ## Using NAPALM to configure devices
 
 We can also use NAPALM to configure devices. We can choose to manipulate the configuration using either of the following methods:
-- <b>replace</b>: removes the the existing configuration and puts in a completely configuration
+- <b>replace</b>: removes the the existing configuration and puts in a new configuration
 - <b>merge</b>: add configuration statements to the current configuration
 
 Using the previous methods to manipulate the configuration does not change the configuration that is active on the device. It (in Junospeak) alters the candidate configuration but it does not commit. Once we have altered this candidate configuration, we can use the following NAPALM methods:
