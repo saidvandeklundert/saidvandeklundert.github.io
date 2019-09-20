@@ -297,7 +297,7 @@ GigabitEthernet0/0/0/0.1156    169.50.169.170  Up              Up       mgmt
 <output omitted>
 ```
 
-Instead of printing the keys of the dictionary that `cli` returns, you can also step through it and do with each command or value what you like:
+Instead of printing the keys of the dictionary that `cli` returns, you can also step through it and do with each command and output what you like:
 
 ```python
 for command,output in return_dictionary.items():
