@@ -11,9 +11,7 @@ Parts of the examples I use here are based on what I think can benefit a device 
 I'll cover logging to a syslog server, a file, users and wrap up with the configuration of remote logging for traceoptions.
 </p>
 
-
 ![junos logo](/img/junos-logo.jpg "junos logo") 
-
 
 <h4>
 Logging to a server:
