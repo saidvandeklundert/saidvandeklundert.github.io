@@ -36,7 +36,8 @@ The list of facilities and severities is pretty self-explanatory. I chose 'any a
 Most of the messages you can expect from a Junos device can be found in a document called 'Junos OS System Log Messages Reference'.
 On certain platforms you can also try issuing 'help syslog <i>message</i>' from the CLI:
 </p>
-<pre style="font-size:12px">
+
+```
 play@MX480-00-RE0> help syslog SNMP_TRAP_LINK_DOWN
 Name:          SNMP_TRAP_LINK_DOWN
 Message:       ifIndex <snmp-interface-index>, ifAdminStatus <admin-status>, ifOperStatus <operational-status>, ifName <interface-name>
@@ -45,7 +46,8 @@ Description:   The SNMP agent process (snmpd) generated a linkDown trap because 
 Type:          Event: This message reports an event, not an error
 Severity:      warning
 Facility:      LOG_DAEMON
-</pre>
+```
+
 <br>
 <h4>
 Logging to a file.
