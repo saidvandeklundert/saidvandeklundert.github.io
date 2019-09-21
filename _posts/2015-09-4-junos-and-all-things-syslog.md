@@ -10,12 +10,11 @@ I'll go over several examples showing you what you can configure under the [ <b>
 Parts of the examples I use here are based on what I think can benefit a device running Junos OS.
 I'll cover logging to a syslog server, a file, users and wrap up with the configuration of remote logging for traceoptions.
 </p>
-<br>
+
 
 ![junos logo](/img/junos-logo.jpg "junos logo") 
 
-<br>
-<br>
+
 <h4>
 Logging to a server:
 </h4>
@@ -48,7 +47,7 @@ Severity:      warning
 Facility:      LOG_DAEMON
 ```
 
-<br>
+
 <h4>
 Logging to a file.
 </h4>
@@ -89,12 +88,11 @@ Note that because this file has a size and a maximum configured for it, those va
 To have a look at the content of one of the files we just created, we can use a show command.
 By issuing the following command, we can see exactly what user 'play' has been up to:
 </p>
-<br>
+
 
 ![logging](/img/logging.png "logging") 
 
-<br>
-<br>
+
 <p>
 Instead of issuing show commands, we can also make the terminal follow a file that the device is writing messages to. 
 To follow the file called 'messages', issue the following command:
@@ -162,7 +160,7 @@ MX480-00-RE0 mgd[85992]: UI_COMMIT_COMPLETED: commit complete
 <p>
 Nice to know you're not the only one logged in and doing things.
 </p>
-<br>
+
 <h4>
     Remote logging for traceoptions.
 </h4>
@@ -186,7 +184,7 @@ If that is the case, you have to add the following to those traceoptions;
 <pre>
 set forwarding-options dhcp-relay traceoptions no-remote-trace
 </pre>
-<br>
+
 <p>
 This was just to show you that making Junos log stuff isn't hard at all. 
 Hopefully, this post has given you an idea or two. For now, I just have one final final remark left. 
