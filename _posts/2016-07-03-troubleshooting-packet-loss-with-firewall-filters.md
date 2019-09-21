@@ -4,10 +4,6 @@ title: Troubleshooting packet loss with firewall filters
 image: /img/juniper_logo.jpg
 ---
 
-Troubleshooting packet loss with firewall filters
-=================================================
-
-
 Packet loss can be caused by all sorts of reasons. Could be faulty hardware, a software issue on a device, a congested link or some policers and shapers that are working against you. In order to fix packet loss in a network, you first have pinpoint where the packets are being dropped. Pinpointing where the packets are dropped is not always easy, especially if the packet loss is low, intermittent and affecting only 1 traffic flow specifically.
 
 Suppose that a VM, sitting behind several switches and a router, is experiencing packet loss:
