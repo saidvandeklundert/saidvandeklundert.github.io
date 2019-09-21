@@ -135,8 +135,10 @@ Everyone will be informed about the import stuff, like users entering configurat
 The <b>match "!(.*Login attempt.*)"</b> part is a way to filter out syslog messages that contain certain strings.
 In this case, any message containing the 'Login attempt' string is omitted from being displayed.
 You can use this approach to filter out any other annoyances you might have logging to any of the possible destinations.
-The easiest way to filter out multiple strings is by using a pipe, like this: <b>
-"!(.*Login attempt.*|.*something_annoying.*|.*something_not_interesting.*|.*etc.*)"</b>.
+The easiest way to filter out multiple strings is by using a pipe, like this: 
+<pre>
+"!(.*Login attempt.*|.*something_annoying.*|.*something_not_interesting.*|.*etc.*)"
+</pre>
 A more detailed description on how you can refine your log messages can also be found in the 'Junos OS System Log Messages Reference'.
 There is an entire chapter appropriately called 'Using Regular Expressions to Refine the Set of Logged Messages'.
 </p>
