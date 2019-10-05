@@ -51,7 +51,8 @@ inet.0: 426 destinations, 426 routes (426 active, 0 holddown, 0 hidden)
 By dividing the prefixes across the available tunnels, the router is displaying the default behavior. To force traffic onto a specific LSP, we can use the action ‘install-nexthop’ in a policy. In our case, we want to match the ‘peer’ community and we want to use the ‘pe1-to-pe-peer’ LSP:
 </p>
 
-<pre style="font-size:12px">play@pe1> show configuration policy-options
+<pre style="font-size:12px">
+play@pe1> show configuration policy-options
 policy-statement map-onto-lsp {
 	term peer {
 		from community peer;
@@ -66,10 +67,12 @@ policy-statement map-onto-lsp {
 We now need to apply this policy to the forwarding table:
 </p>
 
-<pre style="font-size:12px">play@pe1> show configuration routing-options
+<pre style="font-size:12px">
+play@pe1> show configuration routing-options
 forwarding-table {
     export map-onto-lsp;
-}</pre>
+}
+</pre>
 
 <p>
 After applying this configuration, the pe1 router will start to use only use 1 LSP for prefixes that have the peer community added to it:
