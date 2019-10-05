@@ -7,7 +7,7 @@ image: /img/juniper_logo.jpg
 <p>                
 LSPs can be configured with a whole variety of characteristics.  You can police traffic that is send onto an LSP, steer the LSP through certain location in the network and much more. When you create several LSPs towards the same destination router, prefixes using that router as a next-hop are randomly divided across those LSPs. What I recently found out is that you can map traffic onto a specific LSP using policies. Exercising control in this way offers some interesting possibilities. Steering or policing entire services by sending them onto a specific LSP is just one of the possibilities.  
 </p>   
-             
+
 <p>
 Let’s walk through a configuration example where we’ll use the BGP community ‘peer’ for policy based LSP mapping. 
 Let’s look at the scenario before any policy is created:
@@ -34,15 +34,15 @@ inet.0: 426 destinations, 426 routes (426 active, 0 holddown, 0 hidden)
                       AS path: 900 12883 12883 12883 49125 I, validation-state: unverified
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-lsp1
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-lsp2
-                    > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-peer</font>
+                    > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color='red'>pe1-to-pe-peer</font>
 96.172.192.0/19    *[BGP/170] 01:16:47, localpref 150, from 172.16.0.2
                       AS path: 900 28917 6789 48330 I, validation-state: unverified
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-lsp1
-                    > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-lsp2</font>
+                    > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color='red'>pe1-to-pe-lsp2</font>
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-peer
 96.172.192.0/24    *[BGP/170] 01:16:47, localpref 150, from 172.16.0.2
                       AS path: 900 28917 6789 48330 I, validation-state: unverified
-                    > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-lsp1</font>
+                    > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color='red'>pe1-to-pe-lsp1</font>
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-lsp2
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-peer
 </pre>
