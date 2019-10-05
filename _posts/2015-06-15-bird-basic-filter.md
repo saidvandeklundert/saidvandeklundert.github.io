@@ -1,7 +1,7 @@
 ---
 layout: post
 title: BIRD BGP filter example
-image: /img/bird-filter.png
+image: /img/bird_logo.png
 ---
    
 
