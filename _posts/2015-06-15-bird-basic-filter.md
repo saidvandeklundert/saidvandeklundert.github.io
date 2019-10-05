@@ -5,7 +5,7 @@ image: /img/bird-filter.png
 ---
    
 
-![logging](/img/bird-filter.png "logging")             
+![BIRD](/img/bird-filter.png "BIRD")             
 
 <p>
 Coming from Junos, I found that manipulating BGP path attributes in BIRD is both straightforward and powerful. I wanted to share an example filter that manipulates the BGP PATH attributes that are changed most often.
