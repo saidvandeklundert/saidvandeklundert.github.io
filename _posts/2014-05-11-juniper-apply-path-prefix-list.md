@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Juniper: using apply-path in a prefix-list.
+title: Using apply-path in a prefix-list on Juniper.
 image: /img/juniper_logo.jpg
 ---
                    
