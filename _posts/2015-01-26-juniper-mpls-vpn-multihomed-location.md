@@ -441,7 +441,7 @@ inet.0: 19 destinations, 33 routes (19 active, 0 holddown, 0 hidden)
   10.0.0.15/32            4.0.0.46             150                1 I
 </pre>  
 <p>
-The complete configuration for the entire MPLS VPN lab can be found <a href="saidvandeklundert.net/2015-01-18-juniper-mpls-vpn-basics/" target="_blank">here</a>.
+The complete configuration for the entire MPLS VPN lab can be found <a href="https://saidvandeklundert.net/2015-01-18-juniper-mpls-vpn-basics/" target="_blank">here</a>.
 </p>
 <p>
     That's all.
