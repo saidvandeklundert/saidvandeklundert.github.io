@@ -418,7 +418,7 @@ inet.0: 18 destinations, 19 routes (18 active, 0 holddown, 0 hidden)
     This is that by using SOO, the Luna routes are not redistributed back to the customer location via de PE routers.
 </p>
 <p>
-    We can verify this on Orcus:
+We can verify this on Orcus:
 </p>                
 <pre style="font-size:12px">                
 play@MX104-TEST-HB:Orcus> show route receive-protocol bgp 4.0.0.46
@@ -441,7 +441,7 @@ inet.0: 19 destinations, 33 routes (19 active, 0 holddown, 0 hidden)
   10.0.0.15/32            4.0.0.46             150                1 I
 </pre>  
 <p>
-    The complete configuration for the engire MPLS VPN lab can be found <a href="saidvandeklundert.net/2015-01-18-juniper-mpls-vpn-basics/">here</a>.
+The complete configuration for the entire MPLS VPN lab can be found <a href="saidvandeklundert.net/2015-01-18-juniper-mpls-vpn-basics/" target="_blank">here</a>.
 </p>
 <p>
     That's all.
