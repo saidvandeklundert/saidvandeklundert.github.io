@@ -44,7 +44,7 @@ image: /img/juniper_logo.jpg
     Configuring plain-text authentication can hardly be called a task:
 </p>                    
 
-![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_2.JPG "OSPF authentication") 
+![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_2.jpg "OSPF authentication") 
 
 <p>
     The command above will have R13 start sending the plain-text password in every OSPF packet. 
@@ -54,14 +54,14 @@ image: /img/juniper_logo.jpg
     In order to see just how plain-text this plain-text is, let’s monitor traffic sent to the control plane of the router:
 </p>
 
-![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_3.JPG "OSPF authentication") 
+![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_3.jpg "OSPF authentication") 
 
 <p>
     When we monitoring the interface, we can verify that all packets will include that plain-text password.
     The output below shows R12 sending an LSR to R13, during the loading phase of the neighbor relationship establishment:
 </p>
 
-![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_4.JPG "OSPF authentication") 
+![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_4.jpg "OSPF authentication") 
 
 <p>
     <b>
@@ -72,14 +72,14 @@ image: /img/juniper_logo.jpg
     Configuring MD5 authentication can be done in the following way;
 </p>                    
 
-![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_5.JPG "OSPF authentication") 
+![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_5.jpg "OSPF authentication") 
 
 <p>
     After configuring R11 for MD5 authentication, the following can be seen when the interface is monitored:
 </p>                    
 
 
-![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_6.JPG "OSPF authentication") 
+![OSPF authentication](/img/juniper_jncip_sp_lab_1_episode_3_6.jpg "OSPF authentication") 
 
 <p>
     Here we see that instead of the plain-text password, the key-id and a cryptographic sequence number is send together with each packet. 
