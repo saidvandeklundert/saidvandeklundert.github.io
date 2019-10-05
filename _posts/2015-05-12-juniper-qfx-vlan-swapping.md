@@ -13,7 +13,7 @@ image: /img/juniper_logo.jpg
 </p>            
             
 
-![logging](/img/qfx-vlan-swapping-1.png "logging") 
+![VLAN swapping](/img/qfx-vlan-swapping-1.png "VLAN swapping") 
 
 <p>
     On the MX104, I will configure a routing-instance ‘QFX-VLAN-<font color='red'>501</font>’ which will be tied to interface xe-1/2/0.501. 
@@ -22,7 +22,7 @@ image: /img/juniper_logo.jpg
 </p>
                
 
-![logging](/img/qfx-vlan-swapping-2.png "logging") 
+![VLAN swapping](/img/qfx-vlan-swapping-2.png "VLAN swapping") 
 
   
 <p>
@@ -30,7 +30,7 @@ image: /img/juniper_logo.jpg
 </p>
                 
 
-![logging](/img/qfx-vlan-swapping-3.png "logging") 
+![VLAN swapping](/img/qfx-vlan-swapping-3.png "VLAN swapping") 
 
     
 <p>
@@ -82,7 +82,7 @@ play@MX104-TEST-HB>
     So there is connectivity between the two interfaces. What just happened was the following:
 </p>
 
-![logging](/img/qfx-vlan-swapping-4.png "logging") 
+![VLAN swapping](/img/qfx-vlan-swapping-4.png "VLAN swapping") 
 
     
 <p>
