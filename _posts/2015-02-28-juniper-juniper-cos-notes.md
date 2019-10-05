@@ -473,7 +473,7 @@ You can apply multiple rewrite rules to a single logical interface and a rewrite
 There are default rewrite-rules defined, but none of those are actually applied. 
 </p>
 
-<br><br>
+<br>
 <a name="10"></a>
 <h3>
 Hierarchical scheduling (H-CoS) characteristics (high-level only).
