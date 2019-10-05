@@ -15,11 +15,12 @@ Let’s look at the scenario before any policy is created:
 
 ![ LSP mapping ](/img/juniper-lsp-mapping-scenario.png "LSP mapping") 
 
-                <br>  
-				<p>
-                                    The pe1 router has three LSPs towards the pe router. 
-                                    All routes that originated from the peer router have a community attached to it. Let’s look at those routes on the pe1 router;
-				</p>
+<br>  
+
+<p>
+The pe1 router has three LSPs towards the pe router. 
+All routes that originated from the peer router have a community attached to it. Let’s look at those routes on the pe1 router;
+</p>
 
 
              
@@ -43,9 +44,11 @@ inet.0: 426 destinations, 426 routes (426 active, 0 holddown, 0 hidden)
                     > to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-lsp1</font>
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-lsp2
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path pe1-to-pe-peer</pre>
-                    <p>
-                        By dividing the prefixes across the available tunnels, the router is displaying the default behavior. To force traffic onto a specific LSP, we can use the action ‘install-nexthop’ in a policy. In our case, we want to match the ‘peer’ community and we want to use the ‘pe1-to-pe-peer’ LSP:
-                    </p>
+                    
+<p>
+By dividing the prefixes across the available tunnels, the router is displaying the default behavior. To force traffic onto a specific LSP, we can use the action ‘install-nexthop’ in a policy. In our case, we want to match the ‘peer’ community and we want to use the ‘pe1-to-pe-peer’ LSP:
+</p>
+
 <pre style="font-size:12px">play@pe1> show configuration policy-options
 policy-statement map-onto-lsp {
 	term peer {
@@ -55,24 +58,25 @@ policy-statement map-onto-lsp {
 		}
 	}
 }</pre>
-					<p>
-						We now need to apply this policy to the forwarding table:
-					</p>
+<p>
+We now need to apply this policy to the forwarding table:
+</p>
+
 <pre style="font-size:12px">play@pe1> show configuration routing-options
 forwarding-table {
     export map-onto-lsp;
 }</pre>
 
-				<p>
-					After applying this configuration, the pe1 router will start to use only use 1 LSP for prefixes that have the peer community added to it:
-				</p>
-                <br>
+<p>
+After applying this configuration, the pe1 router will start to use only use 1 LSP for prefixes that have the peer community added to it:
+</p>
+<br>
 
 ![ LSP mapping ](/img/juniper-lsp-mapping-scenario-1.png "LSP mapping") 
 
-					<p>
-						To verify our configuration, we can issue the same command as before:
-					</p>
+<p>
+To verify our configuration, we can issue the same command as before:
+</p>
 
 <pre style="font-size:12px">play@pe1> show route community-name peer
 
@@ -88,10 +92,9 @@ inet.0: 426 destinations, 426 routes (426 active, 0 holddown, 0 hidden)
 96.172.192.0/24    *[BGP/170] 01:15:49, localpref 150, from 172.16.0.2
                       AS path: 900 28917 6789 48330 I, validation-state: unverified
                       to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-peer</font></pre>
-					<p>
-						In this example, I used a policy to match routes based on their community. This is just one of the possibilities. Policy based LSP mapping can also be done by using a policy to match other criteria. Some of these are Route Target Community (L3VPN/VPLS), subnet, CoS values and more. It offers plenty of possibilities to put you in control of traffic and it’s a fun thing to play with.
-					</p>                
-					<p>
-						2-10-2015
-					</p>      
+
+<p>
+In this example, I used a policy to match routes based on their community. This is just one of the possibilities. Policy based LSP mapping can also be done by using a policy to match other criteria. Some of these are Route Target Community (L3VPN/VPLS), subnet, CoS values and more. It offers plenty of possibilities to put you in control of traffic and it’s a fun thing to play with.
+</p>                
+  
 
