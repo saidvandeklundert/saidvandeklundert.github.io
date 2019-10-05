@@ -5,8 +5,7 @@ image: /img/juniper_logo.jpg
 ---
    
 <p>
-    We have a set of MX routers enabled for RSVP signaled LSPs and instead of creating a simple static route across an LSP, this article is about establishing an LDP session across RSVP signaled LSPs. 
-    That LDP session will be used to signal a Martini-draft style pseudowire;
+    This article is about establishing an LDP session across RSVP signaled LSPs and using those sessions to signal a Martini-draft style pseudowire.
 </p>                        
                 
 ![LDP over RSVP](/img/ldp_over_rsvp_1.png "LDP over RSVP")  
