@@ -428,7 +428,7 @@ The CPE part:
 </p>  
 <p>
     Most of the customer locations have a default route configured towards the PE. On the PE, there is a static route configured towards the CPE. This static route is redistributed via BGP, enabling all the locations to reach the prefix in use on the CPE.
-    Then, last but not least, there is a multihomed location. This location is handled in a separate post <a href="juniper_ipvpn_multihomed_location.php">here</a>.
+    Then, last but not least, there is a multihomed location. This location is handled in a separate post <a href="2015-01-26-juniper-mpls-vpn-multihomed-location.md">here</a>.
 </p>              
 <p>
     Anyway, Saturn was able to reach all of the CPE IP addresses at the end:
