@@ -103,8 +103,7 @@ set interfaces lo0 unit 0 family inet filter input-list discard-all
 <br>                    
 By: Douglas Richard Hanks Jr., Harry Reynolds<br>
 </p>
-<br>
-<br>
+
 <p>
 Note,<br>
 if you’re thinking about using the filters from the book, I remember 1 other thing I ran into as well. 
