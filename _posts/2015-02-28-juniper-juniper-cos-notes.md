@@ -32,7 +32,6 @@ image: /img/juniper_logo.jpg
 <p>
     On a Juniper device, the following CoS stages can be identified:
 </p>
-<br>
 
 ![Juniper cos IPv6 header](/img/junos_cos_processing.png "Juniper cos IPv4 header")  
 
@@ -61,9 +60,7 @@ image: /img/juniper_logo.jpg
 <p>
     Typically, traffic is marked at the edge of your network. The rest of the network can handle traffic based on these markings. The way that traffic can be marked is by setting certain bits in various packet headers. The fields most commonly used for this are the following:
     IPv4 header:
-</p>
-<br>
-                
+</p>           
 
 ![Juniper cos IPv6 header](/img/qos_ipv4_header.png "Juniper cos IPv4 header")    
 
@@ -74,8 +71,8 @@ image: /img/juniper_logo.jpg
 
 ![Juniper cos MPLS header](/img/qos_mpls_header.png "Juniper cos MPLS header")
 
-<br>
-<br>  
+
+<br><br>  
 <a name="3"></a>
 <h3>
     Forwarding classes.
@@ -84,10 +81,7 @@ image: /img/juniper_logo.jpg
     Forwarding classes can be thought of as the configuration component that represents the queues. 
     The classifiers, either multifield or BA, assign the traffic to a forwarding class. 
     Each forwarding class is mapped to a queue.
-</p>
-<br> 
-<br>
-<br>                
+</p>             
 
 ![Juniper cos forwarding class](/img/junos_cos_forwarding_class.png "Juniper cos forwarding class")
 
@@ -207,14 +201,11 @@ Classifier: ipprec-compatibility, Code point type: inet-precedence, Index: 13
 <p>
     Policing is the process of discarding packets within a traffic stream to enforce a limit. Policing is done using the token bucket algorithm as opposed to the shaper’s leaky bucket.
 </p>
-<br> 
-<br>
-<br>                
+           
 
 ![Juniper cos token bucket](/img/junos_qos_token_bucket.png "Juniper cos token bucket")
 
-<br>
-<br>
+
 <p>
     The bucket is filled with tokens. 
     The rate at which this is done corresponds to the configured bandwidth rate. 
@@ -302,7 +293,6 @@ set interface ge-0/0/8 unit 0 family inet6 policer input 100m-standard
     For instance, when you apply a 100m policer to a 2 member ae that is spread across 2 PFE’s, the traffic on each individual ae member will be policed at a rate of 100m. This can be mitigated by using the keyword ‘shared-bandwidth-policer’ keyword inside the policer configuration. This will make the policer behave as an aggregate policer, regardless of how many PFE’s are involved (unfortunately, no ‘shared-bandwidth-policer’ on EX or QFX).
 </p>
 
-
 <br><br>
 <a name="7"></a>
 <h3>
@@ -311,13 +301,11 @@ set interface ge-0/0/8 unit 0 family inet6 policer input 100m-standard
 <p>
     Listed as separate topics for JNCIP. I put them together since a drop-profile is referenced by a scheduler and it just made more sense to me. A scheduler-map can connect different forwarding-classes to schedulers and each scheduler can have different characteristics:
 </p>
-<br> 
-<br>                 
+                
 
 ![Juniper cos scheduler](/img/junos_cos_scheduler.png "Juniper cos scheduler") 
 
-<br>
-<br>    
+  
 <p>
     The components of an individual scheduler are the following:
     <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; transmission rate: this determines the minimum amount of guaranteed bandwidth that is allocated to a queue.
@@ -426,14 +414,10 @@ Shaping.
 </h3> 
 <p>
 Shaping is about delaying packets within a traffic stream going out an interface to a desired rate. Shaping uses the leaky bucket algorithm.
-</p>
-<br> 
-<br>              
+</p>          
 
 ![Juniper cos leaky bucket](/img/junos_qos_leaky_bucket.png "Juniper cos leaky bucket") 
-
-<br>
-<br>        
+        
 <p>
 In Junos, traffic shaping can be configured in multiple ways. A traffic shaper can be configured inside a scheduler, on an interface and it can be configured inside a traffic-control profile (configuration template used for hierarchical CoS).
 </p>
@@ -521,14 +505,10 @@ On a juniper MX, if you have the proper hardware, you can choose to enable one o
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>per unit scheduler:</b>
 <br>
 This H-CoS mode does not allow for interface-sets. It will enable you to shape the interface, vlans configured on the interface and it offers a scheduler to every vlan configured on the interface.
-</p>              
-<br> 
-<br>                
+</p>                             
 
 ![Juniper cos per unit](/img/junos_cos_per-unit.png "Juniper cos per unit") 
 
-<br>
-<br> 
 <p>
 When an interface is configured with the ‘per-unit-scheduler’, you can shape on the port level and control scheduling and queuing on the vlan level. Control over the interface-set, or level 2 H-CoS, is not offered. 
 </p>
@@ -536,14 +516,10 @@ When an interface is configured with the ‘per-unit-scheduler’, you can shape
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>hierarchical scheduler:</b>
 <br>
 The hierarchical scheduler operates on all four H-CoS levels and gives you control over the interface-sets;
-</p>                                      
-<br> 
-<br>                
+</p>                                                    
 
 ![Juniper cos hierarchical](/img/junos_cos_hierarchical.png "Juniper cos hierarchical") 
 
-<br>
-<br>
 <p>
 When an interface is configured with the ‘hierarchical-scheduler’, you can do more. You can shape on the port level and on the vlan level, have access to interface-sets, control scheduling and queuing on the vlan level and share them among vlans. 
 </p>
