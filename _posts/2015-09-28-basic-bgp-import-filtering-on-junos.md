@@ -108,7 +108,7 @@ inet.0: 459 destinations, 838 routes (459 active, 0 holddown, 0 hidden)
 * 224.0.0.0/4             1.1.1.2                                 500 I
 </pre>
 <p>
-The only valid prefix is the <b>1.1.0.0/24</b> prefix. Let’s insert the <b>reject</b> polprior to the policy already active using the following configuration command:
+The only valid prefix is the <b>1.1.0.0/24</b> prefix. Let’s insert the <b>reject</b> policy prior to the policy already active using the following configuration command:
 </p>                
 <pre style="font-size:12px">
 insert protocols bgp group peering import reject before ix
