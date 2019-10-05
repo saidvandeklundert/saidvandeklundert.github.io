@@ -321,11 +321,11 @@ set interface ge-0/0/8 unit 0 family inet6 policer input 100m-standard
 </p>
 <p>
     The transmission rate sets the amount of bandwidth that is allocated to a queue. The rate is specified in bits per second. Juniper allows for the following options to be added to the transmit-rate:
-    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; rate: transmission rate in bps
-    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; percentage: a percentage of the total available bandwidth (can be determined by the interface bandwidth or the shaper of the traffic-control-profile) 
-    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; remainder: allows the queue to use all remaining available bandwidth
-    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; exact: enforces the transmission rate in the way a shaper would. Statement can be combined with rate or percentage. When it is configured, an exact transmission rate or percentage is enforced. Without the keyword exact, queues can endlessly burst above the transmission rate as long as other queues are empty. 
-    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; rate-limit: enforces the transmission rate in the way a policer would. With or without congestion, the queue will never be able to send more than the transmission rate that is specified                    
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>rate</b>: transmission rate in bps
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>percentage</b>: a percentage of the total available bandwidth (can be determined by the interface bandwidth or the shaper of the traffic-control-profile) 
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>remainder</b>: allows the queue to use all remaining available bandwidth
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>exact</b>: enforces the transmission rate in the way a shaper would. Statement can be combined with rate or percentage. When it is configured, an exact transmission rate or percentage is enforced. Without the keyword exact, queues can endlessly burst above the transmission rate as long as other queues are empty. 
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; <b>rate-limit</b>: enforces the transmission rate in the way a policer would. With or without congestion, the queue will never be able to send more than the transmission rate that is specified                    
 </p>
 <p>
     By default, MX and EX will share excess bandwidth in the ratio of the transmit rates. 
