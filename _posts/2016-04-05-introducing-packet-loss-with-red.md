@@ -91,7 +91,7 @@ Queue: 0, Forwarding classes: best-effort
      High                :                     0                     0 bps</pre>
 
 <p>
-Another verification method would be issuing the command ‘show class-of-service interface ge-1/1/9.1520 comprehensive’. This will give you all the class of service related settings and counters for that specific interface.     
+Another verification method would be issuing the command <b>show class-of-service interface ge-1/1/9.1520 comprehensive</b>. This will give you all the class of service related settings and counters for that specific interface.     
 </p>
 
 <p>
