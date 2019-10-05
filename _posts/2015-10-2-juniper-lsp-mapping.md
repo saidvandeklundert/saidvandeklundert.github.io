@@ -90,13 +90,13 @@ inet.0: 426 destinations, 426 routes (426 active, 0 holddown, 0 hidden)
 
 96.172.128.0/19    *[BGP/170] 01:15:49, localpref 150, from 172.16.0.2
                       AS path: 900 12883 12883 12883 49125 I, validation-state: unverified
-                      to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-peer</font>
+                      to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color='red'>pe1-to-pe-peer</font>
 96.172.192.0/19    *[BGP/170] 01:15:49, localpref 150, from 172.16.0.2
                       AS path: 900 28917 6789 48330 I, validation-state: unverified
-                      to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-peer</font>
+                      to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color='red'>pe1-to-pe-peer</font>
 96.172.192.0/24    *[BGP/170] 01:15:49, localpref 150, from 172.16.0.2
                       AS path: 900 28917 6789 48330 I, validation-state: unverified
-                      to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color=red>pe1-to-pe-peer</font>
+                      to 10.1.0.1 via xe-0/2/0.1508, label-switched-path <font color='red'>pe1-to-pe-peer</font>
 </pre>
 
 <p>
