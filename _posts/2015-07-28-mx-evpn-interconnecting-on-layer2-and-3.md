@@ -202,8 +202,101 @@ inet.0: 41 destinations, 41 routes (39 active, 0 holddown, 2 hidden)
     Apart from optimal routing, another benefit is that VMs who are migrated can continue to use the same MAC address to forward traffic towards their new gateway. Their arp-cache will not have to time out or be cleared manually.
 </p>
 <p>
-    To wrap things up, the relevant configuration for the MX routers can be found <a href="mx-evpn-l2-and-l3-configuration.php">here</a>. Final note, I placed the irb in the global table, but you can just as easy put it into a routing-instance.
+    Note, I placed the irb in the global table, but you can just as easy put it into a routing-instance.
 </p>
 <p>
     Really starting to like this EVPN by now!
+    To wrap things up, the relevant configuration for the MX routers is the following: 
 </p> 
+
+<b>
+MX480:
+</b>
+
+<pre style="font-size:12px">
+set chassis network-services enhanced-ip
+
+set interfaces ge-0/1/0 flexible-vlan-tagging
+set interfaces ge-0/1/0 encapsulation flexible-ethernet-services
+set interfaces ge-0/1/0 unit 50 description CPE_EVPN
+set interfaces ge-0/1/0 unit 50 encapsulation vlan-bridge
+set interfaces ge-0/1/0 unit 50 vlan-id 50
+set interfaces ge-0/1/0 unit 50 family bridge
+
+set interfaces irb unit 50 description EVPN-Gateway-datacenter-2
+set interfaces irb unit 50 family inet address 8.0.0.1/24
+set interfaces irb unit 50 mac 00:00:00:00:00:33
+
+set routing-options autonomous-system 1
+set routing-options forwarding-table chained-composite-next-hop ingress evpn
+
+set protocols bgp local-address 1.1.1.21
+set protocols bgp out-delay 2
+set protocols bgp log-updown
+set protocols bgp group rr type internal
+set protocols bgp group rr family inet unicast
+set protocols bgp group rr family evpn signaling
+set protocols bgp group rr authentication-key "$9$CVAyuOIyrKvWXVwGjHmQz"
+set protocols bgp group rr export bgp-export
+set protocols bgp group rr peer-as 1
+set protocols bgp group rr neighbor 1.1.1.1 description Aurelius_rr
+
+set routing-instances evpn_vlan-based instance-type evpn
+set routing-instances evpn_vlan-based vlan-id 50
+set routing-instances evpn_vlan-based interface ge-0/1/0.50
+set routing-instances evpn_vlan-based routing-interface irb.50
+set routing-instances evpn_vlan-based route-distinguisher 3:3
+set routing-instances evpn_vlan-based vrf-target target:3:3
+set routing-instances evpn_vlan-based protocols evpn default-gateway do-not-advertise
+                
+set policy-options policy-statement bgp-export term local-evpn-routes from protocol evpn
+set policy-options policy-statement bgp-export term local-evpn-routes then accept
+
+set policy-options policy-statement bgp-export term evpn from family evpn
+set policy-options policy-statement bgp-export term evpn then accept
+</pre>    
+<b>
+MX104:
+</b>
+<pre style="font-size:12px">
+set chassis network-services enhanced-ip
+
+set interfaces xe-2/0/0 flexible-vlan-tagging
+set interfaces xe-2/0/0 encapsulation flexible-ethernet-services
+set interfaces xe-2/0/0 unit 50 description CPE_EVPN
+set interfaces xe-2/0/0 unit 50 encapsulation vlan-bridge
+set interfaces xe-2/0/0 unit 50 vlan-id 50
+set interfaces xe-2/0/0 unit 50 family bridge
+
+set interfaces irb unit 50 description EVPN-Gateway-datacenter-2
+set interfaces irb unit 50 family inet address 8.0.0.1/24
+set interfaces irb unit 50 mac 00:00:00:00:00:33
+
+set routing-options autonomous-system 1
+set routing-options forwarding-table chained-composite-next-hop ingress evpn
+
+set protocols bgp local-address 1.1.1.20
+set protocols bgp out-delay 2
+set protocols bgp log-updown
+set protocols bgp group rr type internal
+set protocols bgp group rr family inet unicast
+set protocols bgp group rr family evpn signaling
+set protocols bgp group rr authentication-key "$9$CVAyuOIyrKvWXVwGjHmQz"
+set protocols bgp group rr export bgp-export
+set protocols bgp group rr peer-as 1
+set protocols bgp group rr neighbor 1.1.1.1 description Aurelius_rr
+
+set routing-instances evpn_vlan-based instance-type evpn
+set routing-instances evpn_vlan-based vlan-id 50
+set routing-instances evpn_vlan-based interface xe-2/0/0.50
+set routing-instances evpn_vlan-based routing-interface irb.50
+set routing-instances evpn_vlan-based route-distinguisher 3:3
+set routing-instances evpn_vlan-based vrf-target target:3:3
+set routing-instances evpn_vlan-based protocols evpn default-gateway do-not-advertise
+                
+set policy-options policy-statement bgp-export term local-evpn-routes from protocol evpn
+set policy-options policy-statement bgp-export term local-evpn-routes then accept
+
+set policy-options policy-statement bgp-export term evpn from family evpn
+set policy-options policy-statement bgp-export term evpn then accept
+</pre>   
