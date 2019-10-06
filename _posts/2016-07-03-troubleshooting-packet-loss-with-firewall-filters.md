@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Troubleshooting packet loss with firewall filters
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: QFX controllerless overlay with all-active Ethernet segments.
+tags: [juniper]
 image: /img/inetzero.png
 ---
 

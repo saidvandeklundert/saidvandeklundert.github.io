@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Juniper OSPFv3 IPsec authentication
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

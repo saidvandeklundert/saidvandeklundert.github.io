@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Junos and all things syslog
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

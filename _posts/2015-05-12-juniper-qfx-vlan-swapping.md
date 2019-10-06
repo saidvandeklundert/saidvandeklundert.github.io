@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Juniper QFX vlan-swapping
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
    

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Policy based LSP mapping with Junos OS
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

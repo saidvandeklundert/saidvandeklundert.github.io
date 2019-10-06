@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Introducing packet loss with RED
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

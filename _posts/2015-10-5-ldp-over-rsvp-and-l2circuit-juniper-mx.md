@@ -1,6 +1,7 @@
 ---
 layout: post
 title: tunneling LDP over RSVP and establishing a pseudowire
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
    

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: IPFIX configuration example
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
     

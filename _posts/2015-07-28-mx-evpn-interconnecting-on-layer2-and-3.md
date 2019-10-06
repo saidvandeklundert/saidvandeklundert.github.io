@@ -1,6 +1,7 @@
 ---
 layout: post
 title: EVPN on Juniper MX and interconnecting Data Centers on layer 2 and 3
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

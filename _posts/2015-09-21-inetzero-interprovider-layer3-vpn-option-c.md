@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Interprovider Layer 3 VPN option C
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

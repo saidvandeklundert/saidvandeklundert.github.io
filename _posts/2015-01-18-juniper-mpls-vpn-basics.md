@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Juniper MPLS VPN basics.
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 <p>

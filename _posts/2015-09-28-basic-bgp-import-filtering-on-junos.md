@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Basic BGP import filtering example on Junos OS
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

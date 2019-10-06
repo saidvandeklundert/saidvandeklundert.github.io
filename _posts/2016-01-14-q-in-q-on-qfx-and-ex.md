@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Q-in-Q on EX, QFX or VCF
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

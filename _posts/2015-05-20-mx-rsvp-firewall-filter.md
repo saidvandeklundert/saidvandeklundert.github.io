@@ -1,6 +1,7 @@
 ---
 layout: post
 title: MX RSVP firewall filter
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

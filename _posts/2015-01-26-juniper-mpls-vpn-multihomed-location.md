@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Juniper multihomed IP VPN location.
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
 

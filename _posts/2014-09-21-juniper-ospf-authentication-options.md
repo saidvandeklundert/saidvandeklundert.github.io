@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Juniper OSPF authentication options.
+tags: [juniper]
 image: /img/juniper_logo.jpg
 ---
                    
