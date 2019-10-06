@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Templating for network engineers in SaltStack.
+tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 

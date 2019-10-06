@@ -1,6 +1,7 @@
 ---
 layout: post
 title: SaltStack execution modules and the CLI.
+tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 

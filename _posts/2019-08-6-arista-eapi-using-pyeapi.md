@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Exploring the Arista eAPI using pyeapi.
+tags: [automation, arista]
 image: /img/arista_logo.png
 ---
 

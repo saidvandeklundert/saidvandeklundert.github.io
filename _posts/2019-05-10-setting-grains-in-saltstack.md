@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Getting your facts straight.
+tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 

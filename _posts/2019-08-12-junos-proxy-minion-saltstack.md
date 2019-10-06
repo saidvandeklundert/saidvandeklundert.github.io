@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Using the Junos proxy minion in SaltStack.
+tags: [automation, saltstack, juniper]
 image: /img/salt_stack_logo.jpg
 ---
 

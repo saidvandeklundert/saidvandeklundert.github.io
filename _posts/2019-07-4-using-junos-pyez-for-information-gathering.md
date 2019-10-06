@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Using Junos PyEZ for information gathering
+tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
 
