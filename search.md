@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Search
-subtitle: Search posts
+subtitle: Search all posts
 ---               
 <!-- Html Elements for Search -->
 <div id="search-container">
