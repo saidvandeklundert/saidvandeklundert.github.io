@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Basic BGP MPLS-Based Ethernet VPN on Juniper MX
+tags: [juniper, evpn]
 image: /img/juniper_logo.jpg
 ---
 

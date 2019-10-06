@@ -1,6 +1,7 @@
 ---
 layout: post
 title: BIRD BGP filter example
+tags: [bird, bgp]
 image: /img/bird_logo.png
 ---
    
