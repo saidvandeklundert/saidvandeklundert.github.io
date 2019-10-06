@@ -1,6 +1,7 @@
 ---
 layout: post
 title: MPLS L3VPN between Juniper MX and Cisco IOS XR
+tags: [cisco, juniper, mpls, vpn]
 image: /img/cisco_juniper_logo.png
 ---
 
