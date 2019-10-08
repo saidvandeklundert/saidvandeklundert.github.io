@@ -7,7 +7,7 @@ image: /img/juniper_logo.jpg
 
 <p>
     This article explains how you can analyze the forwarding table on Junos.
-    On <a href="juniper_ipvpn_basics_the_complete_configuration.php">this</a> lab, I altered several metrics to make the traffic flow look like this:                    
+    On <a href="https://saidvandeklundert.net/2015-01-18-juniper-mpls-vpn-basics/">this</a> lab, I altered several metrics to make the traffic flow look like this:                    
 </p>
 
 ![MPLS LDP label](/img/follow_ldp_label_1.png "MPLS LDP label") 
