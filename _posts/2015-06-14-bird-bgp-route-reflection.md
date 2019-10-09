@@ -30,7 +30,7 @@ Also, since a BIRD RR might be better off placed outside of the forwarding path,
 I hope the other comments are elaborative enough;
 </p>
 
-<pre>
+<pre style="font-size:12px">
 [root@bird ~]# more /etc/bird.bgp
 # creating a separate table for BIRD to store BGP routes
 table inet0;
@@ -60,7 +60,7 @@ include "bird.bgp.clients";
 The route-reflector clients:
 </p>
 
-<pre>
+<pre style="font-size:12px">
 [root@bird ~]# more /etc/bird.bgp.clients
 #  from ‘RR’ refers to the template stored in bird.bgp
 protocol bgp Tiberius from <font color='red'>RR</font> { neighbor 1.1.1.9 as 1; };
@@ -71,7 +71,7 @@ protocol bgp Commodus from <font color='red'>RR</font> { neighbor 1.1.1.4 as 1; 
 After activating this configuration, you can issue the following command to examine the BGP table ‘inet0’;
 </p>
 
-<pre>
+<pre style="font-size:12px">
 [root@bird ~]# birdc show route all table inet0
 BIRD 1.3.11 ready.
 192.168.76.0/24    via 172.30.0.2 on eth1 [Tiberius 14:03 from 1.1.1.9] * (100/?) [i]
@@ -86,7 +86,7 @@ BIRD 1.3.11 ready.
 To verify that the route, received from Tiberius, was forwarded by BIRD:
 </p>
 
-<pre>
+<pre style="font-size:12px">
 play@MX480-TEST-RE0:Commodus> show route receive-protocol bgp 172.30.0.254 detail
 
 inet.0: 34 destinations, 35 routes (30 active, 0 holddown, 4 hidden)
@@ -112,7 +112,7 @@ The ‘bird.conf’ file references bird.ospf and bird.bgp. The route-reflector 
 <p>
 First, the content of bird.conf:
 </p>
-<pre>
+<pre style="font-size:12px">
 router id 172.30.0.254;
 
 debug protocols all;
@@ -129,7 +129,7 @@ include "bird.bgp";
 <p>
 The OSPF configuration (same as in a previous post):
 </p>
-<pre>
+<pre style="font-size:12px">
 [root@bird ~]# more /etc/bird.ospf
 protocol ospf {
         debug all;
