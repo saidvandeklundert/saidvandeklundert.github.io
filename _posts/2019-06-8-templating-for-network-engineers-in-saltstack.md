@@ -22,6 +22,7 @@ Templating in SaltStack is an absolute joy. It makes the generation of text-base
 [Using execution modules inside templates](#using-execution-modules-inside-templates)<br>
 [Passing arguments into your template](#passing-arguments-into-your-template)<br>
 [Import other templates with context](#import-other-templates-with-context)<br>
+[Safely access values using 'is defined'](#safely-access-values-using-is-defined)<br>
 [Using Jinja in state and pillar files](#using-jinja-in-state-and-pillar-files)<br>
 [Salt has some pretty good additional extensions](#salt-has-some-pretty-good-additional-extensions)<br>
 [Wrapping up](#wrapping-up)<br>
@@ -34,12 +35,13 @@ Iterate your template into perfection using slsutil.renderer
 
 As soon as you have your proxy minions set up, the first thing worth checking out is the `slsutil.renderer` utility that Salt provides you with. This will enable you to see how a template renders for a device:
  
-```
+<pre style="font-size:12px">
+
 salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2 default_renderer='jinja'
 …
 proxy_minion:
     my first template
-```
+</pre>
 
 When calling it like this, Salt will use a local copy in `/srv/salt/templates` if it finds the file there. If there is no local copy, Salt will attempt to fetch the latest template from gitfs.
 
@@ -659,6 +661,70 @@ The main advantages are that it keeps the templates smaller and the default file
 
 Additionally, another thing worth noting is that child templates have access to the variables declared in the parent template. So if we import a default template to be able to use variables everywhere, we will also be able to use those in the child templates as well.
 
+<br>
+
+Safely access values using 'is defined'
+=======================================
+
+Sometimes I am working with templates that generate configuration for a service. These templates are being generated with additional data that is coming from another source. This source can be:
+- external pillar data
+- the SSE API
+- a YAML file that an application has placed in a certain directory
+
+To be able to fit many services or variations of a service into a single template, I turn to `is defined`. This makes it possible to reference variables in the template without having to ensure they always exist.
+
+Through the use of the `is defined` test, you can make a single template suitable for the configuration of different services without always having to pass all variables to that template. 
+
+This way, you can use a key in the dictionary you pass to signal what parts of the template should render and what parts should not render. You also avoid having to always specify the variables you use in the template.
+
+Here is how it could look in a template:
+
+```
+{% raw %}
+{%- set d = pillar.get('inline-pillar') -%}
+
+{% if d.service_1 is defined and d.service_1 == True %}
+
+vrf VRF-{{ d.service_1 }}
+ address-family ipv4 unicast
+ import such and such
+ {{ d.1 }}
+
+{% elif d.service_2 is defined and d.service_2 == True %}
+
+vrf VRF-{{ d.service_2 }}
+ address-family ipv4 unicast
+ import such and such
+ {{ d.2 }}
+
+{% elif d.service_3 is defined and d.service_3 == True %}
+
+vrf VRF-{{ d.service_3 }}
+ address-family ipv4 unicast
+ import such and such
+ {{ d.3 }}
+  
+{% endif %}
+{% endraw %}
+```
+
+In case we want to configure service 1, we pass the following:
+
+```yaml
+'service_1' : 'True'
+'rd' : '...'
+'rt' : '...'
+```
+
+And in case we want to configure service 3, we pass the following:
+
+```yaml
+'service_3' : 'True'
+'rd' : '...'
+'rt' : '...'
+```
+
+Basically, the keys of the dictionary signal what part of the template renders and only variables used in that part need to exist. I have found that in certain cases, being able to manage similar services in a single template can make life a lot easier.
 
 <br>
 
@@ -729,4 +795,7 @@ Updated on 2019-07-27:
 - added if statement section
 - addedstring slicing and splitting a string section
 - various improvements / typos
+Updated in 2019-10-9:
+- added is defined
+- change some formatting
 </pre>
