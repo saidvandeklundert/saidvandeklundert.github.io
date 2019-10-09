@@ -55,9 +55,10 @@ def render(template):
 ```
 
 After syncing it to the minion, you can call the function like so:
-```
+
+<pre style="font-size:12px">
 salt proxy_minion common.render salt://templates/my_first_template.j2
-```
+</pre>
 
 <br>
 
@@ -230,12 +231,13 @@ set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0{% endraw %}
 ```
 
 With things set up like this, we can render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
-```
+
+<pre style="font-size:12px">
 salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
 ..
 juniper_pm:
     set interfaces et-0/0/35 ether-options 802.3ad ae7
-```
+</pre>
 
 <br>
 
@@ -360,6 +362,7 @@ some_dict:
 ```
 
 We can step through this dictionary like so:
+
 ```
 {% raw %}{%- for key, value in pillar.get('some_dict').items() -%} 
 {{ key }} {{ value }}
@@ -367,6 +370,7 @@ We can step through this dictionary like so:
 ```
 
 Endless possibilities here, but one of the things worth mentioning is passing a nested dictionary to a child template like so:
+
 ```
 {% raw %}{% for nested_dict in pillar.get('nested-dict').values() -%}
 {% include 'templates/some_template.j2' %}
@@ -374,6 +378,7 @@ Endless possibilities here, but one of the things worth mentioning is passing a 
 ```
 
 We will be able to access the nested dictionary in `some_template` like this:
+
 ```
 {% raw %}{{ nested_dict.some_key }}{% endraw %}
 ```
@@ -429,7 +434,7 @@ interface {{ interface }}
 
 Because we used `| dictsort`, SaltStack sorted the dictionary for us and when we render this, we get the following:
 
-```
+<pre style="font-size:12px">
 interface Ethernet1
  description storage
  switchport access vlan 150
@@ -449,7 +454,7 @@ interface Ethernet4
 interface Ethernet5
  description staging
  switchport access vlan 200
-```
+</pre>
 
 <br>
 
@@ -481,9 +486,9 @@ set routing-options autonomous-system {{ as }}{% endraw %}
 
 When we render that against a proxy minion that has the datacenter grain value set to `syd`, the template would render as follows:
 
-```
+<pre style="font-size:12px">
 set routing-options autonomous-system 65003
-```
+</pre>
 
 <br>
 
@@ -494,6 +499,7 @@ Using grains or pillar data to include other files into the template
 To keep things manageable, you will eventually start working with child templates. But it can happen that after a while, even the child templates grow into thousands of lines. 
 
 Let’s suppose that a prefix list differs per device type. The following is an easy way to create a separate prefix-list template for every device while inheriting them in the same ‘master’ template:
+
 ```
 {% raw %}{%- set type = grains.facts.get('type') -%}
 {%- if type in [ 'brr', 'adr', 'xrr', ] %}
@@ -528,7 +534,8 @@ It is nice to know that it is possible to make Salt generate a message that will
 ```
 
 Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2`:
-```
+
+<pre style="font-size:12px">
 ..
 proxy_minion:
     The minion function caused an exception: Traceback (most recent call last):
@@ -548,21 +555,24 @@ proxy_minion:
         buf=tmplstr)
     SaltRenderError: Jinja variable 'None' has no attribute 'get'
 
-```
+</pre>
+
 This can keep you busy for quite some time. But due to the extra’s we put in, trailing the proxy log will give us some clues to work with:
 
-```
+<pre style="font-size:12px">
 / # tail -f /var/log/salt/proxy | grep 'debugging'
 2019-06-01 11:09:29,010 [salt.loader.localhost.int.module.logmod                    :57  ][WARNING ][7101] debugging jinja 1: made it to line 2
 2019-06-01 11:09:29,010 [salt.loader.localhost.int.module.logmod                    :57  ][WARNING ][7101] debugging jinja 2: In the loop that starts at line 23
-```
+</pre>
+
 We see the first two messages we put in the template, but we do not see the third one. After learning this, we simply move message number 2 and 3 closer together. This will enable us to locate where the problem is (eventually). 
 
 The logging level is controlled via the master configuration. In this example, the setting was left at the default value. To be able to use `do salt.log.debug`, you need to set the logging level to include debugging. Altering the log level can be done here:
-```
+
+<pre style="font-size:12px">
 / # cat /etc/salt/master | grep log_level_logfile
 #log_level_logfile: warning
-```
+</pre>
 
 
 <br>
