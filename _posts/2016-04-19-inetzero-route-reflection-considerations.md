@@ -2,7 +2,7 @@
 layout: post
 title: Junos OS route-reflection considerations
 tags: [juniper]
-image: /img/juniper_logo.jpg
+image: /img/inetzero.png
 ---
 
 <br>                

@@ -2,7 +2,7 @@
 layout: post
 title: Configuring a basic BGP signalled VPLS
 tags: [juniper]
-image: /img/juniper_logo.jpg
+image: /img/inetzero.png
 ---
 
 <br>                
