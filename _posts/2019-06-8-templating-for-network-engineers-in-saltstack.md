@@ -37,7 +37,7 @@ As soon as you have your proxy minions set up, the first thing worth checking ou
  
 <pre style="font-size:12px">
 
-salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2 default_renderer='jinja'
+<b>salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2 default_renderer='jinja'</b>
 …
 proxy_minion:
     my first template
