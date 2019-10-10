@@ -57,7 +57,7 @@ def render(template):
 After syncing it to the minion, you can call the function like so:
 
 <pre style="font-size:12px">
-salt proxy_minion common.render salt://templates/my_first_template.j2
+<b>salt proxy_minion common.render salt://templates/my_first_template.j2</b>
 </pre>
 
 <br>
@@ -74,11 +74,11 @@ The default Jinja delimiters are as follows:
 
 Let's illustrate how we can get some of the basic things done and start with commenting, setting a variable and outputting that variable:
 
-```
+<pre style="font-size:12px">
 {% raw %}{# Setting and using a variable. #}
 {% set variable = 'string' %}
 Here we use the {{ variable }}.{% endraw %}
-```
+</pre>
 
 This will render as follows:
 
@@ -89,13 +89,14 @@ arista_proxy_minion:
 ```
 
 In the next example, we retrieve grain and pillar data and output that to screen:
-```
+
+<pre style="font-size:12px">
 {% raw %}{% set vendor = grains.get('vendor') %}
 {{ vendor }}
 
 {% set snmp_string = pillar.get('snmp_community') %}
 {{ snmp_string }}{% endraw %}
-```
+</pre>
 
 After rendering the above template, this is what we get:
 
@@ -113,7 +114,7 @@ Another thing worth noting is that adding `-` to your statements allows you to d
 
 Example on how that works out in templates:
 
-```
+<pre style="font-size:12px">
 Line 1.
 {% raw %}{% set variable = 'string' %}
 Line 3.
@@ -123,7 +124,7 @@ Line 5.
 Line7.
 {%- set variable = 'string' -%}{% endraw %}
 Line 9.
-```
+</pre>
 
 The above will render as follows:
 
@@ -144,7 +145,7 @@ The if statement
 
 Something I do often is test strings in expressions that evaluate to `True` or `False`:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% set hostname = pillar.get('hostname') %}
 {{ 'ar' in hostname }}
 {{ 'bar' in hostname }}
@@ -152,7 +153,7 @@ Something I do often is test strings in expressions that evaluate to `True` or `
 {{ hostname.startswith('ar') }}
 {{ hostname.endswith('ams01') }}
 {{ hostname.endswith('ams03') }}{% endraw %}
-```
+</pre>
 
 When we render the above template, assuming the hostname is `'ar.core.ams01'`, we get the following returned:
 
@@ -168,7 +169,7 @@ proxy_minion:
 
 We can combine these expressions with an `if` statement to show or hide sections of the template. Let's look at the following example:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% set hostname = pillar.get('hostname') %}
 {% if 'ar' in hostname -%}  
 Configure something relevant to an 'ar'.
@@ -176,7 +177,7 @@ Configure something relevant to an 'ar'.
 {% if hostname.endswith('ams03') -%} 
 Configure something relevant to ams03.
 {% endif %}{% endraw %}
-```
+</pre>
 
 When we render this, with the hostname still being `'ar.core.ams01'`, we get the following:
 
@@ -194,7 +195,7 @@ Conditional statements
 
 Let's assume that we have different device types in our network and that this information is stored as a grain. In the following example, through the use of conditional statements, we put all the different configurations into 1 template:
 
-```
+<pre style="font-size:12px">
 {% raw %}{%- set type = grains.facts.get('type') -%}     
 
 {%- if type == 'cbr' -%}                        
@@ -204,21 +205,22 @@ set configuration for the srr or xrr
 {%- else -%}                                    
 set configuration for all the other roles
 {%- endif -%}{% endraw %}
-```
+</pre>
+
 In the preceding template, we start out retrieving a grain value. After this, we check if the grain is equal to `cbr`. If it is, that configuration is shown. If it is not, we move on to the next test where we check if the type is present in a list. If it is, that configuration is displayed. If it is not, the `else` reveals what configuration will be applied to all other device types.
 
 The previous example shows a few basic checks, but we can also test for multiple conditions at once. This could look something like this:
 
-```
+<pre style="font-size:12px">
     {% raw %}{% if ( software_version in allowed_versions or allowed_versions == 'all' ) and
           ( model in allowed_models or allowed_models == 'all' ) and
           ( type in allowed_types or allowed_type == 'all' ) %}{% endraw %}
-```
+</pre>
 
 
 Another thing I use conditionals for in my templates is to have grains or pillar data determine the value a variable has. For instance, on Juniper MX and QFX, the configuration statement for LACP differs. In the below example, we fetch the model from the grains and have that decide the value of the variable:
 
-```
+<pre style="font-size:12px">
 {% raw %}{%- set model = grains.facts.get('model') -%}
 
 {%- if 'qfx' in model -%}
@@ -228,12 +230,12 @@ Another thing I use conditionals for in my templates is to have grains or pillar
 {%- endif -%}
 
 set interfaces et-0/0/35 {{ ether_options_cfg }} 802.3ad ae0{% endraw %}
-```
+</pre>
 
 With things set up like this, we can render the template against MX as well as QFX. For example, when we render the template against a QFX device, we get this:
 
 <pre style="font-size:12px">
-salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2
+<b>salt juniper_pm slsutil.renderer salt://templates/my_first_template.j2</b>
 ..
 juniper_pm:
     set interfaces et-0/0/35 ether-options 802.3ad ae7
@@ -246,14 +248,14 @@ For loop
 
 
 In the following example, we iterate a list that is generated using the `range` function:
-```
+<pre style="font-size:12px">
 {% raw %}{% for n in range(5) %}
 interface eth{{ n }}
  description unused
  switchport access vlan 999
  shutdown
 {% endfor %}{% endraw %}
-```
+</pre>
 
 Using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2 default_renderer='jinja'`, we can see that the template renders as follows:
 
@@ -289,11 +291,11 @@ String slicing
 
 We can slice strings to work with the part of the string we are interested in. Supose we have information encoded in the device name. Using string slicing, we can access the first and the last part of the string like so:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% set hostname = 'ar.core.ams01' %}
 {{ hostname[:2] }}
 {{ hostname[-5:] }}{% endraw %}
-```
+</pre>
 
 This would render as follows:
 
@@ -304,11 +306,11 @@ proxy_minion:
 ```    
 
 When we slice a string, we slice it by referencing the start, stop and stride of the characters in the string. Let's extract `lost` and `found` from the following example:
-```
+<pre style="font-size:12px">
 {% raw %}{% set string = 'floousntd__' %}
 {{ string[1:8:2] }}
 {{ string[0:10:2] }}{% endraw %}
-```
+</pre>
 
 When we render this, we get the following:
 
@@ -327,12 +329,12 @@ You can use `split` to divide a string into items in a list. You can then access
 
 In the following example, `split` will be used on the string `192.168.1.1/24`. First, we'll print out the list of items created by `split`. After this, we access each individual item:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% set ip_address = '192.168.1.1/24' %}
 {{ ip_address.split('/') }}
 {{ ip_address.split('/')[0] }}
 {{ ip_address.split('/')[1] }}{% endraw %}
-```
+</pre>
 
 When we render the above template, we get the following:
 
@@ -363,25 +365,25 @@ some_dict:
 
 We can step through this dictionary like so:
 
-```
+<pre style="font-size:12px">
 {% raw %}{%- for key, value in pillar.get('some_dict').items() -%} 
 {{ key }} {{ value }}
 {% endfor %}{% endraw %}
-```
+</pre>
 
 Endless possibilities here, but one of the things worth mentioning is passing a nested dictionary to a child template like so:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% for nested_dict in pillar.get('nested-dict').values() -%}
 {% include 'templates/some_template.j2' %}
 {% endfor -%}{% endraw %}
-```
+</pre>
 
 We will be able to access the nested dictionary in `some_template` like this:
 
-```
+<pre style="font-size:12px">
 {% raw %}{{ nested_dict.some_key }}{% endraw %}
-```
+</pre>
 
 This will make it possible to use the dictionary as an instruction to generate the configuration for a service. You can, for instance, attach an inline pillar when calling a state through the API and use the dictionary to pass whatever you want to the template.
 
@@ -420,7 +422,7 @@ Ethernet5:
 
 We can load this file as a dictionary and step through it like so in our `/srv/salt/templates/example_using_yaml.j2` template:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% import_yaml '/var/tmp/example.yaml' as example_yaml %}
 
 
@@ -430,7 +432,7 @@ interface {{ interface }}
  switchport access vlan {{ d.vlan }}
 {% endfor %}{% endraw %}
 
-```
+</pre>
 
 Because we used `| dictsort`, SaltStack sorted the dictionary for us and when we render this, we get the following:
 
@@ -478,11 +480,11 @@ Supose that the datacenter in which the node is active, is stored as a grain val
 
 In the next example, we first retrieve the grain value of the datacenter the node is in. Then, we use that variable to perform a lookup in the pillar:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% set dc = grains.facts['datacenter'] %}
 {% set as = pillar.datacenters.public[dc] %}
 set routing-options autonomous-system {{ as }}{% endraw %}
-```
+</pre>
 
 When we render that against a proxy minion that has the datacenter grain value set to `syd`, the template would render as follows:
 
@@ -500,12 +502,12 @@ To keep things manageable, you will eventually start working with child template
 
 Let’s suppose that a prefix list differs per device type. The following is an easy way to create a separate prefix-list template for every device while inheriting them in the same ‘master’ template:
 
-```
+<pre style="font-size:12px">
 {% raw %}{%- set type = grains.facts.get('type') -%}
 {%- if type in [ 'brr', 'adr', 'xrr', ] %}
 {% include 'templates/'~type~'_prefix_list.set' %}
 {%- endif -%}{% endraw %}
-```
+</pre>
 
 When we render this template, the device type is fetched from the grains. After this, that variable is used to determine what template to include. If we have 30 devices types, we simply make 30 files that contain the appropriate prefix-lists and ensure that the template filename contains the device type. This beats having 30 elif’s. 
 
@@ -522,7 +524,7 @@ The error messages you’ll run into when templates break are not always that he
 
 It is nice to know that it is possible to make Salt generate a message that will end up in the proxy log. Observe the following template:
 
-```
+<pre style="font-size:12px">
 {% raw %}{%- set no_problem_here = 'just a var' -%}
 {%- do salt.log.warning('debugging jinja 1: made it to line 2') -%} 
 ..
@@ -531,7 +533,7 @@ It is nice to know that it is possible to make Salt generate a message that will
 {%- set erhm= pillar.get('lala').get('wow:wew') -%}
 ..
 {%- do salt.log.warning('debugging jinja 3: got to the inner loop at line 32') -%}{% endraw %}
-```
+</pre>
 
 Let’s render the template using `salt proxy_minion slsutil.renderer salt://templates/my_first_template.j2`:
 
@@ -560,7 +562,7 @@ proxy_minion:
 This can keep you busy for quite some time. But due to the extra’s we put in, trailing the proxy log will give us some clues to work with:
 
 <pre style="font-size:12px">
-/ # tail -f /var/log/salt/proxy | grep 'debugging'
+/ # <b>tail -f /var/log/salt/proxy | grep 'debugging'</b>
 2019-06-01 11:09:29,010 [salt.loader.localhost.int.module.logmod                    :57  ][WARNING ][7101] debugging jinja 1: made it to line 2
 2019-06-01 11:09:29,010 [salt.loader.localhost.int.module.logmod                    :57  ][WARNING ][7101] debugging jinja 2: In the loop that starts at line 23
 </pre>
@@ -570,7 +572,7 @@ We see the first two messages we put in the template, but we do not see the thir
 The logging level is controlled via the master configuration. In this example, the setting was left at the default value. To be able to use `do salt.log.debug`, you need to set the logging level to include debugging. Altering the log level can be done here:
 
 <pre style="font-size:12px">
-/ # cat /etc/salt/master | grep log_level_logfile
+/ # <b>cat /etc/salt/master | grep log_level_logfile</b>
 #log_level_logfile: warning
 </pre>
 
@@ -584,13 +586,14 @@ Using execution modules inside templates
 You are able to run custom execution modules inside templates. This gives you an enormous amount of flexibility and there are a lot of interesting things you can do with this. 
 
 One example is using execution modules to fetch structured data from a device when a template is rendered. Let’s look at a Juniper proxy minion example where we issue the `get-interface-information` RPC and store that for use in the template:
-```
+
+<pre style="font-size:12px">
 {% raw %}{% set interface = 'et-0/0/1' %}
 {% set interface_description_dict = salt['junos.rpc']('get-interface-information', interface_name = interface, descriptions = True ) %}
 {% set interface_description = interface_description_dict.get('rpc_reply').get('interface-information').get('physical-interface').get('description') %}
 
 {{ interface_description }}{% endraw %}
- ```
+</pre>
 
 When we render the template against a device that has `example description` configured as the description for `et-0/0/1`, we get the following:
 
@@ -603,14 +606,16 @@ Another use case that I ran into was when I was dealing with excess configuratio
  
 What you can do is retrieve the existing configuration from the device in order to be able to delete it:
 
-```
+<pre style="font-size:12px">
 {% raw %}{% set delete_existing = salt['em.nuke'](cmd='show running-config section ^logging', all=True) %}
 {{ delete_existing }}{% endraw %}
-```
+</pre>
+
 Or
-```
+
+<pre style="font-size:12px">
 {% raw %}{{ salt['em.nuke'](section='logging') }}{% endraw %}
-```
+</pre>
 
 After rendering it using `salt proxy_minion slsutil.renderer path='salt://templates/my_first_template.j2'`, we get the following:
 
@@ -634,14 +639,16 @@ Inside the templates, you can use grains data, pillar data and you can call exec
 But there is another way to provide additional data to a template. This can be provided by appending inline pillar data when you call a state and then using the template inside that state.
 
 Example:
-```
-{% raw %}salt proxy_minion state.apply states.example pillar='{"ops": { "interface" : "et-0/0/1", "change" : "666", }}'{% endraw %}
-```
+<pre style="font-size:12px">
+{% raw %}<b>salt proxy_minion state.apply states.example pillar='{"ops": { "interface" : "et-0/0/1", "change" : "666", }}'</b>{% endraw %}
+</pre>
 
 Inside the template, you can access this pillar data in the same way that you would access regular pillar data:
-```
+
+<pre style="font-size:12px">
 {% raw %}{% set interface = pillar.get('ops').get('interface') %}{% endraw %}
-```
+</pre>
+
 I have encountered multiple reasons for wanting to attach inline pillar data. One reason was to enable users to pass arguments to a state they are running.  Another reason was when I was using the Enterprise API. I found that passing a dictionary to a state is a very easy and neat way to have an external script pass data to templates.
 
 
@@ -654,18 +661,21 @@ Import other templates with context
 If you have a ton of variables you are using in every template, it might be nice to know that you can dump them all in a single template and include that template elsewhere.
 
 For instance, let’s create a template called default:
-```
+
+<pre style="font-size:12px">
 {% raw %}{%- set type = grains.facts.get('type') -%}
 {%- set software_version = grains.facts.get('software-version') -%}
 {%- set model = grains.facts.get('model') -%}
 {%- set password_information = pillar.get('secret_data') -%}{% endraw %}
-```
+</pre>
 
 We can import this in other templates like this:
-```
+
+<pre style="font-size:12px">
 {% raw %}{%- import 'templates/default.j2' as example with context -%}
 {{ example.model }}{% endraw %}
-```
+</pre>
+
 Since we import the template as `example`, whenever we access a variable set in that template, we prefix it with `example.`.
 The main advantages are that it keeps the templates smaller and the default file is easy to maintain in case something changes or needs to be added to multiple templates.
 
@@ -689,7 +699,7 @@ This way, you can use a key in the dictionary you pass to signal what parts of t
 
 Here is how it could look in a template:
 
-```
+<pre style="font-size:12px">
 {% raw %}
 {%- set d = pillar.get('inline-pillar') -%}
 
@@ -716,7 +726,7 @@ vrf VRF-{{ d.service_3 }}
   
 {% endif %}
 {% endraw %}
-```
+</pre>
 
 In case we want to configure service 1, we pass the following:
 
@@ -746,7 +756,7 @@ In addition to using jinja in templates, you can also use it in other places, li
 
 The following is an example where doing something in a state file depends on whether or not ‘xyz’ is found in the device name:
 
-```
+<pre style="font-size:12px">
 {% raw %}{%- set device_name = pillar.get('device-name') -%}
 
 {%- if 'xyz' in device_name -%}
@@ -758,7 +768,7 @@ generate_something:
     - args: "{{ pw }}"
 
 {%- endif %}{% endraw %}
-```
+</pre>
 
 
 <br>
@@ -770,18 +780,18 @@ Salt has some pretty good additional extensions
 It is worth familiarizing yourself with the Jinja extensions SaltStack offers as many of them can come in quite handy. Reading about them before starting your templating efforts might help you a lot.
 
 Some of the extensions allow you to do pretty cool things. For example, test if something is an IP address:
-```
+<pre style="font-size:12px">
 {% raw %}{{ '192.168.0.1' | is_ip }}{% endraw %}
-```
+</pre>
 Using regex replace:
-```
+<pre style="font-size:12px">
 {% raw %}{% set my_text = 'yes, this is a TEST' %}
 {{ my_text | regex_replace(' ([a-z])', '__\\1', ignorecase=True) }}{% endraw %}
-```
+</pre>
 Raising custom errors:
-```
+<pre style="font-size:12px">
 {% raw %}{{ raise('Custom Error') }}{% endraw %}
-```
+</pre>
 
 These are just some examples. No point in me covering all of them, just read up on the rest right here: [understanding Jinja](https://docs.saltstack.com/en/latest/topics/jinja/index.html)
 
