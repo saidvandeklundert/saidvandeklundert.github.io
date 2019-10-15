@@ -5,7 +5,7 @@ tags: [automation, arista]
 image: /img/arista_logo.png
 ---
 
-To configure an Arista, you can jump in configuration mode and start firing off your configuration commands one after the other and have the changes take effect immediately. Quite a few people that I have spoken with, people that have been working with Arista’s for several years, took this approach without realizing that Arisa also has a better alternative to offer, especially for complex changes. 
+To configure an <b>Arista</b>, you can jump in configuration mode and start firing off your configuration commands one after the other and have the changes take effect immediately. Quite a few people that I have spoken with, people that have been working with Arista’s for several years, took this approach without realizing that Arisa also has a better alternative to offer, especially for complex changes. 
 
 Instead of altering the running configuration directly using <b>configure</b>, use a <b>configure session</b>. When you enter a configuration session, the changes you make are not applied immediately. This allows you to verify what the exact impact on the configuration of the device will be if you were to apply the configuration. 
 
