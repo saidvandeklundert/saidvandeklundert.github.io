@@ -125,7 +125,7 @@ With configuration sessions, there is a commit only after all the configuration 
 
 Another great benefit that configure sessions has to offer is the diff. You can have your script do a test run across the devices in you network and, instead of committing the change, store the diff somewhere and abort the configuration session. This is incredibly valuable as it lets you verify if configuration remediation is required and it gives you the opportunity to see whether or not your code is working as intended against the production network.
 
-If you are automating anything using Netmiko, use the <b>enter_config_mode</b> keyword to enter a configuration session instead of simply using configure. You can use uuid to ensure that the session name is unique every time you touch the device.
+If you are automating anything using Netmiko, use the <b>enter_config_mode</b> keyword to enter a configuration session instead of simply using configure. You can use the Python <b>uuid</b> module to ensure that the session name is unique every time you touch the device.
 
 
 If you have the API enabled on the Arista, you can use NAPALM. In this case, you are using configure sessions already and you have the <b>compare_config()</b> available. The following is an example on how you could use NAPALM to verify what the effect would be on the configuration of the device without actually applying it:
@@ -158,4 +158,4 @@ When we run it, we see the following output:
     vrf forwarding labmgmt
 </pre>
 
-If everything looks good, you can follow-up and use <b>device.commit_config()</b> to apply the configuration to the device. You can read more on NAPALM here [here](www.saidvandeklundert.net/2019-09-20-napalm/). 
+If everything looks good, you can follow-up and use <b>device.commit_config()</b> to apply the configuration to the device. You can read more on NAPALM [here](www.saidvandeklundert.net/2019-09-20-napalm/). 
