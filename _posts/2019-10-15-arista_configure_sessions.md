@@ -53,8 +53,6 @@ veos01(config-s-acl-ch)#<b>show session-config diffs</b>
 <b>+   20 permit 20 192.168.0.0/24 host 10.0.0.1</b>
 <b>+   30 deny 30 any any log</b>
  !
- ip access-list standard MGMT
-    10 permit 10.0.0.0/8
 
 veos01(config-s-acl-ch)#
 </pre>
@@ -146,7 +144,7 @@ device.discard_config()
 When we run it, we see the following output:
 
 <pre style="font-size:12px">
-(venv_said) [salt$testing testing]$ python arista_example.py 
+(venv_said) [salt$testing testing]$ <b>python arista_example.py</b>
 @@ -82,7 +82,7 @@
     no switchport
  !
