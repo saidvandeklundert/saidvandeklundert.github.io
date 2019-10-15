@@ -11,6 +11,7 @@ Instead of altering the running configuration directly using <b>configure</b>, u
 
 Another benefit of using configuration sessions is that you can have the device commit the change with a timer upon which the configuration change is reverted unless you <b>commit</b> the configuration session a second time. 
 
+<br>
 
 Using a configuration session
 =============================
@@ -113,6 +114,7 @@ Maximum number of pending sessions: 5
 veos01#
 </pre>
 
+<br>
 
 Using configure sessions while automating
 =========================================
