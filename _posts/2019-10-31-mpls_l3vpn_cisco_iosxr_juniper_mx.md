@@ -1,17 +1,17 @@
 ---
 layout: post
-title: MPLS L3VPN on Cisco IOSXR and Juniper MX using BGP
+title: MPLS L3VPN on Cisco IOS XR and Juniper MX using BGP
 tags: [juniper, cisco, mpls, l3vpn]
 image: /img/cisco_juniper_logo.png
 ---
 
 
-Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-juniper-cisco_ios_xr_mpls_vpn/), in this post, I am going to create a basic MPLS L3VPN between a Cisco IOSXR PE and a Juniper MX PE and use BGP between the CPE and the PE:
+Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-juniper-cisco_ios_xr_mpls_vpn/), in this post, I am going to create a basic MPLS L3VPN between a Cisco IOS XR PE and a Juniper MX PE and use BGP between the CPE and the PE:
 
 
 ![MPLS L3VPN with BGP](/img/cisco_iosxr_mpls_l3pnv_bgp.png "MPLS L3VPN with BGP")
 
-When looking over Juniper configuration, I always prefer to use the <b>display set</b> knob as I think it greatly improves the readability. I was happy to find out recently that in IOSXR, you can use <b>show running-config formal</b> to retrieve the configuration of the device in a similar way. In this article, I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
+When looking over Juniper configuration, I always prefer to use the <b>display set</b> knob as I think it greatly improves the readability. I was happy to find out recently that in IOS XR, you can use <b>show running-config formal</b> to retrieve the configuration of the device in a similar way. In this article, I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
 
 The configuration:
 ==================
@@ -101,7 +101,7 @@ interface GigabitEthernet0/0/0/2.2004 ipv6 address 2001:db8:1::9/127
 interface GigabitEthernet0/0/0/2.2004 encapsulation dot1q 2004
 </pre>
 
-A thing worth pointing out before moving to the BGP section is that we must have a route-policy in place for the IOSXR BGP sessions to accept any route import or export. To this end, we create the following route-policy:
+A thing worth pointing out before moving to the BGP section is that we must have a route-policy in place for the IOS XR BGP sessions to accept any route import or export. To this end, we create the following route-policy:
 
 <pre style="font-size:12px">
 route-policy ACCEPT
@@ -192,7 +192,7 @@ salt@vmx6>
 
 Another thing to note here is that BGP would normally not advertise the connected routes. But since we have <b>vrf-target</b> and <b>vrf-table-label</b> configured under the instance stanza, the PE will be advertising the connected route.
 
-In the Cisco IOSXR, we configured the import and export for the route-target under the address family in the VRF. Instead of specifying a route-target like this, it would have also been possible to configure a route-policy. This is something worth considering if you are creating a more complex VPN topology, a hub-and-spoke VPN for instance.
+In the Cisco IOS XR, we configured the import and export for the route-target under the address family in the VRF. Instead of specifying a route-target like this, it would have also been possible to configure a route-policy. This is something worth considering if you are creating a more complex VPN topology, a hub-and-spoke VPN for instance.
 
 
 Verification:
