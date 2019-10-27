@@ -293,6 +293,32 @@ L    10.0.0.17/32 is directly connected, 22:56:35, GigabitEthernet0/0/0/2.2004
 B    10.0.0.28/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 B    192.168.2.1/32 [20/0] via 10.0.0.18, 11:52:33
 B    192.168.2.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
+
+RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-2 ipv6 
+Sun Oct 27 11:06:40.453 UTC
+
+Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
+       U - per-user static route, o - ODR, L - local, G  - DAGR, l - LISP
+       A - access/subscriber, a - Application route
+       M - mobile route, r - RPL, t - Traffic Engineering, (!) - FRR Backup path
+
+Gateway of last resort is not set
+
+B    2001:db8::21/128 
+      [20/0] via fe80::5254:2:2:2004, 00:01:47, GigabitEthernet0/0/0/2.2004
+B    2001:db8::24/128 
+      [200/0] via ::ffff:10.0.0.6 (nexthop in vrf default), 00:01:47
+C    2001:db8:1::8/127 is directly connected,
+      00:02:20, GigabitEthernet0/0/0/2.2004
+L    2001:db8:1::9/128 is directly connected,
+      00:02:20, GigabitEthernet0/0/0/2.2004
+B    2001:db8:1::14/127 
+      [200/0] via ::ffff:10.0.0.6 (nexthop in vrf default), 00:01:47
 </pre>
 
 And on the Juniper device:
@@ -326,6 +352,38 @@ cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 192.168.2.4/32     *[BGP/170] 23:58:47, localpref 100
                       AS path: 65000 I, validation-state: unverified
                     >  to 10.0.0.30 via ge-0/0/1.2007
+
+cust-2.inet6.0: 7 destinations, 9 routes (7 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+2001:db8::21/128   *[BGP/170] 00:03:21, localpref 100, from 10.0.0.14
+                      AS path: 65000 I, validation-state: unverified
+                    >  to 192.168.6.1 via ge-0/0/1.6, Push 24011, Push 329(top)
+                       to 192.168.8.1 via ge-0/0/1.8, Push 24011, Push 337(top)
+                    [BGP/170] 00:03:21, localpref 100, from 10.0.0.15
+                      AS path: 65000 I, validation-state: unverified
+                    >  to 192.168.6.1 via ge-0/0/1.6, Push 24011, Push 329(top)
+                       to 192.168.8.1 via ge-0/0/1.8, Push 24011, Push 337(top)
+2001:db8::24/128   *[BGP/170] 1w6d 17:10:17, localpref 100
+                      AS path: 65000 I, validation-state: unverified
+                    >  to 2001:db8:1::14 via ge-0/0/1.2007
+2001:db8:1::8/127  *[BGP/170] 00:03:21, MED 0, localpref 100, from 10.0.0.14
+                      AS path: ?, validation-state: unverified
+                       to 192.168.6.1 via ge-0/0/1.6, Push 24012, Push 329(top)
+                    >  to 192.168.8.1 via ge-0/0/1.8, Push 24012, Push 337(top)
+                    [BGP/170] 00:03:21, MED 0, localpref 100, from 10.0.0.15
+                      AS path: ?, validation-state: unverified
+                       to 192.168.6.1 via ge-0/0/1.6, Push 24012, Push 329(top)
+                    >  to 192.168.8.1 via ge-0/0/1.8, Push 24012, Push 337(top)
+2001:db8:1::14/127 *[Direct/0] 2w0d 16:09:12
+                    >  via ge-0/0/1.2007
+2001:db8:1::15/128 *[Local/0] 2w0d 16:09:12
+                       Local via ge-0/0/1.2007
+fe80::5254:7:d77c:df65/128              
+                   *[Local/0] 2w0d 16:09:12
+                       Local via ge-0/0/1.2007
+ff02::2/128        *[INET6/0] 2w0d 16:09:24
+                       MultiRecv                    
 </pre>
 
 
