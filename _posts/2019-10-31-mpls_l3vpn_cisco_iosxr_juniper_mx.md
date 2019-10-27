@@ -273,18 +273,6 @@ Next, we verify the IPv4 routing table on the Cisco:
 <pre style="font-size:12px">
 ios_xr_1#<b>show route vrf cust-2</b>
 
-Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
-       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
-       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
-       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
-       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
-       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
-       U - per-user static route, o - ODR, L - local, G  - DAGR, l - LISP
-       A - access/subscriber, a - Application route
-       M - mobile route, r - RPL, t - Traffic Engineering, (!) - FRR Backup path
-
-Gateway of last resort is not set
-
 C    10.0.0.16/30 is directly connected, 22:56:35, GigabitEthernet0/0/0/2.2004
 L    10.0.0.17/32 is directly connected, 22:56:35, GigabitEthernet0/0/0/2.2004
 B    10.0.0.28/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
@@ -292,8 +280,6 @@ B    192.168.2.1/32 [20/0] via 10.0.0.18, 11:52:33
 B    192.168.2.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 
 ios_xr_1#<b>show route vrf cust-2 ipv6</b>
-
-..
 
 B    2001:db8::21/128 
       [20/0] via fe80::5254:2:2:2004, 00:01:47, GigabitEthernet0/0/0/2.2004
