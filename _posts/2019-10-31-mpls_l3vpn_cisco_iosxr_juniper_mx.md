@@ -91,7 +91,7 @@ vrf cust-2 address-family ipv6 unicast import route-target 2:2
 vrf cust-2 address-family ipv6 unicast export route-target 2:2
 </pre>
 
-After having created the VRF, we assign the interface to it:
+After having created the VRF, we configure the interface and assign it to the VRF:
 
 <pre style="font-size:12px">
 interface GigabitEthernet0/0/0/2.2004 description c2-1
@@ -163,7 +163,7 @@ set routing-instances cust-2 protocols bgp group cpe-v6 neighbor 2001:db8:1::14
 On Juniper, EBGP learned routes are accepted automatically so we do not need any policy.
 
 
-It is possible to explicitly configure an import and an export policy in Juniper. In our case though, we used <b>vrf-target</b>. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf. After configuring <b>vrf-target</b>, Juniper will actually create several ‘hidden’ route policies:
+It is possible to explicitly configure an import and an export policy in Juniper. In our case though, we used <b>vrf-target</b>. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf. After configuring <b>vrf-target</b>, Juniper will actually create several <i>hidden</i> route policies:
 
 <pre style="font-size:12px">
 salt@vmx6> <b>show policy</b>  
@@ -190,7 +190,7 @@ Policy __vrf-import-cust-2-internal__:
 salt@vmx6>
 </pre>
 
-Another thing to note here is that BGP would normally not advertise the connected routes. But since we have ‘vrf-target’ and ‘vrf-table-label’ configured under the instance stanza, the PE will be advertising the connected route.
+Another thing to note here is that BGP would normally not advertise the connected routes. But since we have <b>vrf-target</b> and <b>vrf-table-label</b> configured under the instance stanza, the PE will be advertising the connected route.
 
 In the Cisco IOSXR, we configured the import and export for the route-target under the address family in the VRF. Instead of specifying a route-target like this, it would have also been possible to configure a route-policy. This is something worth considering if you are creating a more complex VPN topology, a hub-and-spoke VPN for instance.
 
