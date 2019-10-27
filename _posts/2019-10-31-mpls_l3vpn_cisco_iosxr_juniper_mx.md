@@ -204,7 +204,7 @@ Verification:
 We start out verifying that the BGP sessions are up on the Cisco device:
 
 <pre style="font-size:12px">
-RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 summary</b>            
+ios_xr_1#<b>show bgp vrf cust-2 summary</b>            
 Sun Oct 13 19:19:58.673 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -226,7 +226,7 @@ Speaker              60         60         60         60          60           0
 Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 10.0.0.18         0 65000    3127    2874       60    0    0 12:08:10          1
 
-RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summar</b>
+ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summar</b>
 Sun Oct 13 19:20:01.055 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -273,7 +273,7 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 Next, we verify the IPv4 routing table on the Cisco:
 
 <pre style="font-size:12px">
-RP/0/RP0/CPU0:ios_xr_1#<b>show route vrf cust-2</b>
+ios_xr_1#<b>show route vrf cust-2</b>
 Sun Oct 13 19:13:27.706 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
@@ -294,7 +294,7 @@ B    10.0.0.28/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 B    192.168.2.1/32 [20/0] via 10.0.0.18, 11:52:33
 B    192.168.2.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 
-RP/0/RP0/CPU0:ios_xr_1#<b>show route vrf cust-2 ipv6</b>
+ios_xr_1#<b>show route vrf cust-2 ipv6</b>
 Sun Oct 27 11:06:40.453 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
@@ -393,7 +393,7 @@ As far as the basic checks go, the other thing worth looking in to are the recei
 On the Cisco, we check the following:
 
 <pre style="font-size:12px">
-RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes</b>
+ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes</b>
 Sun Oct 13 19:46:01.312 UTC
 Network            Next Hop        From            AS Path
 Route Distinguisher: 2:2 (default for vrf cust-2)
@@ -403,7 +403,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 
 Processed 3 prefixes, 3 paths
 
-RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 received routes</b>
+ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 received routes</b>
 Sun Oct 13 19:46:08.063 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -425,7 +425,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 
 Processed 1 prefixes, 1 paths
 
-RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 advertised-routes</b>
+ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 advertised-routes</b>
 Sun Oct 13 19:50:06.002 UTC
 Network            Next Hop        From            AS Path
 Route Distinguisher: 2:2 (default for vrf cust-2)
@@ -436,7 +436,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 Processed 3 prefixes, 3 paths
 
  
-RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 received routes</b>  
+ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 received routes</b>  
 Sun Oct 13 19:50:07.768 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
