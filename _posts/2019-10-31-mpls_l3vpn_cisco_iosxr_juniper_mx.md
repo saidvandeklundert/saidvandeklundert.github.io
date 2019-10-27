@@ -11,7 +11,7 @@ Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-ju
 
 ![MPLS L3VPN with BGP](/img/cisco_iosxr_mpls_l3pnv_bgp.png "MPLS L3VPN with BGP")
 
-When looking over Juniper configuration, I always very much prefer to use the <b>display set</b> knob as I think it greatly improves the readability. I was happy to find out recently that in IOSXR, you can use <b>show running-config formal</b> to retrieve the configuration of the device in a similar way. In this article, I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
+When looking over Juniper configuration, I always prefer to use the <b>display set</b> knob as I think it greatly improves the readability. I was happy to find out recently that in IOSXR, you can use <b>show running-config formal</b> to retrieve the configuration of the device in a similar way. In this article, I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
 
 The configuration:
 ==================
@@ -426,7 +426,7 @@ Processed 1 prefixes, 1 paths
 To check the same thing on the Juniper device, we issue the following commands:
 
 <pre style="font-size:12px">
-salt@vmx6> <b>show route receive-protocol bgp 10.0.0.30 table cust-2</b>   
+salt@vmx6> <b>show route table cust-2 receive-protocol bgp 10.0.0.30</b>   
 
 cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
   Prefix                  Nexthop              MED     Lclpref    AS path
@@ -435,7 +435,7 @@ cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 cust-2.inet6.0: 7 destinations, 9 routes (7 active, 0 holddown, 0 hidden)
 
 
-salt@vmx6> <b>show route advertising-protocol bgp 10.0.0.30 table cust-2</b>
+salt@vmx6> <b>show route table cust-2 advertising-protocol bgp 10.0.0.30</b>
 
 cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
   Prefix                  Nexthop              MED     Lclpref    AS path
