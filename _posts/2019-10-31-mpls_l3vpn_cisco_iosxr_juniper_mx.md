@@ -421,7 +421,7 @@ cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 * 192.168.2.1/32          Self                                    
 
 
-salt@vmx6> show route table cust-2 receive-protocol bgp 2001:db8:1::14    
+salt@vmx6> <b>show route table cust-2 receive-protocol bgp 2001:db8:1::14</b>    
 
 cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 
