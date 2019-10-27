@@ -205,7 +205,6 @@ We start out verifying that the BGP sessions are up on the Cisco device:
 
 <pre style="font-size:12px">
 ios_xr_1#<b>show bgp vrf cust-2 summary</b>            
-Sun Oct 13 19:19:58.673 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
 VRF ID: 0x60000004
@@ -227,7 +226,6 @@ Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 10.0.0.18         0 65000    3127    2874       60    0    0 12:08:10          1
 
 ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summar</b>
-Sun Oct 13 19:20:01.055 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
 VRF ID: 0x60000004
@@ -274,7 +272,6 @@ Next, we verify the IPv4 routing table on the Cisco:
 
 <pre style="font-size:12px">
 ios_xr_1#<b>show route vrf cust-2</b>
-Sun Oct 13 19:13:27.706 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
        D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
@@ -295,19 +292,8 @@ B    192.168.2.1/32 [20/0] via 10.0.0.18, 11:52:33
 B    192.168.2.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 
 ios_xr_1#<b>show route vrf cust-2 ipv6</b>
-Sun Oct 27 11:06:40.453 UTC
 
-Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
-       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
-       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
-       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
-       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
-       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
-       U - per-user static route, o - ODR, L - local, G  - DAGR, l - LISP
-       A - access/subscriber, a - Application route
-       M - mobile route, r - RPL, t - Traffic Engineering, (!) - FRR Backup path
-
-Gateway of last resort is not set
+..
 
 B    2001:db8::21/128 
       [20/0] via fe80::5254:2:2:2004, 00:01:47, GigabitEthernet0/0/0/2.2004
@@ -394,7 +380,6 @@ On the Cisco, we check the following:
 
 <pre style="font-size:12px">
 ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes</b>
-Sun Oct 13 19:46:01.312 UTC
 Network            Next Hop        From            AS Path
 Route Distinguisher: 2:2 (default for vrf cust-2)
 10.0.0.16/30       10.0.0.17       Local           1?
@@ -426,7 +411,6 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 Processed 1 prefixes, 1 paths
 
 ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 advertised-routes</b>
-Sun Oct 13 19:50:06.002 UTC
 Network            Next Hop        From            AS Path
 Route Distinguisher: 2:2 (default for vrf cust-2)
 2001:db8::24/128   2001:db8:1::9   10.0.0.14       1 65000i
@@ -437,7 +421,6 @@ Processed 3 prefixes, 3 paths
 
  
 ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 received routes</b>  
-Sun Oct 13 19:50:07.768 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
 VRF ID: 0x60000004
