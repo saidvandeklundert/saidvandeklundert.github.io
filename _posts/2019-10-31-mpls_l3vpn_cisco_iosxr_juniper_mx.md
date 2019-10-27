@@ -168,7 +168,7 @@ On Juniper, EBGP learned routes are accepted automatically so we do not need any
 It is possible to explicitly configure an import and an export policy in Juniper. In our case though, we used ‘vrf-target’. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf as well. After configuring ‘vrf-target’, Juniper will actually create several ‘hidden’ route policies:
 
 <pre style="font-size:12px">
-salt@vmx6> show policy    
+salt@vmx6> <b>show policy</b>  
 Configured policies:
 __vrf-export-cust-1-internal__
 __vrf-export-cust-2-internal__
@@ -176,12 +176,12 @@ __vrf-import-cust-1-internal__
 __vrf-import-cust-2-internal__
 lbpp
 
-salt@vmx6> show policy __vrf-export-cust-2-internal__ 
+salt@vmx6> <b>show policy __vrf-export-cust-2-internal__</b> 
 Policy __vrf-export-cust-2-internal__:
     Term unnamed:
         then community + __vrf-community-cust-2-common-internal__ [target:2:2 ] accept
 
-salt@vmx6> show policy __vrf-import-cust-2-internal__    
+salt@vmx6> <b>show policy __vrf-import-cust-2-internal__</b>
 Policy __vrf-import-cust-2-internal__:
     Term unnamed:
         from community __vrf-community-cust-2-common-internal__ [target:2:2 ]
@@ -204,7 +204,7 @@ Verification:
 We start out verifying that the BGP sessions are up on the Cisco device:
 
 <pre style="font-size:12px">
-RP/0/RP0/CPU0:ios_xr_1#show bgp vrf cust-2 summary              
+RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 summary</b>            
 Sun Oct 13 19:19:58.673 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -226,7 +226,7 @@ Speaker              60         60         60         60          60           0
 Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 10.0.0.18         0 65000    3127    2874       60    0    0 12:08:10          1
 
-RP/0/RP0/CPU0:ios_xr_1#show bgp vrf cust-2 ipv6 unicast summary 
+RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summar</b>
 Sun Oct 13 19:20:01.055 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -252,7 +252,7 @@ Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 To check the same thing on the MX, we issue the following command:
 
 <pre style="font-size:12px">
-salt@vmx6> show bgp summary instance cust-2    
+salt@vmx6> <b>show bgp summary instance cust-2</b>  
 Threading mode: BGP I/O
 Groups: 2 Peers: 2 Down peers: 0
 Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
@@ -273,7 +273,7 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 Next, we verify the IPv4 routing table on the Cisco:
 
 <pre style="font-size:12px">
-RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-2
+RP/0/RP0/CPU0:ios_xr_1#<b>show route vrf cust-2</b>
 Sun Oct 13 19:13:27.706 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
@@ -294,7 +294,7 @@ B    10.0.0.28/30 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 B    192.168.2.1/32 [20/0] via 10.0.0.18, 11:52:33
 B    192.168.2.4/32 [200/0] via 10.0.0.6 (nexthop in vrf default), 23:43:08
 
-RP/0/RP0/CPU0:ios_xr_1#show route vrf cust-2 ipv6 
+RP/0/RP0/CPU0:ios_xr_1#<b>show route vrf cust-2 ipv6</b>
 Sun Oct 27 11:06:40.453 UTC
 
 Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
@@ -324,7 +324,7 @@ B    2001:db8:1::14/127
 And on the Juniper device:
 
 <pre style="font-size:12px">
-salt@vmx6> show route table cust-2          
+salt@vmx6> <b>show route table cust-2</b>  
 
 cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -393,7 +393,7 @@ As far as the basic checks go, the other thing worth looking in to are the recei
 On the Cisco, we check the following:
 
 <pre style="font-size:12px">
-RP/0/RP0/CPU0:ios_xr_1#show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes 
+RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes</b>
 Sun Oct 13 19:46:01.312 UTC
 Network            Next Hop        From            AS Path
 Route Distinguisher: 2:2 (default for vrf cust-2)
@@ -403,7 +403,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 
 Processed 3 prefixes, 3 paths
 
-RP/0/RP0/CPU0:ios_xr_1#show bgp vrf cust-2 neighbors 10.0.0.18 received routes   
+RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 received routes</b>
 Sun Oct 13 19:46:08.063 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -425,7 +425,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 
 Processed 1 prefixes, 1 paths
 
-RP/0/RP0/CPU0:ios_xr_1#show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 advertised-routes 
+RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 advertised-routes</b>
 Sun Oct 13 19:50:06.002 UTC
 Network            Next Hop        From            AS Path
 Route Distinguisher: 2:2 (default for vrf cust-2)
@@ -436,7 +436,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 Processed 3 prefixes, 3 paths
 
  
-RP/0/RP0/CPU0:ios_xr_1#show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 received routes   
+RP/0/RP0/CPU0:ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 received routes</b>  
 Sun Oct 13 19:50:07.768 UTC
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
@@ -462,7 +462,7 @@ Processed 1 prefixes, 1 paths
 To check the same thing on the Juniper, we issue the following commands:
 
 <pre style="font-size:12px">
-salt@vmx6> show route receive-protocol bgp 10.0.0.30 table cust-2    
+salt@vmx6> <b>show route receive-protocol bgp 10.0.0.30 table cust-2</b>   
 
 cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
   Prefix                  Nexthop              MED     Lclpref    AS path
@@ -471,7 +471,7 @@ cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 cust-2.inet6.0: 7 destinations, 9 routes (7 active, 0 holddown, 0 hidden)
 
 
-salt@vmx6> show route advertising-protocol bgp 10.0.0.30 table cust-2 
+salt@vmx6> <b>show route advertising-protocol bgp 10.0.0.30 table cust-2</b>
 
 cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
   Prefix                  Nexthop              MED     Lclpref    AS path
