@@ -20,7 +20,7 @@ The configuration:
 ==================
 
 
-ios_xr_1:
+<b>ios_xr_1</b>:
 
 <pre style="font-size:12px">
 interface GigabitEthernet0/0/0/2.2004 description c2-1
@@ -55,7 +55,7 @@ router bgp 1 vrf cust-2 neighbor 2001:db8:1::8 address-family ipv6 unicast route
 router bgp 1 vrf cust-2 neighbor 2001:db8:1::8 address-family ipv6 unicast as-override
 </pre>
 
-vmx6:
+<b>vmx6</b>:
 
 <pre style="font-size:12px">
 set interfaces ge-0/0/1 unit 2007 description c2-4
