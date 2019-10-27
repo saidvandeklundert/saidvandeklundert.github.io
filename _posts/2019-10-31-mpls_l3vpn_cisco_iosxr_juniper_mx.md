@@ -165,7 +165,7 @@ On Juniper, EBGP learned routes are accepted automatically so we do not need any
 
 
 
-It is possible to explicitly configure an import and an export policy in Juniper but another option is the configuration of ‘vrf-target’. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf as well. After configuring ‘vrf-target’, Juniper will actually create some ‘hidden’ route policies:
+It is possible to explicitly configure an import and an export policy in Juniper. In our case though, we used ‘vrf-target’. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf as well. After configuring ‘vrf-target’, Juniper will actually create several ‘hidden’ route policies:
 
 <pre style="font-size:12px">
 salt@vmx01:r6> show policy    
