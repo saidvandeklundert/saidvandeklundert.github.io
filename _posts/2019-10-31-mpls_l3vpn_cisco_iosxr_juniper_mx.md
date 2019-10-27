@@ -11,11 +11,10 @@ Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-ju
 
 ![MPLS L3VPN with BGP](/img/cisco_iosxr_mpls_l3pnv_bgp.png "MPLS L3VPN with BGP")
 
-
+When looking over Juniper configuration, I always very much prefer to use the <b>display set</b> knob as I think it greatly improves the readability. I was happy to find out recently that in IOSXR, you can use <b>show running-config formal</b> to retrieve the configuration of the device in a similar way. In this article, I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
 
 The configuration:
 ==================
-
 
 <b>ios_xr_1</b>:
 
@@ -79,7 +78,6 @@ set routing-instances cust-2 protocols bgp group cpe-v6 neighbor 2001:db8:1::14
 Configuration walkthrough:
 ==========================
 
-Whenever I glance over Juniper configuration, I have always been a fan of the ‘display set’ knob. I think it greatly improves the readability. I was happy to find out recently that in IOSXR, there is something similar. When you use ‘show running-config formal’, you retrieve the configuration of the device in a similar fashion. So using the ‘show configuration | display set’ on the Juniper and using the ‘show running-config formal’ on IOSXR, here goes the walkthrough of the configuration.
 
 <b>Cisco</b>:
 
@@ -225,7 +223,7 @@ Speaker              60         60         60         60          60           0
 Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 10.0.0.18         0 65000    3127    2874       60    0    0 12:08:10          1
 
-ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summar</b>
+ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summary</b>
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
 VRF ID: 0x60000004
@@ -359,10 +357,7 @@ ff02::2/128        *[INET6/0] 2w0d 16:09:24
 </pre>
 
 
-As far as the basic checks go, the other thing worth looking in to are the received and advertised routes. 
-
-
-On the Cisco, we check the following:
+As far as the basic checks go, the other thing worth looking in to are the received and advertised routes. On the Cisco, we check the following:
 
 <pre style="font-size:12px">
 ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes</b>
@@ -428,7 +423,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 Processed 1 prefixes, 1 paths
 </pre>
 
-To check the same thing on the Juniper, we issue the following commands:
+To check the same thing on the Juniper device, we issue the following commands:
 
 <pre style="font-size:12px">
 salt@vmx6> <b>show route receive-protocol bgp 10.0.0.30 table cust-2</b>   
