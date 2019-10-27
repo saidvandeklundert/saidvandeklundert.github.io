@@ -8,9 +8,8 @@ image: /img/cisco_juniper_logo.png
 
 Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-juniper-cisco_ios_xr_mpls_vpn/), in this post, I am going to create a basic MPLS L3VPN between a Cisco IOSXR PE and a Juniper MX PE and use BGP between the CPE and the PE:
 
-{:refdef: style="text-align: center;"}
+
 ![MPLS L3VPN with BGP](/img/cisco_iosxr_mpls_l3pnv_bgp.png "MPLS L3VPN with BGP")
-{: refdef}
 
 
 
