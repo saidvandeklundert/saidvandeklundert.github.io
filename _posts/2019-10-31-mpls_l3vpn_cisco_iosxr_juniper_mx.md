@@ -91,7 +91,7 @@ vrf cust-2 address-family ipv6 unicast import route-target 2:2
 vrf cust-2 address-family ipv6 unicast export route-target 2:2
 </pre>
 
-After having created the VRF, we the interface and assign the interface to the VRF:
+After having created the VRF, we assign the interface to it:
 
 <pre style="font-size:12px">
 interface GigabitEthernet0/0/0/2.2004 description c2-1
@@ -101,7 +101,7 @@ interface GigabitEthernet0/0/0/2.2004 ipv6 address 2001:db8:1::9/127
 interface GigabitEthernet0/0/0/2.2004 encapsulation dot1q 2004
 </pre>
 
-A think worth pointing out before moving to the BGP section is that we must have a route-policy in place for the IOSXR BGP sessions to accept any route import or export. To this end, we create the following route-policy:
+A thing worth pointing out before moving to the BGP section is that we must have a route-policy in place for the IOSXR BGP sessions to accept any route import or export. To this end, we create the following route-policy:
 
 <pre style="font-size:12px">
 route-policy ACCEPT
@@ -109,14 +109,14 @@ route-policy ACCEPT
 end-policy
 </pre>
 
-Next is the actual BGP session and the options. All the customer BGP configuration for the VRF happens in the ‘router bgp 1 vrf cust-2’ configuration stanza. We want the PE to advertise the PE-CPE link for both address families, so we instruct the device to advertise the connected subnets:
+Next is the actual BGP session and the options. All the customer BGP configuration for the VRF happens in the <b>router bgp 1 vrf cust-2</b> configuration stanza. We want the PE to advertise the PE-CPE link to other PEs for both address families, so we instruct the device to advertise the connected subnets:
 
 <pre style="font-size:12px">
 router bgp 1 vrf cust-2 address-family ipv4 unicast redistribute connected
 router bgp 1 vrf cust-2 address-family ipv6 unicast redistribute connected
 </pre>
 
-Then we configure the IPv4 BGP session. We configure the remote-as and the route-policy. Additionally, we enable soft-reconfiguration inbound. This way, we can inspect the received routes from the neighbor, a behavior that is on by default on a Juniper device. To do this for both IPv4 as well as IPv6, we configure the following:
+After this, we configure the IPv4 BGP session. We specify the remote-as and the route-policy. Additionally, we enable soft-reconfiguration inbound. This way, we can inspect the received routes from the neighbor, a behavior that is on by default on a Juniper device. To do this for both IPv4 as well as IPv6, we configure the following:
 
 <pre style="font-size:12px">
 router bgp 1 vrf cust-2 neighbor 10.0.0.18 remote-as 65000
@@ -133,7 +133,8 @@ router bgp 1 vrf cust-2 neighbor 2001:db8:1::8 address-family ipv6 unicast as-ov
 
 <b>Juniper</b>:
 
-We configure the interface and the VPN, together with the route-target and route-distinguisher:
+We start configuring the interface and the VPN, together with the route-target and route-distinguisher:
+
 <pre style="font-size:12px">
 set interfaces ge-0/0/1 unit 2007 description c2-4
 set interfaces ge-0/0/1 unit 2007 vlan-id 2007
@@ -162,8 +163,7 @@ set routing-instances cust-2 protocols bgp group cpe-v6 neighbor 2001:db8:1::14
 On Juniper, EBGP learned routes are accepted automatically so we do not need any policy.
 
 
-
-It is possible to explicitly configure an import and an export policy in Juniper. In our case though, we used ‘vrf-target’. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf as well. After configuring ‘vrf-target’, Juniper will actually create several ‘hidden’ route policies:
+It is possible to explicitly configure an import and an export policy in Juniper. In our case though, we used <b>vrf-target</b>. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf. After configuring <b>vrf-target</b>, Juniper will actually create several ‘hidden’ route policies:
 
 <pre style="font-size:12px">
 salt@vmx6> <b>show policy</b>  
