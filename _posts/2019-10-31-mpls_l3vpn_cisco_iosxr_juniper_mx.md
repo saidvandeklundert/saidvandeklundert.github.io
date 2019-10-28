@@ -153,24 +153,24 @@ set routing-instances cust-2 vrf-table-label
 It is possible to explicitly configure an import and an export policy in Juniper as well. In our case though, to keep it simple, we used <b>vrf-target</b>. This will ensure the referenced route-target is attached to IPv4 as well as IPv6 routes. Additionally, it will make sure that routes tagged with that target are imported into the vrf. After configuring <b>vrf-target</b>, Juniper will actually create several <i>hidden</i> route policies that allows you to see exactly what is going on:
 
 <pre style="font-size:12px">
-salt@vmx6> <b>show policy</b>  
+salt@vmx6> <b>show policy ?</b>  
 Configured policies:
 __vrf-export-cust-1-internal__
-__vrf-export-cust-2-internal__
+<b>__vrf-export-cust-2-internal__</b>
 __vrf-import-cust-1-internal__
-__vrf-import-cust-2-internal__
+<b>__vrf-import-cust-2-internal__</b>
 lbpp
 
 salt@vmx6> <b>show policy __vrf-export-cust-2-internal__</b> 
 Policy __vrf-export-cust-2-internal__:
     Term unnamed:
-        then community + __vrf-community-cust-2-common-internal__ [target:2:2 ] accept
+        <b>then community + __vrf-community-cust-2-common-internal__ [target:2:2 ] accept</b>
 
 salt@vmx6> <b>show policy __vrf-import-cust-2-internal__</b>
 Policy __vrf-import-cust-2-internal__:
     Term unnamed:
-        from community __vrf-community-cust-2-common-internal__ [target:2:2 ]
-        then accept
+        <b>from community __vrf-community-cust-2-common-internal__ [target:2:2 ]</b>
+        <b>then accept</b>
     Term unnamed:
         then reject
 
