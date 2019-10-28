@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MPLS L3VPN on Cisco IOS XR and Juniper MX using BGP
+title: L3VPN on Cisco IOS XR and Juniper MX with BGP PE-CE Routing
 tags: [juniper, cisco, mpls, l3vpn]
 image: /img/cisco_juniper_logo.png
 ---
