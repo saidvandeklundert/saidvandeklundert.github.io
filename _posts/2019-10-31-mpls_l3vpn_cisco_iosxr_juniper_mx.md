@@ -354,7 +354,7 @@ salt@vmx6> <b>show route table cust-2</b>
                        Local via ge-0/0/1.2007              
 </pre>
 
-Notice that this one command shows you both the IPv4 as well as the IPv6 routing table for this VPN. In case you only want to look at the IPv4 or IPv6 table, you need to issue <b>show route table cust-2.inet.0</b> or <b>show route table cust-2.inet6.0</b> respectively.
+Notice that this one command shows you both the IPv4 (<b>inet.0</b>) as well as the IPv6 (<b>inet6.0</b>) routing table for this VPN. In case you only want to look at the IPv4 or IPv6 table, you need to issue the <b>show route table cust-2.inet.0</b> or the <b>show route table cust-2.inet6.0</b> command.
 
 As far as the basic checks go, the other thing worth looking in to are the received and advertised routes. On the Cisco, we check the following:
 
