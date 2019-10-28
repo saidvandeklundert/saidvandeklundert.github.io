@@ -11,14 +11,13 @@ Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-ju
 
 ![MPLS L3VPN with BGP](/img/cisco_iosxr_mpls_l3pnv_bgp.png "MPLS L3VPN with BGP")
 
-At first, I will share the complete configuration. I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
-
-After this, I will do a walkthrough of the configuration and I will finish up verifying everything.
-
+At first, I will share the complete configuration. After this, I will do a walkthrough of the configuration and I will finish up verifying everything.
 
 
 The configuration:
 ==================
+
+Because I think it is easy on the eye, I used <b>show configuration | display set</b> on the Juniper device and <b>show running-config formal</b> on the Cisco IOS XR device. 
 
 <b>ios_xr_1</b>:
 
