@@ -231,7 +231,7 @@ salt@vmx6> <b>show bgp summary instance cust-2</b>
 
 < output omitted >
 
-Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
+Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State
 10.0.0.30             65000       3151       3180       0       0  1d 0:02:28 Establ
   cust-2.inet.0: 1/1/1/0
 2001:db8:1::14        65000       3151       3179       0       0  1d 0:02:24 Establ
