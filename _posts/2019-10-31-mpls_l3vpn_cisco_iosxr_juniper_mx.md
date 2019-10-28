@@ -177,7 +177,9 @@ Policy __vrf-import-cust-2-internal__:
 salt@vmx6>
 </pre>
 
-The policies show that routes are tagged with <b>target:2:2</b> on export. Additionally, all received routes with that same extended community will be placed into the <b>cust-2</b> VPN. Another thing to note here is that BGP would normally not advertise the connected routes. But since we have <b>vrf-target</b> and <b>vrf-table-label</b> configured under the instance stanza, the PE will be advertising the connected route to the other PE devices.
+The policies show that routes are tagged with <b>target:2:2</b> on export. Additionally, all received routes with that same extended community will be placed into the <b>cust-2</b> VPN. 
+
+Another thing to note here is that BGP would normally not advertise the connected routes. But since we have <b>vrf-target</b> and <b>vrf-table-label</b> configured under the instance stanza, the PE will be advertising the connected route to the other PE devices.
 
 Next, we configure the BGP sessions for IPv4 and IPv6 inside the routing-instance:
 
@@ -267,7 +269,7 @@ Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn St
 </pre>
 
 
-Next, we verify the IPv4 routing table on the Cisco:
+Next, we verify the routing table for the VRF on the Cisco IOS XR device:
 
 <pre style="font-size:12px">
 ios_xr_1#<b>show route vrf cust-2</b>
@@ -292,7 +294,7 @@ B    2001:db8:1::14/127
       [200/0] via ::ffff:10.0.0.6 (nexthop in vrf default), 00:01:47
 </pre>
 
-And on the Juniper device:
+And on the Juniper MX device:
 
 <pre style="font-size:12px">
 salt@vmx6> <b>show route table cust-2</b>  
@@ -371,22 +373,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 Processed 3 prefixes, 3 paths
 
 ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 received routes</b>
-Sun Oct 13 19:46:08.063 UTC
-BGP VRF cust-2, state: Active
-BGP Route Distinguisher: 2:2
-VRF ID: 0x60000004
-BGP router identifier 10.0.1.1, local AS number 1
-Non-stop routing is enabled
-BGP table state: Active
-Table ID: 0xe0000004   RD version: 60
-BGP main routing table version 60
-BGP NSR Initial initsync version 17 (Reached)
-BGP NSR/ISSU Sync-Group versions 0/0
-
-Status codes: s suppressed, d damped, h history, * valid, > best
-              i - internal, r RIB-failure, S stale, N Nexthop-discard
-Origin codes: i - IGP, e - EGP, ? - incomplete
-   Network            Next Hop            Metric LocPrf Weight Path
+< output omitted >
 Route Distinguisher: 2:2 (default for vrf cust-2)
 *  192.168.2.1/32     10.0.0.18                              0 65000 i
 
@@ -403,21 +390,7 @@ Processed 3 prefixes, 3 paths
 
  
 ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast neighbors 2001:db8:1::8 received routes</b>  
-BGP VRF cust-2, state: Active
-BGP Route Distinguisher: 2:2
-VRF ID: 0x60000004
-BGP router identifier 10.0.1.1, local AS number 1
-Non-stop routing is enabled
-BGP table state: Active
-Table ID: 0xe0800004   RD version: 67
-BGP main routing table version 67
-BGP NSR Initial initsync version 21 (Reached)
-BGP NSR/ISSU Sync-Group versions 0/0
-
-Status codes: s suppressed, d damped, h history, * valid, > best
-              i - internal, r RIB-failure, S stale, N Nexthop-discard
-Origin codes: i - IGP, e - EGP, ? - incomplete
-   Network            Next Hop            Metric LocPrf Weight Path
+< output omitted >
 Route Distinguisher: 2:2 (default for vrf cust-2)
 *  2001:db8::21/128   2001:db8:1::8                          0 65000 i
 
