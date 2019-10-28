@@ -91,7 +91,7 @@ vrf cust-2 address-family ipv6 unicast import route-target 2:2
 vrf cust-2 address-family ipv6 unicast export route-target 2:2
 </pre>
 
-Instead of specifying a route-target like this, it would have also been possible to configure a route-policy. This is something worth considering if you are creating a more complex VPN topology, a hub-and-spoke VPN for instance. In this case though, we are keeping it simple. 
+Instead of specifying a route-target like this, it would have also been possible to use a route-policy to determine what the route-target should be. This is something worth considering if you are creating a more complex VPN topology that actually requires that, like a hub-and-spoke VPN for instance. In this case though, we are keeping it simple. 
 
 After having created the VRF, we configure the interface and assign it to the VRF:
 
