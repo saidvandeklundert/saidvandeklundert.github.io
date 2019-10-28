@@ -208,20 +208,8 @@ We start out verifying that the BGP sessions are up on the Cisco device:
 ios_xr_1#<b>show bgp vrf cust-2 summary</b>            
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
-VRF ID: 0x60000004
-BGP router identifier 10.0.1.1, local AS number 1
-Non-stop routing is enabled
-BGP table state: Active
-Table ID: 0xe0000004   RD version: 60
-BGP main routing table version 60
-BGP NSR Initial initsync version 17 (Reached)
-BGP NSR/ISSU Sync-Group versions 0/0
 
-BGP is operating in STANDALONE mode.
-
-
-Process       RcvTblVer   bRIB/RIB   LabelVer  ImportVer  SendTblVer  StandbyVer
-Speaker              60         60         60         60          60           0
+< output omitted >
 
 Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 10.0.0.18         0 65000    3127    2874       60    0    0 12:08:10          1
@@ -229,20 +217,8 @@ Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 ios_xr_1#<b>show bgp vrf cust-2 ipv6 unicast summary</b>
 BGP VRF cust-2, state: Active
 BGP Route Distinguisher: 2:2
-VRF ID: 0x60000004
-BGP router identifier 10.0.1.1, local AS number 1
-Non-stop routing is enabled
-BGP table state: Active
-Table ID: 0xe0800004   RD version: 51
-BGP main routing table version 51
-BGP NSR Initial initsync version 21 (Reached)
-BGP NSR/ISSU Sync-Group versions 0/0
 
-BGP is operating in STANDALONE mode.
-
-
-Process       RcvTblVer   bRIB/RIB   LabelVer  ImportVer  SendTblVer  StandbyVer
-Speaker              51         51         51         51          51           0
+< output omitted >
 
 Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
 2001:db8:1::8     0 65000    3020    2776       51    0    0 23:03:07          1
@@ -252,15 +228,9 @@ To check the same thing on the MX, we issue the following command:
 
 <pre style="font-size:12px">
 salt@vmx6> <b>show bgp summary instance cust-2</b>  
-Threading mode: BGP I/O
-Groups: 2 Peers: 2 Down peers: 0
-Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
-cust-2.inet.0        
-                       5          3          0          0          0          0
-cust-2.inet6.0       
-                       3          3          0          0          0          0
-cust-2.mdt.0         
-                       0          0          0          0          0          0
+
+< output omitted >
+
 Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
 10.0.0.30             65000       3151       3180       0       0  1d 0:02:28 Establ
   cust-2.inet.0: 1/1/1/0
