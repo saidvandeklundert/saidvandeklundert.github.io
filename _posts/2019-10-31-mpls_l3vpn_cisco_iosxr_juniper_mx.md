@@ -299,7 +299,7 @@ And on the Juniper MX device:
 <pre style="font-size:12px">
 salt@vmx6> <b>show route table cust-2</b>  
 
-cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
+<b>cust-2.inet.0</b>: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
 10.0.0.16/30       *[BGP/170] 00:53:51, MED 0, localpref 100, from 10.0.0.14
@@ -326,7 +326,7 @@ cust-2.inet.0: 5 destinations, 7 routes (5 active, 0 holddown, 0 hidden)
                       AS path: 65000 I, validation-state: unverified
                     >  to 10.0.0.30 via ge-0/0/1.2007
 
-cust-2.inet6.0: 7 destinations, 9 routes (7 active, 0 holddown, 0 hidden)
+<b>cust-2.inet6.0</b>: 7 destinations, 9 routes (7 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
 2001:db8::21/128   *[BGP/170] 00:03:21, localpref 100, from 10.0.0.14
@@ -351,14 +351,10 @@ cust-2.inet6.0: 7 destinations, 9 routes (7 active, 0 holddown, 0 hidden)
 2001:db8:1::14/127 *[Direct/0] 2w0d 16:09:12
                     >  via ge-0/0/1.2007
 2001:db8:1::15/128 *[Local/0] 2w0d 16:09:12
-                       Local via ge-0/0/1.2007
-fe80::5254:7:d77c:df65/128              
-                   *[Local/0] 2w0d 16:09:12
-                       Local via ge-0/0/1.2007
-ff02::2/128        *[INET6/0] 2w0d 16:09:24
-                       MultiRecv                    
+                       Local via ge-0/0/1.2007              
 </pre>
 
+Notice that this one command shows you both the IPv4 as well as the IPv6 routing table for this VPN. In case you only want to look at the IPv4 or IPv6 table, you need to issue <b>show route table cust-2.inet.0</b> or <b>show route table cust-2.inet6.0</b> respectively.
 
 As far as the basic checks go, the other thing worth looking in to are the received and advertised routes. On the Cisco, we check the following:
 
