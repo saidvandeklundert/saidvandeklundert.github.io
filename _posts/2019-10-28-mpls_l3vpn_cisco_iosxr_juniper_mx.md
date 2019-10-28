@@ -11,7 +11,11 @@ Using the network I created [previously](www.saidvandeklundert.net/2019-08-28-ju
 
 ![MPLS L3VPN with BGP](/img/cisco_iosxr_mpls_l3pnv_bgp.png "MPLS L3VPN with BGP")
 
-When looking over Juniper configuration, I always prefer to use the <b>display set</b> knob as I think it greatly improves the readability. I was happy to find out recently that in IOS XR, you can use <b>show running-config formal</b> to retrieve the configuration of the device in a similar way. In this article, I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
+At first, I will share the complete configuration. I will use <b>show configuration | display set</b> on the Juniper MX device and <b>show running-config formal</b> on the Cisco IOS XR device.
+
+After this, I will do a walkthrough of the configuration and I will finish up verifying everything.
+
+
 
 The configuration:
 ==================
