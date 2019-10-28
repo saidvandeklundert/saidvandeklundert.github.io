@@ -356,7 +356,7 @@ salt@vmx6> <b>show route table cust-2</b>
 
 Notice that this one command shows you both the IPv4 (<b>inet.0</b>) as well as the IPv6 (<b>inet6.0</b>) routing table for this VPN. In case you only want to look at the IPv4 or IPv6 table, you need to issue the <b>show route table cust-2.inet.0</b> or the <b>show route table cust-2.inet6.0</b> command.
 
-As far as the basic checks go, the other thing worth looking in to are the received and advertised routes. On the Cisco, we check the following:
+As far as the basic checks go, the other thing worth looking in to are the received and advertised routes. To check these things on the Cisco device, we issue the following commands:
 
 <pre style="font-size:12px">
 ios_xr_1#<b>show bgp vrf cust-2 neighbors 10.0.0.18 advertised-routes</b>
@@ -393,7 +393,7 @@ Route Distinguisher: 2:2 (default for vrf cust-2)
 Processed 1 prefixes, 1 paths
 </pre>
 
-To check the same thing on the Juniper device, we issue the following commands:
+To check the same thing on the Juniper device, we use the following:
 
 <pre style="font-size:12px">
 salt@vmx6> <b>show route table cust-2 receive-protocol bgp 10.0.0.30</b>   
