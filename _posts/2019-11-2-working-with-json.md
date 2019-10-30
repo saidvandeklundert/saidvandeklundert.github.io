@@ -31,15 +31,15 @@ The values that you will find in these data structures are the following:
 JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. Another thing that is nice to know is that every JSON file is also a valid YAML file.
 
 
-| Python              | encodes to JSON | decodes to Python |
-| ------------------- | --------------- | ----------------- |
-| dict                | object          | dict              |
-| list, tuple         | array           | list              |
-| str                 | string          | str               |
-| int, float          | number          | int, float        |
-| True                | true            | True              |
-| False               | false           | False             |
-| None                | null            | None              |
+| Python data structures | encodes to JSON | decodes to Python |
+| ---------------------- | --------------- | ----------------- |
+| dict                   | object          | dict              |
+| list, tuple            | array           | list              |
+| str                    | string          | str               |
+| int, float             | number          | int, float        |
+| True                   | true            | True              |
+| False                  | false           | False             |
+| None                   | null            | None              |
 
 
 Basic operations using JSON in Python
