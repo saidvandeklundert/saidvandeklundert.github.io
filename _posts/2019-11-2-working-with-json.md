@@ -149,3 +149,6 @@ template = Template('''
 # render template and send the output to screen:
 print(template.render(routers = routers))
 ```
+
+
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/workgin_with_json/_posts/2019-11-2-working-with-json.md
