@@ -30,6 +30,8 @@ The values that you will find in these data structures are the following:
 
 JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. Another thing that is nice to know is that every JSON file is also a valid YAML file.
 
+The following is a table that show what happens when Python is encoded to JSON and when JSON is decoded to Python. The first column shows the Python data structures. The second column displays what values those data structures turn into when they are encoded into JSON. The last column shows the data structure that you'll end up with after you decode JSON to Python.
+
 
 | Python data structures | encodes to JSON | decodes to Python |
 | ---------------------- | --------------- | ----------------- |
