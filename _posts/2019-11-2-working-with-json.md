@@ -97,6 +97,24 @@ print(s)
 
 ```
 
+
+<b>Kwargs to make the output more pretty</b>
+
+separators=(',', ': ')
+
+```python
+#!/usr/bin/python3
+from json import load, dumps
+import pprint
+
+with open('dictionary.json', 'r') as f:    
+    d = load(f)
+
+print(dumps(d))
+
+print(dumps(d, indent=4, separators=(',', ': ')))
+```
+
 <b>dictify page</b>
 
 
