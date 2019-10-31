@@ -20,13 +20,14 @@ The two data structures available in JSON are:
 An object is similar to a Python dictionary and an array is similar to a list in Python.
 
 The values that you will find in these data structures are the following:
--	String: 0 or more Unicode characters
--	Number: an integer or float
+-	String (0 or more Unicode characters)
+-	Number (integer or float)
 -	true
 -	false
 -	null
 -	Object
 -	Array
+
 
 JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. Another thing that is nice to know is that every JSON file is also a valid YAML file.
 
@@ -42,6 +43,16 @@ The following is a conversion table that show what happens when Python is serial
 | True                   | true               | True                   |
 | False                  | false              | False                  |
 | None                   | null               | None                   |
+
+| JSON value         | deserializes to Python |
+| ------------------ | ---------------------- |
+| object             | dict                   |
+| array              | list                   |
+| string             | str                    |
+| number             | int, float             |
+| true               | True                   |
+| false              | False                  |
+| null               | None                   |
 
 
 Basic operations using JSON in Python
