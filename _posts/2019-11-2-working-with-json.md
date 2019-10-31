@@ -14,8 +14,8 @@ JSON overview
 JSON is an open standard format that can be used to store or transmit data. 
 
 The two data structures available in JSON are:
--	<b>Objects</b>: an unordered collection of one or more key-value pairs enclosed in braces {}
--	<b>Arrays</b>: and ordered collection of values enclosed in brackets, [].
+-	<b>Objects</b>: an unordered collection of one or more key-value pairs enclosed in braces <b>{}</b>.
+-	<b>Arrays</b>: and ordered collection of values enclosed in brackets <b>[]</b>.
 
 An object is similar to a Python dictionary and an array is similar to a list in Python.
 
@@ -31,18 +31,19 @@ The values that you will find in these data structures are the following:
 
 JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. Another thing that is nice to know is that every JSON file is also a valid YAML file.
 
-The following is a conversion table that show what happens when Python is serialized to JSON and when JSON is serialized to Python. The first column shows the Python data structures. The second column displays what values those data structures turn into when they are encoded into JSON. The last column shows the data structure that you'll end up with after you decode JSON to Python.
+Conversion table for translating Python to JSON:
 
+| Python data structures | serializes to JSON |
+| ---------------------- | ------------------ |
+| dict                   | object             |
+| list, tuple            | array              |
+| str                    | string             |
+| int, float             | number             |
+| True                   | true               |
+| False                  | false              |
+| None                   | null               |
 
-| Python data structures | serializes to JSON | deserializes to Python |
-| ---------------------- | ------------------ | ---------------------- |
-| dict                   | object             | dict                   |
-| list, tuple            | array              | list                   |
-| str                    | string             | str                    |
-| int, float             | number             | int, float             |
-| True                   | true               | True                   |
-| False                  | false              | False                  |
-| None                   | null               | None                   |
+Conversion table fortranslating JSON to Python:
 
 | JSON value         | deserializes to Python |
 | ------------------ | ---------------------- |
