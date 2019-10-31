@@ -5,7 +5,7 @@ tags: [automation, python]
 image: /img/python-logo.png
 ---
 
-JavaScript Object Notation, or JSON, is something that started popping up more and more the moment I started doing (Net)DevOps. I decided to combine the notes and examples I had gathered so far into this post.
+JavaScript Object Notation, or JSON, is something that started popping up more and more the moment I started doing (Net)DevOps. These are some of the notes and examples I had gathered so far.
 
 
 JSON overview
@@ -104,14 +104,34 @@ s = dumps(d)
 
 ```python
 #!/usr/bin/python3
-from json import load, dumps
-import pprint
+from json import dumps
 
-with open('dictionary.json', 'r') as f:    
-    d = load(f)
-
+d = {"string": "word", "integer": 2, "float": 2.15, "True": True, "False": False, "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], "null": None }
+print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
+
+The previous outputs to:
+<pre style="font-size:12px">
+{"string": "word", "integer": 2, "float": 2.15, "True": true, "False": false, "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], "null": null}
+{
+    "string": "word",
+    "integer": 2,
+    "float": 2.15,
+    "True": true,
+    "False": false,
+    "dict": {
+        "a": "a",
+        "b": "b"
+    },
+    "list": [
+        0,
+        1,
+        2
+    ],
+    "null": null
+}
+</pre>
 
 <b>Dictify a web page</b>
 
