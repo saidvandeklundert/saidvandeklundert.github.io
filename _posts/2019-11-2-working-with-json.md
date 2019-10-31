@@ -64,21 +64,16 @@ There are multiple options available, but the only module I ever used is the one
 
 <b>Store dictionary as json</b>
 
-
 ```python
-#!/usr/bin/python3
 from json import dump
 
 d = {
-    'string' : 'word',
-    'integer' : 2,
-    'float' : 2.15,
-    'True' : True,
-    'False' : False,
-    'dict' : { 'a' : 'a', 'b' : 'b', },
-    'list' : [ 0, 1, 2, ],
-    'None' : None,
+    'Automate the Boring Stuff with Python' : 'Al Sweigart',
+    'Fluent Python' : 'Luciano Ramalho',
+    'Learning Python' : 'Mark Lutz',
+    'Python Tricks' : 'Dan Bader',
 }
+
 with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
@@ -91,8 +86,6 @@ from json import load
 
 with open('dictionary.json', 'r') as f:    
     d = load(f)
-
-print(d)
 ```
 
 <b>Emit json as string</b>
@@ -105,14 +98,9 @@ with open('dictionary.json', 'r') as f:
     d = load(f)
 
 s = dumps(d)
-print(s)
-
 ```
 
-
-<b>Kwargs to make the output more pretty</b>
-
-separators=(',', ': ')
+<b>Kwargs to make the output prettier on the eyes:</b>
 
 ```python
 #!/usr/bin/python3
@@ -122,13 +110,10 @@ import pprint
 with open('dictionary.json', 'r') as f:    
     d = load(f)
 
-print(dumps(d))
-
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
 
-<b>dictify page</b>
-
+<b>Dictify a web page</b>
 
 ```python
 #!/usr/bin/python3
@@ -149,8 +134,7 @@ pprint(d_json_test)
 pprint(json.loads(urlopen('http://www.reddit.com/r/all/top/.json').read()))
 ```
 
-<b>Load json in jinja</b>
-
+<b>Using JSON in jinja</b>
 
 ```python
 #!/usr/bin/python3
@@ -181,6 +165,5 @@ template = Template('''
 # render template and send the output to screen:
 print(template.render(routers = routers))
 ```
-
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/workgin_with_json/_posts/2019-11-2-working-with-json.md
