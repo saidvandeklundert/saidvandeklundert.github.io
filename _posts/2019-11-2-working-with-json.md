@@ -78,12 +78,6 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
-Outputs to:
-<pre style="font-size:12px">
-[svandeklundert@saltdal1002 test]$ more dictionary.json 
-{"Python Tricks": "Dan Bader", "Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz"}
-</pre>
-
 <b>Load json from a file</b>
 
 ```python
@@ -93,12 +87,6 @@ from json import load
 with open('dictionary.json', 'r') as f:    
     d = load(f)
 ```
-
-Outputs to:
-<pre style="font-size:12px">
->>> d
-{'Python Tricks': 'Dan Bader', 'Automate the Boring Stuff with Python': 'Al Sweigart', 'Fluent Python': 'Luciano Ramalho', 'Learning Python': 'Mark Lutz'}
-</pre>
 
 <b>Emit json as string</b>
 
@@ -112,13 +100,6 @@ with open('dictionary.json', 'r') as f:
 s = dumps(d)
 ```
 
-Outputs to:
-
-<pre style="font-size:12px">
->>> s
-'{"Python Tricks": "Dan Bader", "Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz"}'
-</pre>
-
 <b>Kwargs to make the output prettier on the eyes:</b>
 
 ```python
@@ -129,29 +110,6 @@ d = {"string": "word", "integer": 2, "float": 2.15, "True": True, "False": False
 print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
-
-Outputs to:
-
-<pre style="font-size:12px">
-{"string": "word", "integer": 2, "float": 2.15, "True": true, "False": false, "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], "null": null}
-{
-    "string": "word",
-    "integer": 2,
-    "float": 2.15,
-    "True": true,
-    "False": false,
-    "dict": {
-        "a": "a",
-        "b": "b"
-    },
-    "list": [
-        0,
-        1,
-        2
-    ],
-    "null": null
-}
-</pre>
 
 <b>Dictify a web page</b>
 
