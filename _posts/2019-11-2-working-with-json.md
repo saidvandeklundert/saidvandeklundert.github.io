@@ -5,7 +5,7 @@ tags: [automation, python]
 image: /img/python-logo.png
 ---
 
-JavaScript Object Notation, or JSON, is something that started popping up more and more the moment I started doing (Net)DevOps. These are some of the notes and examples I had gathered so far.
+JavaScript Object Notation, or JSON, is something that started popping up more and more the moment I started doing (Net)DevOps. These are some of my notes and examples.
 
 
 JSON overview
@@ -59,10 +59,12 @@ Conversion table fortranslating JSON to Python:
 Basic operations using JSON in Python
 =====================================
 
-There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following examples all use this library.
+There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). 
+
+The following Python 3.6 examples all use this library.
 
 
-<b>Store dictionary as json</b>
+<b>Store dictionary as JSON</b>
 
 ```python
 from json import dump
@@ -78,7 +80,7 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
-<b>Load json from a file</b>
+<b>Load JSON from a file</b>
 
 ```python
 #!/usr/bin/python3
@@ -88,7 +90,7 @@ with open('dictionary.json', 'r') as f:
     d = load(f)
 ```
 
-<b>Emit json as string</b>
+<b>Emit JSON as string</b>
 
 ```python
 #!/usr/bin/python3
@@ -122,10 +124,10 @@ from urllib.request import urlopen
 #open the web page:
 html_content = urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()  
 
-#load the json:
+#load the JSON:
 d_json_test = json.loads(html_content)
 
-#print the json to screen:
+#print the JSON to screen:
 pprint(d_json_test)
 
 #in one line:
