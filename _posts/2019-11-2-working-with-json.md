@@ -11,9 +11,7 @@ JavaScript Object Notation, or JSON, is something that started popping up more a
 JSON overview
 =============
 
-JSON is an open standard format that can be used to store or transmit data. 
-
-The two data structures available in JSON are:
+JSON is an open standard format that can be used to store or transmit data. The two data structures available in JSON are:
 -	<b>Objects</b>: an unordered collection of one or more key-value pairs enclosed in braces <b>{}</b>.
 -	<b>Arrays</b>: and ordered collection of values enclosed in brackets <b>[]</b>.
 
@@ -59,9 +57,7 @@ Conversion table fortranslating JSON to Python:
 Basic operations using JSON in Python
 =====================================
 
-There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). 
-
-The following Python 3.6 examples all use this library.
+There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library.
 
 
 <b>Store dictionary as JSON</b>
@@ -82,6 +78,8 @@ with open('dictionary.json', 'w') as f:
 
 <b>Load JSON from a file</b>
 
+Load the previously created file as a dictionary:
+
 ```python
 #!/usr/bin/python3
 from json import load
@@ -92,6 +90,8 @@ with open('dictionary.json', 'r') as f:
 
 <b>Emit JSON as string</b>
 
+Loads the file that the first example created and prints the JSON-string to screen.
+
 ```python
 #!/usr/bin/python3
 from json import load, dumps
@@ -100,6 +100,8 @@ with open('dictionary.json', 'r') as f:
     d = load(f)
 
 s = dumps(d)
+
+print(s)
 ```
 
 <b>Kwargs to make the output prettier on the eyes:</b>
@@ -108,9 +110,13 @@ s = dumps(d)
 #!/usr/bin/python3
 from json import dumps
 
-d = {"string": "word", "integer": 2, "float": 2.15, "True": True, "False": False, "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], "null": None }
+d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
+#print the original:
 print(dumps(d))
+#print the pretty output:
 print(dumps(d, indent=4, separators=(',', ': ')))
+#Optionally sort the keys also:
+print(dumps(d, indent=4, separators=(',', ': '), sort_keys= True))
 ```
 
 <b>Dictify a web page</b>
