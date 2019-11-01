@@ -15,9 +15,9 @@ JSON is an open standard format that can be used to store or transmit data. The 
 -	<b>Objects</b>: an unordered collection of one or more key-value pairs enclosed in braces <b>{}</b>.
 -	<b>Arrays</b>: and ordered collection of values enclosed in brackets <b>[]</b>.
 
-An object is similar to a Python dictionary and an array is similar to a list in Python.
+An object is similar to a Python dictionary and an array is similar to a Python list.
 
-The values that you will find in these data structures are the following:
+The values that you can find in these data structures are the following:
 -	String (0 or more Unicode characters)
 -	Number (integer or float)
 -	true
@@ -27,7 +27,7 @@ The values that you will find in these data structures are the following:
 -	Array
 
 
-JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. Another thing that is nice to know is that every JSON file is also a valid YAML file.
+JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. 
 
 Conversion table for translating Python to JSON:
 
@@ -124,6 +124,16 @@ d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
 print(dumps(d))
 #Make the output pretty and sort it:
 print(dumps(d, indent=4, separators=(',', ': '), sort_keys= True))
+```
+
+<b>Every JSON file is also a valid YAML file</b>
+
+```python
+#!/usr/bin/python3
+from yaml import load
+
+with open('dictionary.json', 'r') as f:    
+    d = load(f)
 ```
 
 <b>Dictify a web page</b>
