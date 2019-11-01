@@ -60,7 +60,7 @@ Basic operations using JSON in Python
 There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library.
 
 
-<b>Store dictionary as JSON</b>
+<b>Store Python dictionary as JSON in a file</b>
 
 ```python
 from json import dump
@@ -76,9 +76,7 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
-<b>Load JSON from a file</b>
-
-Load the previously created file as a dictionary:
+<b>Load JSON as a Python dictionary from a file</b>
 
 ```python
 #!/usr/bin/python3
@@ -89,8 +87,6 @@ with open('dictionary.json', 'r') as f:
 ```
 
 <b>Emit JSON as string</b>
-
-Loads the file that the first example created and prints the JSON-string to screen.
 
 ```python
 #!/usr/bin/python3
@@ -104,7 +100,7 @@ s = dumps(d)
 print(s)
 ```
 
-<b>Kwargs to make the output prettier on the eyes:</b>
+<b>JSON kwargs to make the output prettier on the eyes:</b>
 
 ```python
 #!/usr/bin/python3
@@ -115,7 +111,18 @@ d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
 print(dumps(d))
 #print the pretty output:
 print(dumps(d, indent=4, separators=(',', ': ')))
-#Optionally sort the keys also:
+```
+
+<b>JSON kwargs to sort the output:</b>
+
+```python
+#!/usr/bin/python3
+from json import dumps
+
+d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
+#print the original:
+print(dumps(d))
+#Make the output pretty and sort it:
 print(dumps(d, indent=4, separators=(',', ': '), sort_keys= True))
 ```
 
