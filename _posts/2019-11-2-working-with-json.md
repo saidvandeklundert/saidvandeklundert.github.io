@@ -126,7 +126,7 @@ print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': '), sort_keys= True))
 ```
 
-<b>Every JSON file is also a valid YAML file</b>
+<b>Loading JSON as YAML because every JSON file is also a valid YAML file</b>
 
 ```python
 #!/usr/bin/python3
