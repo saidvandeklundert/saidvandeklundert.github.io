@@ -102,6 +102,8 @@ print(s)
 
 <b>JSON kwargs to make the output prettier on the eyes:</b>
 
+Works for <b>dump</b> as well as <b>dumps</b>:
+
 ```python
 #!/usr/bin/python3
 from json import dumps
@@ -114,6 +116,8 @@ print(dumps(d, indent=4, separators=(',', ': ')))
 ```
 
 <b>JSON kwargs to sort the output:</b>
+
+Works for <b>dump</b> as well as <b>dumps</b>:
 
 ```python
 #!/usr/bin/python3
