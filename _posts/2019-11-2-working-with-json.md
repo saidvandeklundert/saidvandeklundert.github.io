@@ -79,7 +79,6 @@ with open('dictionary.json', 'w') as f:
 <b>Load JSON as a Python dictionary from a file</b>
 
 ```python
-#!/usr/bin/python3
 from json import load
 
 with open('dictionary.json', 'r') as f:    
@@ -89,7 +88,6 @@ with open('dictionary.json', 'r') as f:
 <b>Emit JSON as string</b>
 
 ```python
-#!/usr/bin/python3
 from json import load, dumps
 
 with open('dictionary.json', 'r') as f:    
@@ -105,7 +103,6 @@ print(s)
 Works for <b>dump</b> as well as <b>dumps</b>:
 
 ```python
-#!/usr/bin/python3
 from json import dumps
 
 d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
@@ -120,7 +117,6 @@ print(dumps(d, indent=4, separators=(',', ': ')))
 Works for <b>dump</b> as well as <b>dumps</b>:
 
 ```python
-#!/usr/bin/python3
 from json import dumps
 
 d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
@@ -133,7 +129,6 @@ print(dumps(d, indent=4, separators=(',', ': '), sort_keys= True))
 <b>Loading JSON as YAML because every JSON file is also a valid YAML file</b>
 
 ```python
-#!/usr/bin/python3
 from yaml import load
 
 with open('dictionary.json', 'r') as f:    
@@ -143,7 +138,6 @@ with open('dictionary.json', 'r') as f:
 <b>Dictify a web page</b>
 
 ```python
-#!/usr/bin/python3
 import json
 from pprint import pprint
 from urllib.request import urlopen
@@ -164,7 +158,6 @@ pprint(json.loads(urlopen('http://www.reddit.com/r/all/top/.json').read()))
 <b>Using JSON in jinja</b>
 
 ```python
-#!/usr/bin/python3
 import json
 from jinja2 import Template
 
