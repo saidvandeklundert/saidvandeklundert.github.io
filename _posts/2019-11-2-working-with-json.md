@@ -56,7 +56,7 @@ Output:
 {"Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz", "Python Tricks": "Dan Bader"}
 </pre>
 
-<b>Load JSON as a Python dictionary from a file</b>
+<h2>Load JSON as a Python dictionary from a file</h2>
 
 ```python
 #!/usr/bin/python3
@@ -74,7 +74,7 @@ with open('dictionary.json', 'r') as f:
 >>> 
 </pre>
 
-<b>Emit JSON as string</b>
+<h2>Emit JSON as string</h2>
 
 ```python
 from json import load, dumps
@@ -87,7 +87,7 @@ s = dumps(d)
 print(s)
 ```
 
-<b>JSON kwargs to make the output prettier on the eyes:</b>
+<h2>JSON kwargs to make the output prettier on the eyes</h2>
 
 Works for <b>dump</b> as well as <b>dumps</b>:
 
@@ -107,7 +107,7 @@ print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
 
-<b>JSON kwargs to sort the output:</b>
+<h2>JSON kwargs to sort the output:</h2>
 
 Works for <b>dump</b> as well as <b>dumps</b>:
 
@@ -121,7 +121,7 @@ print(dumps(d))
 print(dumps(d, sort_keys= True))
 ```
 
-<b>Loading JSON as YAML because every JSON file is also a valid YAML file</b>
+<h2>Loading JSON as YAML because every JSON file is also a valid YAML file</h2>
 
 ```python
 from yaml import load
@@ -130,7 +130,7 @@ with open('dictionary.json', 'r') as f:
     d = load(f)
 ```
 
-<b>Dictify a web page</b>
+<h2>Dictify a web page</h2>
 
 ```python
 import json
@@ -150,7 +150,7 @@ pprint(d_json_test)
 pprint(json.loads(urlopen('http://www.reddit.com/r/all/top/.json').read()))
 ```
 
-<b>Using JSON in jinja</b>
+<h2>Using JSON in jinja</h2>
 
 ```python
 import json
@@ -182,7 +182,8 @@ print(template.render(routers = routers))
 ```
 
 
-Conversion table for translating Python to JSON:
+<h2>Conversion table for translating Python to JSON:</h>
+
 
 | Python data structures | serializes to JSON |
 | ---------------------- | ------------------ |
