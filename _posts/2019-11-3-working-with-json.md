@@ -50,7 +50,7 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
-Note: any file opened using <b>with</b> is automatically closed when the script is done with it.
+Note: any file opened using <b>with</b> is automatically closed when the script is done using the file.
 
 <h2>Load JSON as a Python dictionary from a file using load</h2>
 
