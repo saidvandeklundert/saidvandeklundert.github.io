@@ -101,8 +101,6 @@ print(dumps(d, indent=4, separators=(',', ': ')))
 Output to show the difference:
 
 <pre style="font-size:12px">
-[said@test]$ <b>./pretty_json.py</b>
-
 {"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
 
 {
