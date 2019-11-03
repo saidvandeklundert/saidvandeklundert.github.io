@@ -234,10 +234,7 @@ Routing table: default.inet
 Internet:
 Destination        Type RtRef Next hop           Type Index NhRef Netif
 192.168.1.4/32     user     0 2.0.0.33          <font color='red'>Push 299840</font>  1431     2 xe-0/2/0.9
-
-Logical system: Tiberius
-Routing table: __master.anon__.inet
-Internet:                    
+                  
 </pre>
 <p>
 Here, we can see that the label we saw earlier in our 'show rsvp session name simple-lsp-to-Commodus extensive' is installed in the forwarding table.
