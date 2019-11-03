@@ -15,7 +15,7 @@ In this article, we’ll go through the configuration of both <b>link-protection
 
 <p>
 The routers in the network above are running IS-IS and they have MPLS and RSVP enabled for the interfaces that connect them together. 
-The configuration is still largely like it was during <a href="2015-05-12-juniper-basic-rsvp-signaled-lsp-mx.md">this</a> post. 
+The configuration is still largely like it was during <a href="https://saidvandeklundert.net/2015-05-12-juniper-basic-rsvp-signaled-lsp-mx/">this</a> post. 
 </p>
 <h3>
 Link-protection:
@@ -336,5 +336,5 @@ That’s all there is to it. A little recap picture to sum things up:
 ![RSVP node-link protection](/img/node-link-protection-6.png "RSVP node-link protection")      
 
 <p>
-Complete configuration is <a href="2015-05-17-link-protection-and-node-link-protection-complete-config.md">here</a>.
+Complete configuration is <a href="https://saidvandeklundert.net/2015-05-17-link-protection-and-node-link-protection-complete-config/">here</a>.
 </p>
