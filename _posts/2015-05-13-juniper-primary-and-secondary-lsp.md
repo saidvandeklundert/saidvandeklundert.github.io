@@ -108,6 +108,7 @@ Total 1 displayed, Up 1, Down 0
 <p>
 Alternatively, you can see the same information using rsvp show commands;
 </p>
+
 <pre style="font-size:12px">
 play@MX480-TEST:Tiberius> <b>show rsvp session ingress name L2circuit detail</b>
 Ingress RSVP: 4 sessions
@@ -149,6 +150,7 @@ Ingress RSVP: 4 sessions
   Record route: <self> 2.0.0.9 2.0.0.49 2.0.0.57 2.0.0.54
 Total 2 displayed, Up 2, Down 0
 </pre>
+
 <p>
 Next-up will be activate link-protection and node-link-protection.
 </p>

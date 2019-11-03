@@ -195,7 +195,7 @@ Transit RSVP: 0 sessions
 Total 0 displayed, Up 0, Down 0                    
 </pre>
 <p>
-    This output is similar to the ‘show mpls lsp xxx extensive’. 
+    This output is similar to the <b>show mpls lsp xxx extensive</b>. 
 	It also shows us the tail-end and the head-end router and whether it is up or not. 
 	Other things that are interesting is the Adspec, telling us the MTU for the LSP is 1500, and the received label, which is 299840. 
 	This label will be installed in the forwarding table for any prefix we decide to route across the LSP.
