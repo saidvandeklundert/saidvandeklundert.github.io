@@ -129,7 +129,7 @@ Ingress RSVP: 4 sessions
   PATH sentto: 2.0.0.33 (xe-0/2/0.9) 1 pkts
   RESV rcvfrom: 2.0.0.33 (xe-0/2/0.9) 1 pkts
   Explct route: 2.0.0.33 2.0.0.42 2.0.0.66 2.0.0.21
-  Record route: <self> 2.0.0.33 2.0.0.42 2.0.0.66 2.0.0.21
+  Record route: self 2.0.0.33 2.0.0.42 2.0.0.66 2.0.0.21
 
 1.1.1.4
   From: 1.1.1.9, LSPstate: Up, ActiveRoute: 0
@@ -147,7 +147,7 @@ Ingress RSVP: 4 sessions
   PATH sentto: 2.0.0.9 (xe-0/2/0.3) 1 pkts
   RESV rcvfrom: 2.0.0.9 (xe-0/2/0.3) 1 pkts
   Explct route: 2.0.0.9 2.0.0.49 2.0.0.57 2.0.0.54
-  Record route: <self> 2.0.0.9 2.0.0.49 2.0.0.57 2.0.0.54
+  Record route: self 2.0.0.9 2.0.0.49 2.0.0.57 2.0.0.54
 Total 2 displayed, Up 2, Down 0
 </pre>
 
