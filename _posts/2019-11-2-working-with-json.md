@@ -50,11 +50,6 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
-Output:
-<pre style="font-size:12px">
-[said@test]$ more dictionary.json 
-{"Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz", "Python Tricks": "Dan Bader"}
-</pre>
 
 <h2>Load JSON as a Python dictionary from a file using load</h2>
 
@@ -65,18 +60,11 @@ from json import load
 with open('dictionary.json', 'r') as f:    
     d = load(f)
 ```
-<pre style="font-size:12px">
-[said@test]$ python3 -i load_json.py 
->>> d
-{'Automate the Boring Stuff with Python': 'Al Sweigart', 'Fluent Python': 'Luciano Ramalho', 'Learning Python': 'Mark Lutz', 'Python Tricks': 'Dan Bader'}
->>> type(d)
-<class 'dict'>
->>> 
-</pre>
 
 <h2>Emit JSON as string using dumps</h2>
 
 ```python
+#!/usr/bin/python3
 from json import load, dumps
 
 with open('dictionary.json', 'r') as f:    
@@ -92,6 +80,7 @@ print(s)
 Works for <b>dump</b> as well as <b>dumps</b>:
 
 ```python
+#!/usr/bin/python3
 from json import dumps
 
 d = {
@@ -99,6 +88,7 @@ d = {
         'case-sensitive',
         'does not care about whitespaces',
         'does not offer a way to put in comments',
+        'valid YAML',
         ], 
     }
 #print the original:
@@ -107,34 +97,38 @@ print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
 
+<pre style="font-size:12px">
+[said@test]$ <b>./pretty_json.py</b>
+{"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
+{
+    "JSON is": [
+        "case-sensitive",
+        "does not care about whitespaces",
+        "does not offer a way to put in comments",
+        "valid YAML"
+    ]
+}
+</pre>
+
 <h2>JSON kwargs to sort the output:</h2>
 
 Works for <b>dump</b> as well as <b>dumps</b>:
 
 ```python
+#!/usr/bin/python3
 from json import dumps
 
 d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
-#print the original:
+#Print the original:
 print(dumps(d))
-#Make the output pretty and sort it:
+#Sort it by keys and print it:
 print(dumps(d, sort_keys= True))
-```
-
-<h2>Loading JSON as YAML</h2>
-
-Possible because because every JSON file is also a valid YAML file.
-
-```python
-from yaml import load
-
-with open('dictionary.json', 'r') as f:    
-    d = load(f)
 ```
 
 <h2>Dictify a web page</h2>
 
 ```python
+#!/usr/bin/python3
 import json
 from pprint import pprint
 from urllib.request import urlopen
@@ -155,6 +149,7 @@ pprint(json.loads(urlopen('http://www.reddit.com/r/all/top/.json').read()))
 <h2>Using JSON in jinja</h2>
 
 ```python
+#!/usr/bin/python3
 import json
 from jinja2 import Template
 
