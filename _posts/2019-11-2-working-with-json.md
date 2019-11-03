@@ -17,7 +17,7 @@ JSON is an open standard format that can be used to store or transmit data. The 
 
 An object is similar to a Python dictionary and an array is similar to a Python list.
 
-The values that you can find in these data structures are the following:
+The values that you can use or come across in these data structures are the following:
 -	String (0 or more Unicode characters)
 -	Number (integer or float)
 -	true
@@ -25,33 +25,6 @@ The values that you can find in these data structures are the following:
 -	null
 -	Object
 -	Array
-
-
-JSON is case-sensitive, does not care about whitespaces and does not offer a way to put in any comments. 
-
-Conversion table for translating Python to JSON:
-
-| Python data structures | serializes to JSON |
-| ---------------------- | ------------------ |
-| dict                   | object             |
-| list, tuple            | array              |
-| str                    | string             |
-| int, float             | number             |
-| True                   | true               |
-| False                  | false              |
-| None                   | null               |
-
-Conversion table fortranslating JSON to Python:
-
-| JSON value         | deserializes to Python |
-| ------------------ | ---------------------- |
-| object             | dict                   |
-| array              | list                   |
-| string             | str                    |
-| number             | int, float             |
-| true               | True                   |
-| false              | False                  |
-| null               | None                   |
 
 
 Basic operations using JSON in Python
@@ -105,7 +78,13 @@ Works for <b>dump</b> as well as <b>dumps</b>:
 ```python
 from json import dumps
 
-d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
+d = {
+    "JSON is": [
+        'case-sensitive',
+        'does not care about whitespaces',
+        'does not offer a way to put in comments',
+        ], 
+    }
 #print the original:
 print(dumps(d))
 #print the pretty output:
@@ -185,5 +164,30 @@ template = Template('''
 # render template and send the output to screen:
 print(template.render(routers = routers))
 ```
+
+
+Conversion table for translating Python to JSON:
+
+| Python data structures | serializes to JSON |
+| ---------------------- | ------------------ |
+| dict                   | object             |
+| list, tuple            | array              |
+| str                    | string             |
+| int, float             | number             |
+| True                   | true               |
+| False                  | false              |
+| None                   | null               |
+
+Conversion table fortranslating JSON to Python:
+
+| JSON value         | deserializes to Python |
+| ------------------ | ---------------------- |
+| object             | dict                   |
+| array              | list                   |
+| string             | str                    |
+| number             | int, float             |
+| true               | True                   |
+| false              | False                  |
+| null               | None                   |
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/workgin_with_json/_posts/2019-11-2-working-with-json.md
