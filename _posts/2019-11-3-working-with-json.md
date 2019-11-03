@@ -186,7 +186,7 @@ This will output the following:
     }
 }
 </pre>
-The dicitonaries were sorted, the list that was present in of the dictionaries was not.
+The dictionaries were sorted, the list that was present in of the dictionaries was not.
 
 Same as with <b>indent</b> and <b>separators</b>, this works for <b>dump</b> as well as <b>dumps</b>.
 
