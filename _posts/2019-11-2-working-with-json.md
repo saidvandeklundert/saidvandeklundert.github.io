@@ -50,6 +50,7 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
+Note: any file opened using <b>with</b> is automatically closed when the script is done with it.
 
 <h2>Load JSON as a Python dictionary from a file using load</h2>
 
@@ -97,9 +98,13 @@ print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
 
+Output to show the difference:
+
 <pre style="font-size:12px">
 [said@test]$ <b>./pretty_json.py</b>
+
 {"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
+
 {
     "JSON is": [
         "case-sensitive",
@@ -119,8 +124,7 @@ Works for <b>dump</b> as well as <b>dumps</b>:
 from json import dumps
 
 d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
-# Print the original:
-print(dumps(d))
+
 # Sort it by keys and print it:
 print(dumps(d, sort_keys= True))
 ```
@@ -146,6 +150,16 @@ pprint(d_json_test)
 pprint(json.loads(urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()))
 ```
 
+The last output's statement:
+
+<pre style="font-size:12px">
+{'empty': False,
+ 'object_or_array': 'array',
+ 'parse_time_nanoseconds': 29928,
+ 'size': 1,
+ 'validate': True}
+</pre>
+
 <h2>Using JSON in jinja</h2>
 
 ```python
@@ -167,10 +181,10 @@ routers = json.loads(json_str)
 # Define template:
 template = Template('''
 
-   {% for router in routers %}
-   set system host-name {{ router['hostname'] }}
-   set interfaces lo0 unit 0 family inet address {{ router['mgmt-ip'] }} primary
-   {% endfor %}
+{% for router in routers %}
+set system host-name {{ router['hostname'] }}
+set interfaces lo0 unit 0 family inet address {{ router['mgmt-ip'] }} primary
+{% endfor %}
 
 ''')
 
@@ -178,6 +192,21 @@ template = Template('''
 print(template.render(routers = routers))
 ```
 
+Outputs the following:
+
+<pre style="font-size:12px">
+set system host-name ny01
+set interfaces lo0 unit 0 family inet address 10.0.0.1 primary
+
+set system host-name ny02
+set interfaces lo0 unit 0 family inet address 10.0.0.2 primary
+
+set system host-name ny03
+set interfaces lo0 unit 0 family inet address 10.0.0.3 primary
+
+set system host-name ny04
+set interfaces lo0 unit 0 family inet address 10.0.0.4 primary
+</pre>
 
 <h2>Conversion table for translating Python to JSON:</h2>
 
