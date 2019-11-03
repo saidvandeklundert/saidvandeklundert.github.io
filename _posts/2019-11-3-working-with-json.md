@@ -209,8 +209,13 @@ set interfaces lo0 unit 0 family inet address 10.0.0.4 primary
 </pre>
 
 
+Thing to keep in mind:
+======================
 
-<h2>Conversion table for translating Python to JSON:</h2>
+
+When you are translating JSON to Python or vice versa, the following conversion tables apply:
+
+<b>Conversion table for translating Python to JSON:</b>
 
 
 | Python data structures | serializes to JSON |
@@ -223,7 +228,7 @@ set interfaces lo0 unit 0 family inet address 10.0.0.4 primary
 | False                  | false              |
 | None                   | null               |
 
-Conversion table fortranslating JSON to Python:
+<b>Conversion table fortranslating JSON to Python</b>:
 
 | JSON value         | deserializes to Python |
 | ------------------ | ---------------------- |
@@ -235,4 +240,3 @@ Conversion table fortranslating JSON to Python:
 | false              | False                  |
 | null               | None                   |
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/workgin_with_json/_posts/2019-11-2-working-with-json.md
