@@ -53,7 +53,7 @@ By adding a different strict hop to both paths, each path will make use of a dif
 After passing the mandatory first hop in the LSP, the router is free to choose any next-hop from that point on. 
 </p>
 <p>
-The creation of these paths will have no effect on traffic if they are not applied to an LSP. There is already an LSP defined on this network, this ‘ldp-tunneling’ enabled LSP is providing for a layer2 circuit between Sol and Mars. This LSP is configured as follows:
+The creation of these paths will have no effect on traffic if they are not applied to an LSP. There is already an LSP defined on this network, this <b>ldp-tunneling</b> enabled LSP is providing for a layer2 circuit between Sol and Mars. This LSP is configured as follows:
 </p>
 <pre style="font-size:12px">
 set protocols mpls label-switched-path L2circuit to 1.1.1.4
