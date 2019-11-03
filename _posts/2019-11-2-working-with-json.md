@@ -91,9 +91,9 @@ d = {
         'valid YAML',
         ], 
     }
-#print the original:
+# Print the original:
 print(dumps(d))
-#print the pretty output:
+# Print the pretty output:
 print(dumps(d, indent=4, separators=(',', ': ')))
 ```
 
@@ -119,9 +119,9 @@ Works for <b>dump</b> as well as <b>dumps</b>:
 from json import dumps
 
 d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
-#Print the original:
+# Print the original:
 print(dumps(d))
-#Sort it by keys and print it:
+# Sort it by keys and print it:
 print(dumps(d, sort_keys= True))
 ```
 
@@ -133,17 +133,17 @@ import json
 from pprint import pprint
 from urllib.request import urlopen
 
-#open the web page:
+# Open the web page:
 html_content = urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()  
 
-#load the JSON:
+# Load the JSON:
 d_json_test = json.loads(html_content)
 
-#print the JSON to screen:
+# Print the JSON to screen:
 pprint(d_json_test)
 
-#in one line:
-pprint(json.loads(urlopen('http://www.reddit.com/r/all/top/.json').read()))
+# All in one line:
+pprint(json.loads(urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()))
 ```
 
 <h2>Using JSON in jinja</h2>
@@ -161,10 +161,10 @@ json_str = '''
     {"hostname": "ny04", "mgmt-ip": "10.0.0.4" }
     ]
     '''
-#load json from string:
+# Load json from string:
 routers = json.loads(json_str)
 
-#define template:
+# Define template:
 template = Template('''
 
    {% for router in routers %}
@@ -174,7 +174,7 @@ template = Template('''
 
 ''')
 
-# render template and send the output to screen:
+# Render template and send the output to screen:
 print(template.render(routers = routers))
 ```
 
