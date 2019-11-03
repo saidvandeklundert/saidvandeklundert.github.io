@@ -33,7 +33,7 @@ Basic operations using JSON in Python
 There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library. 
 
 
-<b>Store Python dictionary as JSON in a file</b>
+<h2>Store Python dictionary as JSON in a file</h2>
 
 ```python
 #!/usr/bin/python3
