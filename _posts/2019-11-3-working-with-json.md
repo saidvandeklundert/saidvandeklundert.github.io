@@ -160,7 +160,7 @@ d = {
 }
 
 # Sort it by keys and print it:
-print(dumps(d, <font color='red'>sort_keys= True</font>, indent=4, separators=(',', ': ')))
+print(dumps(d, <font color='red'>sort_keys=True</font>, indent=4, separators=(',', ': ')))
 </pre>
 
 This will output the following:
