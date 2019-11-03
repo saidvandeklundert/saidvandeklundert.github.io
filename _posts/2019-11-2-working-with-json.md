@@ -182,7 +182,7 @@ print(template.render(routers = routers))
 ```
 
 
-<h2>Conversion table for translating Python to JSON:</h>
+<h2>Conversion table for translating Python to JSON:</h2>
 
 
 | Python data structures | serializes to JSON |
