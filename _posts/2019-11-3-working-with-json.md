@@ -33,7 +33,7 @@ JSON basics in Python
 There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library. 
 
 
-<h2>Store Python dictionary as JSON in a file using dump</h2>
+<h2>Dump a Python dictionary as JSON in a file</h2>
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -52,7 +52,7 @@ with open('/var/tmp/dictionary.json', 'w') as f:
 
 Note: any file opened using <b>with</b> is automatically closed when the script is done using the file.
 
-<h2>Load JSON as a Python dictionary from a file using load</h2>
+<h2>Load JSON as a Python dictionary from a file</h2>
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -62,7 +62,7 @@ with open('/var/tmp/dictionary.json', 'r') as f:
     d = load(f)
 </pre>
 
-<h2>Emit JSON as string using dumps</h2>
+<h2>Emit JSON as string</h2>
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -76,7 +76,7 @@ s = dumps(d)
 print(s)
 </pre>
 
-<h2>JSON kwargs to make the output prettier on the eyes</h2>
+<h2>JSON kwargs to make the output prettier</h2>
 
 Works for <b>dump</b> as well as <b>dumps</b>:
 
