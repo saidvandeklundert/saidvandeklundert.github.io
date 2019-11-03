@@ -161,7 +161,7 @@ The last line of the script outputs to:
 <h2>Using JSON in jinja</h2>
 
 <pre style="font-size:12px">
-#!/usr/bin/python3
+{% raw %}#!/usr/bin/python3
 import json
 from jinja2 import Template
 
@@ -187,7 +187,7 @@ set interfaces lo0 unit 0 family inet address {{ router['mgmt-ip'] }} primary
 ''')
 
 # Render template and send the output to screen:
-print(template.render(routers = routers))
+print(template.render(routers = routers)){% endraw %}
 </pre>
 
 Outputs the following:
