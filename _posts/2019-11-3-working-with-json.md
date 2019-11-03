@@ -188,7 +188,7 @@ set interfaces lo0 unit 0 family inet address {{ router['mgmt-ip'] }} primary
 
 # Render template and send the output to screen:
 print(template.render(routers = routers))
-<pre>
+</pre>
 
 Outputs the following:
 
