@@ -81,7 +81,7 @@ print(s)
 Works for <b>dump</b> as well as <b>dumps</b>:
 
 <pre style="font-size:12px">
-#!/usr/bin/python3
+{% raw %}#!/usr/bin/python3
 from json import dumps
 
 d = {
@@ -95,13 +95,13 @@ d = {
 # Print the original:
 print(dumps(d))
 # Print the pretty output:
-print(dumps(d, indent=4, separators=(',', ': ')))
+print(dumps(d, indent=4, separators=(',', ': '))){% endraw %}
 </pre>
 
 Output to show the difference:
 
 <pre style="font-size:12px">
-{"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
+{% raw %}{"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
 
 {
     "JSON is": [
@@ -110,7 +110,7 @@ Output to show the difference:
         "does not offer a way to put in comments",
         "valid YAML"
     ]
-}
+}{% endraw %}
 </pre>
 
 <h2>JSON kwargs to sort the output:</h2>
@@ -125,7 +125,7 @@ d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
 
 # Sort it by keys and print it:
 print(dumps(d, sort_keys= True))
-/pre>
+</pre>
 
 <h2>Dictify a web page</h2>
 
