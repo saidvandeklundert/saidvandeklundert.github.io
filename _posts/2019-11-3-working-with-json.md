@@ -207,8 +207,8 @@ set interfaces lo0 unit 0 family inet address 10.0.0.4 primary
 </pre>
 
 
-Thing to keep in mind:
-======================
+Conversion tables:
+==================
 
 
 When you are translating JSON to Python or vice versa, the following conversion tables apply:
