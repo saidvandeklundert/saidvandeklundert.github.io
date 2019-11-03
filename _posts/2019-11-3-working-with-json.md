@@ -213,7 +213,7 @@ Thing to keep in mind:
 
 When you are translating JSON to Python or vice versa, the following conversion tables apply:
 
-<b>Conversion table for translating Python to JSON:</b>
+<b>Translating Python to JSON:</b>
 
 
 | Python data structures | serializes to JSON |
@@ -226,7 +226,7 @@ When you are translating JSON to Python or vice versa, the following conversion 
 | False                  | false              |
 | None                   | null               |
 
-<b>Conversion table fortranslating JSON to Python</b>:
+<b>Translating JSON to Python</b>:
 
 | JSON value         | deserializes to Python |
 | ------------------ | ---------------------- |
