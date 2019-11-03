@@ -39,13 +39,13 @@ Two routers are running ISIS and have several RSVP-signaled LSPs enabled. Enabli
 </p>
                 
 <b>Tiberius:</b>
-<pre style="font-size:12px">set protocols rsvp interface xe-0/2/0.9 <font color=red>aggregate</font>
-set protocols rsvp interface xe-0/2/0.9 <font color=red>reliable</font></pre> 
+<pre style="font-size:12px">set protocols rsvp interface xe-0/2/0.9 <font color='red'>aggregate</font>
+set protocols rsvp interface xe-0/2/0.9 <font color='red'>reliable</font></pre> 
 
                 
 <b>Hadrian:</b>
-<pre style="font-size:12px">set protocols rsvp interface xe-0/3/0.9 <font color=red>aggregate</font>
-set protocols rsvp interface xe-0/3/0.9 <font color=red>reliable</font>
+<pre style="font-size:12px">set protocols rsvp interface xe-0/3/0.9 <font color='red'>aggregate</font>
+set protocols rsvp interface xe-0/3/0.9 <font color='red'>reliable</font>
 </pre> 
 <p>
 As soon as these commands are added, the routers will start to signal their RSVP refresh reduction ability by enabling the RR capable bit in the RSVP common header. 
@@ -62,7 +62,7 @@ Address: 2.0.0.33 via: xe-0/2/0.9 status: Up
   Message received: 386732
   Hello: sent 178198, received: 178198, interval: 9 sec
   Remote instance: 0x9053dc12, Local instance: 0x9ab7bb10
-  Refresh reduction:  <font color=red>incomplete</font>
+  Refresh reduction:  <font color='red'>incomplete</font>
     Remote end: disabled, Ack-extension: disabled</pre>                 
 <p>
 After the activation of RSVP RR:
@@ -77,8 +77,8 @@ Address: 2.0.0.33 via: xe-0/2/0.9 status: Up
   Message received: 386763
   Hello: sent 178211, received: 178211, interval: 9 sec
   Remote instance: 0x9053dc12, Local instance: 0x9ab7bb10
-  Refresh reduction:  <font color=red>operational</font>
-    Remote end: <font color=red>enabled</font>, Ack-extension: <font color=red>enabled</font></pre>                 
+  Refresh reduction:  <font color='red'>operational</font>
+    Remote end: <font color='red'>enabled</font>, Ack-extension: <font color='red'>enabled</font></pre>                 
 
 <p>
 Important note; during the activation of RSVP RR, no LSPs were hurt. 
@@ -96,7 +96,7 @@ set groups rsvp-interfaces protocols rsvp interface <*> link-protection</pre>
 <p>
 After configuring it, you can apply it under the rsvp stanza like this:
 </p>
-<pre style="font-size:12px">set protocols rsvp <font color=red>apply-groups rsvp-interfaces</font>
+<pre style="font-size:12px">set protocols rsvp <font color='red'>apply-groups rsvp-interfaces</font>
 set protocols rsvp interface ge-0/1/0.3001
 set protocols rsvp interface ge-0/0/0.3000</pre>    
 <p>
