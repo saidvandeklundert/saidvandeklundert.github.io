@@ -51,10 +51,10 @@ with open('dictionary.json', 'w') as f:
 ```
 
 Output:
-```bash
+<pre style="font-size:12px">
 [said@test]$ more dictionary.json 
 {"Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz", "Python Tricks": "Dan Bader"}
-```
+</pre>
 <b>Load JSON as a Python dictionary from a file</b>
 
 ```python
