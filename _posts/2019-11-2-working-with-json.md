@@ -30,12 +30,13 @@ The values that you can use or come across in these data structures are the foll
 Basic operations using JSON in Python
 =====================================
 
-There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library.
+There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library. 
 
 
 <b>Store Python dictionary as JSON in a file</b>
 
 ```python
+#!/usr/bin/python3
 from json import dump
 
 d = {
@@ -49,6 +50,11 @@ with open('dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
+Output:
+```bash
+[said@test]$ more dictionary.json 
+{"Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz", "Python Tricks": "Dan Bader"}
+```
 <b>Load JSON as a Python dictionary from a file</b>
 
 ```python
@@ -102,7 +108,7 @@ d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
 #print the original:
 print(dumps(d))
 #Make the output pretty and sort it:
-print(dumps(d, indent=4, separators=(',', ': '), sort_keys= True))
+print(dumps(d, sort_keys= True))
 ```
 
 <b>Loading JSON as YAML because every JSON file is also a valid YAML file</b>
