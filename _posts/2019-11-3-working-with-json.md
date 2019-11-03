@@ -35,7 +35,7 @@ There are multiple options available, but the only module I ever used is the one
 
 <h2>Store Python dictionary as JSON in a file using dump</h2>
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 from json import dump
 
@@ -48,23 +48,23 @@ d = {
 
 with open('/var/tmp/dictionary.json', 'w') as f:
     dump(d, f)
-```
+</pre>
 
 Note: any file opened using <b>with</b> is automatically closed when the script is done using the file.
 
 <h2>Load JSON as a Python dictionary from a file using load</h2>
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 from json import load
 
 with open('/var/tmp/dictionary.json', 'r') as f:    
     d = load(f)
-```
+</pre>
 
 <h2>Emit JSON as string using dumps</h2>
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 from json import load, dumps
 
@@ -74,13 +74,13 @@ with open('/var/tmp/dictionary.json', 'r') as f:
 s = dumps(d)
 
 print(s)
-```
+</pre>
 
 <h2>JSON kwargs to make the output prettier on the eyes</h2>
 
 Works for <b>dump</b> as well as <b>dumps</b>:
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 from json import dumps
 
@@ -96,7 +96,7 @@ d = {
 print(dumps(d))
 # Print the pretty output:
 print(dumps(d, indent=4, separators=(',', ': ')))
-```
+</pre>
 
 Output to show the difference:
 
@@ -117,7 +117,7 @@ Output to show the difference:
 
 Works for <b>dump</b> as well as <b>dumps</b>:
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 from json import dumps
 
@@ -125,11 +125,11 @@ d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
 
 # Sort it by keys and print it:
 print(dumps(d, sort_keys= True))
-```
+/pre>
 
 <h2>Dictify a web page</h2>
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 import json
 from pprint import pprint
@@ -146,7 +146,7 @@ pprint(d_json_test)
 
 # All in one line:
 pprint(json.loads(urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()))
-```
+</pre>
 
 The last line of the script outputs to:
 
@@ -160,7 +160,7 @@ The last line of the script outputs to:
 
 <h2>Using JSON in jinja</h2>
 
-```python
+<pre style="font-size:12px">
 #!/usr/bin/python3
 import json
 from jinja2 import Template
@@ -188,7 +188,7 @@ set interfaces lo0 unit 0 family inet address {{ router['mgmt-ip'] }} primary
 
 # Render template and send the output to screen:
 print(template.render(routers = routers))
-```
+<pre>
 
 Outputs the following:
 
