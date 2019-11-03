@@ -7,7 +7,7 @@ image: /img/juniper_logo.jpg
 
 
 <p>
-This is the complete configuration used in <a href="2015-05-17-link-protection-and-node-link-protection-on-juniper-mx.md" >Link-protection and node-link-protection on Juniper MX</a> and several other articles. The routers in the topology drawing are all logical systems.
+This is the complete configuration used in <a href="https://saidvandeklundert.net/2015-05-17-link-protection-and-node-link-protection-on-juniper-mx/" >Link-protection and node-link-protection on Juniper MX</a> and several other articles. The routers in the topology drawing are all logical systems.
 </p>
 <p>
 The routers are running IS-IS. All interfaces are MPLS and RSVP-enabled.
