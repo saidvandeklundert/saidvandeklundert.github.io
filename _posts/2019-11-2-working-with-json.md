@@ -55,14 +55,24 @@ Output:
 [said@test]$ more dictionary.json 
 {"Automate the Boring Stuff with Python": "Al Sweigart", "Fluent Python": "Luciano Ramalho", "Learning Python": "Mark Lutz", "Python Tricks": "Dan Bader"}
 </pre>
+
 <b>Load JSON as a Python dictionary from a file</b>
 
 ```python
+#!/usr/bin/python3
 from json import load
 
 with open('dictionary.json', 'r') as f:    
     d = load(f)
 ```
+<pre style="font-size:12px">
+[said@test]$ python3 -i load_json.py 
+>>> d
+{'Automate the Boring Stuff with Python': 'Al Sweigart', 'Fluent Python': 'Luciano Ramalho', 'Learning Python': 'Mark Lutz', 'Python Tricks': 'Dan Bader'}
+>>> type(d)
+<class 'dict'>
+>>> 
+</pre>
 
 <b>Emit JSON as string</b>
 
