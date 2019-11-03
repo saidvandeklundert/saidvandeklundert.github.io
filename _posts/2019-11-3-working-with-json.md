@@ -46,7 +46,7 @@ d = {
     'Python Tricks' : 'Dan Bader',
 }
 
-with open('dictionary.json', 'w') as f:
+with open('/var/tmp/dictionary.json', 'w') as f:
     dump(d, f)
 ```
 
@@ -58,7 +58,7 @@ Note: any file opened using <b>with</b> is automatically closed when the script 
 #!/usr/bin/python3
 from json import load
 
-with open('dictionary.json', 'r') as f:    
+with open('/var/tmp/dictionary.json', 'r') as f:    
     d = load(f)
 ```
 
@@ -68,7 +68,7 @@ with open('dictionary.json', 'r') as f:
 #!/usr/bin/python3
 from json import load, dumps
 
-with open('dictionary.json', 'r') as f:    
+with open('/var/tmp/dictionary.json', 'r') as f:    
     d = load(f)
 
 s = dumps(d)
