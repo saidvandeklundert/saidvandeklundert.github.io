@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Basic RSVP signaled LSP on MX
-tags: [juniper]
+tags: [juniper, mpls, rsvp]
 image: /img/juniper_logo.jpg
 ---
    
@@ -14,7 +14,6 @@ The focus will be on the minimum amount of configuration needed to create LSPs b
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-1.png "RSVP basic configuration") 
 
-<br> 
 <p>
 After we have established the LSPs, we’ll proceed and route some traffic across the LSPs. 
 After verifying IP connectivity across the LSP’s, we’ll proceed and have a more detailed look into the control plane operation of this setup.
@@ -24,7 +23,7 @@ At the end of the article, I'll post the complete configuration for this lab.
 The topology is rather straightforward. There are 8 Juniper MX routers involved and all of them are running IS-IS. I’ll skip a detailed description of the IS-IS configuration and only post the configuration that is applied to Tiberius:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> show configuration protocols isis
+play@MX480-TEST:Tiberius> <b>show configuration protocols isis</b>
 level 2 {
     authentication-key "$9$0Uz1OESrlMXNbKMDkqmF3"; ## SECRET-DATA
     authentication-type md5;
@@ -51,8 +50,7 @@ Additionally, those same interfaces will need to be configured under the [protoc
 </p>
 <p>
 As an example, let’s look in to Tiberius. This router is running IS-IS across the xe-0/2/0.9 link with Hadrian. This same link is going to need to handle MPLS traffic. To enable this link for MPLS traffic, we only need to issue the following two configuration commands:
-</p>
-<br>                
+</p>           
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-2.png "RSVP basic configuration") 
   
@@ -62,7 +60,6 @@ All the links that are enabled for IS-IS and MPLS need to be added to the [proto
 Taking the Tiberius router as the example router again, we enable RSVP on the link in the following way:
 </p>
 
-<br>  
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-3.png "RSVP basic configuration") 
 
@@ -73,7 +70,7 @@ This will authenticate all RSVP protocol exchanges between the Tiberius and the 
 We can verify that the link is RSVP enabled by issuing the following command:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> show rsvp interface
+play@MX480-TEST:Tiberius> <b>show rsvp interface</b>
 RSVP interface: 1 active
                   Active Subscr- Static      Available   Reserved    Highwater
 Interface   State resv   iption  BW          BW          BW          mark
@@ -86,8 +83,7 @@ In order to make the routers start signaling the LSPs, we need to manually confi
 </p>
 <p>
 After configuring RSVP to run on an interface, any LSP that you want RSVP to signal for is configured in the [protocols mpls] stanza.  In this configuration stanza, we can tell the Tiberius router to try to establish an LSP towards the Commodus router.
-</p>
-<br>                
+</p>            
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-4.png "RSVP basic configuration") 
                
@@ -98,7 +94,6 @@ The following configuration command, set protocols mpls label-switched-path simp
 <p>
 The LSP created from Tiberius towards Commodus is unidirectional. This means that only the Tiberius router will be able to use this LSP to send packets towards Commodus. Commodus, being the head-end router to this LSP, will not be able to utilize this LSP to send any return traffic towards Tiberius. To enable the Commodus router to send return traffic towards the Tiberius router across an LSP, we need to create one on the Commodus router;
 </p>
-<br>
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-5.png "RSVP basic configuration") 
 
@@ -106,7 +101,7 @@ The LSP created from Tiberius towards Commodus is unidirectional. This means tha
 After the configuration of the LSPs, we need to verify that the configuration is actually working. To see what LSPs are active on the Tiberius router, we can issue the following command:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> show mpls lsp
+play@MX480-TEST:Tiberius> <b>show mpls lsp</b>
 <font color='red'>Ingress</font> LSP: 1 sessions
 To              From            State Rt P     ActivePath       LSPname
 1.1.1.4         1.1.1.9         Up     0 *                      <font color='red'>simple-lsp-to-Commodus</font>
@@ -124,7 +119,7 @@ Total 0 displayed, Up 0, Down 0
 This command shows us that there are 2 LSP’s active on the Tiberius router. One LSP from Tiberius towards Commodus and another one from Commodus towards Tiberius. This command is useful as it is giving you a quick overview of what the router is doing LSP-wise. The following command is a lot more revealing and enables us to get a more detailed view of an LSP:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> show mpls lsp name simple-lsp-to-Commodus extensive
+play@MX480-TEST:Tiberius> <b>show mpls lsp name simple-lsp-to-Commodus extensive</b>
 Ingress LSP: 1 sessions
 
 <font color='red'>1.1.1.4</font>
@@ -164,7 +159,6 @@ Total 0 displayed, Up 0, Down 0
 This command displays a lot more than just the status of the LSP, who the head-end router is and who the tail-end router is. I’ll save some of the output for another post. For now, let’s just look at the Record Route. This list of IP addresses corresponds to the path the LSP is taking through the network. If you’ve taken the trouble to insert PTR-records for all the point-to-point links in your DNS server, you’ll be able to do some lookups to quickly determine what routers the LSP is passing.  This can save you the hassle of logging in to every IP address to determine what router the LSP is passing.
 Anyway, we now know that the LSP is up and what route it is taking and we can put it in a picture like this;
 </p>
-<br>
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-6.png "RSVP basic configuration") 
     
@@ -172,7 +166,7 @@ Anyway, we now know that the LSP is up and what route it is taking and we can pu
     Some additional information can be gather by examining RSVP. Let’s check the Tiberius router for information about the LSP that can be obtained through rsvp show commands.
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> show rsvp session name simple-lsp-to-Commodus extensive
+play@MX480-TEST:Tiberius> <b>show rsvp session name simple-lsp-to-Commodus extensive</b>
 Ingress RSVP: 1 sessions
 
 <font color='red'>1.1.1.4</font>
@@ -213,7 +207,6 @@ Total 0 displayed, Up 0, Down 0
 <p>
     Let’s keep things simple in this scenario and use a static route on both Tiberius and Commodus to send traffic across the LSP’s. Tiberius and Commodus have a second IP address configured under their loopback interfaces, these secondary loopback IP addresses are not advertised in ISIS. In order to create IP connectivity between these IP addresses, we’ll instruct both routers to use their LSP:
 </p>				
-<br>
 
 ![RSVP basic configuration](/img/rsvp-the-basic-configuration-7.png "RSVP basic configuration") 
   
@@ -227,7 +220,7 @@ Total 0 displayed, Up 0, Down 0
     To verify what the MX is doing with this piece of configuration, we can issue the following commands:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> show route 192.168.1.4
+play@MX480-TEST:Tiberius> <b>show route 192.168.1.4</b>
 
 inet.0: 20 destinations, 21 routes (20 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -235,7 +228,7 @@ inet.0: 20 destinations, 21 routes (20 active, 0 holddown, 0 hidden)
 192.168.1.4/32     *[<font color='red'>RSVP/7/1</font>] 04:44:46, metric 50
                     > to 2.0.0.33 via xe-0/2/0.9, label-switched-path <font color='red'>simple-lsp-to-Commodus</font>
 
-play@MX480-TEST:Tiberius> show route forwarding-table matching 192.168.1.4
+play@MX480-TEST:Tiberius> <b>show route forwarding-table matching 192.168.1.4</b>
 Logical system: Tiberius
 Routing table: default.inet
 Internet:
@@ -253,7 +246,7 @@ Here, we can see that the label we saw earlier in our 'show rsvp session name si
 To verify that we have established connectivity between the two routers, we can send a ping from Tiberius towards Commodus, using the 192.168.1.9 address:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> ping 192.168.1.4 source 192.168.1.9 do-not-fragment size 1472
+play@MX480-TEST:Tiberius> <b>ping 192.168.1.4 source 192.168.1.9 do-not-fragment size 1472</b>
 PING 192.168.1.4 (192.168.1.4): 1472 data bytes
 1480 bytes from 192.168.1.4: icmp_seq=0 ttl=60 time=1.398 ms
 1480 bytes from 192.168.1.4: icmp_seq=1 ttl=60 time=1.402 ms
@@ -268,16 +261,16 @@ play@MX480-TEST:Tiberius>
 By default, the Juniper router keeps track of the number of packets and bytes send across an LSP. We can see this using the following command:
 </p>
 <pre style="font-size:12px">
-play@MX480-TEST:Tiberius> clear mpls lsp statistics
+play@MX480-TEST:Tiberius> <b>clear mpls lsp statistics</b>
 
-play@MX480-TEST:Tiberius> ping 192.168.1.4 source 192.168.1.9 do-not-fragment size 1472 rapid count 1000
+play@MX480-TEST:Tiberius> <b>ping 192.168.1.4 source 192.168.1.9 do-not-fragment size 1472 rapid count 1000</b>
 PING 192.168.1.4 (192.168.1.4): 1472 data bytes
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 --- 192.168.1.4 ping statistics ---
 1000 packets transmitted, 1000 packets received, 0% packet loss
 round-trip min/avg/max/stddev = 1.215/1.385/20.605/1.144 ms
 
-play@MX480-TEST:Tiberius> show mpls lsp name simple-lsp-to-Commodus statistics
+play@MX480-TEST:Tiberius> <b>show mpls lsp name simple-lsp-to-Commodus statistics</b>
 Ingress LSP: 1 sessions
 To              From            State     Packets            Bytes LSPname
 1.1.1.4         1.1.1.9         Up           2000          3004000 simple-lsp-to-Commodus
@@ -290,7 +283,6 @@ In the end, we verified that there was IP connectivity between two prefixes acro
 In a next post, I’ll take this basic configuration to start doing some more interesting things with RSVP signaled LSP’s. 
 I’ll use an RSVP signaled LSP to tunnel LDP and create an l2circuit between Tiberius and Commodus.
 </p>
-<br>
 <p>
 The complete configuration for this lab is as follows:
 </p>			
