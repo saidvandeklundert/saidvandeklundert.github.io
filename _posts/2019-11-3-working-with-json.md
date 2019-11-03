@@ -12,8 +12,8 @@ JSON overview
 =============
 
 JSON is an open standard format that can be used to store or transmit data. The two data structures available in JSON are:
--	<b>Objects</b>: an unordered collection of one or more key-value pairs enclosed in braces <b>{}</b>.
--	<b>Arrays</b>: and ordered collection of values enclosed in brackets <b>[]</b>.
+-	<b>Objects</b>: unordered collection of one or more key-value pairs enclosed in braces <b>{}</b>.
+-	<b>Arrays</b>: ordered collection of values enclosed in brackets <b>[]</b>.
 
 An object is similar to a Python dictionary and an array is similar to a Python list.
 
