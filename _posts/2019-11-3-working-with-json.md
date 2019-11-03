@@ -2,7 +2,7 @@
 layout: post
 title: Working with JSON in Python
 tags: [automation, python]
-image: /img/python-logo.png
+image: /img/python-logo.jpg
 ---
 
 JavaScript Object Notation, or JSON, is something that started popping up more and more the moment I started doing (Net)DevOps. These are some of my notes and examples.
