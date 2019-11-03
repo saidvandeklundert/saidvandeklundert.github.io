@@ -35,6 +35,8 @@ There are multiple options available, but the only module I ever used is the one
 
 <h2>Dump a Python dictionary as JSON in a file</h2>
 
+In the following sample, we use <b>dump</b> to serialize a dictionary to be stored as JSON in a file:
+
 <pre style="font-size:12px">
 #!/usr/bin/python3
 from json import dump
@@ -50,9 +52,23 @@ with open('/var/tmp/dictionary.json', 'w') as f:
     dump(d, f)
 </pre>
 
+Whenever we translate Python to JSON, we do so using the following conversion table:
+
+| Python data structures | serializes to JSON |
+| ---------------------- | ------------------ |
+| dict                   | object             |
+| list, tuple            | array              |
+| str                    | string             |
+| int, float             | number             |
+| True                   | true               |
+| False                  | false              |
+| None                   | null               |
+
 Note: any file opened using <b>with</b> is automatically closed when the script is done using the file.
 
 <h2>Load JSON as a Python dictionary from a file</h2>
+
+In the next sample, we turn to <b>load</b> to turn a file with JSON data into a Python dictionary:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -62,7 +78,22 @@ with open('/var/tmp/dictionary.json', 'r') as f:
     d = load(f)
 </pre>
 
+Whenever we load JSON in a Python script, the following conversion applies:
+
+| JSON value         | deserializes to Python |
+| ------------------ | ---------------------- |
+| object             | dict                   |
+| array              | list                   |
+| string             | str                    |
+| number             | int, float             |
+| true               | True                   |
+| false              | False                  |
+| null               | None                   |
+
+
 <h2>Emit JSON as string</h2>
+
+Instead of using <b>dump</b> to store JSON data in a file, we can turn to <b>dumps</b> and serialize an object to a string:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -98,7 +129,7 @@ print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': '))){% endraw %}
 </pre>
 
-Output to show the difference:
+In the following output, you can see that the readability of the JSON is drastically improved when we used <b>indent</b> and <b>separators</b>:
 
 <pre style="font-size:12px">
 {% raw %}{"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
@@ -115,19 +146,53 @@ Output to show the difference:
 
 <h2>JSON kwargs to sort the output:</h2>
 
-Works for <b>dump</b> as well as <b>dumps</b>:
+Setting <b>sort_keys</b> to <b>True</b> will output dictionaries with their keys sorted:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
 from json import dumps
 
-d = {"string": "word", "dict": {"a": "a", "b": "b"}, "list": [0, 1, 2], }
+d = {
+    "dict z": {"b": "b", "a": "a", "c": "c"},
+    "dict b": {"d": "d", "h": "h"},
+    "dict a": {"k": "k", "a": "a"}, 
+    "dict c": [ 'c', 'b', 'a', ]
+}
 
 # Sort it by keys and print it:
-print(dumps(d, sort_keys= True))
+print(dumps(d, <font color='red'>sort_keys= True</font>, indent=4, separators=(',', ': ')))
 </pre>
 
+This will output the following:
+<pre style="font-size:12px">
+{
+    "dict a": {
+        "a": "a",
+        "k": "k"
+    },
+    "dict b": {
+        "d": "d",
+        "h": "h"
+    },
+    "dict c": [
+        "c",
+        "b",
+        "a"
+    ],
+    "dict z": {
+        "a": "a",
+        "b": "b",
+        "c": "c"
+    }
+}
+</pre>
+The dicitonaries were sorted, the list that was present in of the dictionaries was not.
+
+Same as with <b>indent</b> and <b>separators</b>, this works for <b>dump</b> as well as <b>dumps</b>.
+
 <h2>Dictify a web page</h2>
+
+In this sample, we use <b>urlopen</b> from <b> urllib.request</b> to open a URL. We read the return and load it using <b>json.loads</b>:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -159,6 +224,8 @@ The last line of the script outputs to:
 </pre>
 
 <h2>Using JSON in jinja</h2>
+
+In this last example, we use <b>json.loads</b> to deserialize JSON from a string, and then use the resulting dictionary in a Jinja template:
 
 <pre style="font-size:12px">
 {% raw %}#!/usr/bin/python3
@@ -207,34 +274,8 @@ set interfaces lo0 unit 0 family inet address 10.0.0.4 primary
 </pre>
 
 
-Conversion tables:
-==================
 
 
-When you are translating JSON to Python or vice versa, the following conversion tables apply:
-
-<b>Translating Python to JSON:</b>
 
 
-| Python data structures | serializes to JSON |
-| ---------------------- | ------------------ |
-| dict                   | object             |
-| list, tuple            | array              |
-| str                    | string             |
-| int, float             | number             |
-| True                   | true               |
-| False                  | false              |
-| None                   | null               |
-
-<b>Translating JSON to Python</b>:
-
-| JSON value         | deserializes to Python |
-| ------------------ | ---------------------- |
-| object             | dict                   |
-| array              | list                   |
-| string             | str                    |
-| number             | int, float             |
-| true               | True                   |
-| false              | False                  |
-| null               | None                   |
 
