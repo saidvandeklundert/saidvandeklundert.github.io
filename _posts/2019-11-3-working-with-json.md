@@ -27,8 +27,8 @@ The values that you can use or come across in these data structures are the foll
 -	Array
 
 
-Basic operations using JSON in Python
-=====================================
+JSON basics in Python
+=====================
 
 There are multiple options available, but the only module I ever used is the one that is found in the Python Standard Library simply called [json](https://docs.python.org/3/library/json.html). The following Python 3.6 examples all use this library. 
 
@@ -150,7 +150,7 @@ pprint(d_json_test)
 pprint(json.loads(urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()))
 ```
 
-The last output's statement:
+The last line of the script outputs to:
 
 <pre style="font-size:12px">
 {'empty': False,
@@ -207,6 +207,8 @@ set interfaces lo0 unit 0 family inet address 10.0.0.3 primary
 set system host-name ny04
 set interfaces lo0 unit 0 family inet address 10.0.0.4 primary
 </pre>
+
+
 
 <h2>Conversion table for translating Python to JSON:</h2>
 
