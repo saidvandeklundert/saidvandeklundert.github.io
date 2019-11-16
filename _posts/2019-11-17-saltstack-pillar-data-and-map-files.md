@@ -165,10 +165,8 @@ Note that performing a pillar lookup in the imported Jinja is just scratching th
 Closing thoughts
 ================
 
-When I started out working with Salt, I mainly ran into examples that explain how to work with pillar data in templates. It is very easy, works great and gets the job done. That is, until you start to scale.
+When I started out working with Salt, I ran into examples that explain how to work with pillar data in templates. You can put anything in there and you will find that it is very easy, works great and gets the job done. That is, until you start to scale.
 
-What you should keep in mind is that pillar is expensive. The master needs to render a pillar for a minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
+What you should keep in mind is that pillar is expensive. The master needs to render the pillar for every individual minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
 
-If you have a large environment with thousands of hosts, having a pillar that is thousands of lines can impact your performance. In those cases, you are better off storing non-sensitive data that does not need this encryption in a map file. 
-
-Data stored as YAML or JSON and then imported into a template or state is a lot less taxing to the master. 
+If you have a large environment with thousands of hosts, having a pillar that is very big can impact performance. In some cases, you are better off storing non-sensitive data that does not need this encryption in a map file as data that is imported into a template or state is a lot less taxing to the master when compared to pillar data. 
