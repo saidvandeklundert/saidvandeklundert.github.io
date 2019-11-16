@@ -38,7 +38,7 @@ When I set out working with the pillar, I had several scripts that would output 
 }
 </pre>
 
-In this file, there are some devices and their management IP as well as some datacenters and their respective AS number. The file was added to the pillar using the following YAML:
+In this file, there are some devices and their IP as well as several datacenters and their AS number. The file was added to the pillar using the following YAML:
 
 <pre style="font-size:12px">
 base:
@@ -67,7 +67,7 @@ minion:
             65004
 </pre>
 
-This pillar data was accessible through states and templates using something like this:
+This pillar data was accessible through states and templates using something like the following:
 
 <pre style="font-size:12px">
 {% set public_as = pillar['public_as'][‘ams’] -%}
@@ -78,7 +78,9 @@ This pillar data was accessible through states and templates using something lik
 Working with a map file to fix my problem
 =========================================
 
-The amount of data that was being stored in the pillar grew to such an extent it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to start using map files. First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory and the files were given the extension that signifies what the file content was. So <b>/srv/pillar/data_file.sls</b> was now moved to <b>/srv/salt/data/data_file.json</b>.
+The amount of data that was being stored in the pillar grew to such an extent it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to move the data out of the pillar and to start using map files. 
+
+First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory and the files were given the extension that signifies what the file content was. So <b>/srv/pillar/data_file.sls</b> was now moved to <b>/srv/salt/data/data_file.json</b>.
 
 After this, all the templates were changed to import the file and lookup the data from there. It was a minor change.
 
