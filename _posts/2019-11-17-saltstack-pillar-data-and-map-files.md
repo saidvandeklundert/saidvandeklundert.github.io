@@ -18,7 +18,7 @@ The solution to this problem was pretty straightforward: putting non-sensitive d
 Working with pillar data 
 ========================
 
-When I set out working with the pillar, I had several scripts outputting their data to files that were placed inside the pillar directory. The following is a shortened example of a file that was generated:
+When I set out working with the pillar, I had several scripts that would output data to files placed inside the pillar directory. The following is a shortened example of such a file:
 
 <pre style="font-size:12px">
 / $ more /srv/pillar/data_file.sls 
