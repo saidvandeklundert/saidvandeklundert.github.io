@@ -257,7 +257,7 @@ set interfaces lo0 unit 0 family inet address {{ router['mgmt-ip'] }} primary
 print(template.render(routers = routers)){% endraw %}
 </pre>
 
-Outputs the following:
+Running the previous script will output the following:
 
 <pre style="font-size:12px">
 set system host-name ny01
