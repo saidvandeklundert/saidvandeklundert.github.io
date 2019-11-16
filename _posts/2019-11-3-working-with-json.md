@@ -12,8 +12,8 @@ JSON overview
 =============
 
 JSON is an open standard format that can be used to store or transmit data. The two data structures available in JSON are:
--	<b>Objects</b>: unordered collection of one or more key-value pairs enclosed in braces <b>{}</b>.
--	<b>Arrays</b>: ordered collection of values enclosed in brackets <b>[]</b>.
+-	<b>Objects</b>: unordered collection of one or more key-value pairs enclosed in braces <b>{</b>..<b>}</b>.
+-	<b>Arrays</b>: ordered collection of values enclosed in brackets <b>[</b>..<b>]</b>.
 
 An object is similar to a Python dictionary and an array is similar to a Python list.
 
@@ -35,7 +35,7 @@ There are multiple options available, but the only module I ever used is the one
 
 <h2>Dump a Python dictionary as JSON in a file</h2>
 
-In the following sample, we use <b>dump</b> to serialize a dictionary to be stored as JSON in a file:
+In the following example script, we use <b>dump</b> to serialize a dictionary to be stored as JSON in a file:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -68,7 +68,7 @@ Note: any file opened using <b>with</b> is automatically closed when the script 
 
 <h2>Load JSON as a Python dictionary from a file</h2>
 
-In the next sample, we turn to <b>load</b> to turn a file with JSON data into a Python dictionary:
+In the next example script, we turn to <b>load</b> to turn a file with JSON data into a Python dictionary:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -192,7 +192,7 @@ Same as with <b>indent</b> and <b>separators</b>, this works for <b>dump</b> as 
 
 <h2>Dictify a web page</h2>
 
-In this sample, we use <b>urlopen</b> from <b> urllib.request</b> to open a URL. We read the return and load it using <b>json.loads</b>:
+In this example script, we use <b>urlopen</b> from <b> urllib.request</b> to open a URL. We read the return and load it using <b>json.loads</b>:
 
 <pre style="font-size:12px">
 #!/usr/bin/python3
@@ -213,7 +213,7 @@ pprint(d_json_test)
 pprint(json.loads(urlopen('http://validate.jsontest.com/?json=%5BJSON-code-to-validate%5D').read()))
 </pre>
 
-The last line of the script outputs to:
+If we run the script, the last line outputs the following:
 
 <pre style="font-size:12px">
 {'empty': False,
