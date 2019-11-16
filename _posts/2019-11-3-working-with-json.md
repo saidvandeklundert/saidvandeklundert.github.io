@@ -116,11 +116,11 @@ Works for <b>dump</b> as well as <b>dumps</b>:
 from json import dumps
 
 d = {
-    "JSON is": [
-        'case-sensitive',
+    "JSON": [
+        'is case-sensitive',
         'does not care about whitespaces',
         'does not offer a way to put in comments',
-        'valid YAML',
+        'is also valid YAML',
         ], 
     }
 # Print the original:
@@ -132,14 +132,14 @@ print(dumps(d, indent=4, separators=(',', ': '))){% endraw %}
 In the following output, you can see that the readability of the JSON is drastically improved when we used <b>indent</b> and <b>separators</b>:
 
 <pre style="font-size:12px">
-{% raw %}{"JSON is": ["case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "valid YAML"]}
+{% raw %}{"JSON": ["is case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "is also valid YAML"]}
 
 {
-    "JSON is": [
-        "case-sensitive",
+    "JSON": [
+        "is case-sensitive",
         "does not care about whitespaces",
         "does not offer a way to put in comments",
-        "valid YAML"
+        "is also valid YAML"
     ]
 }{% endraw %}
 </pre>
