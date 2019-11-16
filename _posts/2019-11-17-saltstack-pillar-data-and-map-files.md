@@ -5,14 +5,13 @@ tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 
-Starting out with SaltStack, I found that the pillar interface to be quite an interesting concept. The pillar is an interface designed to offer values that the master distributes to (proxy) minions. As soon as I figured out how to use it for various templates and states, I started to see more and more use cases for it. 
+Starting out with SaltStack, I found that the pillar interface was quite an interesting concept. The pillar is an interface designed to offer values that the master distributes to (proxy) minions. Many of the first examples I encounterd illustrated how to use this pillar interface. Usually, the examples placed all sorts of data that is relevant to the infrastructure as a whole in the pillar for templating purposes or for use in states. And as soon as I got a few working examples of my own, I started looking for more use cases. 
 
-When I came across something I needed for a template, I would convert the data to a JSON or a YAML file and then expose it to all the relevant (proxy) minions in the top file. Before long, all sorts of data was put into the pillar. I figured ‘why not?’ and went ahead enriching the pillar with more and more data. 
+Whenever I came across something I needed for a template, I would convert the data to a JSON or a YAML file and then expose it to all the relevant (proxy) minions in the top file. Before long, all sorts of data was put into the pillar. I figured <i>why not?</i> and went ahead enriching the pillar with more and more data. 
 
-After while though, everything in Salt got really slow. States that would take 2-10 seconds in a lab suddenly took 7 minutes in production. After some intense and lengthy troubleshooting, I figured out that all of this was cause by the size of the pillar. After putting in more than 100.000 lines of data in the form of JSON, YAML and Jinja, the environment basically came to a grinding halt.
+After while though, everything in Salt got really slow. States that would take 2-10 seconds in a lab suddenly took 7 minutes in production. After some troubleshooting, I figured out that all of this was caused by the size of the pillar. After putting in more than 100.000 lines of data in the form of JSON, YAML and Jinja, the environment basically came to a grinding halt. The master log showed that it was constantly rendering pillar data for minions, leaving little cycles for the master to perform other tasks.
 
-The solution to this problem was pretty straightforward: putting non-sensitive data into files. In the Salt world, this is sometimes referred to as map files.
-This map file is a file that can contain YAML, JSON or JINJA and the data from the file can be imported into a state and/or into a template.
+The solution to this problem was pretty straightforward: putting non-sensitive data into files. In the Salt world, this is sometimes referred to as map files. This map file is a file that can contain YAML, JSON or JINJA and the data from the file can be imported into a state and/or into a template.
 
 
 
