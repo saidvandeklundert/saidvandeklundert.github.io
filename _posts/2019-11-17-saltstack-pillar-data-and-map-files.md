@@ -75,8 +75,8 @@ This pillar data was accessible through states and templates using something lik
 </pre>
 
 
-Working with a map file to fix my problem
-=========================================
+Working with a map file to fix the problem
+==========================================
 
 The amount of data that was being stored in the pillar started slowing down the entire environment. The data was being used in a lot of templates, so simply deleting it was not an option. The solution was to remove the data from the pillar and to start using map files. 
 
