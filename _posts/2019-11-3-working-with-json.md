@@ -109,7 +109,7 @@ print(s)
 
 <h2>JSON kwargs to make the output prettier</h2>
 
-Works for <b>dump</b> as well as <b>dumps</b>:
+We can use the <b>indent</b> and <b>separators</b> keyword to increase the readability of any JSON we are working with. The keywords can be passed to the <b>dump</b> as well as the <b>dumps</b> method:
 
 <pre style="font-size:12px">
 {% raw %}#!/usr/bin/python3
@@ -129,7 +129,7 @@ print(dumps(d))
 print(dumps(d, indent=4, separators=(',', ': '))){% endraw %}
 </pre>
 
-In the following output, you can see that the readability of the JSON is drastically improved when we used <b>indent</b> and <b>separators</b>:
+When we run the script, you can see that the readability of the JSON is drastically improved. The first line in the output is the 'raw' JSON and after this, you can see how the same JSON is printed when the keyword arguments <b>indent</b> and <b>separators</b> are used:
 
 <pre style="font-size:12px">
 {% raw %}{"JSON": ["is case-sensitive", "does not care about whitespaces", "does not offer a way to put in comments", "is also valid YAML"]}
