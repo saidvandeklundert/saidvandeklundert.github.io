@@ -160,6 +160,8 @@ In the example, the Jinja will perform a pillar lookup to see if ‘wdc’ is pr
 {%- set ns_1_example = name_server['name-server']['ns1.example.com']['ipv4'] -%}
 </pre>
 
+Note that performing a pillar lookup in the Jinja is just scratching the surface.
+
 Closing thoughts
 ================
 
