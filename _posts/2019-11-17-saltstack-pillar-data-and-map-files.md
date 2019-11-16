@@ -78,7 +78,7 @@ This pillar data was accessible through states and templates using something lik
 Working with a map file to fix my problem
 =========================================
 
-The amount of data that was being stored in the pillar grew to such an extent it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to move the data out of the pillar and to start using map files. 
+The amount of data that was being stored in the pillar grew so big that it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to move the data out of the pillar and to start using map files. 
 
 First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory and the files were given the extension that signifies what the file content was. So <b>/srv/pillar/data_file.sls</b> was now moved to <b>/srv/salt/data/data_file.json</b>.
 
