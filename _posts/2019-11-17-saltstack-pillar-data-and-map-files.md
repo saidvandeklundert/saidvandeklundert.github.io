@@ -15,10 +15,10 @@ The solution to this problem was pretty straightforward: putting non-sensitive d
 
 
 
-Working with pillar data
+Working with pillar data 
 ========================
 
-Several scripts were outputting their data to files that were placed inside the pillar directory. An example of such a file could have been the following:
+When I set out working with the pillar, I had several scripts outputting their data to files that were placed inside the pillar directory. The following is a shortened example of a file that was generated:
 
 <pre style="font-size:12px">
 / $ more /srv/pillar/data_file.sls 
@@ -38,7 +38,7 @@ Several scripts were outputting their data to files that were placed inside the 
 }
 </pre>
 
-In this file, there are some devices and their management IP as well as some datacenters and their respective AS number. The files were added to the pillar using the following:
+In this file, there are some devices and their management IP as well as some datacenters and their respective AS number. The file was added to the pillar using the following YAML:
 
 <pre style="font-size:12px">
 base:
@@ -46,7 +46,7 @@ base:
     - data_file
 </pre>
 
-We could retrieve this data from any (proxy) minion like so:
+With this in place, I was able to retrieve the data from any (proxy) minion like so:
 
 <pre style="font-size:12px">
 / $ salt minion pillar.item public_as
@@ -67,24 +67,29 @@ minion:
             65004
 </pre>
 
-Being in the pillar, this data was also accessible through states and templates using something like this:
+This pillar data was accessible through states and templates using something like this:
 
 <pre style="font-size:12px">
 {% set public_as = pillar['public_as'][‘ams’] -%}
 {% set device_2_ip = pillar['devices’][‘ device_2’] -%}
 </pre>
 
-Working with a map file
-=======================
 
-The amount of data that was being stored in the pillar grew to such an extent it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to start using map files. First, the scripts that generated the data were changed so that they wrote to a directory other than the pillar directory and the files were given the extension that signifies what the file content was. So <b>/srv/pillar/data_file.sls</b> was now placed into <b>/srv/salt/data/data_file.json</b>.
+Working with a map file to fix my problem
+=========================================
 
-Then, all the templates were changed to import the file and lookup the data from there. It was a minor change really, I went from this:
+The amount of data that was being stored in the pillar grew to such an extent it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to start using map files. First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory and the files were given the extension that signifies what the file content was. So <b>/srv/pillar/data_file.sls</b> was now moved to <b>/srv/salt/data/data_file.json</b>.
+
+After this, all the templates were changed to import the file and lookup the data from there. It was a minor change.
+
+Looking up the pillar data:
 
 <pre style="font-size:12px">
 {% set public_as = pillar['public_as'][‘ams’] -%}
+{{ public_as }}
 </pre>
-To the following:
+
+Doing the same thing using a map file:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/data_file.json' as data_file %}
@@ -92,7 +97,7 @@ To the following:
 {{ public_as }}
 </pre>
 
-The last line in the example was only added to be able to print something to screen. Now, when I render the example template, I get the following output:
+Rendering the last example where the map file is used, gives the following output:
 
 <pre style="font-size:12px">
 / $ salt minion slsutil.renderer default_renderer='jinja' /var/tmp/example.j2 
@@ -101,9 +106,9 @@ minion:
     65001
 </pre>
 
-For JSON, we use import_json and for YAML we use import_yaml. A thing worth noting is that you can also use Jinja in the files that you are importing. 
+For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>. A thing worth noting is that you can also use Jinja in the files that you are importing. 
 
-Look at the following example name-server.j2 file:
+Look at the following example <b>name-server.j2</b> file:
 
 <pre style="font-size:12px">
 {%- if "wdc" in pillar["minion_id"] -%}
@@ -124,7 +129,7 @@ Look at the following example name-server.j2 file:
 {%- endif -%}
 </pre>
 
-In the example, the Jinja will perform a pillar lookup to see if ‘wdc’ is present inside the device name. If it is, it will render the JSON that is displayed. This is a nice way to have Jinja help determine what name server is relevant to a certain datacenter. In case we want to import this file in a template, we do something like this:
+In the example, the Jinja will perform a pillar lookup to see if ‘wdc’ is present inside the device name. If it is, it will render the JSON that is displayed. This is a nice way to have Jinja help determine what name server is relevant to a certain datacenter. In case we want to import this file in a template, we can do something like this:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/name-server.j2' as name_server %}
@@ -136,6 +141,8 @@ Closing thoughts
 
 When I started out working with Salt, I mainly ran into examples that explain how to work with pillar data in templates. It is very easy, works great and gets the job done. That is, until you start to scale.
 
-What you should keep in mind is that pillar is ‘expensive’. The master needs to render a pillar for a minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
+What you should keep in mind is that pillar is expensive. The master needs to render a pillar for a minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
 
-If you have a large environment with thousands of hosts, having a pillar that is thousands of lines can impact your performance. In those cases, you are better off storing non-sensitive data that does not need this encryption in a map file. In my experience, data stored as YAML or JSON and then imported into a template or state is less taxing to the master and will not be as impacting to your performance. 
+If you have a large environment with thousands of hosts, having a pillar that is thousands of lines can impact your performance. In those cases, you are better off storing non-sensitive data that does not need this encryption in a map file. 
+
+Data stored as YAML or JSON and then imported into a template or state is a lot less taxing to the master. 
