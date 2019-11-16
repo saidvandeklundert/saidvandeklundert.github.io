@@ -78,20 +78,20 @@ This pillar data was accessible through states and templates using something lik
 Working with a map file to fix my problem
 =========================================
 
-The amount of data that was being stored in the pillar grew so big that it started slowing down the entire environment. At the same time, it was being used in a lot of templates. The solution was to move the data out of the pillar and to start using map files. 
+The amount of data that was being stored in the pillar started slowing down the entire environment. The data was being used in a lot of templates, so simply deleting it was not an option. The solution was to remove the data from the pillar and to start using map files. 
 
-First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory and the files were given the extension that signifies what the file content was. So <b>/srv/pillar/data_file.sls</b> was now moved to <b>/srv/salt/data/data_file.json</b>.
+First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory. In this process, I also gave the files the extension appropriate to it's content. So, for example, <b>/srv/pillar/data_file.sls</b> was  moved to <b>/srv/salt/data/data_file.json</b>.
 
-After this, all the templates were changed to import the file and lookup the data from there. It was a minor change.
+After this, all the templates were changed to import the file and lookup the data from there instead of using the pillar interface. This turnd out to be a pretty minor change.
 
-Looking up the pillar data:
+Looking up the pillar data the 'old' way:
 
 <pre style="font-size:12px">
 {% set public_as = pillar['public_as'][‘ams’] -%}
 {{ public_as }}
 </pre>
 
-Doing the same thing using a map file:
+Doing the exact same thing using a map file:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/data_file.json' as data_file %}
@@ -107,6 +107,28 @@ Rendering the last example where the map file is used, gives the following outpu
 minion:   
     65001
 </pre>
+
+Just to illustrate what happens when we use <b>import_json</b>, let's look at the following tempate:
+
+<pre style="font-size:12px">
+{% import_json '/srv/salt/data/data_file.json' as data_file %}
+{{ data_file }}
+{{ data_file.keys() }}
+{{ data_file.values() }}
+{{ data_file.items() }}
+</pre>
+
+As you can see, when we import the file, we can work with it the same way we work with a dictionary. When we render the previous example template, we get the following:
+
+<pre style="font-size:12px">
+/ $ salt minion slsutil.renderer default_renderer='jinja' /var/tmp/test.j2 
+minion:    
+    {u'public_as': {u'tok': u'65005', u'ams': u'65001', u'fra': u'65003', u'par': u'65002', u'wdc': u'65004'}, u'devices': {u'device_n': u'10.200.0.1', u'device_2': u'10.0.0.2', u'device_1': u'10.0.0.1'}}
+    [u'public_as', u'devices']
+    [{u'tok': u'65005', u'ams': u'65001', u'fra': u'65003', u'par': u'65002', u'wdc': u'65004'}, {u'device_n': u'10.200.0.1', u'device_2': u'10.0.0.2', u'device_1': u'10.0.0.1'}]
+    [(u'public_as', {u'tok': u'65005', u'ams': u'65001', u'fra': u'65003', u'par': u'65002', u'wdc': u'65004'}), (u'devices', {u'device_n': u'10.200.0.1', u'device_2': u'10.0.0.2', u'device_1': u'10.0.0.1'})]
+</pre>
+
 
 For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>. A thing worth noting is that you can also use Jinja in the files that you are importing. 
 
