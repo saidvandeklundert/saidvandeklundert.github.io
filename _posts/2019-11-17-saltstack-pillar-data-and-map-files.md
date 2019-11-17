@@ -5,13 +5,15 @@ tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 
-Starting out with SaltStack, I found that the pillar interface was quite an interesting concept. The pillar is an interface designed to offer values that the master distributes to (proxy) minions. Many of the first examples I encounterd illustrated how to use this pillar interface by placing all sorts of data that is relevant to the infrastructure as a whole in the pillar for templating purposes or for use in states. And as soon as I got a few working examples of my own, I started looking for data I could put into my own pillar. 
+When I was starting out with SaltStack, I found that the pillar interface was quite an interesting concept. The pillar is an interface designed to offer values that the master distributes to (proxy) minions. There are many examples to be found on the Internet. In many of the examples, the goal is to show you how to use this pillar interface. This is done by placing all sorts of data that is relevant to the infrastructure as a whole in the pillar for templating purposes or for use in states. 
 
-Whenever I came across something I needed for a template, I would convert the data to JSON or YAML and expose it to all the relevant (proxy) minions as pillar data. I figured <i>why not?</i> and went ahead enriching the pillar with more and more data as use cases starting popping up.
+The examples got me some working templates that worked really well. And since it worked so well, I started looking for more and more data I could put into the pillar. Whenever I came across something I needed for a template, I would convert the data to JSON or YAML and expose it to all the relevant (proxy) minions as pillar data. I figured <i>why not?</i> and went ahead enriching the pillar with more and more data as use cases starting popping up.
 
 After while though, everything in Salt got really slow. States that would take 2-10 seconds in a lab suddenly took 7 minutes in production. After a lot of troubleshooting, I figured out that all of this was caused by the size of the pillar. After putting in more than 100.000 lines of JSON, YAML and Jinja, the environment basically came to a grinding halt. The master log showed that it was constantly rendering pillar data for minions, leaving little cycles for other tasks.
 
 The solution to this problem was pretty straightforward: putting non-sensitive data into files. In the Salt world, this is sometimes referred to as map files. This map file is a file that can contain YAML, JSON or JINJA and the data from the file can be imported into a state and/or into a template.
+
+In this article, I will first put some data in the pillar and show you how to use it in a template. After this, I will move this data to a map file.
 
 
 
@@ -23,12 +25,7 @@ When I set out working with the pillar, I had several scripts that would output 
 <pre style="font-size:12px">
 / $ more /srv/pillar/data_file.sls 
 {
-    "devices": {
-        "device_1": "10.0.0.1",
-        "device_2": "10.0.0.2",
-        "device_n": "10.200.0.1"
-    },
-    "public_as": {
+    "as": {
         "ams": "65001",
         "par": "65002",
         "fra": "65003",
@@ -49,7 +46,7 @@ base:
 With this in place, I was able to retrieve the data from any (proxy) minion like so:
 
 <pre style="font-size:12px">
-/ $ salt minion pillar.item public_as
+/ $ salt minion pillar.item as
 
 minion:
     ----------
@@ -70,9 +67,19 @@ minion:
 This pillar data was accessible through states and templates using something like the following:
 
 <pre style="font-size:12px">
-{% set public_as = pillar['public_as'][‘ams’] -%}
-{% set device_2_ip = pillar['devices’][‘ device_2’] -%}
+{% set hostname = pillar['minion_id']  -%}
+{% set dc = hostname.split('.')[1] -%}
+{% set as = pillar['as'][dc] -%}
+set routing-options autonomous-system {{ as }}
 </pre>
+
+The idea here is that I retrieve the hostname from the pillar and split that name into a list. Then, as the name of the datacenter is in the hostname, I use that to lookup the autonomous system number in the pillar:
+
+<pre style="font-size:12px">
+/ $ <b>salt ar01.ams slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
+ar01.ams:
+    set routing-options autonomous-system 65001
+</pre>    
 
 
 Working with a map file to fix the problem
