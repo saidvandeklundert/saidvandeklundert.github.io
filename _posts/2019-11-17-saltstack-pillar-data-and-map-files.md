@@ -94,50 +94,35 @@ After this, all the templates were changed to import the file and lookup the dat
 Looking up the pillar data the 'old' way:
 
 <pre style="font-size:12px">
-{% set public_as = pillar['public_as'][‘ams’] -%}
-{{ public_as }}
+{% set as = pillar['as'][dc] -%}
 </pre>
 
 Doing the exact same thing using a map file:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/data_file.json' as data_file %}
-{% set public_as = data_file['public_as'][‘ams’] -%}
-{{ public_as }}
+{% set as = data_file['as'][dc] -%}
+</pre>
+
+To change the previous template and make it use the map file, we change it to the following:
+
+<pre style="font-size:12px">
+{% import_json '/srv/salt/data/data_file.json' as data_file %}
+{% set hostname = pillar['minion_id']  -%}
+{% set dc = hostname.split('.')[1] -%}
+{% set as = data_file['as'][dc] -%}
+set routing-options autonomous-system {{ as }}
 </pre>
 
 Rendering the last example where the map file is used, gives the following output:
 
 <pre style="font-size:12px">
-/ $ salt minion slsutil.renderer default_renderer='jinja' /var/tmp/example.j2 
-..
-minion:   
-    65001
-</pre>
+/ $ <b>salt ar01.ams slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
+ar01.ams:
+    set routing-options autonomous-system 65001
+</pre>   
 
-Just to illustrate what happens when we use <b>import_json</b>, let's look at the following tempate:
-
-<pre style="font-size:12px">
-{% import_json '/srv/salt/data/data_file.json' as data_file %}
-{{ data_file }}
-{{ data_file.keys() }}
-{{ data_file.values() }}
-{{ data_file.items() }}
-</pre>
-
-As you can see, when we import the file, we can work with it the same way we work with a dictionary. When we render the previous example template, we get the following:
-
-<pre style="font-size:12px">
-/ $ salt minion slsutil.renderer default_renderer='jinja' /var/tmp/test.j2 
-minion:    
-    {u'public_as': {u'tok': u'65005', u'ams': u'65001', u'fra': u'65003', u'par': u'65002', u'wdc': u'65004'}, u'devices': {u'device_n': u'10.200.0.1', u'device_2': u'10.0.0.2', u'device_1': u'10.0.0.1'}}
-    [u'public_as', u'devices']
-    [{u'tok': u'65005', u'ams': u'65001', u'fra': u'65003', u'par': u'65002', u'wdc': u'65004'}, {u'device_n': u'10.200.0.1', u'device_2': u'10.0.0.2', u'device_1': u'10.0.0.1'}]
-    [(u'public_as', {u'tok': u'65005', u'ams': u'65001', u'fra': u'65003', u'par': u'65002', u'wdc': u'65004'}), (u'devices', {u'device_n': u'10.200.0.1', u'device_2': u'10.0.0.2', u'device_1': u'10.0.0.1'})]
-</pre>
-
-
-For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>.
+When we use <b>import_json</b>, we can work with it the same way we work with a dictionary. For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>.
 
 Closing thoughts
 ================
