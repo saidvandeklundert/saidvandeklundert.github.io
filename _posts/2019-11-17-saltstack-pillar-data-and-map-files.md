@@ -28,8 +28,7 @@ When I set out working with the pillar, I had several scripts that would output 
     "hosts": {
         "switch01": "10.0.0.1",
         "router01": "10.0.0.2",
-        "server01": "10.0.0.3",
-        "switch10000": "10.200.1.1"
+        "server01": "10.0.0.3"
     }
 }
 </pre>
@@ -57,8 +56,6 @@ minion:
             10.0.0.3
         switch01:
             10.0.0.1
-        switch10000:
-            10.200.1.1
 </pre>
 
 This pillar data was accessible through states and templates using something like the following:
