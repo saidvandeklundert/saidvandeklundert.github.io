@@ -108,4 +108,4 @@ When I started out working with Salt, I ran into examples that explain how to wo
 
 What you should keep in mind is that pillar is expensive. The master needs to render the pillar for every individual minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
 
-If you have a large environment with thousands of hosts, having a pillar that is very big can impact performance. In some cases, you are better off storing non-sensitive data that does not need this encryption in a map file as data that is imported into a template or state is a lot less taxing to the master when compared to pillar data. 
+If you have a large environment with thousands of hosts, having a pillar that is very big can impact performance. In some cases, you are better off storing non-sensitive data that does not need this encryption in a map file. This is because data that is imported into a template or state is a lot less taxing to the environment when compared to pillar data. 
