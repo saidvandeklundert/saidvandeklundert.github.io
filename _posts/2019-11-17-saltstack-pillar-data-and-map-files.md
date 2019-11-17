@@ -25,12 +25,11 @@ When I set out working with the pillar, I had several scripts that would output 
 <pre style="font-size:12px">
 / $ more /srv/pillar/data_file.sls 
 {
-    "as": {
-        "ams": "65001",
-        "par": "65002",
-        "fra": "65003",
-        "wdc": "65004",
-        "tok": "65005"
+    "hosts": {
+        "switch01": "10.0.0.1",
+        "router01": "10.0.0.2",
+        "server01": "10.0.0.3",
+        "switch10000": "10.200.1.1"
     }
 }
 </pre>
@@ -46,39 +45,35 @@ base:
 With this in place, I was able to retrieve the data from any (proxy) minion like so:
 
 <pre style="font-size:12px">
-/ $ salt minion pillar.item as
+/ $ salt minion pillar.item hosts
 
 minion:
     ----------
-    public_as:
+    hosts:
         ----------
-        ams:
-            65001
-        fra:
-            65003
-        par:
-            65002
-        tok:
-            65005
-        wdc:
-            65004
+        router01:
+            10.0.0.2
+        server01:
+            10.0.0.3
+        switch01:
+            10.0.0.1
+        switch10000:
+            10.200.1.1
 </pre>
 
 This pillar data was accessible through states and templates using something like the following:
 
 <pre style="font-size:12px">
-{% set hostname = pillar['minion_id']  -%}
-{% set dc = hostname.split('.')[1] -%}
-{% set as = pillar['as'][dc] -%}
-set routing-options autonomous-system {{ as }}
+{% set router01 = pillar['hosts']['router01'] -%}
+{{ router01 }}
 </pre>
 
-The idea here is that I retrieve the hostname from the pillar and split that name into a list. Then, as the name of the datacenter is in the hostname, I use that to lookup the autonomous system number in the pillar:
+The previous template outputs the following:
 
 <pre style="font-size:12px">
-/ $ <b>salt ar01.ams slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
-ar01.ams:
-    set routing-options autonomous-system 65001
+/ $ <b>salt minion slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
+minion:
+    10.0.0.2
 </pre>    
 
 
@@ -94,33 +89,31 @@ After this, all the templates were changed to import the file and lookup the dat
 Looking up the pillar data the 'old' way:
 
 <pre style="font-size:12px">
-{% set as = pillar['as'][dc] -%}
+{% set router01 = pillar['hosts']['router01'] -%}
 </pre>
 
 Doing the exact same thing using a map file:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/data_file.json' as data_file %}
-{% set as = data_file['as'][dc] -%}
+{% set router01 = data_file['hosts']['router01'] -%}
 </pre>
 
 To change the previous template and make it use the map file, we change it to the following:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/data_file.json' as data_file %}
-{% set hostname = pillar['minion_id']  -%}
-{% set dc = hostname.split('.')[1] -%}
-{% set as = data_file['as'][dc] -%}
-set routing-options autonomous-system {{ as }}
+{% set router01 = data_file['hosts']['router01'] -%}
+{{ router01 }}
 </pre>
 
 Rendering the last example where the map file is used, gives the following output:
 
 <pre style="font-size:12px">
-/ $ <b>salt ar01.ams slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
-ar01.ams:
-    set routing-options autonomous-system 65001
-</pre>   
+/ $ <b>salt minion slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
+minion:
+    10.0.0.2
+</pre>      
 
 When we use <b>import_json</b>, we can work with it the same way we work with a dictionary. For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>.
 
