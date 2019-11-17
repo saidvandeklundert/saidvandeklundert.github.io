@@ -130,37 +130,7 @@ minion:
 </pre>
 
 
-For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>. A thing worth noting is that you can also use Jinja in the files that you are importing. 
-
-Look at the following example <b>name-server.j2</b> file:
-
-<pre style="font-size:12px">
-{%- if "wdc" in pillar["minion_id"] -%}
-{
-    "name-server": {
-        "ns2.example.com": {
-            "datacenter": "nyc",
-            "name": "ns2.example.com",
-            "ipv4": "192.168.1.2"
-        },
-        "ns1.example.com": {
-            "datacenter": "sjc",
-            "name": "ns1.example.com",
-            "ipv4": "192.168.1.1"
-        }
-    }
-}
-{%- endif -%}
-</pre>
-
-In the example, the Jinja will perform a pillar lookup to see if ‘wdc’ is present inside the device name. If it is, it will render the JSON that is displayed. This is a nice way to have Jinja help determine what name server is relevant to a certain datacenter. In case we want to import this file in a template, we can do something like this:
-
-<pre style="font-size:12px">
-{% import_json '/srv/salt/data/name-server.j2' as name_server %}
-{%- set ns_1_example = name_server['name-server']['ns1.example.com']['ipv4'] -%}
-</pre>
-
-Note that performing a pillar lookup in the imported Jinja is just scratching the surface. There is a lot more that you can do.
+For <b>JSON</b>, we use <b>import_json</b> and for <b>YAML</b> we use <b>import_yaml</b>.
 
 Closing thoughts
 ================
