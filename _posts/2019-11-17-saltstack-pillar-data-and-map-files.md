@@ -7,7 +7,7 @@ image: /img/salt_stack_logo.jpg
 
 When I was starting out with SaltStack, I found that the pillar interface was quite an interesting concept. The pillar is an interface designed to offer values that the master distributes to (proxy) minions. There are many examples to be found on the Internet. In many of the examples, the goal is to show you how to use this pillar interface. This is done by placing all sorts of data that is relevant to the infrastructure as a whole in the pillar for templating purposes or for use in states. 
 
-The examples got me some working templates that worked really well. And since it worked so well, I started looking for more and more data I could put into the pillar. Whenever I came across something I needed for a template, I would convert the data to JSON or YAML and expose it to all the relevant (proxy) minions as pillar data. I figured <i>why not?</i> and went ahead enriching the pillar with more and more data as use cases starting popping up.
+After learning from these eamples, I ended up with some templates that worked really well. And since it worked so well, I started looking for more and more data I could put into the pillar. Whenever I came across something I needed for a template, I would convert the data to JSON or YAML and expose it to all the relevant (proxy) minions as pillar data. I figured <i>why not?</i> and went ahead enriching the pillar with more and more data as use cases starting popping up.
 
 After while though, everything in Salt got really slow. States that would take 2-10 seconds in a lab suddenly took 7 minutes in production. After a lot of troubleshooting, I figured out that all of this was caused by the size of the pillar. After putting in more than 100.000 lines of JSON, YAML and Jinja, the environment basically came to a grinding halt. The master log showed that it was constantly rendering pillar data for minions, leaving little cycles for other tasks.
 
@@ -23,7 +23,7 @@ Working with pillar data
 When I set out working with the pillar, I had several scripts that would output data to files placed inside the pillar directory. The following is a shortened example of such a file:
 
 <pre style="font-size:12px">
-/ $ more /srv/pillar/data_file.sls 
+/ $ cat /srv/pillar/data_file.sls 
 {
     "hosts": {
         "switch01": "10.0.0.1",
@@ -34,7 +34,7 @@ When I set out working with the pillar, I had several scripts that would output 
 }
 </pre>
 
-In this file, there are some devices and their IP as well as several datacenters and their AS number. The file was added to the pillar using the following YAML:
+The file contains several hostnames and IP addresses. The file was added to the pillar using the following YAML:
 
 <pre style="font-size:12px">
 base:
@@ -42,7 +42,7 @@ base:
     - data_file
 </pre>
 
-With this in place, I was able to retrieve the data from any (proxy) minion like so:
+With this in place, I was able to retrieve the data from the pillar like this:
 
 <pre style="font-size:12px">
 / $ salt minion pillar.item hosts
@@ -82,24 +82,9 @@ Working with a map file to fix the problem
 
 The amount of data that was being stored in the pillar started slowing down the entire environment. The data was being used in a lot of templates, so simply deleting it was not an option. The solution was to remove the data from the pillar and to start using map files. 
 
-First, the scripts that generated the data were changed so that they wrote the data to a directory other than the pillar directory. In this process, I also gave the files the extension appropriate to it's content. So, for example, <b>/srv/pillar/data_file.sls</b> was  moved to <b>/srv/salt/data/data_file.json</b>.
+First, I moved the pillar file <b>/srv/pillar/data_file.sls</b> to <b>/srv/salt/data/data_file.json</b>. After moving the file, all the templates were changed to import the file and lookup the data from there instead of using the pillar interface. This turnd out to be a pretty minor change.
 
-After this, all the templates were changed to import the file and lookup the data from there instead of using the pillar interface. This turnd out to be a pretty minor change.
-
-Looking up the pillar data the 'old' way:
-
-<pre style="font-size:12px">
-{% set router01 = pillar['hosts']['router01'] -%}
-</pre>
-
-Doing the exact same thing using a map file:
-
-<pre style="font-size:12px">
-{% import_json '/srv/salt/data/data_file.json' as data_file %}
-{% set router01 = data_file['hosts']['router01'] -%}
-</pre>
-
-To change the previous template and make it use the map file, we change it to the following:
+Basically, one line is added to import the map file and we change the reference to the pillar into the name we give the import. Let's change the previous example template to make it use the map file:
 
 <pre style="font-size:12px">
 {% import_json '/srv/salt/data/data_file.json' as data_file %}
@@ -107,7 +92,9 @@ To change the previous template and make it use the map file, we change it to th
 {{ router01 }}
 </pre>
 
-Rendering the last example where the map file is used, gives the following output:
+In the first line, the map file is imported as <b>data_file</b>. After this, we lookup the value from the map file instead of performing the lookup in the pillar. So we change <b>pillar['hosts']['router01']</b> into <b>data_file['hosts']['router01']</b>.
+
+When we render this new template, we get the following output:
 
 <pre style="font-size:12px">
 / $ <b>salt minion slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
