@@ -33,7 +33,7 @@ When I set out working with the pillar, I had several scripts that would output 
 }
 </pre>
 
-The file contains several hostnames and IP addresses. The file was added to the pillar by means of the top file using the following YAML:
+The file contains several hostnames and IP addresses. The file was added to the pillar in the top file using the following YAML:
 
 <pre style="font-size:12px">
 base:
