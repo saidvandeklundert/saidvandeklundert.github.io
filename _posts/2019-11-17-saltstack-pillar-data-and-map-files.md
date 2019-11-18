@@ -79,7 +79,7 @@ Working with a map file to fix the problem
 
 The amount of data in the pillar started slowing down the environment. But since the data was used in a lot of templates, simply deleting it was not an option. The solution was to move the data from the pillar into map files.
 
-First, I moved the pillar file <b>/srv/pillar/data_file.sls</b> to <b>/srv/salt/data/data_file.json</b>. After moving the file, all the templates were changed to import the file and lookup the data from there instead of using the pillar interface. This turnd out to be a pretty minor change.
+First, I moved the pillar file <b>/srv/pillar/data_file.sls</b> to <b>/srv/salt/data/data_file.json</b>. After moving the file, all the templates were changed to import the file and lookup the data from there instead of using the pillar interface. This turned out to be a pretty minor change.
 
 Let's change the previous example template to make it use the map file:
 
