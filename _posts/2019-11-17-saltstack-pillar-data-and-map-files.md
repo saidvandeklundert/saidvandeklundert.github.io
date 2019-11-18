@@ -89,7 +89,7 @@ Let's change the previous example template to make it use the map file:
 {{ router01 }}
 </pre>
 
-In the first line, the map file is imported as a dictionary called <b>data_file</b>. After this, we lookup the value from the map file instead of performing the lookup in the pillar. So we change <b>pillar['hosts']['router01']</b> into <b>data_file['hosts']['router01']</b>.
+In the first line, the map file is imported as a dictionary called <b>data_file</b>. After this, we retrieve the value from that dictionary instead of getting it from the pillar. So we change <b>pillar['hosts']['router01']</b> into <b>data_file['hosts']['router01']</b>.
 
 When we render this new template, we get the following output:
 
