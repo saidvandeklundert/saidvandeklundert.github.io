@@ -106,5 +106,5 @@ Closing thoughts
 
 Pillar data is expensive. The master needs to render the pillar for every individual minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
 
-If you have a large environment where masters are controlling a lot of (proxy) minions, having a big pillar can impact performance. In some cases, you are better off storing non-sensitive data that does not need the encryption that the pillar interface offers in a map file. 
+If you have a large environment where masters are controlling a lot of (proxy) minions, having a big pillar can impact performance. In some cases, you are better off storing non-sensitive data in a map file instead of the pillar. 
 
