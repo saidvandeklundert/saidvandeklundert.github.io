@@ -17,8 +17,8 @@ In this article, I will first put some data in the pillar and show you how to us
 
 
 
-Working with pillar data 
-========================
+Using pillar data 
+=================
 
 When I set out working with the pillar, I had several scripts that would output JSON to files placed inside the pillar directory. The following is a shortened example of such a file:
 
@@ -74,8 +74,8 @@ minion:
 </pre>    
 
 
-Working with a map file to fix the problem
-==========================================
+Using a map file
+================
 
 After the amount of data in the pillar started slowing down the environment, I started moving pillar data into map files.
 
