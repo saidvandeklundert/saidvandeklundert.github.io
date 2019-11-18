@@ -65,7 +65,7 @@ This pillar data was accessible through states and templates using something lik
 {{ router01 }}
 </pre>
 
-Using the renderer utility, we can see what the previous template would output:
+Using <b>slsutil.renderer</b>, we can see what the previous template would output:
 
 <pre style="font-size:12px">
 / $ <b>salt minion slsutil.renderer default_renderer='jinja' /var/tmp/example.j2</b>
