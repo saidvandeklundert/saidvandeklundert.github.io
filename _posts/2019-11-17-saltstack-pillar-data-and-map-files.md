@@ -33,7 +33,7 @@ When I set out working with the pillar, I had several scripts that would output 
 }
 </pre>
 
-The file contains several hostnames and IP addresses. The file was added to the pillar using the following YAML:
+The file contains several hostnames and IP addresses. The file was added to the pillar by means of the top file using the following YAML:
 
 <pre style="font-size:12px">
 base:
@@ -41,7 +41,7 @@ base:
     - data_file
 </pre>
 
-With this in place, I was able to retrieve the data from the pillar on the command line like this:
+With this in place, I was able to retrieve the data from the pillar on the command line like so:
 
 <pre style="font-size:12px">
 / $ salt minion pillar.item hosts
@@ -77,9 +77,9 @@ minion:
 Working with a map file to fix the problem
 ==========================================
 
-The amount of data in the pillar started slowing down the environment. But since the data was used in a lot of templates, simply deleting it was not an option. The solution was to move the data from the pillar into map files.
+After the amount of data in the pillar started slowing down the environment, I started moving pillar data into map files.
 
-First, I moved the pillar file <b>/srv/pillar/data_file.sls</b> to <b>/srv/salt/data/data_file.json</b>. After moving the file, all the templates were changed to import the file and lookup the data from there instead of using the pillar interface. This turned out to be a pretty minor change.
+First, I moved the pillar file <b>/srv/pillar/data_file.sls</b> to <b>/srv/salt/data/data_file.json</b>. After moving the file, all the templates were changed to import the JSON file and lookup the data from there instead of using the pillar interface. This turned out to be a pretty minor change.
 
 Let's change the previous example template to make it use the map file:
 
@@ -104,8 +104,6 @@ In this example, we used <b>import_json</b> to import <b>JSON</b>. In case you a
 Closing thoughts
 ================
 
-When I started out working with Salt, I ran into examples that explain how to work with pillar data in templates. You can put anything in there and you will find that it is very easy, works great and gets the job done. That is, until you start to scale.
+Pillar data is expensive. The master needs to render the pillar for every individual minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
 
-What you should keep in mind is that pillar is expensive. The master needs to render the pillar for every individual minion, encrypt the pillar data and the message that it uses to send pillar data to the minion. 
-
-If you have a large environment with many thousands of minions, having a pillar that is very big can impact performance. In some cases, you are better off storing non-sensitive data that does not need this encryption in a map file. This is because data that is imported into a template or state is a lot less taxing to the environment when compared to pillar data. 
+If you have a large environment with many thousands of minions, having a pillar that is very big can impact performance. In some cases, you are better off storing non-sensitive data that does not need this encryption in a map file. Importing data from a map file is a lot less taxing to the environment when compared to using pillar data. 
