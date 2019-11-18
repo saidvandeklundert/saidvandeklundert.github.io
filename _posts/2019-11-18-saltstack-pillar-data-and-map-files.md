@@ -61,8 +61,8 @@ minion:
 This pillar data was accessible through states and templates using something like the following Jinja:
 
 <pre style="font-size:12px">
-{% set router01 = pillar['hosts']['router01'] -%}
-{{ router01 }}
+{% raw %}{% set router01 = pillar['hosts']['router01'] -%}
+{{ router01 }}{% endraw %}
 </pre>
 
 Using <b>slsutil.renderer</b>, we can see what the previous template would output:
@@ -84,9 +84,9 @@ First, I moved the pillar file <b>/srv/pillar/data_file.sls</b> to <b>/srv/salt/
 Let's change the previous example template to make it use the map file:
 
 <pre style="font-size:12px">
-{% import_json '/srv/salt/data/data_file.json' as data_file %}
+{% raw %}{% import_json '/srv/salt/data/data_file.json' as data_file %}
 {% set router01 = data_file['hosts']['router01'] -%}
-{{ router01 }}
+{{ router01 }}{% endraw %}
 </pre>
 
 In the first line, the map file is imported as a dictionary called <b>data_file</b>. After this, we retrieve the value from that dictionary instead of getting it from the pillar. So we change <b>pillar['hosts']['router01']</b> into <b>data_file['hosts']['router01']</b>.
