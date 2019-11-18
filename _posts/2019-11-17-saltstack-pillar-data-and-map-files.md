@@ -9,7 +9,7 @@ Right when I was starting out with SaltStack, I learned about the pillar. The pi
 
 The examples worked really well and I started to use the pillar interface in a lot of templates. And since it worked so well, I started looking for more and more data I could put into the pillar. Whenever I came across something I needed for a template, I would convert the data to JSON or YAML and expose it to all the relevant (proxy) minions as pillar data. 
 
-After while I noticed that everything in Salt got really slow. States that would take 2-10 seconds in a lab suddenly took 7 minutes in production. After a lot of troubleshooting, I figured out that all of this was caused by the size of the pillar. After putting in more than 100.000 lines of JSON, YAML and Jinja, the environment basically came to a grinding halt. The master log showed that it was constantly rendering pillar data for minions, leaving little cycles for other tasks.
+After a while I noticed that everything in Salt was getting slow. States that would take 2-10 seconds in a lab suddenly took 7 minutes in production. After a lot of troubleshooting, I figured out that all of this was caused by the size of the pillar. After putting in more than 100.000 lines of JSON, YAML and Jinja, the environment basically came to a grinding halt. The master log showed that it was constantly rendering pillar data for minions, leaving little cycles for other tasks.
 
 The solution to this problem was pretty straightforward: putting non-sensitive data into files and use that in states and templates. In the Salt-speak, such files are sometimes referred to as map files. The map file is a file that can contain YAML, JSON or JINJA and the data from the file can be imported into a state and/or into a template.
 
