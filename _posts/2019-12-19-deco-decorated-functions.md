@@ -170,7 +170,7 @@ The first list comprehension was the following:
 check_ping_results = [ x for x in map(check_ping, host_list)]
 ```
 
-Here, you see `map()`, which will 'Return an iterator that applies function to every item of iterable'. Basically, it runs `check_ping()` for every item in the `host_list` and stores the return of the function in the `check_ping_results` list.
+Here, you see `map()`, which will 'Return an iterator that applies function to every item of iterable'. Basically, it runs `check_ping()` for every item in the `host_list`. The list comprehension stores the returns in the `check_ping_results` list.
 
 When we run the decorated function, the return is slightly modified. The second list comprehension deals with this:
 
@@ -178,7 +178,7 @@ When we run the decorated function, the return is slightly modified. The second 
 results = [x.get()[0] for x in check_ping_results ]
 ```
 
-In the previous list comprehension, we extract the `check_ping()` result we are after through `x.get()[0]` for every `x` that is in the `check_ping_results`.
+Here, we extract the `check_ping()` result we are after by doing `x.get()[0]` on every return we previously stored in the `check_ping_results`.
 
 When we run it now, we get the following:
 
