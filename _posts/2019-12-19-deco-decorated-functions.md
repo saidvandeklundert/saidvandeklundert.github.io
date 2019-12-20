@@ -5,7 +5,7 @@ tags: [automation, python]
 image: /img/python-logo.jpg
 ---
 
-During my first struggles with threading and multiprocessing, a collegue told me about `deco`. This package enables you to parallelize a function in a more simpe way, making it run significantly faster. The package author Alex Sherman puts it like this:
+During my first struggles with threading and multiprocessing, a colleaugue told me about `deco`. This package enables you to parallelize a function in a more simple way, making it run significantly faster. The package author Alex Sherman puts it like this:
 
 `A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
 
@@ -25,7 +25,7 @@ from deco import *
 
 def check_ping(host):
     '''
-    Sends 3 ICMPs to a host and supress the output by sending it to devnull.
+    Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
     Arg:
         dev: an object that is capable of communicating with the Juniper API.
@@ -45,16 +45,16 @@ def check_ping(host):
 
 startTime = datetime.now()
 host_list = [
-    'google.com',
-    'nu.nl',
-    'facebook.com',
-    '8.8.8.8',
-    '1.1.1.1',
-    '8.8.4.4',
-    '9.9.9.9',
-    'ad.nl',
-    'saidvandeklundert.nl',
-    'google.nl',      
+    'host-0',    
+    'host-1',
+    'host-2',
+    'host-3',
+    'host-4',
+    'host-5',
+    'host-6',
+    'host-7',
+    'host-8',
+    'host-9',   
 ]
 
 for host in host_list:
@@ -106,7 +106,7 @@ from deco import *
 @concurrent
 def check_ping(host):
     '''
-    Sends 3 ICMPs to a host and supress the output by sending it to devnull.
+    Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
     Arg:
         dev: an object that is capable of communicating with the Juniper API.
@@ -146,16 +146,16 @@ def ping_list(host_list):
 
 startTime = datetime.now()
 host_list = [
-    'google.com',
-    'nu.nl',
-    'facebook.com',
-    '8.8.8.8',
-    '1.1.1.1',
-    '8.8.4.4',
-    '9.9.9.9',
-    'ad.nl',
-    'saidvandeklundert.nl',
-    'google.nl',      
+    'host-0',    
+    'host-1',
+    'host-2',
+    'host-3',
+    'host-4',
+    'host-5',
+    'host-6',
+    'host-7',
+    'host-8',
+    'host-9',
 ]
 
 print(ping_list(host_list))
@@ -184,33 +184,3 @@ Using `deco` is very easy. I have used it in the past in circumstances where I n
 The beauty of using `deco` is that the implementation requires so little effort.
 
 You can pip install the package and you can read more about it `deco` [here](https://github.com/alex-sherman/deco). 
-
-
-
-
-
-
-
-
-
-
-
-====
-
-
-From `DECO: Polishing Python Parallel Programming`:
-```
-In the general case, adapting a program for use
-
-with DECO would mean finding a worker func-
-tion that is being called in the body of a loop
-
-and is working on independent sections of data
-
-in each call.
-```
-
-
-
-
-
