@@ -20,7 +20,6 @@ Have a look at the following example script:
 ```python
 import os
 import subprocess
-from datetime import datetime
 from deco import *
 
 def check_ping(host):
@@ -43,7 +42,7 @@ def check_ping(host):
     else:        
         return False
 
-startTime = datetime.now()
+
 host_list = [
     'host-0',    
     'host-1',
@@ -59,14 +58,12 @@ host_list = [
 
 for host in host_list:
     print(check_ping(host))
-
-print(datetime.now() - startTime)
 ```
 
 When we run this script, we get the following output:
 
 <pre style="font-size:12px">
-<b>sh-4.4# python3 ping.py</b>
+<b>sh-4.4# time python3 ping.py</b>
 True
 True
 True
@@ -100,7 +97,6 @@ The script now looks like this:
 ```python
 import os
 import subprocess
-from datetime import datetime
 from deco import *
 
 @concurrent
@@ -143,8 +139,6 @@ def ping_list(host_list):
     
     return results
 
-
-startTime = datetime.now()
 host_list = [
     'host-0',    
     'host-1',
@@ -159,8 +153,6 @@ host_list = [
 ]
 
 print(ping_list(host_list))
-
-print(datetime.now() - startTime)
 ```
 
 The `check_ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there are 2 list comprehensions. 
@@ -183,7 +175,7 @@ Here, we extract the `check_ping()` result we are after by doing `x.get()[0]` on
 When we run it now, we get the following:
 
 <pre style="font-size:12px">
-<b>sh-4.4# python3 ping.py</b>
+<b>sh-4.4# time python3 ping.py</b>
 [True, True, True, True, True, True, True, True, True, True]
 0:00:01.359208
 </pre>
