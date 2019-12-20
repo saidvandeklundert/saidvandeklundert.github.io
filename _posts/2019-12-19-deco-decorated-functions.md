@@ -5,7 +5,7 @@ tags: [automation, python]
 image: /img/python-logo.jpg
 ---
 
-During my first struggles with threading and multiprocessing, a colleaugue told me about `deco`. This package enables you to parallelize a function in a more simple way, making it run significantly faster. The package author Alex Sherman puts it like this:
+During my first struggles with threading and multiprocessing, a colleaugue told me about `deco`. This package enables you to parallelize a function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
 
 `A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
 
@@ -138,10 +138,10 @@ def ping_list(host_list):
     
     """
     check_ping_results = [ x for x in map(check_ping, host_list)]
+
     results = [x.get()[0] for x in check_ping_results ]
     
     return results
-
 
 
 startTime = datetime.now()
@@ -162,6 +162,23 @@ print(ping_list(host_list))
 
 print(datetime.now() - startTime)
 ```
+
+The `check_ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there are 2 list comprehensions. 
+
+The first list comprehension was the following:
+```python
+check_ping_results = [ x for x in map(check_ping, host_list)]
+```
+
+Here, you see `map()`, which will 'Return an iterator that applies function to every item of iterable'. Basically, it runs `check_ping()` for every item in the `host_list` and stores the return of the function in the `check_ping_results` list.
+
+When we run the decorated function, the return is slightly modified. The second list comprehension deals with this:
+
+```python
+results = [x.get()[0] for x in check_ping_results ]
+```
+
+In the previous list comprehension, we extract the `check_ping()` result we are after through `x.get()[0]` for every `x` that is in the `check_ping_results`.
 
 When we run it now, we get the following:
 
