@@ -66,7 +66,7 @@ print(datetime.now() - startTime)
 When we run this script, we get the following output:
 
 <pre style="font-size:12px">
-<b>sh-4.4# python3 /var/tmp/test_1.py</b>
+<b>sh-4.4# python3 ping.py</b>
 True
 True
 True
@@ -183,7 +183,7 @@ Here, we extract the `check_ping()` result we are after by doing `x.get()[0]` on
 When we run it now, we get the following:
 
 <pre style="font-size:12px">
-<b>sh-4.4# python3 /var/tmp/test_2.py</b>
+<b>sh-4.4# python3 ping.py</b>
 [True, True, True, True, True, True, True, True, True, True]
 0:00:01.359208
 </pre>
