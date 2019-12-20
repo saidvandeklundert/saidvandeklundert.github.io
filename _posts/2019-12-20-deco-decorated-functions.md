@@ -28,7 +28,7 @@ def check_ping(host):
     Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
     Arg:
-        dev: an object that is capable of communicating with the Juniper API.
+        host: an IP address or a hostname the system can resolve
     
     Returns:
         0 if there was a response
@@ -109,7 +109,7 @@ def check_ping(host):
     Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
     Arg:
-        dev: an object that is capable of communicating with the Juniper API.
+        host: an IP address or a hostname the system can resolve
     
     Returns:
         0 if there was a response
