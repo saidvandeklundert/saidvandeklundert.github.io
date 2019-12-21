@@ -23,7 +23,7 @@ import subprocess
 
 def ping(host):
     '''
-    Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
+    Sends 2 ICMPs to a host and suppress the output by sending it to devnull.
     
     Returns True if there was a response, False otherwise.
     '''
@@ -73,7 +73,7 @@ True
 0:00:10.631077
 </pre>   
 
-We iterated a list and executed `check_ping()` for every host in the list. It took us 10 seconds. If I expand the list to 200 hosts, it takes about 3 minutes and 30 seconds.
+We iterated a list and executed `ping()` for every host in the list. It took us 10 seconds. If I expand the list to 200 hosts, it takes about 3 minutes and 30 seconds.
 
 
 Making it fast with deco
@@ -82,9 +82,9 @@ Making it fast with deco
 Using `deco`, we only need to implement some minor modifications to make the previous example script go a lot faster.
 
 The summary of what `deco` does from the package author:
-```
+<pre style="font-size:12px">
 As an overview, DECO is mainly just a smart wrapper for Python's multiprocessing.pool. When @concurrent is applied to a function it replaces it with calls to pool.apply_async. Additionally when arguments are passed to pool.apply_async, DECO replaces any index mutable objects with proxies, allowing it to detect and synchronize mutations of these objects. The results of these calls can then be obtained by calling wait() on the concurrent function, invoking a synchronization event. These events can be placed automatically in your code by using the @synchronized decorator on functions that call @concurrent functions. Additionally while using @synchronized, you can directly assign the result of concurrent function calls to index mutable objects. These assignments get refactored by DECO to automatically occur during the next synchronization event. All of this means that in many cases, parallel programming using DECO appears exactly the same as simpler serial programming.
-```
+</pre>
 
 There are two things that we need to do in order to speed up our previous example script. 
 
@@ -100,7 +100,7 @@ from deco import concurrent, synchronized
 @concurrent
 def ping(host):
     '''
-    Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
+    Sends 2 ICMPs to a host and suppress the output by sending it to devnull.
     
     Returns True if there was a response, False otherwise.
     '''
@@ -121,7 +121,7 @@ def ping(host):
 def ping_list(host_list):
     """
     Runs ping() against a list of hosts in parallel and returns the
-     results as a list.
+    results as a list.
     """
     ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
         
