@@ -5,7 +5,7 @@ tags: [automation, python]
 image: /img/python-logo.jpg
 ---
 
-During my first struggles with threading and multiprocessing, a colleaugue told me about `deco`. This package enables you to parallelize a function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
+During my first struggles with threading and multiprocessing, a colleague told me about `deco`. This package enables you to parallelize a function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
 
 `A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
 
@@ -140,7 +140,7 @@ The `ping()` function was decorated with `concurrent`. In addition to this, ther
 ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
 ```
 
-Let's start with the `map(ping, host_list)` part. This basically runs `ping()` for every item in the `host_list`.
+The `map(ping, host_list)` part basically runs `ping()` for every item in the `host_list`.
 
 The other part of the list comprehension, `ping_return.get()[0] for ping_return`, collects the results and extracts from the result the part we are interested in. The `.get()[0]` is required because of the way that the deco-decorated function returns it's result.
 
