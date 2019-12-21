@@ -76,24 +76,10 @@ True
 We iterated a list and executed `ping()` for every host in the list. It took us 10 seconds. If I expand the list to 200 hosts, it takes about 3 minutes and 30 seconds.
 
 
-Making it fast with deco
-========================
+Making it faster with deco
+==========================
 
-Using `deco`, we only need to implement some minor modifications to make the previous example script go a lot faster.
-
-The summary of what `deco` does from the package author:
-<pre style="font-size:12px">
-DECO is mainly just a smart wrapper for Python's multiprocessing.pool. 
-When @concurrent is applied to a function it replaces it with calls to pool.apply_async. 
-
-Additionally when arguments are passed to pool.apply_async, DECO replaces any index mutable objects with proxies, allowing it to detect and synchronize mutations of these objects. 
-
-The results of these calls can then be obtained by calling wait() on the concurrent function, invoking a synchronization event. These events can be placed automatically in your code by using the @synchronized decorator on functions that call @concurrent functions. 
-
-Additionally while using @synchronized, you can directly assign the result of concurrent function calls to index mutable objects. These assignments get refactored by DECO to automatically occur during the next synchronization event. All of this means that in many cases, parallel programming using DECO appears exactly the same as simpler serial programming.
-</pre>
-
-There are two things that we need to do in order to speed up our previous example script. 
+Using `deco`, there are two things we need to do in order to speed up our previous example script. 
 
 First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of `ping()` and return them as a list.
 
