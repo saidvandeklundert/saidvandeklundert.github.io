@@ -79,7 +79,7 @@ Making it faster with deco
 
 Using `deco`, there are two things we need to do in order to speed up our previous example script. 
 
-First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of `ping()` and return them as a list.
+First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of `ping()` which we then return as a list.
 
 The script now looks like this:
 
