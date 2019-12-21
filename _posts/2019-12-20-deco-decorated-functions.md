@@ -92,7 +92,9 @@ The summary of what `deco` does from the package author:
 As an overview, DECO is mainly just a smart wrapper for Python's multiprocessing.pool. When @concurrent is applied to a function it replaces it with calls to pool.apply_async. Additionally when arguments are passed to pool.apply_async, DECO replaces any index mutable objects with proxies, allowing it to detect and synchronize mutations of these objects. The results of these calls can then be obtained by calling wait() on the concurrent function, invoking a synchronization event. These events can be placed automatically in your code by using the @synchronized decorator on functions that call @concurrent functions. Additionally while using @synchronized, you can directly assign the result of concurrent function calls to index mutable objects. These assignments get refactored by DECO to automatically occur during the next synchronization event. All of this means that in many cases, parallel programming using DECO appears exactly the same as simpler serial programming.
 ```
 
-There are two things that we need to do in order to speed up our previous example script. First we decorate the `check_ping()` function with `@concurrent`. After this, we create a function that steps through a list and executes the `check_ping()` function. In that function, we can collect the results of `check_ping()` and return them in the way we want. In the following example, I chose to return it as a list.
+There are two things that we need to do in order to speed up our previous example script. 
+
+First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of `ping()` and return them as a list.
 
 The script now looks like this:
 
@@ -158,13 +160,13 @@ host_list = [
 print(ping_list(host_list))
 ```
 
-The `check_ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there is the following list comprehension:
+The `ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there is the following list comprehension:
 
 ```python
 ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
 ```
 
-Let's start with the `map(ping, host_list)` part. This basically runs `check_ping()` for every item in the `host_list`.
+Let's start with the `map(ping, host_list)` part. This basically runs `ping()` for every item in the `host_list`.
 
 The other part of the list comprehension, `ping_return.get()[0] for ping_return`, collects the results and extracts from the result the part we are interested in. The `.get()[0]` is required because of the way that the deco-decorated function returns it's result.
 
