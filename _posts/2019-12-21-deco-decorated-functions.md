@@ -21,7 +21,7 @@ import subprocess
 
 def ping(host):
     '''
-    Sends 2 ICMPs to a host and suppress the output by sending it to devnull.
+    Sends 2 ICMPs to a host. This can be an IP address or a host the local system can resolve.
     
     Returns True if there was a response, False otherwise.
     '''
@@ -38,17 +38,7 @@ def ping(host):
         return False
 
 
-host_list = [
-    'host-1',
-    'host-2',
-    'host-3',
-    'host-4',
-    'host-5',
-    'host-6',
-    'host-7',
-    'host-8',
-    'host-9',   
-]
+host_list = [ 'server-{}'.format(nr) for nr in range(0, 10) ]
 
 for host in host_list:
     print(ping(host))
@@ -59,14 +49,7 @@ The previous example runs through a list and pings every host in it. Running thi
 <pre style="font-size:12px">
 <b>sh-4.4# time python3 ping.py</b>
 True
-True
-True
-True
-True
-True
-True
-True
-True
+..
 True
 0:00:10.631077
 </pre>   
@@ -79,7 +62,7 @@ Making it faster with deco
 
 Using `deco`, there are two things we need to do in order to speed up our previous example script. 
 
-First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of `ping()` which we then return as a list.
+First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of the now decorated `ping()` function. All the results of the `ping()` function are returned as a list.
 
 The script now looks like this:
 
@@ -118,18 +101,7 @@ def ping_list(host_list):
         
     return ping_returns
 
-host_list = [
-    'host-0',    
-    'host-1',
-    'host-2',
-    'host-3',
-    'host-4',
-    'host-5',
-    'host-6',
-    'host-7',
-    'host-8',
-    'host-9',
-]
+host_list = [ 'server-{}'.format(nr) for nr in range(0, 10) ]
 
 print(ping_list(host_list))
 ```
@@ -154,7 +126,13 @@ When we run it now, we get the following:
 
 Only 1.3 seconds as opposed to 10.
 
-The difference becomes more apparent as we expand the `host_list`. When I did another test after expanding the list to 200 hosts, it took the script without `deco` about 3 minutes and 30 seconds to complete. The deco-decorated script only took about 4 seconds!
+The difference becomes more apparent as we expand the `host_list` to more servers like so:
+
+```python
+host_list = [ 'server-{}'.format(nr) for nr in range(0, 200) ]
+```
+
+After expanding the list to include 200 severs, it took the script without `deco` about 3 minutes and 30 seconds to complete. The deco-decorated script only took about 4 seconds!
 
 
 Closing thoughts
