@@ -20,23 +20,25 @@ Have a look at the following example script:
 ```python
 import os
 import subprocess
-from deco import *
 
-def check_ping(host):
+def ping(host):
     '''
     Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
-    Arg:
+    Args:
         host: an IP address or a hostname the system can resolve
     
     Returns:
-        0 if there was a response
-        1 if there was no response
+        True if there was a response,
+        False otherwise.
     '''
-    host = str(host)
-    result = subprocess.call(['ping', '-c', '2', '-W', '2', host],
-                           stdout=open(os.devnull, 'w'),
-                           stderr=open(os.devnull, 'w'))
+    with open(os.devnull, 'w') as devnull:
+        result = subprocess.call(
+            ['ping', '-c', '2', '-W', '2', host],
+            stdout=devnull,
+            stderr=devnull
+            )
+            
     if result == 0:
         return True
     else:        
@@ -57,7 +59,7 @@ host_list = [
 ]
 
 for host in host_list:
-    print(check_ping(host))
+    print(ping(host))
 ```
 
 When we run this script, we get the following output:
@@ -97,24 +99,27 @@ The script now looks like this:
 ```python
 import os
 import subprocess
-from deco import *
+from deco import concurrent, synchronized
 
 @concurrent
-def check_ping(host):
+def ping(host):
     '''
     Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
-    Arg:
+    Args:
         host: an IP address or a hostname the system can resolve
     
     Returns:
-        0 if there was a response
-        1 if there was no response
+        True if there was a response,
+        False otherwise.
     '''
-    host = str(host)
-    result = subprocess.call(['ping', '-c', '2', '-W', '2', host],
-                           stdout=open(os.devnull, 'w'),
-                           stderr=open(os.devnull, 'w'))
+    with open(os.devnull, 'w') as devnull:
+        result = subprocess.call(
+            ['ping', '-c', '2', '-W', '2', host],
+            stdout=devnull,
+            stderr=devnull
+            )
+            
     if result == 0:
         return True
     else:        
@@ -133,11 +138,9 @@ def ping_list(host_list):
         A list containing the result for every single time the check_ping(host) ran
     
     """
-    check_ping_results = [ x for x in map(check_ping, host_list)]
-
-    results = [x.get()[0] for x in check_ping_results ]
-    
-    return results
+    ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
+        
+    return ping_returns
 
 host_list = [
     'host-0',    
@@ -155,22 +158,15 @@ host_list = [
 print(ping_list(host_list))
 ```
 
-The `check_ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there are 2 list comprehensions. 
-
-The first list comprehension was the following:
-```python
-check_ping_results = [ x for x in map(check_ping, host_list)]
-```
-
-Here, you see `map()`, which will 'Return an iterator that applies function to every item of iterable'. Basically, it runs `check_ping()` for every item in the `host_list`. The list comprehension stores the returns in the `check_ping_results` list.
-
-When we run the decorated function, the return is slightly modified. The second list comprehension deals with this:
+The `check_ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there is the following list comprehension:
 
 ```python
-results = [x.get()[0] for x in check_ping_results ]
+ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
 ```
 
-Here, we extract the `check_ping()` result we are after by doing `x.get()[0]` on every return we previously stored in the `check_ping_results`.
+Let's start with the `map(ping, host_list)` part. This basically runs `check_ping()` for every item in the `host_list`.
+
+The other part of the list comprehension, `ping_return.get()[0] for ping_return`, collects the results and extracts from the result the part we are interested in. The `.get()[0]` is required because of the way that the deco-decorated function returns it's result.
 
 When we run it now, we get the following:
 
