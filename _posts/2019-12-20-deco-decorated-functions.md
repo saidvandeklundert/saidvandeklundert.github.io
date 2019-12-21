@@ -83,7 +83,14 @@ Using `deco`, we only need to implement some minor modifications to make the pre
 
 The summary of what `deco` does from the package author:
 <pre style="font-size:12px">
-As an overview, DECO is mainly just a smart wrapper for Python's multiprocessing.pool. When @concurrent is applied to a function it replaces it with calls to pool.apply_async. Additionally when arguments are passed to pool.apply_async, DECO replaces any index mutable objects with proxies, allowing it to detect and synchronize mutations of these objects. The results of these calls can then be obtained by calling wait() on the concurrent function, invoking a synchronization event. These events can be placed automatically in your code by using the @synchronized decorator on functions that call @concurrent functions. Additionally while using @synchronized, you can directly assign the result of concurrent function calls to index mutable objects. These assignments get refactored by DECO to automatically occur during the next synchronization event. All of this means that in many cases, parallel programming using DECO appears exactly the same as simpler serial programming.
+DECO is mainly just a smart wrapper for Python's multiprocessing.pool. 
+When @concurrent is applied to a function it replaces it with calls to pool.apply_async. 
+
+Additionally when arguments are passed to pool.apply_async, DECO replaces any index mutable objects with proxies, allowing it to detect and synchronize mutations of these objects. 
+
+The results of these calls can then be obtained by calling wait() on the concurrent function, invoking a synchronization event. These events can be placed automatically in your code by using the @synchronized decorator on functions that call @concurrent functions. 
+
+Additionally while using @synchronized, you can directly assign the result of concurrent function calls to index mutable objects. These assignments get refactored by DECO to automatically occur during the next synchronization event. All of this means that in many cases, parallel programming using DECO appears exactly the same as simpler serial programming.
 </pre>
 
 There are two things that we need to do in order to speed up our previous example script. 
