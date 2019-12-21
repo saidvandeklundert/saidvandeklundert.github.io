@@ -12,8 +12,8 @@ During my first struggles with threading and multiprocessing, a colleaugue told 
 I was blown away at how easy it was to use `deco`. To demonstrate how easy it is, let's look at 2 example scripts. First, a script that runs through a list and sends a ping to every host in that list. After this, we will use `deco` to demonstrate how easy we can parallelize the first script.
 
 
-Sending ICMPs one after the other
-=================================
+Slow ping
+=========
 
 Have a look at the following example script:
 
@@ -25,12 +25,7 @@ def ping(host):
     '''
     Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
-    Args:
-        host: an IP address or a hostname the system can resolve
-    
-    Returns:
-        True if there was a response,
-        False otherwise.
+    Returns True if there was a response, False otherwise.
     '''
     with open(os.devnull, 'w') as devnull:
         result = subprocess.call(
@@ -46,7 +41,6 @@ def ping(host):
 
 
 host_list = [
-    'host-0',    
     'host-1',
     'host-2',
     'host-3',
@@ -82,8 +76,8 @@ True
 We iterated a list and executed `check_ping()` for every host in the list. It took us 10 seconds. If I expand the list to 200 hosts, it takes about 3 minutes and 30 seconds.
 
 
-Using deco
-==========
+Making it fast with deco
+========================
 
 Using `deco`, we only need to implement some minor modifications to make the previous example script go a lot faster.
 
@@ -108,12 +102,7 @@ def ping(host):
     '''
     Sends 3 ICMPs to a host and suppress the output by sending it to devnull.
     
-    Args:
-        host: an IP address or a hostname the system can resolve
-    
-    Returns:
-        True if there was a response,
-        False otherwise.
+    Returns True if there was a response, False otherwise.
     '''
     with open(os.devnull, 'w') as devnull:
         result = subprocess.call(
@@ -131,14 +120,8 @@ def ping(host):
 @synchronized
 def ping_list(host_list):
     """
-    Runs check_ping(host) against a list of hosts in parallel.
-
-    Arg:
-        host_list: a list of hosts
-    
-    Returns:
-        A list containing the result for every single time the check_ping(host) ran
-    
+    Runs ping() against a list of hosts in parallel and returns the
+     results as a list.
     """
     ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
         
