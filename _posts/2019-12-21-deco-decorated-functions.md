@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Using deco-decorate functions in Python
+title: parallelize Python programs using deco
 tags: [automation, python]
 image: /img/python-logo.jpg
 ---
