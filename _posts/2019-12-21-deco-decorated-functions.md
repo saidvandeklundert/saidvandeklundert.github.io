@@ -9,7 +9,7 @@ During my first struggles with threading and multiprocessing, a colleaugue told 
 
 `A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
 
-I was blown away at how easy it was to use `deco`. To demonstrate this, use `deco` to parallelize the following script.
+I was blown away at how easy it was to use `deco`. To demonstrate this, let's use `deco` to parallelize the following script.
 
 
 Slow ping
