@@ -9,13 +9,11 @@ During my first struggles with threading and multiprocessing, a colleaugue told 
 
 `A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
 
-I was blown away at how easy it was to use `deco`. To demonstrate how easy it is, let's look at 2 example scripts. First, a script that runs through a list and pings every host in it. After this, we will use `deco` to parallelize the first script.
+I was blown away at how easy it was to use `deco`. To demonstrate this, use `deco` to parallelize the following script.
 
 
 Slow ping
 =========
-
-Have a look at the following example script:
 
 ```python
 import os
@@ -56,7 +54,7 @@ for host in host_list:
     print(ping(host))
 ```
 
-I ran this script and got following output:
+The previous example runs through a list and pings every host in it. Running this script gave me the following output:
 
 <pre style="font-size:12px">
 <b>sh-4.4# time python3 ping.py</b>
@@ -73,7 +71,7 @@ True
 0:00:10.631077
 </pre>   
 
-The script executed `ping()` for every host in the list and it took 10 seconds to complete. 
+All the hosts responded and the script took 10 seconds to complete. 
 
 
 Making it faster with deco
