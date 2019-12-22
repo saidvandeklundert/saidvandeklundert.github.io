@@ -44,7 +44,7 @@ for host in host_list:
     print(ping(host))
 ```
 
-The previous example runs through a list and pings every host in it. Running this script gave me the following output:
+The previous example runs through a list and pings every host in it. In an environment where every server was reachale, I got the following output after running the script:
 
 <pre style="font-size:12px">
 <b>sh-4.4# time python3 ping.py</b>
@@ -54,7 +54,7 @@ True
 0:00:10.631077
 </pre>   
 
-All the hosts responded and the script took 10 seconds to complete. 
+The script took 10 seconds to complete. 
 
 
 Making it faster with deco
@@ -138,8 +138,6 @@ After expanding the list to include 200 severs, it took the script without `deco
 Closing thoughts
 ================
 
-Using `deco` is very easy. I have used it in the past in circumstances where I needed a script to quickly send SNMP requests, pings, or some CLIs to devices. 
+Using `deco` is very easy. I have used it in the past in circumstances where I needed a script to quickly send SNMP requests or some ICMPs to devices. 
 
-The beauty of using `deco` is that the implementation requires so little effort.
-
-You can pip install the package and you can read more about it `deco` [here](https://github.com/alex-sherman/deco). 
+The beauty of using `deco` is that the implementation requires so little effort. There are some limitations to the package though. You can read more about `deco` [here](https://github.com/alex-sherman/deco). 
