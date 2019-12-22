@@ -5,11 +5,11 @@ tags: [automation, python]
 image: /img/python-logo.jpg
 ---
 
-During my first struggles with threading and multiprocessing, a colleague told me about `deco`. This package enables you to parallelize a simple function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
+During my first struggles with threading and multiprocessing, a colleague told me about <b>deco</b>. This package enables you to parallelize a simple function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
 
-`A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
+<b>A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.</b>
 
-I was blown away at how easy it was to use `deco`. To demonstrate this, let's use `deco` to parallelize the following script.
+I was blown away at how easy it was to use <b>deco</b>. To demonstrate this, let's use <b>deco</b> to parallelize the following script.
 
 
 Slow ping
@@ -21,7 +21,7 @@ import subprocess
 
 def ping(host):
     '''
-    Sends 2 ICMPs to a host. This can be an IP address or a host the local system can resolve.
+    Sends 2 ICMPs to a host and suppress the output by sending it to devnull.
     
     Returns True if there was a response, False otherwise.
     '''
@@ -60,7 +60,7 @@ The script took 10 seconds to complete.
 Making it faster with deco
 ==========================
 
-Using `deco`, there are two things we need to do in order to speed up our previous example script. 
+Using <b>deco</b>, there are two things we need to do in order to speed up our previous example script. 
 
 First we decorate the `ping()` function with `@concurrent`. After this, we create a function that executes the `ping()` function for every host in a list. In that function, we collect the results of the now decorated `ping()` function. All the results of the `ping()` function are returned as a list.
 
@@ -132,12 +132,12 @@ The difference becomes more apparent as we expand the `host_list` to more server
 host_list = [ 'server-{}'.format(nr) for nr in range(0, 200) ]
 ```
 
-After expanding the list to include 200 severs, it took the script without `deco` about 3 minutes and 30 seconds to complete. The deco-decorated script only took about 4 seconds!
+After expanding the list to include 200 severs, it took the script without <b>deco</b> about 3 minutes and 30 seconds to complete. The deco-decorated script only took about 4 seconds!
 
 
 Closing thoughts
 ================
 
-Using `deco` is very easy. I have used it in the past in circumstances where I needed a script to quickly send SNMP requests or some ICMPs to devices. 
+Using <b>deco</b> is very easy. I have used it in the past in circumstances where I needed a script to quickly send SNMP requests or some ICMPs to devices. 
 
-The beauty of using `deco` is that the implementation requires so little effort. You can read more about `deco` [here](https://github.com/alex-sherman/deco). 
+The beauty of using <b>deco</b> is that the implementation requires so little effort. You can read more about <b>deco</b> [here](https://github.com/alex-sherman/deco). 
