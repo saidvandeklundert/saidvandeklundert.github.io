@@ -1,6 +1,6 @@
 ---
 layout: post
-title: SaltStack proxy minion debugging
+title: SaltStack proxy minion troubleshooting
 tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
