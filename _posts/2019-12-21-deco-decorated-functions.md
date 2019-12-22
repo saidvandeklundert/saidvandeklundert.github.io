@@ -5,7 +5,7 @@ tags: [automation, python]
 image: /img/python-logo.jpg
 ---
 
-During my first struggles with threading and multiprocessing, a colleague told me about `deco`. This package enables you to parallelize a function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
+During my first struggles with threading and multiprocessing, a colleague told me about `deco`. This package enables you to parallelize a simple function in a very easy way, making it run significantly faster. The package author Alex Sherman puts it like this:
 
 `A simplified parallel computing model for Python. DECO automatically parallelizes Python programs, and requires minimal modifications to existing serial programs.`
 
@@ -140,4 +140,4 @@ Closing thoughts
 
 Using `deco` is very easy. I have used it in the past in circumstances where I needed a script to quickly send SNMP requests or some ICMPs to devices. 
 
-The beauty of using `deco` is that the implementation requires so little effort. There are some limitations to the package though. You can read more about `deco` [here](https://github.com/alex-sherman/deco). 
+The beauty of using `deco` is that the implementation requires so little effort. You can read more about `deco` [here](https://github.com/alex-sherman/deco). 
