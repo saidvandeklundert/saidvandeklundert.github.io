@@ -15,7 +15,7 @@ I was blown away at how easy it was to use <b>deco</b>. To demonstrate this, let
 Slow ping
 =========
 
-```python
+<pre style="font-size:12px">
 import os
 import subprocess
 
@@ -42,7 +42,7 @@ host_list = [ 'server-{}'.format(nr) for nr in range(0, 10) ]
 
 for host in host_list:
     print(ping(host))
-```
+</pre>
 
 The previous example runs through a list and pings every host in it. In an environment where every server was reachale, I got the following output after running the script:
 
@@ -66,7 +66,7 @@ First we decorate the `ping()` function with `@concurrent`. After this, we creat
 
 The script now looks like this:
 
-```python
+<pre style="font-size:12px">
 import os
 import subprocess
 from deco import concurrent, synchronized
@@ -104,13 +104,13 @@ def ping_list(host_list):
 host_list = [ 'server-{}'.format(nr) for nr in range(0, 10) ]
 
 print(ping_list(host_list))
-```
+</pre>
 
 The `ping()` function was decorated with `concurrent`. In addition to this, there is a new function called `ping_list()`. In this function, there is the following list comprehension:
 
-```python
+<pre style="font-size:12px">
 ping_returns = [ ping_return.get()[0] for ping_return in map(ping, host_list)]    
-```
+</pre>
 
 The `map(ping, host_list)` part basically runs `ping()` for every item in the `host_list`.
 
@@ -128,9 +128,9 @@ Only 1.3 seconds as opposed to 10.
 
 The difference becomes more apparent as we expand the `host_list` to more servers like so:
 
-```python
+<pre style="font-size:12px">
 host_list = [ 'server-{}'.format(nr) for nr in range(0, 200) ]
-```
+</pre>
 
 After expanding the list to include 200 severs, it took the script without <b>deco</b> about 3 minutes and 30 seconds to complete. The deco-decorated script only took about 4 seconds!
 
