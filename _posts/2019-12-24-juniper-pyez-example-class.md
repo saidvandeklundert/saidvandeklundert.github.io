@@ -29,22 +29,19 @@ with Device(host=host, user=username, password=password, normalize=True) as dev:
 pprint(rpc)    
 </pre>
 
-As the script grows, it starts to make sense to turn to functions so that it becomes easier to re-use code. I ended up creating a file with most of the commonly used functions that I would import into other scripts whenever I needed them. The following would be something like a function that I would make
+As the script grows, it starts to make sense to turn to functions so that it becomes easier to re-use code. I ended up creating a file with most of the commonly used functions that I would import into other scripts whenever I needed them. The following would be something like a function that I would make:
 
 
 <pre style="font-size:12px">
 def get_ospf3_neighbor_ids(dev):
     """
-    Issues the get-ospf3-neighbor RPC and retrieves the neighbor IDs along with the interface behind which the neighbor is found.
+    Gathers information from the &lt;get-ospf3-neighbor-information> RPC.
     
-    Arg:
-        dev: an object that is capable of communicating with the Juniper API.
-    
-    Returns:
-        Returns a dictionary.
-        
-    """    
-
+    Returns a dictionary:
+        { 
+            neighbor-address : { neighbor-id : interface },
+        }
+    """
     ret = {}
     
     rpc = dev.rpc.get_ospf3_neighbor_information()
