@@ -191,7 +191,15 @@ if __name__ == "__main__":
 </pre>
 
 
-It is very easy to expand the class and to re-use it in all your other scripts. Want to create a script that collects the OSPF neighbors, iterates those does a <b>show version</b> and collects those OSPF neighbors? No problem:
+It is very easy to expand the class and to re-use it in all your other scripts.
+
+
+
+--
+Change all the next text and explain more the OOP
+
+
+Want to create a script that collects the OSPF neighbors, iterates those does a <b>show version</b> and collects those OSPF neighbors? No problem:
 
 <pre style="font-size:12px">
 from juniper_class import JunosDevice
