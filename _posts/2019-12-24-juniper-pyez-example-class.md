@@ -29,27 +29,48 @@ with Device(host=host, user=username, password=password, normalize=True) as dev:
 pprint(rpc)    
 </pre>
 
-As the script grows, it starts to make sense to turn to functions so that it becomes easier to re-use code. I ended up creating a file with most of the commonly used functions that I would import into other scripts whenever I needed them. It worked pretty well and made scripts look something like this:
+As the script grows, it starts to make sense to turn to functions so that it becomes easier to re-use code. I ended up creating a file with most of the commonly used functions that I would import into other scripts whenever I needed them. The following would be something like a function that I would make
 
 
 <pre style="font-size:12px">
-from juniper import get_ospf3_neighbor_ids, get_bgp_summary
-from getpass import getpass
-from sys import argv
-username = argv[1]    
-host = argv[2]  
-password = getpass() 
+def get_ospf3_neighbor_ids(dev):
+    """
+    Issues the get-ospf3-neighbor RPC and retrieves the neighbor IDs along with the interface behind which the neighbor is found.
+    
+    Arg:
+        dev: an object that is capable of communicating with the Juniper API.
+    
+    Returns:
+        Returns a dictionary.
+        
+    """    
 
-ospf_dict = get_ospf3_neighbor_ids(host=host, user=username, password=password)
-bgp_sum_dict = get_bgp_summary(host=host, user=username, password=password)
-
-doing_things_with_collected_data()
+    ret = {}
+    
+    rpc = dev.rpc.get_ospf3_neighbor_information()
+    ospf_neighbors = rpc.findall('./ospf3-neighbor')
+    
+    for neighbor in ospf_neighbors:
+        neighbor_address = neighbor.find('./neighbor-address').text
+        neighbor_id = neighbor.find('./neighbor-id').text
+        interface = neighbor.find('./interface-name').text
+        ret[neighbor_address] = { neighbor_id : interface }
+    
+    return ret
 </pre>
 
+I would then import the functions and call them in other scripts, like so:
 
-In the file with all the different functions, things were cluttering up though. At first, I was instantiating a new connection per function. This is silly and slow. After this, I started passing around the device object from one function to the next. Better, but still cumbersome and things cluttered up eventually for all sorts of reasons.
+<pre style="font-size:12px">
+dev = Device(host=host, user=username, password=password, normalize=True)
+dev.open()    
+ospfv2_neighbors = get_ospf_neighbor_ids(dev)
+ospfv3_neighbors = get_ospf3_neighbor_ids(dev)
+int_dict = get_interface_descriptions(dev)    
+dev.close()
+</pre>
 
-Then I moved to using a class.
+This worked as it enabled be to re-use a lot of functions and it made scripts a lot more readable. Then someone asked me why I was passing the <b>dev</b> from one funtion to the next. I said this was because setting up the connection takes a few seconds and doing it only once was more efficient. The reply was that I should really be using a class and turn the functions into class methods.
 
 
 Using a class:
