@@ -183,7 +183,7 @@ if __name__ == "__main__":
     
     with JunosDevice(host='192.168.118.251', user=username, password=password, normalize=True) as dev:                                  
         pprint(dev.facts)
-        pprint(dev.cli('show version', warning=False))
+        print(dev.cli('show version', warning=False))
         pprint(dev.get_ospf_neighbor_ids())
         pprint(dev.get_ospf3_neighbor_ids())
         pprint(dev.get_bgp_summary())   
@@ -191,60 +191,6 @@ if __name__ == "__main__":
 </pre>
 
 
-It is very easy to expand the class and to re-use it in all your other scripts.
-
-
-
---
-Change all the next text and explain more the OOP
-
-
-Want to create a script that collects the OSPF neighbors, iterates those does a <b>show version</b> and collects those OSPF neighbors? No problem:
-
-<pre style="font-size:12px">
-from juniper_class import JunosDevice
-from pprint import pprint
-import getpass, sys
-username = sys.argv[1]    
-host = sys.argv[2]
-password = getpass.getpass()  
-
-    
-# check the version and all OSPF neighbors for every OSPF neighbor
-with JunosDevice(host=host, user=username, password=password, normalize=True) as dev:                                  
-    ospf_neighbors = dev.get_ospf_neighbor_ids()
-
-for d in ospf_neighbors.values():
-    for ospf_neighbor_id in d.keys():
-        print(ospf_neighbor_id)
-        with JunosDevice(host=ospf_neighbor_id, user=username, password=password, normalize=True, auto_probe=4, timeout=10) as dev:                                  
-            pprint(dev.get_ospf_neighbor_ids())
-            print(dev.cli('show version', warning=False))
-</pre>
-
-
-The above will only work when the target and all the OSPF neighbors are Juniper devices obviously (idea: use SNMP to gather the device type and switch to the relevant API based on the return). 
-
-When I run the script against a Juniper device with several Juniper neighbors, I get the following:
-
-<pre style="font-size:12px">
-sh-4.4# python3 lalala_lo.py svandeklundert 192.168.204.114
-Password: 
-10.45.16.53
-{'10.45.19.155': {'10.45.16.54': 'ae7.0'},
- '10.45.19.173': {'10.192.18.33': 'ae5.0'},
- '10.45.19.175': {'10.192.18.34': 'ae6.0'},
- '10.45.19.182': {'10.45.16.57': 'ae0.0'},
- '10.45.19.96': {'10.45.16.47': 'ae1.0'}}
-
-Hostname: qfx-10k-lab01
-Model: qfx10008
-Junos: 15.1X53-D65.3
-
-&lt; output omitted >
- 
-sh-4.4# 
-</pre>
 
 Closing thoughts:
 =================
