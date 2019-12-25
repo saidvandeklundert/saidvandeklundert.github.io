@@ -17,13 +17,9 @@ Example:
 <pre style="font-size:12px">
 from jnpr.junos import Device
 from pprint import pprint
-from getpass import getpass
-from sys import argv
-username = argv[1]    
-host = argv[2]  
-password = getpass() 
 
-with Device(host=host, user=username, password=password, normalize=True) as dev:                                          
+
+with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as dev:                                          
     rpc = dev.rpc.get_ospf3_neighbor_information({'format':'json'})
     
 pprint(rpc)    
@@ -172,22 +168,13 @@ In the following file <b>test_juniper_class.py</b>, I am using the <b>JunosDevic
 <pre style="font-size:12px">
 from juniper_class import JunosDevice
 from pprint import pprint
-import getpass, sys
-if __name__ == "__main__":
-    """
-    To test the Juniper class,
-     python3 test_juniper_class &lt;username>
-    """    
-    username = sys.argv[1]    
-    password = getpass.getpass()  
     
-    with JunosDevice(host='192.168.118.251', user=username, password=password, normalize=True) as dev:                                  
-        pprint(dev.facts)
-        print(dev.cli('show version', warning=False))
-        pprint(dev.get_ospf_neighbor_ids())
-        pprint(dev.get_ospf3_neighbor_ids())
-        pprint(dev.get_bgp_summary())   
-
+with JunosDevice(host='192.168.118.251', user='lab', password='lab123', normalize=True) as dev:                                  
+    pprint(dev.facts)
+    print(dev.cli('show version', warning=False))
+    pprint(dev.get_ospf_neighbor_ids())
+    pprint(dev.get_ospf3_neighbor_ids())
+    pprint(dev.get_bgp_summary())   
 </pre>
 
 
