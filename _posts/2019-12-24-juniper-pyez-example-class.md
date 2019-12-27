@@ -107,7 +107,7 @@ If we run this script, we see the following:
 
 
 
-In the example, we instantiated the object and used the <b>get_bgp_summary<b> method to display BGP information. Let's dig a little deeper by opening up an interpretor and connecting to a device:
+In the example, we instantiated the object and used the <b>get_bgp_summary</b> method to display BGP information. Let's dig a little deeper by opening up an interpretor and connecting to a device:
 
 <pre style="font-size:12px">
 sh-4.4# python3             
