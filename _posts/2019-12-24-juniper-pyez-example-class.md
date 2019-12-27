@@ -5,19 +5,17 @@ tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
 
-Lately, I have been doing a lot of scripting using <b>PyEZ</b> to communicate with the <b>Juniper</b> API. A thing that I have found to be increadibly worthwhile was a move to a more object oriented approach. I have found it to be off great value and wanted to share an example on how you could do this yourself.
+Recently, a thing that I have found to be increadibly worthwhile was a move to a more object oriented approach. For this reason, I wanted to share an example on how you could do this yourself.
 
 Using PyEZ:
 ===========
 
-When you are using PyEZ, you import the <b>Device</b> class and instantiate an object of your own to work with.
+When you are using PyEZ, you import the <b>Device</b> class and instantiate an object of your own to work with:
 
-Example:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
 from pprint import pprint
-
 
 with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as dev:                                          
     rpc = dev.rpc.get_ospf3_neighbor_information({'format':'json'})
@@ -25,7 +23,151 @@ with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as d
 pprint(rpc)    
 </pre>
 
-As the script grows, it starts to make sense to turn to functions so that it becomes easier to re-use code. I ended up creating a file with most of the commonly used functions that I would import into other scripts whenever I needed them. The following would be something like a function that I would make:
+As you expand your scripting efforts, it starts to make sense to turn to functions so that it becomes easier to re-use code. Eventually, you might end up creating a file with most of the commonly used functions as I did. I would simply import the file into other scripts and re-use all my previous work like that. 
+
+
+Using a class:
+==============
+
+Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own specialized <b>subclass</b> that contains methods I use most.
+
+Have a look at the following file <b>juniper_class.py</b>:
+
+<pre style="font-size:12px">
+from jnpr.junos import Device
+
+class JunosDevice(Device):
+    """Juniper subclass of Device.    
+    """
+
+    def get_bgp_summary(self):
+        """        
+        Gathers information from the &lt;get-bgp-summary-information> RPC.
+        
+        Returns a dictionary:
+            { 
+                peer-address : {
+                    'peer-as' : peer_as,
+                    'peer-description' : peer_description,
+                    'peer-up-time' : peer_up_time,
+                }
+            }        
+        """
+        ret = {}
+       
+        rpc = self.rpc.get_bgp_summary_information()
+        bgp_peers = rpc.findall('.//bgp-peer')
+        
+        for peer in bgp_peers:
+            peer_address = peer.find('./peer-address').text
+            peer_as = peer.find('./peer-as').text            
+            peer_up_time = peer.find('./elapsed-time').attrib['seconds']
+            
+            peer_description = None
+            if peer.find('./description') is not None:
+                peer_description = peer.find('./description').text
+            
+            ret[peer_address] = {                 
+                'peer-as' : peer_as,
+                'peer-description' : peer_description,
+                'peer-up-time' : peer_up_time,
+            }
+
+        return ret     
+</pre>
+
+At the top, right after the import of <b>Device</b>, there is the <b>JunosDevice</b> class. <b>JunosDevice</b> is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also.
+
+With the creation of additional functions, you basically extend the features that <b>Device</b> has to offer with your own.
+
+In the following file <b>test_juniper_class.py</b>, I am using the <b>JunosDevice</b> as an example:
+
+<pre style="font-size:12px">
+from juniper_class import JunosDevice
+from pprint import pprint
+    
+with JunosDevice(host='10.0.19.245', user='lab', password='lab123', normalize=True) as dev: 
+    pprint(dev.get_bgp_summary())
+</pre>
+
+If we run this script, we see the following:
+
+<pre style="font-size:12px">
+<b>sh-4.4# python3 test_class.py</b>
+{'10.0.3.48': {'peer-as': '65500',
+                'peer-description': 'BGP: gr01.dal',
+                'peer-up-time': '2524741'},
+ '10.0.3.49': {'peer-as': '65500',
+                'peer-description': 'BGP: gr02.dal',
+                'peer-up-time': '2523245'},
+ '2001:db8:2:5::8': {'peer-as': '65500',
+                      'peer-description': 'BGP: ar02.dal',
+                      'peer-up-time': '60149802'}}
+</pre>
+
+
+
+In the example, we instantiated the object and used the <b>get_bgp_summary<b> method to display some BGP information. Let's look a little deeper and open up an interpretor:
+
+<pre style="font-size:12px">
+sh-4.4# python3             
+Python 3.6.8 (default, May 21 2019, 23:51:36) 
+[GCC 8.2.1 20180905 (Red Hat 8.2.1-3)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from juniper_class import JunosDevice
+>>> from pprint import pprint
+>>> dev = JunosDevice(host='192.168.1.1', user='lab', password='lab123', normalize=True)
+>>> dir(dev)
+['ON_JUNOS', 'Template', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__enter__', '__eq__', '__exit__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_auth_password', '_auth_user', '_auto_probe', '_conf_auth_user', '_conf_ssh_private_key_file', '_conn', '_connected', '_fact_style', '_gather_facts', '_hostname', '_j2ldr', '_manages', '_nc_transform', '_norm_transform', '_normalize', '_ofacts', '_port', '_rpc_reply', '_sock_fd', '_ssh_config', '_ssh_private_key_file', '_sshconf_lkup', '_sshconf_path', 'auto_probe', 'bind', 'cli', 'cli_to_rpc_string', 'close', 'connected', 'display_xml_rpc', 'execute', 'facts', 'facts_refresh', '<font color='red'>get_bgp_summary</font>', 'hostname', 'logfile', 'manages', 'master', 'ofacts', 'open', 'password', 'port', 'probe', 're_name', 'rpc', 'timeout', 'transform', 'uptime', 'user']
+
+>>> dev.open()
+Device(192.168.1.1)
+
+>>> print(dev.cli('show version', warning=False))
+
+Hostname: ar01.ams-re0
+Model: mx960
+Junos: 15.1F4.15-C1.9
+
+&lt;output omitted>
+
+>>> pprint(dev.facts) 
+{'2RE': True,
+ 'HOME': '/var/home/admin',
+ 'RE0': {'last_reboot_reason': 'Router rebooted after a normal shutdown.',
+         'mastership_state': 'master',
+         'model': 'RE-S-2000',
+         'status': 'OK',
+         'up_time': '1260 days, 12 hours, 49 minutes, 44 seconds'},
+
+ &lt;output omitted>
+
+>>> dev.close()
+>>>
+</pre> 
+
+Closing thoughts:
+=================
+
+By making your own class inherit the Junipr PyEZ <b>Device</b> class, you equip your own class with everything that PyEZ comes with <b>Device</b> class. After this, you can start extending it with methods that make sense for your environment. 
+
+By putting them in a class, you have something that is very easy to re-use in other scripts and programs. This will make those scripts and programs easier to write because most of the work has allready been done.
+
+
+
+Scrapped
+=====
+
+
+Benefit:
+- asked me why I was passing the <b>dev</b> from one funtion to the next. I said this was because setting up the connection takes a few seconds and doing it only once was more efficient. The reply was that I should really be using a class and turn the functions into class methods.
+
+Lately, I have been doing a lot of scripting using <b>PyEZ</b> to communicate with the <b>Juniper</b> API. 
+
+
+
+
+The following would be something like a function that I would make:
 
 
 <pre style="font-size:12px">
@@ -62,126 +204,3 @@ ospfv3_neighbors = get_ospf3_neighbor_ids(dev)
 int_dict = get_interface_descriptions(dev)    
 dev.close()
 </pre>
-
-This worked as it enabled be to re-use a lot of functions and it made scripts a lot more readable. Then someone asked me why I was passing the <b>dev</b> from one funtion to the next. I said this was because setting up the connection takes a few seconds and doing it only once was more efficient. The reply was that I should really be using a class and turn the functions into class methods.
-
-
-Using a class:
-==============
-
-Have a look at the following file <b>juniper_class.py</b>:
-
-<pre style="font-size:12px">
-from jnpr.junos import Device
-
-class JunosDevice(Device):
-    """Juniper device class for interacting with the device using NETCONF.
-    
-    """
-
-    def get_ospf_neighbor_ids(self):
-        """
-        Gathers information from the &lt;get-ospf-neighbor-information> RPC.
-        
-        Returns a dictionary:
-            { 
-                neighbor-address : { neighbor-id : interface },
-            }
-        """      
-        ret = {}
-        rpc = self.rpc.get_ospf_neighbor_information()
-        ospf_neighbors = rpc.findall('./ospf-neighbor')
-
-        for neighbor in ospf_neighbors:
-            neighbor_address = neighbor.find('./neighbor-address').text
-            neighbor_id = neighbor.find('./neighbor-id').text
-            interface = neighbor.find('./interface-name').text
-            ret[neighbor_address] = { neighbor_id : interface }
-
-        return ret
-
-    def get_ospf3_neighbor_ids(self):
-        """
-        Gathers information from the &lt;get-ospf3-neighbor-information> RPC.
-        
-        Returns a dictionary:
-            { 
-                neighbor-address : { neighbor-id : interface },
-            }
-        """     
-        ret = {}
-       
-        rpc = self.rpc.get_ospf3_neighbor_information()
-        ospf_neighbors = rpc.findall('./ospf3-neighbor')
-        
-        for neighbor in ospf_neighbors:
-            neighbor_address = neighbor.find('./neighbor-address').text
-            neighbor_id = neighbor.find('./neighbor-id').text
-            interface = neighbor.find('./interface-name').text
-            ret[neighbor_address] = { neighbor_id : interface }
-        
-        return ret  
-
-    def get_bgp_summary(self):
-        """
-        
-        Gathers information from the &lt;get-bgp-summary-information> RPC.
-        
-        Returns a dictionary:
-            { 
-                peer-address : {
-                    'peer-as' : peer_as,
-                    'peer-description' : peer_description,
-                    'peer-up-time' : peer_up_time,
-                }
-            }        
-        """
-        ret = {}
-       
-        rpc = self.rpc.get_bgp_summary_information()
-        bgp_peers = rpc.findall('.//bgp-peer')
-        
-        for peer in bgp_peers:
-            peer_address = peer.find('./peer-address').text
-            peer_as = peer.find('./peer-as').text            
-            peer_up_time = peer.find('./elapsed-time').attrib['seconds']
-            
-            peer_description = None
-            if peer.find('./description') is not None:
-                peer_description = peer.find('./description').text
-            
-            ret[peer_address] = {                 
-                'peer-as' : peer_as,
-                'peer-description' : peer_description,
-                'peer-up-time' : peer_up_time,
-            }
-
-        return ret    
-</pre>
-
-At the top, right after the import of <b>Device</b>, there is the <b>JunosDevice</b> class. <b>JunosDevice</b> is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also.
-
-With the creation of additional functions, you basically extend the features that <b>Device</b> has to offer with your own.
-
-In the following file <b>test_juniper_class.py</b>, I am using the <b>JunosDevice</b> as an example:
-
-<pre style="font-size:12px">
-from juniper_class import JunosDevice
-from pprint import pprint
-    
-with JunosDevice(host='192.168.118.251', user='lab', password='lab123', normalize=True) as dev:                                  
-    pprint(dev.facts)
-    print(dev.cli('show version', warning=False))
-    pprint(dev.get_ospf_neighbor_ids())
-    pprint(dev.get_ospf3_neighbor_ids())
-    pprint(dev.get_bgp_summary())   
-</pre>
-
-
-
-Closing thoughts:
-=================
-
-By making your own class inherit the Junipr PyEZ <b>Device</b> class, you equip your own class with everything that PyEZ comes with <b>Device</b> class. After this, you can start extending it with methods that make sense for your environment. 
-
-By putting them in a class, you have something that is very easy to re-use in other scripts and programs. This will make those scripts and programs easier to write because most of the work has allready been done.
