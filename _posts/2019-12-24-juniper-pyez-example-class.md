@@ -29,7 +29,7 @@ As you expand your scripting efforts, it starts to make sense to turn to functio
 Using a class:
 ==============
 
-Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own specialized <b>subclass</b> that contains methods I use most.
+Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own specialized <b>subclass</b> that contains the functions (or methods) I use most.
 
 Have a look at the following file <b>juniper_class.py</b>:
 
@@ -150,7 +150,7 @@ Junos: 15.1F4.15-C1.9
 >>>
 </pre> 
 
-The <b>dev</b> we instantiate is of the type &lt;class 'juniper_class.JunosDevice'>. I is a subclass of the Device class and as we can see using <b>dir(dev)</b>, it has all the same methods in addition to the one we extended the class with.
+The <b>dev</b> we instantiated shows it is of the &lt;class 'juniper_class.JunosDevice'>. I is a subclass of the Device class and as we can see using <b>dir(dev)</b>, it has all the same methods in addition to the <b>get_bgp_summary</b> extended the class with.
 
 Closing thoughts:
 =================
@@ -160,53 +160,3 @@ By making your own class inherit the Junipr PyEZ <b>Device</b> class, you equip 
 By putting them in a class, you have something that is very easy to re-use in other scripts and programs. This will make those scripts and programs easier to write because most of the work has allready been done.
 
 
-
-Scrapped
-=====
-
-
-Benefit:
-- asked me why I was passing the <b>dev</b> from one funtion to the next. I said this was because setting up the connection takes a few seconds and doing it only once was more efficient. The reply was that I should really be using a class and turn the functions into class methods.
-
-Lately, I have been doing a lot of scripting using <b>PyEZ</b> to communicate with the <b>Juniper</b> API. 
-
-
-
-
-The following would be something like a function that I would make:
-
-
-<pre style="font-size:12px">
-def get_ospf3_neighbor_ids(dev):
-    """
-    Gathers information from the &lt;get-ospf3-neighbor-information> RPC.
-    
-    Returns a dictionary:
-        { 
-            neighbor-address : { neighbor-id : interface },
-        }
-    """
-    ret = {}
-    
-    rpc = dev.rpc.get_ospf3_neighbor_information()
-    ospf_neighbors = rpc.findall('./ospf3-neighbor')
-    
-    for neighbor in ospf_neighbors:
-        neighbor_address = neighbor.find('./neighbor-address').text
-        neighbor_id = neighbor.find('./neighbor-id').text
-        interface = neighbor.find('./interface-name').text
-        ret[neighbor_address] = { neighbor_id : interface }
-    
-    return ret
-</pre>
-
-I would then import the functions and call them in other scripts, like so:
-
-<pre style="font-size:12px">
-dev = Device(host=host, user=username, password=password, normalize=True)
-dev.open()    
-ospfv2_neighbors = get_ospf_neighbor_ids(dev)
-ospfv3_neighbors = get_ospf3_neighbor_ids(dev)
-int_dict = get_interface_descriptions(dev)    
-dev.close()
-</pre>
