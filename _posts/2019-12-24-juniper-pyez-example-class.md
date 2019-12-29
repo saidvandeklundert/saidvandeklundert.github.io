@@ -29,6 +29,21 @@ from jnpr.junos import Device
 class JunosDevice(Device):
 
     def get_bgp_summary(self):
+        pass     
+</pre>
+
+After the import of <b>Device</b>, there is the definition of the <b>JunosDevice</b> class. The parent class, <b>Device</b>, is passed to it as a parameter. 
+
+Because <b>JunosDevice</b> is a child class to <b>Device</b>, all the methods that are available to <b>Device</b> are available to <b>JunosDevice</b> also. You do not have to declare anything to gain access to <b>rpc</b>, <b>cli</b>, <b>facts</b>, etc. 
+
+We can also see that the child class is extended with a method called <b>get_bgp_summary</b>. This is something that you can do in addition to what <b>Device</b> has to offer. Instead of putting in a <b>pass</b>, let's make the <b>get_bgp_summary</b> function do something:
+
+<pre style="font-size:12px">
+from jnpr.junos import Device
+
+class JunosDevice(Device):
+
+    def get_bgp_summary(self):
         """        
         Gathers information from the &lt;get-bgp-summary-information> RPC.
         
@@ -64,21 +79,17 @@ class JunosDevice(Device):
         return ret     
 </pre>
 
-After the import of <b>Device</b>, there is the definition of the <b>JunosDevice</b> class. The parent class, <b>Device</b>, is passed to it as a parameter. 
-
-Because <b>JunosDevice</b> is a child class to <b>Device</b>, all the methods that are available to <b>Device</b> are available to <b>JunosDevice</b> also. You do not have to declare anything to gain access to <b>rpc</b>, <b>cli</b>, <b>facts</b>, etc. 
-
-The following <b>test_juniper_class.py</b> is an example on how to use the <b>JunosDevice</b> class:
+The subclass now has an extra method that can 'dictify' the BGP summary information that we think is interesting with the key / values that we like to work with. Working with the <b>JunosDevice</b> class is no different then working with the 'original' <b>Device</b> class. The following <b>test_juniper_class.py</b> is an example on how you could use it:
 
 <pre style="font-size:12px">
 from juniper_class import JunosDevice
 from pprint import pprint
     
-with JunosDevice(host='10.0.19.245', user='lab', password='lab123', normalize=True) as dev: 
+with JunosDevice(host='ar01.ams', user='lab', password='lab123', normalize=True) as dev: 
     pprint(dev.get_bgp_summary())
 </pre>
 
-We import the <b>JunosDevice</b> class and use it to setup a connection with a device. After this, we call the newly created <b>get_bgp_summary()</b> method. We get the following when we run the script:
+We import the <b>JunosDevice</b> class and use it to setup a connection with a device. After this, we call the newly created <b>get_bgp_summary()</b> method which will give us the following:
 
 <pre style="font-size:12px">
 <b>sh-4.4# python3 test_class.py</b>
@@ -97,8 +108,6 @@ We import the <b>JunosDevice</b> class and use it to setup a connection with a d
 Closing thoughts:
 =================
 
-By making your own class inherit the Junipr PyEZ <b>Device</b> class, you equip your own class with everything that PyEZ comes with <b>Device</b> class. After this, you can start extending it with methods that make sense for your environment. 
-
-By putting them in a class, you have something that is very easy to re-use in other scripts and programs. This will make those scripts and programs easier to write because most of the work has allready been done.
+By making your own class inherit the Juniper PyEZ <b>Device</b> class, you equip your own class with everything that PyEZ comes with. After this, you can start extending it with methods that make sense for your environment. With all your methods in your own class, you have something that is very easy to re-use. This will make future scripts and programs easier to write because most of the work has allready been done.
 
 
