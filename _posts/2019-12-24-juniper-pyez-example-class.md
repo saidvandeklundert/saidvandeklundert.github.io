@@ -10,14 +10,17 @@ Extending the Junos PyEZ <b>Device</b> class with my own subclass helped me to m
 Extending the base Device class:
 ================================
 
-When you are using PyEZ, you import the <b>Device</b> class and instantiate an object to work with:
+When you are using PyEZ, you import the <b>Device</b> class and instantiate an object to work with. The following is a pretty straightforward example:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
 
-with <b>Device</b>(host='10.0.0.1', user='lab', password='lab123', normalize=True) as dev:                                          
-    rpc = dev.rpc.get_bgp_summary_information()
+with <b>Device</b>(host='ar01_ams', user='lab', password='lab123', normalize=True) as ar01_ams:                                          
+    rpc = ar01_ams.rpc.get_bgp_summary_information()
 </pre>
+
+After importing the <b>Device</b> class, it is used to create an object. In this case, the object is named after the router that the script connects to, 'ar01_ams'. Using the <b>rpc</b> method, the BGP summary information is retrieved from the device. Because we open the connection to the device using <b>with</b>, the connection to the device is open and close automatically.
+====
 
 As you expand your scripting efforts, using functions will start to make sense. This will make it easier to re-use code. You could put your functions in a single file and import them in other scripts whenever you require them. 
 
@@ -85,11 +88,11 @@ The subclass now has an extra method that can 'dictify' the BGP summary informat
 from juniper_class import JunosDevice
 from pprint import pprint
     
-with JunosDevice(host='ar01.ams', user='lab', password='lab123', normalize=True) as dev: 
-    pprint(dev.get_bgp_summary())
+with JunosDevice(host='ar01_ams', user='lab', password='lab123', normalize=True) as ar01_ams: 
+    pprint(ar01_ams.get_bgp_summary())
 </pre>
 
-We import the <b>JunosDevice</b> class and use it to setup a connection with a device. After this, we call the newly created <b>get_bgp_summary()</b> method which will give us the following:
+We import the <b>JunosDevice</b> class and use it to setup a connection with ar01_ams. After this, we call the newly created <b>get_bgp_summary()</b> method which will give us the following:
 
 <pre style="font-size:12px">
 <b>sh-4.4# python3 test_class.py</b>
