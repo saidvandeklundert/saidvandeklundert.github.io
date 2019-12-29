@@ -66,7 +66,7 @@ class JunosDevice(Device):
 
 After the import of <b>Device</b>, there is the definition of the <b>JunosDevice</b> class. The parent class, <b>Device</b>, is passed to it as a parameter. 
 
-Because <b>JunosDevice</b> is a child class to <b>Device</b>, all the methods that are available to <b>Device</b> are available to <b>JunosDevice</b> also. You do not have to declare anything to gain access to <b>rpc</n>, <b>cli</b>, <b>facts</b>, etc. 
+Because <b>JunosDevice</b> is a child class to <b>Device</b>, all the methods that are available to <b>Device</b> are available to <b>JunosDevice</b> also. You do not have to declare anything to gain access to <b>rpc</b>, <b>cli</b>, <b>facts</b>, etc. 
 
 The following <b>test_juniper_class.py</b> is an example on how to use the <b>JunosDevice</b> class:
 
