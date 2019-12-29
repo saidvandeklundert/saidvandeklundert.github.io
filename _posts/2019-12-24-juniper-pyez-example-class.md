@@ -5,26 +5,23 @@ tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
 
-A recent move to a more object oriented approach has been increadibly worthwhile to me. In this article I want to share an example on how you can extend the base Junos PyEZ <b>Device class</b>.
+In this article, I want to share an example on how you can extend the base Junos PyEZ <b>Device class</b> with your own subclass. It helped me to more easily re-use my code and it made my scripts less of a clutter.
 
 Using a class:
 ==============
 
-When you are using PyEZ, you import the <b>Device</b> class and instantiate an object of your own to work with:
+When you are using PyEZ, you import the <b>Device</b> class and instantiate an object to work with:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
 
-with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as dev:                                          
+with <b>Device</b>(host='10.0.0.1', user='lab', password='lab123', normalize=True) as dev:                                          
     rpc = dev.rpc.get_bgp_summary_information()
-    ... 
 </pre>
 
-As I expanded my scripting efforts, it started to make sense to turn to functions so that it became easier to re-use code. Eventually, ended up creating a file with most of the commonly used functions which I would import into other scripts.
+As you expand your scripting efforts, using functions will start to make sense. This will make it easier to re-use code. You could put your functions in a single file and import them in other scripts whenever you require them. 
 
-Though it worked really well, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own <b>subclass</b> that contains the functions I need.
-
-Have a look at the following example <b>juniper_class.py</b>:
+Another thing you could to is extend the <b>Device</b> class with your own <b>subclass</b>. Have a look at the following example <b>juniper_class.py</b>:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
@@ -67,7 +64,7 @@ class JunosDevice(Device):
         return ret     
 </pre>
 
-After the import of <b>Device</b>, there is the definition of the <b>JunosDevice</b> class, which is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also. With the creation of additional functions, we extend the features that <b>Device</b> has to offer with our own.
+After the import of <b>Device</b>, there is the definition of the <b>JunosDevice</b> class. The parent class, <b>Device</b>, is passed to it as a parameter. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also. With the creation of additional functions, we extend the features that <b>Device</b> has to offer with our own.
 
 The following <b>test_juniper_class.py</b> is an example on how to use the <b>JunosDevice</b> class:
 
