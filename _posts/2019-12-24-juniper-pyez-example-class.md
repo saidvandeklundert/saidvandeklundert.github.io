@@ -5,7 +5,7 @@ tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
 
-In this article, I want to share an example on how you can extend the base Junos PyEZ <b>Device class</b> with your own subclass. It helped me to more easily re-use my code and it made my scripts less of a clutter.
+In this article, I want to share an example on how you can extend the base Junos PyEZ <b>Device</b> class with your own subclass. It helped me to more easily re-use my code and it made my scripts less of a clutter.
 
 Extending the base Device class:
 ================================
