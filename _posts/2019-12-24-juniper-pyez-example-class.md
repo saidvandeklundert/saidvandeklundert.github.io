@@ -7,8 +7,8 @@ image: /img/juniper_logo.jpg
 
 In this article, I want to share an example on how you can extend the base Junos PyEZ <b>Device class</b> with your own subclass. It helped me to more easily re-use my code and it made my scripts less of a clutter.
 
-Using a class:
-==============
+Extending the base Device class:
+================================
 
 When you are using PyEZ, you import the <b>Device</b> class and instantiate an object to work with:
 
