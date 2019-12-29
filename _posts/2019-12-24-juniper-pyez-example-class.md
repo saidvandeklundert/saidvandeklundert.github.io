@@ -20,9 +20,9 @@ with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as d
     ... 
 </pre>
 
-As you expand your scripting efforts, it starts to make sense to turn to functions so that it becomes easier to re-use code. Eventually, you might end up creating a file with most of the commonly used functions as I did. Most often, I would import the functions into other scripts and re-use all my previous work like that. 
+As I expanded my scripting efforts, it started to make sense to turn to functions so that it became easier to re-use code. Eventually, ended up creating a file with most of the commonly used functions which I would import into other scripts.
 
-Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own <b>subclass</b> that contains the functions I need.
+Though it worked really well, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own <b>subclass</b> that contains the functions I need.
 
 Have a look at the following example <b>juniper_class.py</b>:
 
@@ -30,8 +30,6 @@ Have a look at the following example <b>juniper_class.py</b>:
 from jnpr.junos import Device
 
 class JunosDevice(Device):
-    """Juniper subclass of Device.    
-    """
 
     def get_bgp_summary(self):
         """        
@@ -69,7 +67,7 @@ class JunosDevice(Device):
         return ret     
 </pre>
 
-After the import of <b>Device</b>, there is the <b>JunosDevice</b> class. <b>JunosDevice</b> is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also. With the creation of additional functions, we extend the features that <b>Device</b> has to offer with our own.
+After the import of <b>Device</b>, there is the definition of the <b>JunosDevice</b> class, which is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also. With the creation of additional functions, we extend the features that <b>Device</b> has to offer with our own.
 
 The following <b>test_juniper_class.py</b> is an example on how to use the <b>JunosDevice</b> class:
 
