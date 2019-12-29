@@ -7,11 +7,10 @@ image: /img/juniper_logo.jpg
 
 A recent move to a more object oriented approach has been increadibly worthwhile to me. In this article I want to share an example on how you can extend the base Junos PyEZ <b>Device class</b>.
 
-Using PyEZ:
-===========
+Using a class:
+==============
 
 When you are using PyEZ, you import the <b>Device</b> class and instantiate an object of your own to work with:
-
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
@@ -23,13 +22,9 @@ with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as d
 
 As you expand your scripting efforts, it starts to make sense to turn to functions so that it becomes easier to re-use code. Eventually, you might end up creating a file with most of the commonly used functions as I did. Most often, I would import the functions into other scripts and re-use all my previous work like that. 
 
+Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own <b>subclass</b> that contains the functions I need.
 
-Using a class:
-==============
-
-Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own specialized <b>subclass</b> that contains the functions I use most.
-
-Have a look at the following file <b>juniper_class.py</b>:
+Have a look at the following example <b>juniper_class.py</b>:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
@@ -74,11 +69,9 @@ class JunosDevice(Device):
         return ret     
 </pre>
 
-At the top, right after the import of <b>Device</b>, there is the <b>JunosDevice</b> class. <b>JunosDevice</b> is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also.
+After the import of <b>Device</b>, there is the <b>JunosDevice</b> class. <b>JunosDevice</b> is a child class to <b>Device</b>. One of the things this implies is that the methods available to <b>Device</b> are available to <b>JunosDevice</b> also. With the creation of additional functions, we extend the features that <b>Device</b> has to offer with our own.
 
-With the creation of additional functions, you basically extend the features that <b>Device</b> has to offer with your own.
-
-In the following file <b>test_juniper_class.py</b>, I am using the <b>JunosDevice</b> as an example:
+The following <b>test_juniper_class.py</b> is an example on how to use the <b>JunosDevice</b> class:
 
 <pre style="font-size:12px">
 from juniper_class import JunosDevice
@@ -88,7 +81,7 @@ with JunosDevice(host='10.0.19.245', user='lab', password='lab123', normalize=Tr
     pprint(dev.get_bgp_summary())
 </pre>
 
-If we run this script, we see the following:
+We import the <b>JunosDevice</b> class and use it to setup a connection with a device. After this, we call the newly created <b>get_bgp_summary()</b> method. We get the following when we run the script:
 
 <pre style="font-size:12px">
 <b>sh-4.4# python3 test_class.py</b>
@@ -103,52 +96,6 @@ If we run this script, we see the following:
                       'peer-up-time': '60149802'}}
 </pre>
 
-
-In the example, we instantiated the object and used the <b>get_bgp_summary</b> method to display BGP information. Let's dig a little deeper by opening up an interpretor and connecting to a device:
-
-<pre style="font-size:12px">
-sh-4.4# <b>python3</b>          
-Python 3.6.8 (default, May 21 2019, 23:51:36) 
-[GCC 8.2.1 20180905 (Red Hat 8.2.1-3)] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> <b>from juniper_class import JunosDevice</b>
-
->>> <b>dev = JunosDevice(host='192.168.1.1', user='lab', password='lab123', normalize=True)</b>
-
->>> <b>type(dev)</b>
-&lt;class 'juniper_class.JunosDevice'>
-
->>> <b>dir(dev)</b>
-['ON_JUNOS', 'Template', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__enter__', '__eq__', '__exit__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_auth_password', '_auth_user', '_auto_probe', '_conf_auth_user', '_conf_ssh_private_key_file', '_conn', '_connected', '_fact_style', '_gather_facts', '_hostname', '_j2ldr', '_manages', '_nc_transform', '_norm_transform', '_normalize', '_ofacts', '_port', '_rpc_reply', '_sock_fd', '_ssh_config', '_ssh_private_key_file', '_sshconf_lkup', '_sshconf_path', 'auto_probe', 'bind', 'cli', 'cli_to_rpc_string', 'close', 'connected', 'display_xml_rpc', 'execute', 'facts', 'facts_refresh', '<font color='red'>get_bgp_summary</font>', 'hostname', 'logfile', 'manages', 'master', 'ofacts', 'open', 'password', 'port', 'probe', 're_name', 'rpc', 'timeout', 'transform', 'uptime', 'user']
-
->>> <b>dev.open()</b>
-Device(192.168.1.1)
-
->>> <b>dev.cli('show version', warning=False)</b>
-
-Hostname: ar01.ams-re0
-Model: mx960
-Junos: 15.1F4.15-C1.9
-
-&lt;output omitted>
-
->>> <b>from pprint import pprint</b>
->>> <b>pprint(dev.facts)</b>
-{'2RE': True,
- 'HOME': '/var/home/admin',
- 'RE0': {'last_reboot_reason': 'Router rebooted after a normal shutdown.',
-         'mastership_state': 'master',
-         'model': 'RE-S-2000',
-         'status': 'OK',
-         'up_time': '1260 days, 12 hours, 49 minutes, 44 seconds'},
-
- &lt;output omitted>
-
->>> <b>dev.close()</b>
->>>
-</pre> 
-
-The <b>dev</b> we instantiated shows it is of the &lt;class 'juniper_class.JunosDevice'>. I is a subclass of the Device class and as we can see using <b>dir(dev)</b>, it has all the same methods in addition to the <b>get_bgp_summary</b> extended the class with.
 
 Closing thoughts:
 =================
