@@ -5,7 +5,7 @@ tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
 
-Recently, a thing that I have found to be increadibly worthwhile was a move to a more object oriented approach. For this reason, I wanted to share an example on how you could do this yourself.
+A recent move to a more object oriented approach has been increadibly worthwhile to me. In this article I want to share an example on how you can extend the base Junos PyEZ <b>Device class</b>.
 
 Using PyEZ:
 ===========
@@ -15,21 +15,19 @@ When you are using PyEZ, you import the <b>Device</b> class and instantiate an o
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
-from pprint import pprint
 
 with Device(host='10.0.0.1', user='lab', password='lab123', normalize=True) as dev:                                          
-    rpc = dev.rpc.get_ospf3_neighbor_information({'format':'json'})
-    
-pprint(rpc)    
+    rpc = dev.rpc.get_bgp_summary_information()
+    ... 
 </pre>
 
-As you expand your scripting efforts, it starts to make sense to turn to functions so that it becomes easier to re-use code. Eventually, you might end up creating a file with most of the commonly used functions as I did. I would simply import the file into other scripts and re-use all my previous work like that. 
+As you expand your scripting efforts, it starts to make sense to turn to functions so that it becomes easier to re-use code. Eventually, you might end up creating a file with most of the commonly used functions as I did. Most often, I would import the functions into other scripts and re-use all my previous work like that. 
 
 
 Using a class:
 ==============
 
-Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own specialized <b>subclass</b> that contains the functions (or methods) I use most.
+Having all the functions in one file worked really well and it enabled me to re-use a lot of functions. After a while though, someone pointed out to me that I could just as well extend the <b>Device</b> class with my own specialized <b>subclass</b> that contains the functions I use most.
 
 Have a look at the following file <b>juniper_class.py</b>:
 
@@ -95,13 +93,13 @@ If we run this script, we see the following:
 <pre style="font-size:12px">
 <b>sh-4.4# python3 test_class.py</b>
 {'10.0.3.48': {'peer-as': '65500',
-                'peer-description': 'BGP: gr01.dal',
+                'peer-description': 'gr01.dal',
                 'peer-up-time': '2524741'},
  '10.0.3.49': {'peer-as': '65500',
-                'peer-description': 'BGP: gr02.dal',
+                'peer-description': 'gr02.dal',
                 'peer-up-time': '2523245'},
  '2001:db8:2:5::8': {'peer-as': '65500',
-                      'peer-description': 'BGP: ar02.dal',
+                      'peer-description': 'ar02.dal',
                       'peer-up-time': '60149802'}}
 </pre>
 
