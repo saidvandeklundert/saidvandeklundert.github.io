@@ -5,7 +5,7 @@ tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
 
-Extending the Junos PyEZ <b>Device</b> class with my own subclass helped me to more easily re-use my code and it made my scripts less of a clutter. This article is a short example on how to do this.
+Extending the Junos PyEZ <b>Device</b> class with my own subclass helped me to more easily reuse my code and it made my scripts less of a clutter. This article is a short example on how to do this.
 
 Extending the base Device class:
 ================================
@@ -110,6 +110,6 @@ We import the <b>JunosDevice</b> class and use it to setup a connection with <b>
 Closing thoughts:
 =================
 
-By making your own class inherit the Juniper PyEZ Device class, it will be equipped with everything that PyEZ comes with. And by extending it with methods that make sense for your environment, you will have something that is very easy to re-use, making future scripts and programs easier to write and maintain.
+By making your own class inherit the Juniper PyEZ Device class, it will be equipped with everything that PyEZ comes with. And by extending it with methods that make sense for your environment, you will have something that is very easy to reuse, making future scripts and programs easier to write and maintain.
 
 
