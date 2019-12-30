@@ -15,7 +15,7 @@ When you are using PyEZ, you import the <b>Device</b> class and instantiate an o
 <pre style="font-size:12px">
 from jnpr.junos import Device
 
-with <b>Device</b>(host='router_1', user='lab', password='lab123', normalize=True) as router_1:                                          
+with <b>Device</b>(host='10.0.0.1', user='lab', password='lab123', normalize=True) as router_1:                                          
     rpc = router_1.rpc.get_bgp_summary_information()
 </pre>
 
@@ -87,7 +87,7 @@ The subclass now has an extra method that can 'dictify' the BGP summary informat
 from juniper_class import JunosDevice
 from pprint import pprint
     
-with JunosDevice(host='router_1', user='lab', password='lab123', normalize=True) as router_1: 
+with JunosDevice(host='10.0.0.1', user='lab', password='lab123', normalize=True) as router_1: 
     pprint(router_1.get_bgp_summary())
 </pre>
 
