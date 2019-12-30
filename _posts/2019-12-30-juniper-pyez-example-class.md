@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Juniper example class using PyEZ
+title: Subclassing PyEZ Device
 tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
