@@ -38,7 +38,7 @@ After the import of <b>Device</b>, the <b>JunosDevice</b> class is defined. The 
 
 Because <b>JunosDevice</b> is a child class to <b>Device</b>, all the methods that are available to <b>Device</b> are available to <b>JunosDevice</b> also. You do not have to declare anything to gain access to <b>rpc</b>, <b>cli</b>, <b>facts</b>, etc. 
 
-We can also see that the child class is extended with a method called <b>get_bgp_summary</b>. This is something that you can do in addition to what <b>Device</b> has to offer. Instead of putting in a <b>pass</b>, let's make the <b>get_bgp_summary</b> function do something:
+The child class is extended with a method called <b>get_bgp_summary</b>. This is now something that you can do in addition to what <b>Device</b> has to offer. Instead of putting in a <b>pass</b>, let's make the <b>get_bgp_summary</b> function do something:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
