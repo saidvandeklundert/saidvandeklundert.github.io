@@ -15,16 +15,15 @@ When you are using PyEZ, you import the <b>Device</b> class and instantiate an o
 <pre style="font-size:12px">
 from jnpr.junos import Device
 
-with <b>Device</b>(host='ar01_ams', user='lab', password='lab123', normalize=True) as ar01_ams:                                          
-    rpc = ar01_ams.rpc.get_bgp_summary_information()
+with <b>Device</b>(host='router_1', user='lab', password='lab123', normalize=True) as router_1:                                          
+    rpc = router_1.rpc.get_bgp_summary_information()
 </pre>
 
-After importing the <b>Device</b> class, it is used to create an object. In this case, the object is named after the router that the script connects to, 'ar01_ams'. Using the <b>rpc</b> method, the BGP summary information is retrieved from the device. Because we open the connection to the device using <b>with</b>, the connection to the device is open and close automatically.
-====
+In the previous example, the <b>Device</b> class is used to create an object named 'router_1'. Using the <b>rpc</b> method, the BGP summary information is retrieved from the device. Because we open the connection to the device using a context manager (<b>with</b>), the connection to the device is automatically opened and closed.
 
 As you expand your scripting efforts, using functions will start to make sense. This will make it easier to re-use code. You could put your functions in a single file and import them in other scripts whenever you require them. 
 
-Another thing you could do is to extend the <b>Device</b> class with your own <b>subclass</b>. Have a look at the following example <b>juniper_class.py</b>:
+Another thing you could consider is to extend the <b>Device</b> class with your own <b>subclass</b>. Have a look at the following example <b>juniper_class.py</b>:
 
 <pre style="font-size:12px">
 from jnpr.junos import Device
