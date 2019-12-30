@@ -110,6 +110,6 @@ We import the <b>JunosDevice</b> class and use it to setup a connection with ar0
 Closing thoughts:
 =================
 
-By making your own class inherit the Juniper PyEZ <b>Device</b> class, you equip your own class with everything that PyEZ comes with. After this, you can start extending it with methods that make sense for your environment. With all your methods in your own class, you have something that is very easy to re-use. This will make future scripts and programs easier to write because most of the work has allready been done.
+By making your own class inherit the Juniper PyEZ Device class, it will be equipped with everything that PyEZ comes with. And by extending it with methods that make sense for your environment, you will have something that is very easy to re-use, making future scripts and programs easier to write and maintain.
 
 
