@@ -94,7 +94,7 @@ with JunosDevice(host='router_1', user='lab', password='lab123', normalize=True)
 We import the <b>JunosDevice</b> class and use it to setup a connection with <b>router_1</b>. After this, we call the newly created <b>get_bgp_summary()</b> method which will give us the following:
 
 <pre style="font-size:12px">
-<b>sh-4.4# python3 test_class.py</b>
+<b>sh-4.4# python3 test_juniper_class.py</b>
 {'10.0.3.48': {'peer-as': '65500',
                 'peer-description': 'gr01.dal',
                 'peer-up-time': '2524741'},
