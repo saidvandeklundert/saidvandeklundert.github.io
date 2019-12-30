@@ -87,11 +87,11 @@ The subclass now has an extra method that can 'dictify' the BGP summary informat
 from juniper_class import JunosDevice
 from pprint import pprint
     
-with JunosDevice(host='ar01_ams', user='lab', password='lab123', normalize=True) as ar01_ams: 
-    pprint(ar01_ams.get_bgp_summary())
+with JunosDevice(host='router_1', user='lab', password='lab123', normalize=True) as router_1: 
+    pprint(router_1.get_bgp_summary())
 </pre>
 
-We import the <b>JunosDevice</b> class and use it to setup a connection with ar01_ams. After this, we call the newly created <b>get_bgp_summary()</b> method which will give us the following:
+We import the <b>JunosDevice</b> class and use it to setup a connection with router_1. After this, we call the newly created <b>get_bgp_summary()</b> method which will give us the following:
 
 <pre style="font-size:12px">
 <b>sh-4.4# python3 test_class.py</b>
