@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Code reuse by subclassing PyEZ Device
+title: Code reuse by subclassing the PyEZ Device class
 tags: [automation, juniper, pyez]
 image: /img/juniper_logo.jpg
 ---
