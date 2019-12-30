@@ -81,7 +81,7 @@ class JunosDevice(Device):
         return ret     
 </pre>
 
-The subclass now has an extra method that can 'dictify' the BGP summary information that we think is interesting with the key / values that we like to work with. Working with the <b>JunosDevice</b> class is no different then working with the <b>Device</b> class. The following <b>test_juniper_class.py</b> is an example on how you could use it:
+The subclass now has an extra method that can 'dictify' the BGP summary information that we think is interesting with the key / values that we like to work with. Working with the <b>JunosDevice</b> class is no different than working with the <b>Device</b> class. The following <b>test_juniper_class.py</b> is an example on how you could use it:
 
 <pre style="font-size:12px">
 from juniper_class import JunosDevice
