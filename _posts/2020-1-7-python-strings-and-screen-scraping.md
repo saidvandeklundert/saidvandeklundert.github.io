@@ -23,12 +23,15 @@ The following is an example of a very basic script that sends the 'show version'
 
 ```python
 from netmiko import ConnectHandler
+import getpass
+
+password = getpass.getpass() 
 
 login_info = {
     'device_type': 'cisco_nxos',
     'host':   '169.60.118.254',
     'username': 'lab',
-    'password': 'test123,
+    'password': password,
 }
 
 net_connect = ConnectHandler(**login_info)
@@ -80,8 +83,12 @@ The following is an example script on how to issue a command using NAPALM:
 
 ```python
 import napalm
+import getpass
+
+password = getpass.getpass()  
+
 driver = napalm.get_network_driver('iosxr')
-device = driver(hostname='169.50.169.101', username='lab', password='test123')
+device = driver(hostname='169.50.169.101', username='lab', password=password)
 device.open()
 return_dictionary = device.cli(['show ospf neighbor', ])
 device.close()
@@ -100,6 +107,22 @@ In the previous example:
 - we print 's' to screen
 
 
+The scripts outputs the following:
+<pre style="font-size:12px">
+* Indicates MADJ interface
+# Indicates Neighbor awaiting BFD session up
+
+Neighbors for OSPF 10
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.19.237     128   FULL/  -        00:00:39    169.254.63.12   HundredGigE0/0/0/4
+    Neighbor is up for 5w5d
+10.0.19.238     128   FULL/  -        00:00:39    169.254.63.14   HundredGigE0/0/0/5
+    Neighbor is up for 5w5d
+
+Total neighbor count: 2
+
+</pre>
 In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
 Splitlines and split:
