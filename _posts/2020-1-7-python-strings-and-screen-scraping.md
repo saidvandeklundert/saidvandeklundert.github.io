@@ -68,9 +68,9 @@ Kernel uptime is 508 day(s), 11 hour(s), 37 minute(s), 35 second(s)
 
 Here are some of the usual suspects I turn to most often:
 
-  |                     | EOS        | Junos         | IOS-XR     | NX-OS      | IOS
-  | ------------------- | ---------- | ------------- | ---------- | ---------- | ---- 
-  | **device_type**     | arista_eos | juniper       | cisco_xr   | cisco_nxos | cisco_ios
+  |                     | Arista EOS        | Junos         | Cisco IOS-XR     | Cisco NX-OS      | Cisco IOS
+  | ------------------- | ----------------- | ------------- | ---------------- | ---------------- | --------- 
+  | **device_type**     | arista_eos        | juniper       | cisco_xr         | cisco_nxos       | cisco_ios
 
 The author of the package has his own 'getting started' here: https://pynet.twb-tech.com/blog/automation/netmiko.html
 
