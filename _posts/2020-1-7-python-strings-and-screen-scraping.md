@@ -13,9 +13,9 @@ As a network engineer, I was intimately familiar with the CLI and had a lot of f
 Collecting the string:
 ======================
 
-There are numerous ways on how to retrieve command output from a device. Let me share 3 quick and easy ways.
+There are numerous ways on how to retrieve command output from a device. Let me share 2 quick and easy ways.
 
-1. Netmiko:
+## Netmiko:
 
 Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. It makes sending a command to a device and retrieving the output very easy.
 
@@ -74,7 +74,7 @@ Here are some of the usual suspects I turn to most often:
 
 The author of the package has his own 'getting started' here: https://pynet.twb-tech.com/blog/automation/netmiko.html
 
-2. NAPALM:
+## NAPALM:
 
 The following is an example script on how to issue a command using NAPALM:
 
