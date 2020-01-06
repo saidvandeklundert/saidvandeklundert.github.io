@@ -42,7 +42,8 @@ print(s)
 ```
 
 What happens here is the following:
-- netmiko is imported
+- netmiko and getpass are imported
+- we use getpass to make the script ask for a password
 - a dictionary with login information is created
 - we pass the login info to the `ConnectHandler` and setup a connection to the device
 - with `net_connect.send_command('show version')` we send the command to the device and store the return in the variable called 's'
@@ -97,7 +98,8 @@ print(s)
 ```
 
 In the previous example:
-- NAPALM is imported
+- NAPALM and getpass are imported
+- we use getpass to make the script ask for a password
 - the driver that details what type of device to connect to is selected
 - the device object is created
 - a connection to the device is opened
