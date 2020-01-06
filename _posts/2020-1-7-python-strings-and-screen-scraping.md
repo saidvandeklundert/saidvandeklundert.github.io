@@ -125,6 +125,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 Total neighbor count: 2
 
 </pre>
+
 In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
 Splitlines and split:
@@ -192,7 +193,68 @@ Or in 1 line (at the cost of readability):
 version = str([ x.split(':')[1].strip() for x in s.splitlines() if 'Software' in x ])
 ```
 
+Identifying the lines worth looking at:
+=======================================
 
+In many cases, you only want to look into specific lines in your string. Have a look at the following output that is returned after issuing <b>show ipv6 ospfv3 neighbors</b> on a Cisco NX-OS:
+
+<pre style="font-size:12px">
+ OSPFv3 Process ID 20 VRF default
+ Total number of neighbors: 5
+ Neighbor ID     Pri State            Up Time  Interface ID    Interface
+ 10.168.118.254   1 FULL/ -          1y20w    6               Vlan2 
+   Neighbor address fe80::2de:fbff:fed2:f241
+ 10.168.118.241 128 FULL/ -          1y2w     7               Po1 
+   Neighbor address fe80::7e25:86ff:fef6:b029
+ 10.168.118.242 128 FULL/ -          1y19w    7               Po2 
+   Neighbor address fe80::7e25:86ff:fef5:dd88
+ 10.168.118.243 128 FULL/ -          1y19w    7               Po3 
+   Neighbor address fe80::7e25:86ff:feee:d6d2
+ 10.168.118.244 128 FULL/ -          1y19w    7               Po4 
+   Neighbor address fe80::7e25:86ff:fef5:cd88
+</pre>
+
+Let's say we want to extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, more then half the lines are of no use.
+
+```python
+interesting_lines = [ line for line in s.splitlines() if 'FULL' in line ]
+```
+
+What we are left with now is the following:
+```python
+[
+  ' 10.168.118.254   1 FULL/ -          1y20w    6               Vlan2 ',
+  ' 10.168.118.241 128 FULL/ -          1y2w     7               Po1 ',
+  ' 10.168.118.242 128 FULL/ -          1y19w    7               Po2 ',
+  ' 10.168.118.243 128 FULL/ -          1y19w    7               Po3 ',
+  ' 10.168.118.244 128 FULL/ -          1y19w    7               Po4 '
+]
+```
+
+To remove the rest of the clutter, we turn to split again:
+
+```python
+ospf_neighbor_d = {}
+for line in interesting_lines:
+    ospf_neighbor_id = line.split()[0]
+    ospf_neighbor_int = line.split()[-1]
+    print('{} sits behind interface {}'.format(ospf_neighbor_id, ospf_neighbor_int))
+    ospf_neighbor_d[ospf_neighbor_int] = ospf_neighbor_id
+
+print(ospf_neighbor_d)
+```
+
+The previous would give us the following:
+<pre style="font-size:12px">
+10.168.118.254 sits behind interface Vlan2
+10.168.118.241 sits behind interface Po1
+10.168.118.242 sits behind interface Po2
+10.168.118.243 sits behind interface Po3
+10.168.118.244 sits behind interface Po4
+{'Vlan2': '10.168.118.254', 'Po1': '10.168.118.241', 'Po2': '10.168.118.242', 'Po3': '10.168.118.243', 'Po4': '10.168.118.244'}
+</pre>
+
+Some information on screen and a dictionary to work with in case we want to do something else with that data also.
 
 Recommended reading:
 ====================
