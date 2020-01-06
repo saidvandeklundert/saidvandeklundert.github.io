@@ -5,6 +5,11 @@ tags: [automation, python ]
 image: /img/python-logo.jpg
 ---
 
+This article contains several examples I could have really used after reading up on the basics in Python. After I read the first chapters of <b>Automate the Boring Stuff with Python</b> and <b>Learning Python, 5th Edition</b>, I somewhat struggled to put the concepts I read about into practice. I knew the basic Python data structures and string methods, but was not really sure on how to actually use any of this.
+
+As a network engineer, I was intimately familiar with the CLI and had a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to work with those strings and do some basic, but interesting things with it.
+
+
 Collecting the string:
 ======================
 
@@ -12,27 +17,90 @@ There are numerous ways on how to retrieve command output from a device. Let me 
 
 1. Netmiko:
 
+Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. It makes sending a command to a device and retrieving the output very easy.
+
+The following is an example of a very basic script that sends the 'show version' command to a device running NX-OS:
+
 ```python
 from netmiko import ConnectHandler
 
 login_info = {
     'device_type': 'cisco_nxos',
     'host':   '169.60.118.254',
-    'username': 'xxx',
-    'password': 'xxx',
+    'username': 'lab',
+    'password': 'test123,
 }
 
 net_connect = ConnectHandler(**login_info)
 
 s = net_connect.send_command('show version')
+
 print(s)
 ```
 
+What happens here is the following:
+- netmiko is imported
+- a dictionary with login information is created
+- we pass the login info to the `ConnectHandler` and setup a connection to the device
+- with `net_connect.send_command('show version')` we send the command to the device and store the return in the variable called 's'
+- we print the result to screen
+
+When we run the above script, we see the following:
+
+<pre style="font-size:12px">
+sh-4.4# python3 /var/tmp/tmp.py    
+
+< output omitted >
+
+Hardware
+  cisco Nexus7700 C7718 (18 Slot) Chassis ("Supervisor Module-2")
+  Intel(R) Xeon(R) CPU         with 32939304 kB of memory.
+  Processor Board ID JAE2036044P
+
+  Device name: lab.ams01
+  bootflash:    4014080 kB
+  slot0:       15769534 kB (expansion flash)
+
+Kernel uptime is 508 day(s), 11 hour(s), 37 minute(s), 35 second(s)
+
+< output omitted >
+</pre>
+
+Here are some of the usual suspects I turn to most often:
+
+  |                     | EOS        | Junos         | IOS-XR     | NX-OS      | IOS
+  | ------------------- | ---------- | ------------- | ---------- | ---------- | ---- 
+  | **device_type**     | arista_eos | juniper       | cisco_xr   | cisco_nxos | cisco_ios
+
+The author of the package has his own 'getting started' here: https://pynet.twb-tech.com/blog/automation/netmiko.html
+
 2. NAPALM:
 
-3. Paramiko:
+The following is an example script on how to issue a command using NAPALM:
+
+```python
+import napalm
+driver = napalm.get_network_driver('iosxr')
+device = driver(hostname='169.50.169.101', username='lab', password='test123')
+device.open()
+return_dictionary = device.cli(['show ospf neighbor', ])
+device.close()
+s = return_dictionary['show ospf neighbor']
+print(s)
+```
+
+In the previous example:
+- NAPALM is imported
+- the driver that details what type of device to connect to is selected
+- the device object is created
+- a connection to the device is opened
+- the cli method is used to send a list of commands to the device (in this case, only 1 command:'show ospf neighbor')
+- the connection to the device is closed
+- we retrieve the output of the command from the dictionary that is returned by 'device.cli' and store it in the variable called s
+- we print 's' to screen
 
 
+In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
 Splitlines and split:
 =====================
@@ -93,6 +161,11 @@ Outputs:
 <pre style="font-size:12px">
 4.20.14M
 </pre>
+
+Or in 1 line (at the cost of readability):
+```python
+version = str([ x.split(':')[1].strip() for x in s.splitlines() if 'Software' in x ])
+```
 
 
 
