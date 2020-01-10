@@ -38,6 +38,8 @@ net_connect = ConnectHandler(**login_info)
 
 s = net_connect.send_command('show version')
 
+net_connect.disconnect()
+
 print(s)
 ```
 
@@ -47,6 +49,7 @@ What happens here is the following:
 - a dictionary with login information is created
 - we pass the login info to the `ConnectHandler` and setup a connection to the device
 - with `net_connect.send_command('show version')` we send the command to the device and store the return in the variable called 's'
+- we disconnect from the device
 - we print the result to screen
 
 When we run the above script, we see the following:
@@ -128,6 +131,7 @@ Total neighbor count: 2
 
 In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
+
 Splitlines and split:
 =====================
 
@@ -188,15 +192,8 @@ Outputs:
 4.20.14M
 </pre>
 
-Or in 1 line (at the cost of readability):
-```python
-version = str([ x.split(':')[1].strip() for x in s.splitlines() if 'Software' in x ])
-```
 
-Identifying the lines worth looking at:
-=======================================
-
-In many cases, you only want to look into specific lines in your string. Have a look at the following output that is returned after issuing <b>show ipv6 ospfv3 neighbors</b> on a Cisco NX-OS:
+Let's look at another example with NX OS. Have a look at the following output that is returned after issuing <b>show ipv6 ospfv3 neighbors</b> on a Cisco NX-OS:
 
 <pre style="font-size:12px">
  OSPFv3 Process ID 20 VRF default
@@ -214,28 +211,12 @@ In many cases, you only want to look into specific lines in your string. Have a 
    Neighbor address fe80::7e25:86ff:fef5:cd88
 </pre>
 
-Let's say we want to extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, more then half the lines are of no use.
-
-```python
-interesting_lines = [ line for line in s.splitlines() if 'FULL' in line ]
-```
-
-What we are left with now is the following:
-```python
-[
-  ' 10.168.118.254   1 FULL/ -          1y20w    6               Vlan2 ',
-  ' 10.168.118.241 128 FULL/ -          1y2w     7               Po1 ',
-  ' 10.168.118.242 128 FULL/ -          1y19w    7               Po2 ',
-  ' 10.168.118.243 128 FULL/ -          1y19w    7               Po3 ',
-  ' 10.168.118.244 128 FULL/ -          1y19w    7               Po4 '
-]
-```
-
-To remove the rest of the clutter, we turn to split again:
+Let's say we want to extract the OSPFv3 neighbor ID and interface behind which we find the neighbor. We can use the exact same approach here:
 
 ```python
 ospf_neighbor_d = {}
-for line in interesting_lines:
+for line in s.splitlines():
+  if 'FULL' in line:
     ospf_neighbor_id = line.split()[0]
     ospf_neighbor_int = line.split()[-1]
     print('{} sits behind interface {}'.format(ospf_neighbor_id, ospf_neighbor_int))
@@ -244,7 +225,14 @@ for line in interesting_lines:
 print(ospf_neighbor_d)
 ```
 
-The previous would give us the following:
+In the above example, we start out creating a dictionary for later use. After this, we iterate the lines of the string. 
+
+For every line that has 'FULL' in it, we split the string and take the first and last word, we we store as `ospf_neighbor_id` and `ospf_neighbor_int`.
+
+We use the variables to print a message to the terminal and we build a dictionart where the OSPF neighbor interface is the key and the OSPF neighbor ID is the value.
+
+The example code would give us the following:
+
 <pre style="font-size:12px">
 10.168.118.254 sits behind interface Vlan2
 10.168.118.241 sits behind interface Po1
@@ -254,7 +242,7 @@ The previous would give us the following:
 {'Vlan2': '10.168.118.254', 'Po1': '10.168.118.241', 'Po2': '10.168.118.242', 'Po3': '10.168.118.243', 'Po4': '10.168.118.244'}
 </pre>
 
-Some information on screen and a dictionary to work with in case we want to do something else with that data also.
+
 
 Recommended reading:
 ====================
