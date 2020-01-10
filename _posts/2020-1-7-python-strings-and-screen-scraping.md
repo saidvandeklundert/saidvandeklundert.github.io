@@ -243,6 +243,84 @@ The example code would give us the following:
 </pre>
 
 
+Isolating interesting lines and strings:
+========================================
+
+We have broken down large strings into chunks that are easy to manage. We can step trough lines and words and test if that part is worth looking into using <b>if</b>, as we did previously when we looked through the Cisco OSPF output:
+
+<pre style="font-size:12px">
+if 'FULL' in line:
+</pre>
+
+When you are working with the individual lines or words, there are certain string methods that can help you find the thing you are looking for. Let's say for instance, you want to find out if the word 'cisco' appears on a certain description. One way of checking for that is the following: 
+
+```python
+if 'cisco' in line.lower():
+```
+
+The '.lower()' method changes all the characters to lowercase:
+```python
+>>> 'Cisco'.lower()
+'cisco'
+```
+
+This way, you will match 'Cisco' as well as 'cisco'. 
+
+To check for lines or words that start with something, use `.startswith('xxx')`. For instance, if you want to find lines starting with `interface`:
+
+```python
+if line.startswith('xxx'):
+```
+Example:
+
+```python
+>>> 'interface Ethernet 4/1'.startswith('interface')
+True
+```
+
+Carefull though, a gotcha might be a space at the beginning of the line:
+
+```python
+>>> ' interface Ethernet 4/1'.startswith('interface')
+False
+```
+
+Using the strip method, we can remove it. In the previous example, the empty space was on the left, so we use the following:
+
+```python
+>>> ' interface Ethernet 4/1'.lstrip()
+'interface Ethernet 4/1'
+```
+
+When we call `startswith()` on that, our condition tests True:
+
+```python
+>>> ' interface Ethernet 4/1'.lstrip().startswith('interface')
+True
+>>> 
+```
+
+```
+results.splitlines()
+line.replace(' ', '')
+.lower()
+.strip()
+.startswith('interface')
+
+line.split()[1]
+
+string slicing
+
+if '' in x
+
+if any() in x
+
+[ x for x if 'x' in x ]
+
+lines = [line for line in lines if 'vty' in line and not 'ims' in line ]
+
+```
+
 
 Recommended reading:
 ====================
