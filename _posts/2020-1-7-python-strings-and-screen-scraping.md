@@ -132,8 +132,8 @@ Total neighbor count: 2
 In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
 
-Splitlines and split:
-=====================
+Breaking it down using splitlines and split:
+============================================
 
 Instead of working with large multiline strings that are returned by a device, it is easier to work with the individual lines. The splitlines string method turns a single string into a list of strings where every line is an item in that list. Example:
 
@@ -243,8 +243,8 @@ The example code would give us the following:
 </pre>
 
 
-Using any and all to find what you are looking for
-==================================================
+Using any and all to find what you are looking for:
+===================================================
 
 Quite often, you will be looking for multiple values. Let's have a look at the following string:
 
@@ -344,8 +344,8 @@ set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
 </pre>
 
 
-List comprehensions:
-====================
+Breaking it down in a more concise way using list comprehensions:
+=================================================================
 
 Using Python list comprehensions allows you to use all of the things shown previously while writing it down in a very concise way. Chapter 14 from `Learning Python, 5th Edition` contains some great examples and explanations on list comprehensions.
 
@@ -410,6 +410,29 @@ ospf_interfaces = [ line for line in s.splitlines()
             if 'router ospf' in line and
             'area 0' in line ]
 ```
+
+Obviously, we can also use `any` to math whatever it is we are looking for:
+
+```python
+s = """
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-import-policy in
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-export-policy out
+set protocols bgp group exchange import exchange-import
+set protocols bgp group exchange export exchange-export
+set protocols bgp group exchange neighbor 10.0.0.1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
+"""
+interesting_items = [ 'exchange', 'import',  ]
+
+interesting_lines = [ line for line in s.splitlines() if all(x in line for x in interesting_items) ]
+```
+
+This items in `interesting_lines` would be the following:
+<pre style="font-size:12px">
+['set protocols bgp group exchange import exchange-import', 'set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all']
+</pre>
+
 
 Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. 
 
