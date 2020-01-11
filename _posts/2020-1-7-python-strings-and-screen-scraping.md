@@ -285,14 +285,16 @@ Carefull though, a gotcha might be a space at the beginning of the line:
 False
 ```
 
-Using the strip method, we can remove it. In the previous example, the empty space was on the left, so we use the following:
+Using the lstrip method, we can remove leading characters. And since the default is to match emtpy spaces, using it without arguments will remove the leading whitespaces in a string:
 
 ```python
 >>> ' interface Ethernet 4/1'.lstrip()
 'interface Ethernet 4/1'
 ```
 
-When we call `startswith()` on that, our condition tests True:
+In case you are dealing with trailing whitespaces, use `rstrip()`. Incase you are dealing with both trailing and leading whitespaces, simply use `strip()`.
+
+When we call `startswith()` on the result produced by `rstrip()`, our condition tests True:
 
 ```python
 >>> ' interface Ethernet 4/1'.lstrip().startswith('interface')
@@ -300,26 +302,113 @@ True
 >>> 
 ```
 
+Using any and all to find what you are looking for
+==================================================
+
+Quite often, you will be looking for multiple values. Let's have a look at the following string:
+
+```python
+s = """
+router bgp 65500 neighbor 10.0.19.1 remote-as 65501
+router bgp 65500 neighbor 10.0.19.1 update-source Loopback0
+router bgp 65500 neighbor 10.0.19.1 address-family ipv4 unicast 
+router bgp 65500 neighbor 10.0.19.1 address-family ipv4 unicast next-hop-self
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast 
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-import-policy in
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-export-policy out
+
+set protocols bgp group exchange type external
+set protocols bgp group exchange import exchange-import
+set protocols bgp group exchange export exchange-export
+set protocols bgp group exchange neighbor 10.0.0.1 family inet unicast
+set protocols bgp group exchange neighbor 10.0.0.1 export deny-all
+set protocols bgp group exchange neighbor 10.0.0.1 peer-as 65500
+set protocols bgp group exchange neighbor 2001:DB8::1 family inet6 unicast
+set protocols bgp group exchange neighbor 2001:DB8::1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 peer-as 65500
+"""
 ```
-results.splitlines()
-line.replace(' ', '')
-.lower()
-.strip()
-.startswith('interface')
 
-line.split()[1]
+The string is a snippet of an IOS-XR configuration produced using <b>show running-config formal<b> and a Juniper configuration produced using <b>show configuration | display set</b>. Let's say we want to find all the configuration lines that have anything in them related to BGP policy configuration.
 
-string slicing
+What we could do is something like this:
 
-if '' in x
-
-if any() in x
-
-[ x for x if 'x' in x ]
-
-lines = [line for line in lines if 'vty' in line and not 'ims' in line ]
-
+```python
+for line in s.splitlines():
+  if 'export' in line or 'import' in line or 'route-policy' in line:
+    print(line)
 ```
+
+This would produce the following:
+
+<pre style="font-size:12px">
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-import-policy in
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-export-policy out
+set protocols bgp group exchange import exchange-import
+set protocols bgp group exchange export exchange-export
+set protocols bgp group exchange neighbor 10.0.0.1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
+</pre>
+
+It works, but it does not look very nice and consider the abomination when you want to look for 4, 5 or more items in a string:
+
+```python
+if 'export' in line or 'import' in line or 'route-policy' in line or 'something'  in line or 'something else' in line or 'another thing' in line:
+```
+
+Using `any()` will 'return True if any element of the iterable is true'. It allows us to specifiy the items we are interested in
+
+```python
+interesting_items = [ 'export', 'import',  ]
+
+for line in s.splitlines():
+  if any(x in line for x in interesting_items):
+    print(line)
+```
+
+This produces the same output as before:
+
+This would produce the following:
+
+<pre style="font-size:12px">
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-import-policy in
+router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-export-policy out
+set protocols bgp group exchange import exchange-import
+set protocols bgp group exchange export exchange-export
+set protocols bgp group exchange neighbor 10.0.0.1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 export deny-all
+set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
+</pre>
+
+
+The `all()` method will allow for something similar. The `all()` method will 'return True if all elements of the iterable are true'. 
+
+In the following example, we will print the line in case all the words in the list are found:
+
+```python
+interesting_items = [ 'exchange', 'import',  ]
+
+for line in s.splitlines():
+  if all(x in line for x in interesting_items):
+    print(line)
+```
+
+Using the same string as before, this will produce the following result:
+
+<pre style="font-size:12px">
+set protocols bgp group exchange import exchange-import
+set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
+</pre>
+
+
+
+List comprehensions:
+====================
+
+
+
 
 
 Recommended reading:
