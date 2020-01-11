@@ -161,7 +161,7 @@ s.split('/')
 ['192.168.1.1', '24']
 </pre>
 
-Combining split and splitlines can sometimes be enough to extract a value without even using regex. Look at the following example:
+Combining split and splitlines can sometimes be enough to extract a value without using regex. Look at the following example:
 
 <pre style="font-size:12px">
 s = """
