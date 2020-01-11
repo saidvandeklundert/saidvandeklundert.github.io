@@ -161,7 +161,7 @@ s.split('/')
 ['192.168.1.1', '24']
 </pre>
 
-Combining split and splitlines can sometimes be enough to extract a value without using regex. Look at the following example:
+Combining split and splitlines can sometimes be enough to extract a value without using regex. Let's look at the following example:
 
 <pre style="font-size:12px">
 s = """
@@ -186,14 +186,14 @@ for line in s.splitlines():
 
 </pre>
 
-Outputs:
+Running the above code would output the following:
 
 <pre style="font-size:12px">
 4.20.14M
 </pre>
 
 
-Let's look at another example with NX OS. Have a look at the following output that is returned after issuing <b>show ipv6 ospfv3 neighbors</b> on a Cisco NX-OS:
+Let's look intp another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>:
 
 <pre style="font-size:12px">
  OSPFv3 Process ID 20 VRF default
@@ -211,7 +211,7 @@ Let's look at another example with NX OS. Have a look at the following output th
    Neighbor address fe80::7e25:86ff:fef5:cd88
 </pre>
 
-Let's say we want to extract the OSPFv3 neighbor ID and interface behind which we find the neighbor. We can use the exact same approach here:
+To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
 
 ```python
 ospf_neighbor_d = {}
