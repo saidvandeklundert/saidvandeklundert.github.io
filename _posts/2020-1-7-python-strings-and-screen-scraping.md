@@ -73,7 +73,7 @@ Kernel uptime is 508 day(s), 11 hour(s), 37 minute(s), 35 second(s)
 < output omitted >
 </pre>
 
-Here are some of the usual suspects I turn to most often:
+In case you wer working with other vendors, you have to pass the appropriate value as the <b>device_type</b>. Here are some of the usual suspects I turn to most often:
 
   |                     | Arista EOS        | Junos         | Cisco IOS-XR     | Cisco NX-OS      | Cisco IOS
   | ------------------- | ----------------- | ------------- | ---------------- | ---------------- | --------- 
