@@ -13,13 +13,13 @@ As a network engineer, I was intimately familiar with the CLI and had a lot of f
 Collecting the string:
 ======================
 
-There are numerous ways on how to retrieve command output from a device. Let me share 2 quick and easy ways.
+There are numerous ways on how to retrieve command output from a device. The following are 2 quick and easy ways.
 
 ## Netmiko:
 
 Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. It makes sending a command to a device and retrieving the output very easy.
 
-The following is an example of a very basic script that sends the 'show version' command to a device running NX-OS:
+The following is an example of a script that sends the <b>show version</b> command to a device running NX-OS:
 
 ```python
 from netmiko import ConnectHandler
@@ -45,7 +45,7 @@ print(s)
 
 What happens here is the following:
 - netmiko and getpass are imported
-- we use getpass to make the script ask for a password
+- after the imports, getpass is used to ask for a password
 - a dictionary with login information is created
 - we pass the login info to the `ConnectHandler` and setup a connection to the device
 - with `net_connect.send_command('show version')` we send the command to the device and store the return in the variable called 's'
@@ -102,7 +102,7 @@ print(s)
 
 In the previous example:
 - NAPALM and getpass are imported
-- we use getpass to make the script ask for a password
+- after the imports, again, getpass is used to ask for a password
 - the driver that details what type of device to connect to is selected
 - the device object is created
 - a connection to the device is opened
