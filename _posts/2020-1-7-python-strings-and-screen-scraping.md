@@ -106,9 +106,9 @@ In the previous example:
 - the driver that details what type of device to connect to is selected
 - the device object is created
 - a connection to the device is opened
-- the cli method is used to send a list of commands to the device (in this case, only 1 command:'show ospf neighbor')
+- the cli method is used to send a list of commands to the device (in this case, only 1 command: 'show ospf neighbor')
 - the connection to the device is closed
-- we retrieve the output of the command from the dictionary that is returned by 'device.cli' and store it in the variable called s
+- we retrieve the output of the command from the dictionary that is returned by 'device.cli' and store it in the variable called 's'
 - we print 's' to screen
 
 
@@ -330,7 +330,7 @@ set protocols bgp group exchange neighbor 2001:DB8::1 peer-as 65500
 """
 ```
 
-The string is a snippet of an IOS-XR configuration produced using <b>show running-config formal<b> and a Juniper configuration produced using <b>show configuration | display set</b>. Let's say we want to find all the configuration lines that have anything in them related to BGP policy configuration.
+The string is a snippet of an IOS-XR configuration produced using <b>show running-config formal</b> and a Juniper configuration produced using <b>show configuration | display set</b>. Let's say we want to find all the configuration lines that have anything in them related to BGP policy configuration.
 
 What we could do is something like this:
 
