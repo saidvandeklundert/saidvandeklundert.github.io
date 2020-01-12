@@ -254,7 +254,7 @@ The syntax for a list comprehension is the following:
 ![Python list comprehension](/img/list_comprehension.png "Python list comprehension")
 {: refdef}
 
-In the following example, we will use a list comprehension to first remove the newline from the string:
+In the following example, we will use a list comprehension to turn a string into a list of lines. We will do so without putting the empty line into the list:
 
 ```python
 s = """
