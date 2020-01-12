@@ -262,6 +262,7 @@ A list comprehension consists of brackets containing an expression followed by a
 The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it.
 </i>
 
+
 The syntax for a list comprehension is the following:
 
 <pre style="font-size:12px">
