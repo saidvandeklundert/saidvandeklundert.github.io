@@ -255,7 +255,68 @@ That book also gives the following definition of list comprehensions:
 Here is the Python intro to list comprehensions:
 https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
 
-Let's look at a simple example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
+There, the list comprehension is defined like this:
+
+<pre style="font-size:12px">
+A list comprehension consists of brackets containing an expression followed by a for clause, then zero or more for or if clauses. The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it.
+</pre>
+
+The syntax for a list comprehension is the following:
+
+<pre style="font-size:12px">
+[ expression for item in list if (not) conditional(s) ]
+</pre>
+
+Combinging list comprehensions with `join()` can be nice way to transform a string into the string you want, containing only the lines you are interested in. In the following example, we will 
+```python
+s = """
+SoMe StRinG.   
+
+Empty lInEs, leAding anD Trailing whiTespaces.   
+  MiXed UPPER and lower case.
+"""
+example_list = [ line for line in s.splitlines() if line ]
+```
+
+The `example_list` now contains the following:
+
+<pre style="font-size:12px">
+['SoMe StRinG.   ', 'Empty lInEs, leAding anD Trailing whiTespaces.   ', '  MiXed UPPER and lower case.']
+</pre>
+
+The string was converted into a list. By putting in the <b>if line</b> test, we ensure that non-empty lines are not added to the list.
+
+In case we put <b>join()</b> in front of the newly created list, we can turn it into a new string:
+
+```python
+new_string = '\n'.join([ line for line in s.splitlines() if line ] )
+print(new_string)
+```
+
+The previous code will output the following:
+
+<pre style="font-size:12px">
+SoMe StRinG.   
+Empty lInEs, leAding anD Trailing whiTespaces.   
+  MiXed UPPER and lower case.
+</pre>
+
+In case we want to strip the output of whitespaces and turn everything to lowercase, we have to work on the expression. In this case, all we have to do is the following:
+
+```python
+new_string = '\n'.join([ line.lower().strip() for line in s.splitlines() if line ] )
+print(new_string)
+```
+
+This will output the following:
+
+<pre style="font-size:12px">
+some string.
+empty lines, leading and trailing whitespaces.
+mixed upper and lower case.
+</pre>
+
+Now let's look at a simple example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
 
 ```python
 s = """
@@ -294,7 +355,7 @@ With that addition, the `mac_list` will hold the following items:
 ['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1']
 </pre>
 
-The configuration of some vendors can also be iterated fairly easy using list comprehensions. Iterating a Juniper configuration that is retrieved using 'show configuration | display set'. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
+The configuration of some vendors can also be iterated fairly easy using list comprehensions. Take a Juniper configuration retrieved using 'show configuration | display set' for instance. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
 
 ```python
 vrf_interfaces = [ line for line in s.splitlines()
