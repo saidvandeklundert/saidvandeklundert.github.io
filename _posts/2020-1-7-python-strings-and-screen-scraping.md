@@ -265,6 +265,10 @@ The result will be a new list resulting from evaluating the expression in the co
 
 The syntax for a list comprehension is the following:
 
+{:refdef: style="text-align: center;"}
+![Python list comprehension](/img/list_comprehension.png "Python list comprehension")
+{: refdef}
+
 <pre style="font-size:12px">
 [ expression for item in list if (not) conditional(s) ]
 </pre>
@@ -289,6 +293,11 @@ The `example_list` now contains the following:
 The string was converted into a list. By putting in the <b>if line</b> test, we ensure that non-empty lines are not added to the list.
 
 In case we put <b>join()</b> in front of the newly created list, we can turn it into a new string:
+
+{:refdef: style="text-align: center;"}
+![Python list comprehension](/img/list_comprehension_new_string.png "Python list comprehension")
+{: refdef}
+
 
 ```python
 new_string = '\n'.join([ line for line in s.splitlines() if line ] )
