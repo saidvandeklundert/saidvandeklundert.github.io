@@ -258,7 +258,8 @@ https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
 There, the list comprehension is defined like this:
 
 <pre style="font-size:12px">
-A list comprehension consists of brackets containing an expression followed by a for clause, then zero or more for or if clauses. The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it.
+A list comprehension consists of brackets containing an expression followed by a for clause, then zero or more for or if clauses.
+The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it.
 </pre>
 
 The syntax for a list comprehension is the following:
