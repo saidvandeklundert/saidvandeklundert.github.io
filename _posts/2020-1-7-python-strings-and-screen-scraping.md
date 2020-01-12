@@ -266,36 +266,34 @@ Empty lInEs, leAding anD Trailing whiTespaces.
 new_list = [ line for line in s.splitlines() if line ]
 ```
 
-{:refdef: style="text-align: center;"}
-![Python list comprehension](/img/list_comprehension_new_string.png "Python list comprehension")
-{: refdef}
-
 The `new_list` now contains the following:
 
 <pre style="font-size:12px">
 ['SoMe StRinG.   ', 'Empty lInEs, leAding anD Trailing whiTespaces.   ', '  MiXed UPPER and lower case.']
 </pre>
 
-The string was converted into a list. By putting in the <b>if line</b> test, we ensure that non-empty lines are not added to the list.
+The string was converted into a list. By putting in the <b>if line</b> test, we ensure that non-empty lines are not added to the list ( if '' evaluates to False).
 
-In case we put <b>join()</b> in front of the newly created list, we can turn it into a new string:
+Let's work on the strings in the list and remove unwanted whitespaces as well as make everything lowercase. to do this, we need to work on the expression part of the list comprehension:
 
+{:refdef: style="text-align: center;"}
+![Python list comprehension](/img/list_comprehension_new_string.png "Python list comprehension")
+{: refdef}
 
+The list comprehension now looks like this:
 
 ```python
-new_string = '\n'.join([ line for line in s.splitlines() if line ] )
-print(new_string)
+new_list = [ line.lower().strip() for line in s.splitlines() if line ]
 ```
 
-The previous code will output the following:
+The <b>new_list</b> now contains the following items:
 
 <pre style="font-size:12px">
-SoMe StRinG.   
-Empty lInEs, leAding anD Trailing whiTespaces.   
-  MiXed UPPER and lower case.
+['some string.', 'empty lines, leading and trailing whitespaces.', 'mixed upper and lower case.']
 </pre>
 
-In case we want to strip the output of whitespaces and turn everything to lowercase, we have to work on the expression. In this case, all we have to do is the following:
+
+Using [join](https://docs.python.org/3/library/stdtypes.html?highlight=join#str.join) on the newly created list, we turn it into a new string. In fact, instead of referencing the new list, we can just feed the list comprehension to <b>join</b>:
 
 ```python
 new_string = '\n'.join([ line.lower().strip() for line in s.splitlines() if line ] )
@@ -309,6 +307,8 @@ some string.
 empty lines, leading and trailing whitespaces.
 mixed upper and lower case.
 </pre>
+
+
 
 Now let's look at a simple example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
 
