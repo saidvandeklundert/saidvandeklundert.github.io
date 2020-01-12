@@ -246,22 +246,7 @@ The example code would give us the following:
 Breaking it down using list comprehensions:
 ===========================================
 
-Using Python list comprehensions allows you to use all of the things shown previously while writing it down in a very concise way. Chapter 14 from `Learning Python, 5th Edition` contains some great examples and explanations on list comprehensions.
-
-That book also gives the following definition of list comprehensions:
-
-'List comprehensions collect the results of applying an arbitrary expression to an iterable of values and return them in a new list.'
-
-Here is the Python intro to list comprehensions:
-https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
-
-There, the list comprehension is defined like this:
-
-<i>
-A list comprehension consists of brackets containing an expression followed by a for clause, then zero or more for or if clauses.
-The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it.
-</i>
-
+Using Python list comprehensions allows you to use all of the things shown previously while writing it down in a very concise way. See the [Python intro](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) for the basics on list comprehensions. 
 
 The syntax for a list comprehension is the following:
 
@@ -269,11 +254,8 @@ The syntax for a list comprehension is the following:
 ![Python list comprehension](/img/list_comprehension.png "Python list comprehension")
 {: refdef}
 
-<pre style="font-size:12px">
-[ expression for item in list if (not) conditional(s) ]
-</pre>
+In the following example, we will use a list comprehension to first remove the newline from the string:
 
-Combining list comprehensions with `join()` can be nice way to transform a string into the string you want, containing only the lines you are interested in. In the following example, we will 
 ```python
 s = """
 SoMe StRinG.   
@@ -281,10 +263,14 @@ SoMe StRinG.
 Empty lInEs, leAding anD Trailing whiTespaces.   
   MiXed UPPER and lower case.
 """
-example_list = [ line for line in s.splitlines() if line ]
+new_list = [ line for line in s.splitlines() if line ]
 ```
 
-The `example_list` now contains the following:
+{:refdef: style="text-align: center;"}
+![Python list comprehension](/img/list_comprehension_new_string.png "Python list comprehension")
+{: refdef}
+
+The `new_list` now contains the following:
 
 <pre style="font-size:12px">
 ['SoMe StRinG.   ', 'Empty lInEs, leAding anD Trailing whiTespaces.   ', '  MiXed UPPER and lower case.']
@@ -294,9 +280,6 @@ The string was converted into a list. By putting in the <b>if line</b> test, we 
 
 In case we put <b>join()</b> in front of the newly created list, we can turn it into a new string:
 
-{:refdef: style="text-align: center;"}
-![Python list comprehension](/img/list_comprehension_new_string.png "Python list comprehension")
-{: refdef}
 
 
 ```python
