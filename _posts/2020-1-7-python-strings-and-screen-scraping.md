@@ -272,9 +272,9 @@ The `new_list` now contains the following:
 ['SoMe StRinG.   ', 'Empty lInEs, leAding anD Trailing whiTespaces.   ', '  MiXed UPPER and lower case.']
 </pre>
 
-The string was converted into a list. By putting in the <b>if line</b> test, we ensure that non-empty lines are not added to the list ( if '' evaluates to False).
+The string was converted into a list. By putting in the <b>if line</b> test, we ensure that non-empty lines were not added to the list ( if '' evaluates to False).
 
-Let's work on the strings in the list and remove unwanted whitespaces as well as make everything lowercase. to do this, we need to work on the expression part of the list comprehension:
+Let's work on the strings in the list and remove unwanted whitespaces as well as make everything lowercase. To do this, we need to work on the expression part of the list comprehension:
 
 {:refdef: style="text-align: center;"}
 ![Python list comprehension](/img/list_comprehension_new_string.png "Python list comprehension")
@@ -366,7 +366,7 @@ ospf_interfaces = [ line for line in s.splitlines()
 ```
 
 
-Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. 
+Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. I like using them. I hav found that as long as the expressions remain relatively straightforward, it works well for me.
 
 
 Using any and all to find what you are looking for:
@@ -397,7 +397,7 @@ set protocols bgp group exchange neighbor 2001:DB8::1 peer-as 65500
 """
 ```
 
-The string is a snippet of an IOS-XR configuration produced using <b>show running-config formal</b> and a Juniper configuration produced using <b>show configuration | display set</b>. Let's say we want to find all the configuration lines that have anything in them related to BGP policy configuration.
+The string is a snippet of an IOS-XR configuration produced using <b>show running-config formal</b> and a Juniper configuration produced using <b>show configuration | display set</b>. Let's say we want to find all the configuration lines that have anything in them related to BGP export or import policy configuration.
 
 What we could do is something like this:
 
@@ -491,6 +491,7 @@ This items in `interesting_lines` would be the following:
 ['set protocols bgp group exchange import exchange-import', 'set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all']
 </pre>
 
+Using <b>any</b> and <b>all</b> to test for multiple conditions looks a lot better then lenghty if statements. I'll leave it to you to determine whether or not they should be used in list comprehensions.
 
 
 
