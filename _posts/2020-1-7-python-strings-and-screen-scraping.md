@@ -81,7 +81,7 @@ In case you are working with other vendors and/or devices, you have to pass the 
 
 The author of the package has his own 'getting started' here: https://pynet.twb-tech.com/blog/automation/netmiko.html
 
-## NAPALM:
+### NAPALM:
 
 The following is an example script on how to issue a command using NAPALM:
 
@@ -243,6 +243,77 @@ The example code would give us the following:
 </pre>
 
 
+Breaking it down using list comprehensions:
+===========================================
+
+Using Python list comprehensions allows you to use all of the things shown previously while writing it down in a very concise way. Chapter 14 from `Learning Python, 5th Edition` contains some great examples and explanations on list comprehensions.
+
+That book also gives the following definition of list comprehensions:
+
+'List comprehensions collect the results of applying an arbitrary expression to an iterable of values and return them in a new list.'
+
+Here is the Python intro to list comprehensions:
+https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
+
+Let's look at a simple example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
+
+```python
+s = """
+Vlan    Mac Address       Type        Ports      Moves   Last Move
+----    -----------       ----        -----      -----   ---------
+  13    0000.0c9f.f001    DYNAMIC     Po999      1       94 days, 3:54:30 ago
+  13    00de.fbb9.cd41    DYNAMIC     Po992      1       94 days, 3:54:30 ago
+  13    00de.fbba.aec1    DYNAMIC     Po999      1       94 days, 3:54:30 ago
+  13    00de.fbba.avc1    DYNAMIC     Po996      1       94 days, 3:54:30 ago
+  13    00de.fbda.a2c1    DYNAMIC     Po999      1       94 days, 3:54:30 ago
+  13    00de.fb3a.avc1    DYNAMIC     Po996      1       94 days, 3:54:30 ago  
+  13    7483.ef2c.bbb3    STATIC      Po1000
+ 870    0000.0c9f.f001    DYNAMIC     Po999      1       94 days, 3:54:30 ago
+ 870    00de.fbb9.cd41    DYNAMIC     Po999      1       94 days, 3:54:30 ago
+"""
+
+mac_list = [ mac.split()[1] for mac in s.splitlines()
+            if 'DYNAMIC' in mac ]
+```
+
+The `mac_list` will hold the following items:
+<pre style="font-size:12px">
+['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1', '0000.0c9f.f001', '00de.fbb9.cd41']
+</pre>
+
+If you want to narrow the MAC address list down to the MAC addresses in VLAN 13, you can simply add a condition to the list comprehension, like so:
+```python
+mac_list = [ mac.split()[1] for mac in s.splitlines()
+            if 'DYNAMIC' in mac and
+            mac.split()[0] == '13']
+```
+
+With that addition, the `mac_list` will hold the following items:
+
+<pre style="font-size:12px">
+['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1']
+</pre>
+
+The configuration of some vendors can also be iterated fairly easy using list comprehensions. Iterating a Juniper configuration that is retrieved using 'show configuration | display set'. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
+
+```python
+vrf_interfaces = [ line for line in s.splitlines()
+            if 'routing-instances' in line and
+            'interface' in line ]
+```
+
+Similar is the case with an IOS-XR configuration that is outputted using 'show running-config formal'.
+
+```python
+ospf_interfaces = [ line for line in s.splitlines()
+            if 'router ospf' in line and
+            'area 0' in line ]
+```
+
+
+Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. 
+
+
 Using any and all to find what you are looking for:
 ===================================================
 
@@ -343,75 +414,7 @@ set protocols bgp group exchange import exchange-import
 set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
 </pre>
 
-
-Breaking it down in a more concise way using list comprehensions:
-=================================================================
-
-Using Python list comprehensions allows you to use all of the things shown previously while writing it down in a very concise way. Chapter 14 from `Learning Python, 5th Edition` contains some great examples and explanations on list comprehensions.
-
-That book also gives the following definition of list comprehensions:
-
-'List comprehensions collect the results of applying an arbitrary expression to an iterable of values and return them in a new list.'
-
-Here is the Python intro to list comprehensions:
-https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
-
-Let's look at a simple example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
-
-```python
-s = """
-Vlan    Mac Address       Type        Ports      Moves   Last Move
-----    -----------       ----        -----      -----   ---------
-  13    0000.0c9f.f001    DYNAMIC     Po999      1       94 days, 3:54:30 ago
-  13    00de.fbb9.cd41    DYNAMIC     Po992      1       94 days, 3:54:30 ago
-  13    00de.fbba.aec1    DYNAMIC     Po999      1       94 days, 3:54:30 ago
-  13    00de.fbba.avc1    DYNAMIC     Po996      1       94 days, 3:54:30 ago
-  13    00de.fbda.a2c1    DYNAMIC     Po999      1       94 days, 3:54:30 ago
-  13    00de.fb3a.avc1    DYNAMIC     Po996      1       94 days, 3:54:30 ago  
-  13    7483.ef2c.bbb3    STATIC      Po1000
- 870    0000.0c9f.f001    DYNAMIC     Po999      1       94 days, 3:54:30 ago
- 870    00de.fbb9.cd41    DYNAMIC     Po999      1       94 days, 3:54:30 ago
-"""
-
-mac_list = [ mac.split()[1] for mac in s.splitlines()
-            if 'DYNAMIC' in mac ]
-```
-
-The `mac_list` will hold the following items:
-<pre style="font-size:12px">
-['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1', '0000.0c9f.f001', '00de.fbb9.cd41']
-</pre>
-
-If you want to narrow the MAC address list down to the MAC addresses in VLAN 13, you can simply add a condition to the list comprehension, like so:
-```python
-mac_list = [ mac.split()[1] for mac in s.splitlines()
-            if 'DYNAMIC' in mac and
-            mac.split()[0] == '13']
-```
-
-With that addition, the `mac_list` will hold the following items:
-
-<pre style="font-size:12px">
-['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1']
-</pre>
-
-The configuration of some vendors can also be iterated fairly easy using list comprehensions. Iterating a Juniper configuration that is retrieved using 'show configuration | display set'. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
-
-```python
-vrf_interfaces = [ line for line in s.splitlines()
-            if 'routing-instances' in line and
-            'interface' in line ]
-```
-
-Similar is the case with an IOS-XR configuration that is outputted using 'show running-config formal'.
-
-```python
-ospf_interfaces = [ line for line in s.splitlines()
-            if 'router ospf' in line and
-            'area 0' in line ]
-```
-
-Obviously, we can also use `any` to math whatever it is we are looking for:
+Obviously, we can also use `any()` and `all()` inside list comprehensions:
 
 ```python
 s = """
@@ -434,6 +437,5 @@ This items in `interesting_lines` would be the following:
 </pre>
 
 
-Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. 
 
 
