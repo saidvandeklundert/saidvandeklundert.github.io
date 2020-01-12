@@ -269,7 +269,7 @@ The syntax for a list comprehension is the following:
 [ expression for item in list if (not) conditional(s) ]
 </pre>
 
-Combinging list comprehensions with `join()` can be nice way to transform a string into the string you want, containing only the lines you are interested in. In the following example, we will 
+Combining list comprehensions with `join()` can be nice way to transform a string into the string you want, containing only the lines you are interested in. In the following example, we will 
 ```python
 s = """
 SoMe StRinG.   
