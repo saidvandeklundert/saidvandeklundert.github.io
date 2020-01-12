@@ -15,7 +15,7 @@ Collecting the string:
 
 There are numerous ways on how to retrieve command output from a device. The following are 2 quick and easy ways.
 
-## Netmiko:
+### Netmiko:
 
 Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. It makes sending a command to a device and retrieving the output very easy.
 
