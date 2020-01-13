@@ -147,7 +147,7 @@ Example:
 ['This is line 1.', 'This is line 2.', 'This is line3.']
 </pre>
 
-The same logic can be applied to a single line. The <b>split</b> string method allows you to turn a line into a list of items where every item is a word:
+The same logic can be applied to a single line using <b>split</b>. The <b>split</b> method allows you to turn a line into a list of items where every item is a word:
 
 <pre style="font-size:12px">
 s = 'Use more string methods, less regex.'
