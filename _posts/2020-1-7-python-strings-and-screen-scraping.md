@@ -195,7 +195,7 @@ Running the above code would output the following:
 </pre>
 
 
-Let's look intp another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>:
+Let's look into another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>:
 
 <pre style="font-size:12px">
  OSPFv3 Process ID 20 VRF default
@@ -312,7 +312,7 @@ mixed upper and lower case.
 
 
 
-Now let's look at a simple example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
+Now let's look at an example where we use a list comprehension to grab the dynamically learned MAC addresses on a switch:
 
 ```python
 s = """
