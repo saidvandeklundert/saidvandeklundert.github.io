@@ -338,7 +338,8 @@ The `mac_list` will hold the following items:
 ['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1', '0000.0c9f.f001', '00de.fbb9.cd41']
 </pre>
 
-If you want to narrow the MAC address list down to the MAC addresses in VLAN 13, you can simply add a condition to the list comprehension, like so:
+If you want to narrow the MAC address list down to the MAC addresses in VLAN 13, you can add a condition to the list comprehension, like so:
+
 ```python
 mac_list = [ mac.split()[1] for mac in s.splitlines()
             if 'DYNAMIC' in mac and
