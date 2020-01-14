@@ -55,8 +55,6 @@ What happens here is the following:
 When we run the above script, we see the following:
 
 <pre style="font-size:12px">
-sh-4.4# python3 /var/tmp/tmp.py    
-
 < output omitted >
 
 Hardware
