@@ -182,11 +182,22 @@ Total memory:           3818208 kB
 Free memory:            2640048 kB
 """
 
-for line in s.splitlines():
-    if 'Software' in line:
-        print(line.split(':')[1].strip())
+for line in s.splitlines():                           # 1. allows us to step through a list of strings
+    if 'Software' in line:                            # 2. 'Software image version: 4.20.14M'
+        list_of_chunks = line.split(':')              # 3. ['Software image version', ' 4.20.14M']
+        software_version = list_of_chunks[1]          # 4. ' 4.20.14M'
+        software_version = software_version.strip()   # 5. '4.20.14M'
 
+print(software_version)
 </pre>
+
+In the comments, I am explaining the different things that are happening when the code is executed:
+
+1. Here we split <b>s</b> into a list of strings and we step through them one by one.
+2. We check every line for the presence of the word 'Software'. If it is found, the if block is executed.
+3. We split the line into a list of strings on the ':' character.
+4. The second item in the list is assigned to the 'software_version' variable.
+5. We strip the string of any leading and trailing whitespaces.
 
 Running the above code would output the following:
 
@@ -194,6 +205,13 @@ Running the above code would output the following:
 4.20.14M
 </pre>
 
+We could have been concise as well by calling all required methods on <b>line</b>, like so:
+
+<pre style="font-size:12px">
+for line in s.splitlines():
+    if 'Software' in line:
+        print(line<b>.split(':')[1].strip()</b>)
+</pre>
 
 Let's look into another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>:
 
@@ -369,7 +387,7 @@ ospf_interfaces = [ line for line in s.splitlines()
 ```
 
 
-Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. I like using them. I hav found that as long as the expressions remain relatively straightforward, it works well for me.
+Some people love list comprehensions, some others hate it and say it makes everything look needlessly complex. I like using them. I have found that as long as the expressions remain relatively straightforward, it works well for me.
 
 
 Using any and all to find what you are looking for:
