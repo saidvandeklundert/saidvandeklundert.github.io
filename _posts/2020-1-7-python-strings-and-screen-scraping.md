@@ -212,9 +212,12 @@ for line in s.splitlines():
         print(line<b>.split(':')[1].strip()</b>)
 </pre>
 
-Let's look into another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>:
+Let's look into another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>. To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
 
-<pre style="font-size:12px">
+```python
+from pprint import pprint
+
+s = """
  OSPFv3 Process ID 20 VRF default
  Total number of neighbors: 5
  Neighbor ID     Pri State            Up Time  Interface ID    Interface
@@ -228,11 +231,7 @@ Let's look into another example on a Cisco NX-OS. The following output is return
    Neighbor address fe80::7e25:86ff:feee:d6d2
  10.168.118.244 128 FULL/ -          1y19w    7               Po4 
    Neighbor address fe80::7e25:86ff:fef5:cd88
-</pre>
-
-To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
-
-```python
+"""
 ospf_neighbor_d = {}
 for line in s.splitlines():
   if 'FULL' in line:
@@ -241,7 +240,7 @@ for line in s.splitlines():
     print('{} sits behind interface {}'.format(ospf_neighbor_id, ospf_neighbor_int))
     ospf_neighbor_d[ospf_neighbor_int] = ospf_neighbor_id
 
-print(ospf_neighbor_d)
+pprint(ospf_neighbor_d)
 ```
 
 In the above example, we start out creating a dictionary for later use. After this, we iterate the lines of the string. 
@@ -258,7 +257,11 @@ The example code would give us the following:
 10.168.118.242 sits behind interface Po2
 10.168.118.243 sits behind interface Po3
 10.168.118.244 sits behind interface Po4
-{'Vlan2': '10.168.118.254', 'Po1': '10.168.118.241', 'Po2': '10.168.118.242', 'Po3': '10.168.118.243', 'Po4': '10.168.118.244'}
+{'Po1': '10.168.118.241',
+ 'Po2': '10.168.118.242',
+ 'Po3': '10.168.118.243',
+ 'Po4': '10.168.118.244',
+ 'Vlan2': '10.168.118.254'}
 </pre>
 
 
