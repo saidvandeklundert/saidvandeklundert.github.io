@@ -17,7 +17,7 @@ There are numerous ways on how to retrieve command output from a device. The fol
 
 ### Netmiko:
 
-Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. It makes sending a command to a device and retrieving the output very easy.
+Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. [Paramiko](http://www.paramiko.org/) is a Python implementation of the SSHv2 protocol which can be difficult to use. Netmik hides that complexity for us, which makes sending a command to a device and retrieving the output very easy.
 
 The following is an example of a script that sends the <b>show version</b> command to a device running NX-OS:
 
@@ -77,7 +77,7 @@ In case you are working with other vendors and/or devices, you have to pass the 
   | ------------------- | ----------------- | ------------- | ---------------- | ---------------- | --------- 
   | **device_type**     | arista_eos        | juniper       | cisco_xr         | cisco_nxos       | cisco_ios
 
-The author of the package has his own 'getting started' here: https://pynet.twb-tech.com/blog/automation/netmiko.html
+The author of the package has his own 'getting started' [here](https://pynet.twb-tech.com/blog/automation/netmiko.html).
 
 ### NAPALM:
 
