@@ -195,7 +195,7 @@ In the comments, I am explaining the different things that are happening when th
 1. Here we split <b>s</b> into a list of strings and we step through them one by one.
 2. We check every line for the presence of the word 'Software'. When found, the if block is executed.
 3. We split the line into a list of strings on the ':' character. The <b>list_of_chunks</b> list now contains <b>['Software image version', ' 4.20.14M']</b>.
-4. The second item in the list is assigned to the 'software_version' variable. This variable now contains the string <b>' 4.20.14M'</b>.
+4. The second item in the list is assigned to the 'software_version' variable, which contains the <b>' 4.20.14M'</b> string.
 5. We strip the string of any leading and trailing whitespaces, so we end up with <b>'4.20.14M'</b>.
 
 Running the above code would output the following:
