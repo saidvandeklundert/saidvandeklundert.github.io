@@ -247,7 +247,7 @@ print(ospf_neighbor_d)
 
 In the above example, we start out creating a dictionary for later use. After this, we iterate the lines of the string. 
 
-For every line that has 'FULL' in it, we split the string and take the first and last word, we we store as `ospf_neighbor_id` and `ospf_neighbor_int`.
+For every line that has 'FULL' in it, we split the string and take the first and last word which we assign to the variables `ospf_neighbor_id` and `ospf_neighbor_int`.
 
 We use the variables to print a message to the terminal and we build a dictionary where the OSPF neighbor interface is the key and the OSPF neighbor ID is the value.
 
