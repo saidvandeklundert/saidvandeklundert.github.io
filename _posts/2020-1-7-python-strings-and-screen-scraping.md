@@ -7,7 +7,7 @@ image: /img/python-logo.jpg
 
 This article contains several examples I could have really used after reading up on the basics in Python. After I read the first chapters of <b>Automate the Boring Stuff with Python</b> and <b>Learning Python, 5th Edition</b>, I somewhat struggled to put the concepts I read about into practice. I knew the basic Python data structures and string methods, but was not really sure on how to actually use any of this.
 
-As a network engineer, I was intimately familiar with the CLI and had a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to break the strings down into smaller parts and find what you are looking for.
+As a network engineer, I was intimately familiar with the CLI and had a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to break the strings down into smaller parts to work with.
 
 
 Retrieving device output:
@@ -249,7 +249,7 @@ In the above example, we start out creating a dictionary for later use. After th
 
 For every line that has 'FULL' in it, we split the string and take the first and last word, we we store as `ospf_neighbor_id` and `ospf_neighbor_int`.
 
-We use the variables to print a message to the terminal and we build a dictionart where the OSPF neighbor interface is the key and the OSPF neighbor ID is the value.
+We use the variables to print a message to the terminal and we build a dictionary where the OSPF neighbor interface is the key and the OSPF neighbor ID is the value.
 
 The example code would give us the following:
 
