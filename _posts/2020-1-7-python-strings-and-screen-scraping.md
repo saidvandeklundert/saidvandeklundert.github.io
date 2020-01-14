@@ -183,10 +183,10 @@ Free memory:            2640048 kB
 """
 
 for line in s.splitlines():                           # 1. 's' becomes a list of strings
-    if 'Software' in line:                            # 2. we stop at line 'Software image version: 4.20.14M'
-        list_of_chunks = line.split(':')              # 3. list_of_chunks = ['Software image version', ' 4.20.14M']
-        software_version = list_of_chunks[1]          # 4. software_version = ' 4.20.14M'
-        software_version = software_version.strip()   # 5. software_version = '4.20.14M'
+    if 'Software' in line:                            # 2. stop at line 'Software image version: 4.20.14M'
+        list_of_chunks = line.split(':')              # 3. ['Software image version', ' 4.20.14M']
+        software_version = list_of_chunks[1]          # 4. ' 4.20.14M'
+        software_version = software_version.strip()   # 5. '4.20.14M'
 
 print(software_version)
 </pre>
@@ -194,10 +194,10 @@ print(software_version)
 In the comments, I am explaining the different things that are happening when the code is executed:
 
 1. Here we split <b>s</b> into a list of strings and we step through them one by one.
-2. We check every line for the presence of the word 'Software'. If it is found, the if block is executed.
-3. We split the line into a list of strings on the ':' character.
-4. The second item in the list is assigned to the 'software_version' variable.
-5. We strip the string of any leading and trailing whitespaces.
+2. We check every line for the presence of the word 'Software'. When found, the if block is executed.
+3. We split the line into a list of strings on the ':' character. The <b>list_of_chunks</b> list now contains <b>['Software image version', ' 4.20.14M']</b>.
+4. The second item in the list is assigned to the 'software_version' variable. This variable now contains the string <b>' 4.20.14M'</b>.
+5. We strip the string of any leading and trailing whitespaces, so we end up with <b>'4.20.14M'</b>.
 
 Running the above code would output the following:
 
