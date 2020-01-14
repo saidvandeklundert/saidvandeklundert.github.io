@@ -126,6 +126,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 Total neighbor count: 2
 
 </pre>
+For more on NAPALM, check out [this](https://saidvandeklundert.net/2019-09-20-napalm/) post.
 
 In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
