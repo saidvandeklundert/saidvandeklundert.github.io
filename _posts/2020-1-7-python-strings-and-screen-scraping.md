@@ -512,7 +512,7 @@ This items in `interesting_lines` would be the following:
 ['set protocols bgp group exchange import exchange-import', 'set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all']
 </pre>
 
-Using <b>any</b> and <b>all</b> to test for multiple conditions looks a lot better then lenghty if statements. I'll leave it to you to determine whether or not they should be used in list comprehensions.
+Using <b>any</b> and <b>all</b> to test for multiple conditions looks a lot better than lengthy if statements. I'll leave it to you to determine whether or not they should be used in list comprehensions.
 
 
 
