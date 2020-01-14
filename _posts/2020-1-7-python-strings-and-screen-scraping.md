@@ -184,7 +184,7 @@ Free memory:            2640048 kB
 
 for line in s.splitlines():                           # 1. 's' becomes a list of strings
     if 'Software' in line:                            # 2. we stop at line 'Software image version: 4.20.14M'
-        list_of_chunks = line.split(':')              # 3. list_of_chunks contains ['Software image version', ' 4.20.14M']
+        list_of_chunks = line.split(':')              # 3. list_of_chunks = ['Software image version', ' 4.20.14M']
         software_version = list_of_chunks[1]          # 4. software_version = ' 4.20.14M'
         software_version = software_version.strip()   # 5. software_version = '4.20.14M'
 
