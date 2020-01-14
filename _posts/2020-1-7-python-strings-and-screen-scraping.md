@@ -182,11 +182,11 @@ Total memory:           3818208 kB
 Free memory:            2640048 kB
 """
 
-for line in s.splitlines():                           # 1. allows us to step through a list of strings
-    if 'Software' in line:                            # 2. 'Software image version: 4.20.14M'
-        list_of_chunks = line.split(':')              # 3. ['Software image version', ' 4.20.14M']
-        software_version = list_of_chunks[1]          # 4. ' 4.20.14M'
-        software_version = software_version.strip()   # 5. '4.20.14M'
+for line in s.splitlines():                           # 1. s.splitlines() becomes a list of strings
+    if 'Software' in line:                            # 2. we match line 'Software image version: 4.20.14M'
+        list_of_chunks = line.split(':')              # 3. list_of_chunks = ['Software image version', ' 4.20.14M']
+        software_version = list_of_chunks[1]          # 4. software_version = ' 4.20.14M'
+        software_version = software_version.strip()   # 5. software_version = '4.20.14M'
 
 print(software_version)
 </pre>
