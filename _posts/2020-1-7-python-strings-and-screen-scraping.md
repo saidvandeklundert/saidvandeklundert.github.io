@@ -212,7 +212,7 @@ for line in s.splitlines():
         print(line<b>.split(':')[1].strip()</b>)
 </pre>
 
-Let's look into another example on a Cisco NX-OS. The following output is returned after issuing <b>show ipv6 ospfv3 neighbors</b>. To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
+Let's look into another example on a Cisco NX-OS. The string we are working with is the output of the <b>show ipv6 ospfv3 neighbors</b> command. To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
 
 ```python
 from pprint import pprint
@@ -232,7 +232,9 @@ s = """
  10.168.118.244 128 FULL/ -          1y19w    7               Po4 
    Neighbor address fe80::7e25:86ff:fef5:cd88
 """
+
 ospf_neighbor_d = {}
+
 for line in s.splitlines():
   if 'FULL' in line:
     ospf_neighbor_id = line.split()[0]
