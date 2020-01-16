@@ -5,15 +5,15 @@ tags: [automation, python ]
 image: /img/python-logo.jpg
 ---
 
-This article contains several examples I could have really used after reading up on the basics in Python. After I read the first chapters of <b>Automate the Boring Stuff with Python</b> and <b>Learning Python, 5th Edition</b>, I somewhat struggled to put the concepts I read about into practice. I knew the basic Python data structures and string methods, but was not really sure on how to actually use any of this.
+This article contains several examples I could have used after reading up on the basics in Python. After I read the first chapters of <b>Automate the Boring Stuff with Python</b> and <b>Learning Python, 5th Edition</b>, I somewhat struggled to put the concepts I read about into practice. By this time, I understood the basic Python data structures and string methods. But I had a hard time applying it anywhere.
 
-As a network engineer, I was intimately familiar with the CLI and had a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to break the strings down into smaller parts to work with.
+As a network engineer, I was intimately familiar with the CLI. I found that it was a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to break the strings down into smaller parts and find what you are looking for.
 
 
 Retrieving device output:
 =========================
 
-There are numerous ways on how to retrieve command output from a device. The following are 2 quick and easy ways.
+There are numerous ways on how to retrieve command output from a device. The following are 2 commonly used libraries that are quite popular.
 
 ### Netmiko:
 
@@ -374,7 +374,7 @@ With that addition, the `mac_list` will hold the following items:
 ['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1']
 </pre>
 
-The configuration of some vendors can also be iterated fairly easy using list comprehensions. Take a Juniper configuration retrieved using 'show configuration | display set' for instance. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
+The configuration of some vendors can also be iterated using list comprehensions. Take a Juniper configuration retrieved using 'show configuration | display set' for instance. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
 
 ```python
 vrf_interfaces = [ line for line in s.splitlines()
