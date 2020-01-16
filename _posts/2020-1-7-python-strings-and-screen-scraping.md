@@ -512,4 +512,7 @@ This items in `interesting_lines` would be the following:
 Using <b>any</b> and <b>all</b> to test for multiple conditions looks a lot better than lengthy if statements. I'll leave it to you to determine whether or not they should be used in list comprehensions.
 
 
+Closing thoughts
+================
 
+Learning Python is a lot of fun. After reading up on the basics, I recommend you try and practice on information retrieval by doing some screen scraping. You do not need to write a lot of Python and you can start doing useful things in no time. I hope the examples in this post help you.
