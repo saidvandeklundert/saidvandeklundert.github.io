@@ -138,33 +138,33 @@ Instead of working with large multiline strings that are returned by a device, i
 
 Example:
 
-<pre style="font-size:12px">
+```python
 >>> s = """This is line 1.
 ... This is line 2.
 ... This is line3."""
 >>> s.splitlines()
 ['This is line 1.', 'This is line 2.', 'This is line3.']
-</pre>
+```
 
 The same logic can be applied to a single line using <b>split</b>. The <b>split</b> method allows you to turn a line into a list of items where every item is a word:
 
-<pre style="font-size:12px">
+```python
 s = 'Use more string methods, less regex.'
 s.split()
 ['Use', 'more', 'string', 'methods,', 'less', 'regex.']
-</pre>
+```
 
 To be more precise, it will split a string using a whitespace as separator. You can use something other than this default value like so:
 
-<pre style="font-size:12px">
+```python
 s = '192.168.1.1/24'
 s.split('/')        
 ['192.168.1.1', '24']
-</pre>
+```
 
 Combining split and splitlines can sometimes be enough to extract a value without using regex. Let's look at the following example where we extract the software version an Arista device is running:
 
-<pre style="font-size:12px">
+```python
 s = """
 Arista DCS-7050TX-64-R
 Hardware version:    21.12
@@ -188,7 +188,7 @@ for line in s.splitlines():                           # 1. 's' becomes a list of
         software_version = software_version.strip()   # 5. '4.20.14M'
 
 print(software_version)
-</pre>
+```
 
 In the comments, I am explaining the different things that are happening when the code is executed:
 
@@ -206,11 +206,11 @@ Running the above code would output the following:
 
 We could have been concise as well by calling all required methods on <b>line</b>, like so:
 
-<pre style="font-size:12px">
+```python
 for line in s.splitlines():
     if 'Software' in line:
         print(line<b>.split(':')[1].strip()</b>)
-</pre>
+```
 
 Let's look into another example on a Cisco NX-OS. The string we are working with is the output of the <b>show ipv6 ospfv3 neighbors</b> command. To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
 
