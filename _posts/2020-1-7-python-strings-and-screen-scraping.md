@@ -100,7 +100,7 @@ print(s)
 
 In the previous example:
 - NAPALM and getpass are imported
-- after the imports, again, getpass is used to ask for a password
+- after the imports, the user is asked for a password using getpass
 - the driver that details what type of device to connect to is selected
 - the device object is created
 - a connection to the device is opened
