@@ -77,7 +77,7 @@ In case you are working with other vendors and/or devices, you have to pass the 
   | ------------------- | ----------------- | ------------- | ---------------- | ---------------- | --------- 
   | **device_type**     | arista_eos        | juniper       | cisco_xr         | cisco_nxos       | cisco_ios
 
-The author of the package has his own 'getting started' [here](https://pynet.twb-tech.com/blog/automation/netmiko.html).
+The author of the package has his own 'getting started' <a href="https://pynet.twb-tech.com/blog/automation/netmiko.html" target="_blank">here</a>.
 
 ### NAPALM:
 
@@ -126,7 +126,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 Total neighbor count: 2
 
 </pre>
-For more on NAPALM, check out [this](https://saidvandeklundert.net/2019-09-20-napalm/) post.
+For more on NAPALM, check out <a href="https://saidvandeklundert.net/2019-09-20-napalm/" target="_blank">this</a> post.
 
 In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
 
@@ -317,7 +317,7 @@ The <b>new_list</b> now contains the following items:
 </pre>
 
 
-Using [join](https://docs.python.org/3/library/stdtypes.html?highlight=join#str.join) on the newly created list, we turn it into a new string. In fact, instead of referencing the new list, we can just feed the list comprehension to <b>join</b>:
+Using <a href="https://docs.python.org/3/library/stdtypes.html?highlight=join#str.join" target="_blank">join</a> on the newly created list, we turn it into a new string. In fact, instead of referencing the new list, we can just feed the list comprehension to <b>join</b>:
 
 ```python
 new_string = '\n'.join([ line.lower().strip() for line in s.splitlines() if line ] )
