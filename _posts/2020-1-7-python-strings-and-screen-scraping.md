@@ -17,7 +17,7 @@ There are numerous ways on how to retrieve command output from a device. The fol
 
 ### Netmiko:
 
-Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. [Paramiko](http://www.paramiko.org/) is a Python implementation of the SSHv2 protocol which can be difficult to use. Netmiko hides that complexity for us, which makes sending a command to a device and retrieving the output very easy.
+Netmiko is a <b>Multi-vendor library to simplify Paramiko SSH connections to network devices</b>. <a href="http://www.paramiko.org/" target="_blank">Paramiko</a> is a Python implementation of the SSHv2 protocol which can be difficult to use. Netmiko hides that complexity for us, which makes sending a command to a device and retrieving the output very easy.
 
 The following is an example of a script that sends the <b>show version</b> command to a device running NX-OS:
 
