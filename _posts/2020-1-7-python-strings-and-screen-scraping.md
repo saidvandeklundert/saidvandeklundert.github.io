@@ -459,8 +459,6 @@ for line in s.splitlines():
 
 This produces the same output as before:
 
-This would produce the following:
-
 <pre style="font-size:12px">
 router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-import-policy in
 router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-export-policy out
@@ -472,9 +470,7 @@ set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
 </pre>
 
 
-The `all()` method will allow for something similar. The `all()` method will 'return True if all elements of the iterable are true'. 
-
-In the following example, we will print the line in case all the words in the list are found:
+In case you are looking for multiple items that have to be present in a string, use the `all()` method. This will 'return True if all elements of the iterable are true'. In the following example, we will print the line in case all the words in the list are found:
 
 ```python
 interesting_items = [ 'exchange', 'import',  ]
