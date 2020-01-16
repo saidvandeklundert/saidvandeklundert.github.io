@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Python strings and network engineering
-tags: [automation, python ]
+tags: [automation, python, napalm, netmiko ]
 image: /img/python-logo.jpg
 ---
 
