@@ -317,7 +317,7 @@ The <b>new_list</b> now contains the following items:
 </pre>
 
 
-Using <a href="https://docs.python.org/3/library/stdtypes.html?highlight=join#str.join" target="_blank">join</a> on the newly created list, we turn it into a new string. In fact, instead of referencing the new list, we can just feed the list comprehension to <b>join</b>:
+Using <a href="https://docs.python.org/3/library/stdtypes.html?highlight=join#str.join" target="_blank">join</a> on the newly created list, we turn it into a new string. And instead of referencing the new list, we can just feed the list comprehension to <b>join</b>:
 
 ```python
 new_string = '\n'.join([ line.lower().strip() for line in s.splitlines() if line ] )
