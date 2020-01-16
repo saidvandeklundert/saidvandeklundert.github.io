@@ -104,7 +104,7 @@ In the previous example:
 - the driver that details what type of device to connect to is selected
 - the device object is created
 - a connection to the device is opened
-- the cli method is used to send a list of commands to the device (in this case, only 1 command: 'show ospf neighbor')
+- the cli method is used to send a list of commands to the device (in this case, only 1 command: <b>show ospf neighbor</b>)
 - the connection to the device is closed
 - we retrieve the output of the command from the dictionary that is returned by 'device.cli' and store it in the variable called 's'
 - we print 's' to screen
