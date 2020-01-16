@@ -355,7 +355,7 @@ mac_list = [ mac.split()[1] for mac in s.splitlines()
             if 'DYNAMIC' in mac ]
 ```
 
-We iterate the list of lines, split that string and take the second word. When we run the code, the `mac_list` will hold the following items:
+We turn the string into a list of lines again using <b>s.splitlines()</b>. Additionally, we performed <b>.split()[1]</b> on every line. This allowed us to extract the MAC address. After that, we checked for the presence of the word <b>DYNAMIC</b>. When we run the above code, the `mac_list` will hold the following items:
 <pre style="font-size:12px">
 ['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1', '0000.0c9f.f001', '00de.fbb9.cd41']
 </pre>
