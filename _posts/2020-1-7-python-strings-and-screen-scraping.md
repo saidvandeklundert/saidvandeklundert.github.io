@@ -441,7 +441,7 @@ set protocols bgp group exchange neighbor 2001:DB8::1 export deny-all
 set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
 </pre>
 
-It works, but it does not look very nice and consider the abomination when you want to look for 4, 5 or more items in a string:
+It works, but it does not look very nice. Also, consider the abomination when you want to look for 5 or more items in a string:
 
 ```python
 if 'export' in line or 'import' in line or 'route-policy' in line or 'something'  in line or 'something else' in line or 'another thing' in line:
