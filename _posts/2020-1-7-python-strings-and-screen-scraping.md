@@ -374,7 +374,7 @@ With that addition, the `mac_list` will hold the following items:
 ['0000.0c9f.f001', '00de.fbb9.cd41', '00de.fbba.aec1', '00de.fbba.avc1', '00de.fbda.a2c1', '00de.fb3a.avc1']
 </pre>
 
-The configuration of some vendors can also be iterated using list comprehensions. Take a Juniper configuration retrieved using 'show configuration | display set' for instance. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
+The configuration of some vendors can also be iterated using list comprehensions. Take a Juniper configuration retrieved using <b>show configuration | display set</b> for instance. The following would narrow the Juniper configuration down to lines that specify the interfaces in the routing-instances:
 
 ```python
 vrf_interfaces = [ line for line in s.splitlines()
@@ -382,7 +382,7 @@ vrf_interfaces = [ line for line in s.splitlines()
             'interface' in line ]
 ```
 
-Similar is the case with an IOS-XR configuration that is outputted using 'show running-config formal'.
+Similar is the case with an IOS-XR configuration that is outputted using <b>show running-config formal</b>.
 
 ```python
 ospf_interfaces = [ line for line in s.splitlines()
