@@ -447,7 +447,7 @@ It works, but it does not look very nice. Also, consider the abomination when yo
 if 'export' in line or 'import' in line or 'route-policy' in line or 'something'  in line or 'something else' in line or 'another thing' in line:
 ```
 
-Using `any()` will 'return True if any element of the iterable is true'. It allows us to specifiy the items we are interested in
+Using `any()` will 'return True if any element of the iterable is true'. This allows us to specify the items we are interested in, as a list:
 
 ```python
 interesting_items = [ 'export', 'import',  ]
