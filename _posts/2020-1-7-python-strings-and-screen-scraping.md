@@ -5,9 +5,9 @@ tags: [automation, python ]
 image: /img/python-logo.jpg
 ---
 
-This article contains several examples I could have used after reading up on the basics in Python. After I read the first chapters of <b>Automate the Boring Stuff with Python</b> and <b>Learning Python, 5th Edition</b>, I somewhat struggled to put the concepts I read about into practice. By this time, I understood the basic Python data structures and string methods. But I had a hard time applying it anywhere.
+This article contains several examples I could have used after reading up on the basics in Python. After I read the first chapters of <b>Automate the Boring Stuff with Python</b> and <b>Learning Python, 5th Edition</b>, I somewhat struggled to put the concepts I read about into practice. At this time, I understood the basic Python data structures and string methods. But I had a hard time applying it anywhere.
 
-As a network engineer, I was intimately familiar with the CLI. I found that it was a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to break the strings down into smaller parts and find what you are looking for.
+As a network engineer, I was very familiar with the CLI. I found that it was a lot of fun putting the stuff I learned into practice by working with CLI output. In this article, I will start by giving a few basic examples on how to send a command to a device and retrieve the output as a string. After this, I will give a few examples on how to break the strings down into smaller parts and find what you are looking for.
 
 
 Retrieving device output:
