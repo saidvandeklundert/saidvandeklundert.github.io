@@ -29,7 +29,7 @@ password = getpass.getpass()
 
 login_info = {
     'device_type': 'cisco_nxos',
-    'host':   '169.60.118.254',
+    'host':   '10.10.10.254',
     'username': 'lab',
     'password': password,
 }
@@ -46,7 +46,7 @@ print(s)
 What happens here is the following:
 - netmiko and getpass are imported
 - after the imports, getpass is used to ask for a password
-- a dictionary with login information is created
+- the 'login_info' dictionary that contains login information is created
 - we pass the login info to the `ConnectHandler` and setup a connection to the device
 - with `net_connect.send_command('show version')` we send the command to the device and store the return in the variable called 's'
 - we disconnect from the device
@@ -71,7 +71,7 @@ Kernel uptime is 508 day(s), 11 hour(s), 37 minute(s), 35 second(s)
 < output omitted >
 </pre>
 
-In case you are working with other vendors and/or devices, you have to pass the appropriate value as the <b>device_type</b>. Here are some of the usual suspects I use the most:
+In case you are working with other vendors and/or devices, you have to pass the appropriate value as the <b>device_type</b> in the 'login_info' dictionary. Here are some of the usual suspects I use the most:
 
   |                     | Arista EOS        | Junos         | Cisco IOS-XR     | Cisco NX-OS      | Cisco IOS
   | ------------------- | ----------------- | ------------- | ---------------- | ---------------- | --------- 
