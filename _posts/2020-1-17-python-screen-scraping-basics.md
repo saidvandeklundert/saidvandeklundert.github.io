@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python strings and network engineering
+title: Python screen scraping basics
 tags: [automation, python, napalm, netmiko ]
 image: /img/python-logo.jpg
 ---
