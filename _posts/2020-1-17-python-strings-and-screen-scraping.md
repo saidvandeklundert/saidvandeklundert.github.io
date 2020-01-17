@@ -363,30 +363,6 @@ set protocols bgp group exchange import exchange-import
 set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
 </pre>
 
-Obviously, we can also use `any()` and `all()` inside list comprehensions:
-
-```python
-s = """
-router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-import-policy in
-router bgp 65500 neighbor 10.0.19.1 address-family vpnv4 unicast route-policy bgp-export-policy out
-set protocols bgp group exchange import exchange-import
-set protocols bgp group exchange export exchange-export
-set protocols bgp group exchange neighbor 10.0.0.1 export deny-all
-set protocols bgp group exchange neighbor 2001:DB8::1 export deny-all
-set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
-"""
-interesting_items = [ 'exchange', 'import',  ]
-
-interesting_lines = [ line for line in s.splitlines() if all(x in line for x in interesting_items) ]
-```
-
-This items in `interesting_lines` would be the following:
-<pre style="font-size:12px">
-['set protocols bgp group exchange import exchange-import', 'set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all']
-</pre>
-
-Using <b>any</b> and <b>all</b> to test for multiple conditions looks a lot better than lengthy if statements. I'll leave it to you to determine whether or not they should be used in list comprehensions.
-
 
 Closing thoughts
 ================
