@@ -139,20 +139,30 @@ Instead of working with large multiline strings that are returned by a device, i
 Example:
 
 ```python
->>> s = """This is line 1.
-... This is line 2.
-... This is line3."""
->>> s.splitlines()
-['This is line 1.', 'This is line 2.', 'This is line3.']
+s = """This is line 1.
+This is line 2.
+This is line3."""
+s.splitlines()
 ```
+
+This would output the following:
+
+<pre style="font-size:12px">
+['This is line 1.', 'This is line 2.', 'This is line3.']
+</pre>
 
 The same logic can be applied to a single line using <b>split</b>. The <b>split</b> method allows you to turn a line into a list of items where every item is a word:
 
 ```python
 s = 'Use more string methods, less regex.'
 s.split()
-['Use', 'more', 'string', 'methods,', 'less', 'regex.']
 ```
+
+The above gives us:
+
+<pre style="font-size:12px">
+['Use', 'more', 'string', 'methods,', 'less', 'regex.']
+</pre>
 
 To be more precise, it will split a string using a whitespace as separator. You can use something other than this default value like so:
 
