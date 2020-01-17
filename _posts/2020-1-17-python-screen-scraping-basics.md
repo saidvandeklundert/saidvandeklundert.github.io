@@ -90,7 +90,7 @@ import getpass
 password = getpass.getpass()  
 
 driver = napalm.get_network_driver('iosxr')
-device = driver(hostname='169.50.169.101', username='lab', password=password)
+device = driver(hostname='10.50.169.101', username='lab', password=password)
 device.open()
 return_dictionary = device.cli(['show ospf neighbor', ])
 device.close()
@@ -118,9 +118,9 @@ The scripts outputs the following:
 Neighbors for OSPF 10
 
 Neighbor ID     Pri   State           Dead Time   Address         Interface
-10.0.19.237     128   FULL/  -        00:00:39    169.254.63.12   HundredGigE0/0/0/4
+10.0.19.237     128   FULL/  -        00:00:39    10.254.63.12   HundredGigE0/0/0/4
     Neighbor is up for 5w5d
-10.0.19.238     128   FULL/  -        00:00:39    169.254.63.14   HundredGigE0/0/0/5
+10.0.19.238     128   FULL/  -        00:00:39    10.254.63.14   HundredGigE0/0/0/5
     Neighbor is up for 5w5d
 
 Total neighbor count: 2
