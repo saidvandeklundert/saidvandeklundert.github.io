@@ -48,7 +48,7 @@ What happens here is the following:
 - after the imports, getpass is used to ask for a password
 - the 'login_info' dictionary that contains login information is created
 - we pass the login info to the <b>ConnectHandler</b> and setup a connection to the device
-- with <b>net_connect.send_command('show version')</b> we send the command to the device and store the return in the variable called 's'
+- with <b>net_connect.send_command('show version')</b> we send the command to the device and store the return in the variable called <b>s</b>
 - we disconnect from the device
 - we print the result to screen
 
@@ -106,8 +106,8 @@ In the previous example:
 - a connection to the device is opened
 - the cli method is used to send a list of commands to the device (in this case, only 1 command: <b>show ospf neighbor</b>)
 - the connection to the device is closed
-- we retrieve the output of the command from the dictionary that is returned by 'device.cli' and store it in the variable called 's'
-- we print 's' to screen
+- we retrieve the output of the command from the dictionary that is returned by 'device.cli' and store it in the variable called <b>s</b>
+- we print <b>s</b> to screen
 
 
 The scripts outputs the following:
