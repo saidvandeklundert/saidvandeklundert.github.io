@@ -219,7 +219,7 @@ We could have been concise as well by calling all required methods on <b>line</b
 ```python
 for line in s.splitlines():
     if 'Software' in line:
-        print(line<b>.split(':')[1].strip()</b>)
+        print(line.split(':')[1].strip())
 ```
 
 Let's look into another example on a Cisco NX-OS. The string we are working with is the output of the <b>show ipv6 ospfv3 neighbors</b> command. To extract the OSPFv3 neighbor ID and interface behind which we find the neighbor, we can use the same approach as we used earlier:
