@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python screen scraping basics
+title: Screen scraping basics for network engineers
 tags: [automation, python, napalm, netmiko ]
 image: /img/python-logo.jpg
 ---
@@ -275,6 +275,7 @@ The example code would give us the following:
  'Po4': '10.168.118.244',
  'Vlan2': '10.168.118.254'}
 </pre>
+
 
 
 Using any and all to find what you are looking for:
