@@ -47,8 +47,8 @@ What happens here is the following:
 - netmiko and getpass are imported
 - after the imports, getpass is used to ask for a password
 - the 'login_info' dictionary that contains login information is created
-- we pass the login info to the `ConnectHandler` and setup a connection to the device
-- with `net_connect.send_command('show version')` we send the command to the device and store the return in the variable called 's'
+- we pass the login info to the <b>ConnectHandler</b> and setup a connection to the device
+- with <b>net_connect.send_command('show version')</b> we send the command to the device and store the return in the variable called 's'
 - we disconnect from the device
 - we print the result to screen
 
@@ -128,7 +128,7 @@ Total neighbor count: 2
 </pre>
 For more on NAPALM and wat drivers to select, check out <a href="https://saidvandeklundert.net/2019-09-20-napalm/" target="_blank">this</a> post.
 
-In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in `s = xxxx` to detail what the string is that I am working with.
+In the rest of the article, I will leave out the part where I retrieve the device output. Instead of showing the way I use Netmiko or NAPALM, I will just put in <b>s = xxxx</b> to detail what the string is that I am working with.
 
 
 Breaking it down using splitlines and split:
@@ -257,7 +257,7 @@ pprint(ospf_neighbor_d)
 
 In the above example, we start out creating a dictionary for later use. After this, we iterate the lines of the string. 
 
-For every line that has 'FULL' in it, we split the string and take the first and last word which we assign to the variables `ospf_neighbor_id` and `ospf_neighbor_int`.
+For every line that has 'FULL' in it, we split the string and take the first and last word which we assign to the variables <b>ospf_neighbor_id</b> and <b>ospf_neighbor_int</b>.
 
 We use the variables to print a message to the terminal and we build a dictionary where the OSPF neighbor interface is the key and the OSPF neighbor ID is the value.
 
@@ -333,7 +333,7 @@ It works, but it does not look very nice. Also, consider the abomination when yo
 if 'export' in line or 'import' in line or 'route-policy' in line or 'something'  in line or 'something else' in line or 'another thing' in line:
 ```
 
-Using `any()` will 'return True if any element of the iterable is true'. This allows us to specify the items we are interested in, as a list:
+Using <b>any()</b> will 'return True if any element of the iterable is true'. This allows us to specify the items we are interested in, as a list:
 
 ```python
 interesting_items = [ 'export', 'import',  ]
@@ -356,7 +356,7 @@ set protocols bgp group exchange neighbor 2001:DB8::1 import deny-all
 </pre>
 
 
-In case you are looking for multiple items that have to be present in a string, use the `all()` method. This will 'return True if all elements of the iterable are true'. In the following example, we will print the line in case all the words in the list are found:
+In case you are looking for multiple items that have to be present in a string, use the <b>all()</b> method. This will 'return True if all elements of the iterable are true'. In the following example, we will print the line in case all the words in the list are found:
 
 ```python
 interesting_items = [ 'exchange', 'import',  ]
