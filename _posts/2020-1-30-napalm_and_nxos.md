@@ -25,11 +25,11 @@ We disabled HTTP access and we specified a non-standard port for HTTPs. We can v
 
 
 <pre style="font-size:12px">
-fcr01b.sie05# show feature | egrep "nxapi|scp"
+nxos.lab# <b>show feature | egrep "nxapi|scp"</b>
 nxapi                1        enabled
 scpServer            1        enabled
 
-fcr01b.sie05# show nxapi
+nxos.lab# <b>show nxapi</b>
 
 NX-API:       Enabled         Sandbox:      Disabled    
 HTTP Port:    Disabled        HTTPS Port:   65000    
