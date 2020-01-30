@@ -42,7 +42,6 @@ To verify that we can connect to the device, let's start out issuing a CLI comma
 
 ```python
 import napalm
-from pprint import pprint as pp
 
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
@@ -57,7 +56,7 @@ s = return_dictionary['show ipv6 ospfv3 neighbors ']
 print(s)
 ```
 
-Since we are using a non-standard port, we use the <b>optional_args</b> when we instantiate the device object to specify the port number. Note that by default, HTTPS is used for transport. If for whatever reason you absolutely want to use HTTP, then you'd have to do <b>optional_args = {'transport': 'http' }</b>.
+Since we are using a non-standard port, we use the <b>optional_args</b> when we instantiate the device object to specify the port number. Note that by default, HTTPS is used for transport. If for whatever reason you absolutely want to use HTTP, then you can use the following: <b>optional_args = {'transport': 'http' }</b>.
 
 When we run the script, we get the following output:
 
