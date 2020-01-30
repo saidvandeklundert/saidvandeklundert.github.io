@@ -47,7 +47,7 @@ from pprint import pprint as pp
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-device = driver(hostname='198.18.61.59', username='admin', password='admin123', optional_args=optional_args )
+device = driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args )
 device.open()
 return_dictionary = device.cli(['show ipv6 ospfv3 neighbors ', ])
 device.close()
@@ -65,11 +65,11 @@ When we run the script, we get the following output:
  OSPFv3 Process ID 20 VRF default
  Total number of neighbors: 3
  Neighbor ID     Pri State            Up Time  Interface ID    Interface
- 169.47.118.253    1 FULL/ -          3y0w     90              Vlan2 
+ 10.47.118.253    1 FULL/ -          3y0w     90              Vlan2 
    Neighbor address fe80::8e60:4fff:fee9:1141
- 169.47.118.243  128 FULL/ -          2y16w    4               Po3 
+ 10.47.118.243  128 FULL/ -          2y16w    4               Po3 
    Neighbor address fe80::86c1:c1ff:fee5:fc5
- 169.47.118.244  128 FULL/ -          2y16w    4               Po4 
+ 10.47.118.244  128 FULL/ -          2y16w    4               Po4 
    Neighbor address fe80::86c1:c1ff:feb5:78c7
 </pre>
 
@@ -82,7 +82,7 @@ from pprint import pprint as pp
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='198.18.61.59', username='admin', password='admin123', optional_args=optional_args ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:
   return_dictionary = device.cli(['show ipv6 ospfv3 neighbors ', ])
 
 s = return_dictionary['show ipv6 ospfv3 neighbors ']
@@ -99,7 +99,7 @@ from pprint import pprint as pp
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='198.18.61.59', username='admin', password='l4b.r00tfujd1', optional_args=optional_args ) as device:  
+with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:  
   pp(device.get_facts())
   pp(device.get_bgp_neighbors())
   pp(device.get_lldp_neighbors())
@@ -116,7 +116,7 @@ import json
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='198.18.61.59', username='admin', password='admin123', optional_args=optional_args ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:
   ospf3_information = device.cli(['show ipv6 ospfv3 neighbors | json', ])
 
 ospf_dictionary = json.loads(ospf3_information['show ipv6 ospfv3 neighbors | json'])
@@ -131,7 +131,7 @@ When we run the above example, we get the following output:
                                                       'ifid': '90',
                                                       'intf': 'Vlan2',
                                                       'priority': '1',
-                                                      'rid': '169.47.118.253',
+                                                      'rid': '10.47.118.253',
                                                       'state': 'FULL',
                                                       'uptime': 'P3Y17DT3H53M19S'},
                                                      {'addr': 'fe80::86c1:c1ff:fee5:fc5',
@@ -139,7 +139,7 @@ When we run the above example, we get the following output:
                                                       'ifid': '4',
                                                       'intf': 'Po3',
                                                       'priority': '128',
-                                                      'rid': '169.47.118.243',
+                                                      'rid': '10.47.118.243',
                                                       'state': 'FULL',
                                                       'uptime': 'P2Y4M5DT16H45M22S'},
                                                      {'addr': 'fe80::86c1:c1ff:feb5:78c7',
@@ -147,7 +147,7 @@ When we run the above example, we get the following output:
                                                       'ifid': '4',
                                                       'intf': 'Po4',
                                                       'priority': '128',
-                                                      'rid': '169.47.118.244',
+                                                      'rid': '10.47.118.244',
                                                       'state': 'FULL',
                                                       'uptime': 'P2Y4M5DT16H20M31S'}]},
                            'cname': 'default',
@@ -174,7 +174,7 @@ ipv6 access-list management-v6
 import napalm
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='198.18.61.59', username='admin', password='l4b.r00tfujd1', optional_args={'port': '65000' } ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args={'port': '65000' } ) as device:
   device.load_merge_candidate(filename='/var/tmp/add_acl.cfg')
   print(device.compare_config())
   device.commit_config()  
