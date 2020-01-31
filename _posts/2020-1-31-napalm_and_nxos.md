@@ -48,7 +48,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-device = driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args )
+device = driver(hostname='192.0.2.1', username='admin', password='admin', optional_args=optional_args )
 device.open()
 return_dictionary = device.cli(['show ipv6 ospfv3 neighbors', ])
 device.close()
@@ -85,7 +85,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args=optional_args ) as device:
   return_dictionary = device.cli(['show ipv6 ospfv3 neighbors', ])
 
 s = return_dictionary['show ipv6 ospfv3 neighbors']
@@ -104,7 +104,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:  
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args=optional_args ) as device:  
   pp(device.get_facts())
   pp(device.get_bgp_neighbors())
   pp(device.get_lldp_neighbors())
@@ -123,7 +123,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args=optional_args ) as device:
   ospf3_information = device.cli(['show ipv6 ospfv3 neighbors | json', ])
 
 ospf_dictionary = json.loads(ospf3_information['show ipv6 ospfv3 neighbors | json'])
@@ -187,7 +187,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args={'port': '65000' } ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args={'port': '65000' } ) as device:
   device.load_merge_candidate(filename='/var/tmp/add_acl.cfg')
   print(device.compare_config())
   device.commit_config()  
@@ -238,7 +238,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args={'port': '65000' } ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args={'port': '65000' } ) as device:
   device.load_replace_candidate(filename='/var/tmp/example.cfg')
   print(device.compare_config())
   device.discard_config() 
