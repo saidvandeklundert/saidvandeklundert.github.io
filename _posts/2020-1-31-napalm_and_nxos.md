@@ -225,6 +225,23 @@ The 'no xxx' is not in the configuration, so that is displayed. In the 11th sequ
 
 Thing worth noting is that when you use the <b>load_replace_candidate()</b>, the way the diff happens changes. What happens when you use <b>load_replace_candidate()</b> is it will upload the specified configuration, which should be a valid checkpoint file, to the device. This file should contain the running configuration as well as the configuration you want to add. After this, a checkpoint file called <b>sot_file</b> is created. These two files are then used to perform a <b>show diff rollback-patch file sot_file file candidate_cfg.txt</b>.
 
+Obtaining a diff usin the <b>load_replace_candidate()</b> function could be done like this:
+
+```python
+import urllib3
+import napalm
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+driver = napalm.get_network_driver('nxos')
+
+with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args={'port': '65000' } ) as device:
+  device.load_replace_candidate(filename='/var/tmp/example.cfg')
+  print(device.compare_config())
+  device.discard_config() 
+```
+
+The above script will only retrieve a diff and report back on the output. It will not change the configuration of the device because instead of calling <b>commit_config()</b>, the <b>discard_config()</b> method is used.
 
 The diff will be better (not perfect), but it is a finicky process at best. It will make you appreciate Junos, EOS or IOSXR all the more.
 
