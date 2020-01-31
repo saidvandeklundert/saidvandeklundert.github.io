@@ -48,10 +48,10 @@ driver = napalm.get_network_driver('nxos')
 
 device = driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args )
 device.open()
-return_dictionary = device.cli(['show ipv6 ospfv3 neighbors ', ])
+return_dictionary = device.cli(['show ipv6 ospfv3 neighbors', ])
 device.close()
 
-s = return_dictionary['show ipv6 ospfv3 neighbors ']
+s = return_dictionary['show ipv6 ospfv3 neighbors']
 
 print(s)
 ```
