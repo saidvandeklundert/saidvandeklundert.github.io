@@ -42,6 +42,8 @@ To verify that we can connect to the device, let's start out issuing a CLI comma
 
 ```python
 import napalm
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
@@ -56,7 +58,7 @@ s = return_dictionary['show ipv6 ospfv3 neighbors']
 print(s)
 ```
 
-Since we are using a non-standard port, we use the <b>optional_args</b> when we instantiate the device object to specify the port number. Note that by default, HTTPS is used for transport. If for whatever reason you absolutely want to use HTTP, then you can use the following: <b>optional_args = {'transport': 'http' }</b>.
+Since we are using a non-standard port, we use the <b>optional_args</b> when we instantiate the device object to specify the port number. Note that by default, HTTPS is used for transport. If for whatever reason you absolutely want to use HTTP, then you can use the following: <b>optional_args = {'transport': 'http' }</b>. The <b>urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)</b> was put in to mute the warning messages that were showing up on screen.
 
 When we run the script, we get the following output:
 
@@ -77,6 +79,8 @@ When looking at the base NAPALM NetworkDriver class, I found that it has the `__
 ```python
 import napalm
 from pprint import pprint as pp
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
@@ -94,6 +98,8 @@ There are some basic methods available to us 'out of the box':
 ```python
 import napalm
 from pprint import pprint as pp
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
@@ -111,6 +117,8 @@ The nice thing about those methods is that they return structured data. Not ever
 import napalm
 from pprint import pprint as pp
 import json
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
@@ -171,6 +179,9 @@ ipv6 access-list management-v6
 
 ```python
 import napalm
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 driver = napalm.get_network_driver('nxos')
 
 with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args={'port': '65000' } ) as device:
@@ -212,16 +223,7 @@ no ipv6 access-list management-v6
 
 The 'no xxx' is not in the configuration, so that is displayed. In the 11th sequence, I used 'DB' instead of 'db' so that is something that differs. The lines of the ACL that get removed are not detected by the <b>_get_merge_diff()</b> function.
 
-Thing worth noting is that when you use the <b>load_replace_candidate()</b>, the way the diff happens changes. What will happen in that case is it will create a checkpoint file called <b>sot_file</b>. After this, it will perform a <b>show diff rollback-patch file sot_file file <i>candidate_cfg.txt</i></b>, where the candidate_cfg.txt is the configuration that you upload to the device. This should be a valid checkpoint configuration that is extended with the configuration that you want to add. 
+Thing worth noting is that when you use the <b>load_replace_candidate()</b>, the way the diff happens changes. What will happen in that case is it will create a checkpoint file called <b>sot_file</b>. After this, it will perform a <b>show diff rollback-patch file sot_file file <i>candidate_cfg.txt</i></b>, where the candidate_cfg.txt is the configuration file that you specify in the function. The function will upload this configuration to the device. Make sure that this is a valid checkpoint configuration that contains the current configuration and extend it with the configuration that you want to add. 
 
 The diff will be better (not perfect), but it is a finicky process at best. It will make you appreciate Junos, EOS or IOSXR all the more.
 
-
-
-Ps, to kill the warnings you might see when you are connecting over HTTPS, you can add the following snippet to your script:
-
-
-```python
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-```
