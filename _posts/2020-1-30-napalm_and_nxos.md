@@ -82,9 +82,9 @@ optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
 with driver(hostname='192.0.2.1', username='admin', password='admin123', optional_args=optional_args ) as device:
-  return_dictionary = device.cli(['show ipv6 ospfv3 neighbors ', ])
+  return_dictionary = device.cli(['show ipv6 ospfv3 neighbors', ])
 
-s = return_dictionary['show ipv6 ospfv3 neighbors ']
+s = return_dictionary['show ipv6 ospfv3 neighbors']
 
 print(s)
 ```
@@ -154,7 +154,7 @@ When we run the above example, we get the following output:
                            'ptag': '20'}}}
 </pre>
 
-This option is not implemented for all CLI commands, so your mileage may vary. The <b>show ip interfaces brief | json</b> command is supported for instance, but the <b>show ip bgp summary | json</b> is not. In those cases, it might help to look at textFSM or see if you can get by with some simple string methods.
+NX-OS does not have this option implemented for all CLI commands, so your mileage may vary. The <b>show ip interfaces brief | json</b> command is supported for instance, but the <b>show ip bgp summary | json</b> is not. In those cases, it might help to look at textFSM or see if you can get by with some simple string methods.
 
 
 ## Configuring the device
