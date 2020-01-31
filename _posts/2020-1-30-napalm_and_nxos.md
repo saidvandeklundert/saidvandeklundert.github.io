@@ -6,7 +6,7 @@ image: /img/napalm_logo.png
 ---
 
 
-Recently, I have been exploring NAPALM in relation to NX-OS. To connect to the device, I used the <b>nxos</b> driver which uses the NXAPI. This writeup contains some of the basic operations.
+Recently, I have been exploring NAPALM in relation to NX-OS. To connect to the device, I used the <b>nxos</b> driver which uses the NXAPI. This writeup contains some of the basic operations. I am using NAPALM version 2.5.0 and the NX-OS device is a Nexus7700 running 8.0(1).
 
 
 ## Enabling the NXAPI
