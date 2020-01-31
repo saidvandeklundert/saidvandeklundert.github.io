@@ -6,7 +6,7 @@ image: /img/napalm_logo.png
 ---
 
 
-Recently, I have been exploring NAPALM in relation to NX-OS. To connect to the device, I used the <b>nxos</b> driver which uses the NXAPI. This writeup contains some of the basic operations. I am using NAPALM version 2.5.0 and the NX-OS device is a Nexus7700 running 8.0(1).
+Recently, I have been exploring NAPALM in relation to NX-OS. To connect to the device, I used the <b>nxos</b> driver which uses the NXAPI. This write-up contains some of the basic operations. I am using NAPALM version 2.5.0 and the NX-OS device is a Nexus7700 running 8.0(1).
 
 
 ## Enabling the NXAPI
@@ -223,7 +223,8 @@ no ipv6 access-list management-v6
 
 The 'no xxx' is not in the configuration, so that is displayed. In the 11th sequence, I used 'DB' instead of 'db' so that is something that differs. The lines of the ACL that get removed are not detected by the <b>_get_merge_diff()</b> function.
 
-Thing worth noting is that when you use the <b>load_replace_candidate()</b>, the way the diff happens changes. What will happen in that case is it will create a checkpoint file called <b>sot_file</b>. After this, it will perform a <b>show diff rollback-patch file sot_file file <i>candidate_cfg.txt</i></b>, where the candidate_cfg.txt is the configuration file that you specify in the function. The function will upload this configuration to the device. Make sure that this is a valid checkpoint configuration that contains the current configuration and extend it with the configuration that you want to add. 
+Thing worth noting is that when you use the <b>load_replace_candidate()</b>, the way the diff happens changes. What happens when you use <b>load_replace_candidate()</b> is it will upload the specified configuration, which should be a valid checkpoint file, to the device. This file should contain the running configuration as well as the configuration you want to add. After this, a checkpoint file called <b>sot_file</b> is created. These two files are then used to perform a <b>show diff rollback-patch file sot_file file candidate_cfg.txt</b>.
+
 
 The diff will be better (not perfect), but it is a finicky process at best. It will make you appreciate Junos, EOS or IOSXR all the more.
 
