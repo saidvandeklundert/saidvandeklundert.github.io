@@ -185,9 +185,10 @@ import napalm
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args={'port': '65000' } ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args=optional_args ) as device:
   device.load_merge_candidate(filename='/var/tmp/add_acl.cfg')
   print(device.compare_config())
   device.commit_config()  
@@ -236,9 +237,10 @@ import napalm
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+optional_args = {'port': '65000' }
 driver = napalm.get_network_driver('nxos')
 
-with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args={'port': '65000' } ) as device:
+with driver(hostname='192.0.2.1', username='admin', password='admin', optional_args=optional_args ) as device:
   device.load_replace_candidate(filename='/var/tmp/example.cfg')
   print(device.compare_config())
   device.discard_config() 
