@@ -40,7 +40,7 @@ HTTP Port:    Disabled        HTTPS Port:   65000
 
 To verify that we can connect to the device, let's start out issuing a CLI command:
 
-```python
+<pre style="font-size:12px">
 import napalm
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -56,7 +56,7 @@ device.close()
 s = return_dictionary['show ipv6 ospfv3 neighbors']
 
 print(s)
-```
+</pre>
 
 The <b>urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)</b> was put in to mute the warning messages that were showing up on screen. Since we are using a non-standard port, we use the <b>optional_args</b> when we instantiate the device object to specify the port number. Note that by default, HTTPS is used for transport. If for whatever reason you absolutely want to use HTTP, then you can use the following: <b>optional_args = {'transport': 'http' }</b>. 
 
@@ -76,7 +76,7 @@ When we run the script, we get the following output:
 
 When looking at the base NAPALM NetworkDriver class, I found that it has the `__enter__` and `__exit__` magic methods implemented. Because of this, we can implement objects using the <b>with</b> statement. When you use this approach, there is no need to specifically open of close the connection:
 
-```python
+<pre style="font-size:12px">
 import napalm
 from pprint import pprint as pp
 import urllib3
@@ -91,11 +91,11 @@ with driver(hostname='192.0.2.1', username='admin', password='admin123', optiona
 s = return_dictionary['show ipv6 ospfv3 neighbors']
 
 print(s)
-```
+</pre>
 
 There are some basic methods available to us 'out of the box':
 
-```python
+<pre style="font-size:12px">
 import napalm
 from pprint import pprint as pp
 import urllib3
@@ -108,12 +108,12 @@ with driver(hostname='192.0.2.1', username='admin', password='admin123', optiona
   pp(device.get_facts())
   pp(device.get_bgp_neighbors())
   pp(device.get_lldp_neighbors())
-```
+</pre>
 
 The nice thing about those methods is that they return structured data. Not everything is available out of the box though. The OSPF neighbors for instance are not among the 'getters'. One quick and easy way to retrieve structured data from the NX-OS is through the use of the <b>| json</b> option that is available to several CLI commands.
 
 
-```python
+<pre style="font-size:12px">
 import napalm
 from pprint import pprint as pp
 import json
@@ -129,9 +129,10 @@ with driver(hostname='192.0.2.1', username='admin', password='admin123', optiona
 ospf_dictionary = json.loads(ospf3_information['show ipv6 ospfv3 neighbors | json'])
 
 pp(ospf_dictionary)
-```
+</pre>
 
 When we run the above example, we get the following output:
+
 <pre style="font-size:12px">
 {'TABLE_ctx': {'ROW_ctx': {'TABLE_nbr': {'ROW_nbr': [{'addr': 'fe80::8e60:4fff:fee9:1141',
                                                       'drstate': '-',
@@ -177,7 +178,9 @@ ipv6 access-list management-v6
   21 permit ipv6 2001:db8:2200:8800::/59 any
 </pre>
 
-```python
+We can apply it using the following script:
+
+<pre style="font-size:12px">
 import napalm
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -188,7 +191,7 @@ with driver(hostname='192.0.2.1', username='admin', password='admin123', optiona
   device.load_merge_candidate(filename='/var/tmp/add_acl.cfg')
   print(device.compare_config())
   device.commit_config()  
-```
+</pre>
 
 When we run the script, the ACL is configured and the diff gets printed to screen:
 
@@ -227,7 +230,7 @@ Thing worth noting is that when you use the <b>load_replace_candidate()</b>, the
 
 Obtaining a diff usin the <b>load_replace_candidate()</b> function could be done like this:
 
-```python
+<pre style="font-size:12px">
 import urllib3
 import napalm
 
@@ -239,7 +242,7 @@ with driver(hostname='192.0.2.1', username='admin', password='admin123', optiona
   device.load_replace_candidate(filename='/var/tmp/example.cfg')
   print(device.compare_config())
   device.discard_config() 
-```
+</pre>
 
 The above script will only retrieve a diff and report back on the output. It will not change the configuration of the device because instead of calling <b>commit_config()</b>, the <b>discard_config()</b> method is used.
 
