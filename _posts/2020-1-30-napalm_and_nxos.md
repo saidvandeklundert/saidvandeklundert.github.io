@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NAPALM and NXOS
+title: NAPALM and NX-OS
 tags: [automation, python, napalm, cisco ]
 image: /img/napalm_logo.png
 ---
@@ -11,7 +11,7 @@ Recently, I have been exploring NAPALM in relation to NX-OS. To connect to the d
 
 ## Enabling the NXAPI
 
-First we need to enable the API on the NXOS. In addition to that, NAPALM also requires the <b>feature scp-server</b> feature turned on. To this end, we configure the following on the device:
+First we need to enable the API on the NX-OS. In addition to that, NAPALM also requires the <b>feature scp-server</b> feature turned on. To this end, we configure the following on the device:
 
 
 <pre style="font-size:12px">
@@ -104,7 +104,7 @@ with driver(hostname='192.0.2.1', username='admin', password='admin123', optiona
   pp(device.get_lldp_neighbors())
 ```
 
-The nice thing about those methods is that they return structured data. Not everything is available out of the box though. The OSPF neighbors for instance are not among the 'getters'. One quick and easy way to retrieve structured data from the NXOS is through the use of the <b>| json</b> option that is available to several CLI commands.
+The nice thing about those methods is that they return structured data. Not everything is available out of the box though. The OSPF neighbors for instance are not among the 'getters'. One quick and easy way to retrieve structured data from the NX-OS is through the use of the <b>| json</b> option that is available to several CLI commands.
 
 
 ```python
