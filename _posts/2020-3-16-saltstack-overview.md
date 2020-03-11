@@ -38,7 +38,10 @@ An example of what you could orchestrate with Salt is the following:
 
 ### Salt concepts and architecture overview.
 
+{:refdef: style="text-align: center;"}
+![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
+{: refdef}
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/img/saltstack-architecture.png
+
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
