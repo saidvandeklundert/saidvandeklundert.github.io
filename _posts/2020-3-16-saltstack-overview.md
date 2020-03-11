@@ -36,5 +36,9 @@ An example of what you could orchestrate with Salt is the following:
 - Update the firewall to account for the newly provisioned services
 
 
+### Salt concepts and architecture overview.
+
+
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/img/saltstack-architecture.png
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
