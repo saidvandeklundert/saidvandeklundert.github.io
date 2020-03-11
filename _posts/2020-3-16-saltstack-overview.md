@@ -34,3 +34,7 @@ An example of what you could orchestrate with Salt is the following:
 - Install Docker engine on said server
 - Start different containers that offer microservices in a specific order
 - Update the firewall to account for the newly provisioned services
+
+
+
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
