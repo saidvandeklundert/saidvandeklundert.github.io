@@ -113,5 +113,30 @@ The custom state functions can interface with other Salt features. Some of the t
 The general idea is that the execution module is a low level function that does 1 thing while the custom state is used to put in additional logic. 
 Unlike (custom-) execution modules, custom state functions cannot be called from the CLI. 
 
+**Runners**: salt runners are similar to (custom) execution modules. In a salt-runner, the Python you write will have access to all the available Salt interfaces from the master perspective. 
 
+The key difference between an execution module and a runner is the fact that a runner is executed on the salt-master instead of on the salt-minion.  Since the runner function is executed on the master, there is the possibility to have it perform actions on minions. 
+
+{:refdef: style="text-align: center;"}
+![SaltStack runner](/img/salt_runner_example.png "SaltStack runner")
+{: refdef}
+
+**Orchestration**: orchestration states are run on the master and offers a means to ‘orchestrate’ a series of events to take place. 
+
+{:refdef: style="text-align: center;"}
+![SaltStack orchestration state](/img/salt_orchestration_state.png "SaltStack orchestration state")
+{: refdef}
+
+
+Orchestration states are a collection of actions that are executed on the master. Some of actions that you can make the master perform are the following:
+- call execution modules or states on minions
+- instruct minions to run states
+- make the master execute a salt-runner
+- use salt-ssh to perform a task on a remote system
+- call, or follow up with additional orchestration states
+
+
+
+
+Obviously, a lot more is possible.
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
