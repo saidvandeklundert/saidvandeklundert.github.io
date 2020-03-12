@@ -20,11 +20,11 @@ Salt is a remote execution framework that can be used to manage thousands of sys
 
 ### Configuration management:
 
-Salt is well suited to act as a configuration management system. Some of the reasons that make it suitable as a configuration management system are the following:
-- Salt can interface with a plethora of systems
-- Salt can be made to interface with other external systems
-- Salt offers you many ways to plug in Python libraries to overcome and deal with any configuration challenge
-- Salt offers granular control as well as ways to abstract complexity and work on a different layer using the Salt state system
+Salt is well suited to act as a configuration management system. Some of the reasons that make it suitable as a configuration management system are the fact that Salt:
+- can interface with a plethora of systems (Linux, Windows, Juniper, Cisco, ESXi and more)
+- can be made to interface with other external systems
+- offers you easy ways to plug in Python libraries to overcome configuration challenge
+- offers granular control as well as ways to abstract complexity and work on a different layers
 
 ### Orchestration and automation:
 
@@ -37,7 +37,8 @@ An example of what you could orchestrate with Salt is the following:
 - Update the firewall to account for the newly provisioned services
 
 
-### Salt concepts and architecture overview.
+
+## Salt concepts and architecture overview.
 
 SaltStack comes with its own set of terms and terminolgy that can be overwhelming at first. The following picture captures part of the architecture and displays a lot 'Saltspeak':
 
