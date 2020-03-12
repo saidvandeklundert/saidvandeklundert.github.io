@@ -46,12 +46,12 @@ SaltStack comes with its own set of terms and terminolgy that can be overwhelmin
 
 Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture.
 
-**Salt-master**: the Salt master service is what manages and orchestrates the remote systems. The master has a variety of ways to control the remote systems. Some of these ways are the following (following is discussed later on):
+**Salt-master**: the Salt master service is what manages and orchestrates the remote systems. The master has a several constructs at its disposal to control the remote systems. Some of these ways are the following (following is discussed later on):
 - states and orchestration states
 - execution modules
 - runners
 
-Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). Systems that are managed by the salt master service can be managed through a variety of ways:
+Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). Systems that are managed by the salt master service can be managed through a variety of ways. And in case a minion or a proxy-minion is used, the communication between the minions and the master is facilitated through a message bus called ZeroMQ.
 
 {:refdef: style="text-align: center;"}
 ![SaltStack master and minions](/img/salt_master_and_minion.png "SaltStack master and minions")
