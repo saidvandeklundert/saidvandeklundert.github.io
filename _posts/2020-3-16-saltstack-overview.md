@@ -20,9 +20,10 @@ Salt is a remote execution framework that can be used to manage thousands of sys
 
 ### Configuration management:
 
-Salt is very well suited to act as a configuration management system that can be used against a plethora of systems. Some of the reasons that make it suitable as a configuration management system are the following:
-- Salt can easily interface with any other external system
-- Salt offers you many ways to plug in your Python/Jinja to overcome and deal with any configuration challenge
+Salt is well suited to act as a configuration management system. Some of the reasons that make it suitable as a configuration management system are the following:
+- Salt can interface with a plethora of systems
+- Salt can be made to interface with other external systems
+- Salt offers you many ways to plug in Python libraries to overcome and deal with any configuration challenge
 - Salt offers granular control as well as ways to abstract complexity and work on a different layer using the Salt state system
 
 ### Orchestration and automation:
@@ -30,7 +31,7 @@ Salt is very well suited to act as a configuration management system that can be
 SaltStack’s capabilities for remote execution and configuration management can be further extended with the ability to orchestrate the order in which events are to take place. This can be an orchestrated series of events that is initiated whenever a user runs an orchestration state, or a certain series of events that take place as a reaction to something happening on a system.
 
 An example of what you could orchestrate with Salt is the following:
-- Extend an IP-Fabric to a Linux server
+- Extend an IP-Fabric constisting of Juniper and Arista switches to a Linux server
 - Install Docker engine on said server
 - Start different containers that offer microservices in a specific order
 - Update the firewall to account for the newly provisioned services
@@ -111,7 +112,7 @@ In addition to these data interfaces, there is also another way in which you can
 **States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Though other options exist, most Salt states are written in YAML and Jinja. This makes the state easy to read and manage.
 
 Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’. 
-The state system has to most Salt interfaces. So from within a state, you are free to access the pilllar, or grains, etc. Additionally, the state system can be used by a lot of other Salt facilities as well. For instance, a Salt reactor can call a state in response to an event.
+The state system has access to most Salt interfaces. So from within a state, you are free to access the pilllar, or grains, etc. Additionally, the state system can be used by a lot of other Salt facilities as well. For instance, a Salt reactor can call a state in response to an event.
 
 States can be invoked at will, they can be made to run at (minion) startup and they can be scheduled at regular intervals. Additionally, the state system allows you to use requisites to create relationships between different states and/or actions inside a single state.  
 
