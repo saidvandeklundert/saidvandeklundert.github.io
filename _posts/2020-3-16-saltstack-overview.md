@@ -53,7 +53,7 @@ Let's go over some of this Saltspeak and provide a high-level description on all
 - execution modules
 - runners
 
-Systems that are managed by the salt master service can be managed through a variety of ways. The master can manage systems using the following:
+Systems that are managed by the salt master service can be managed through a variety of ways:
 - minions
 - proxy-minions
 - ssh
@@ -65,8 +65,10 @@ When minions or proxy-minion are used, communication between the master and the 
 {: refdef}
 
 
-- **Salt-minion**: in this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter.
-- **Proxy-minion**: for systems that do not allow you to run a salt-minion process or devices that are not capable of letting you (old networking devices for example), you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will commicate with the proxy over the event bus (the salt way) and the proxy can translate the instructions received from the master to whatever the device understands ( using an SSH channel, an API, etc.) 
+- **Salt-minion**: in this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. It will communicate with the master service over the event bus.
+
+- **Proxy-minion**: for systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the device using whatever method the device understands. This can be an SSH channel, an API, etc. The proxy-minion process that is used to control a system does not have to be running on the same server/container that is housing the master service. 
+
 - **Salt-ssh**: an agentless based approach to control another system. All that is required on the other system is for SSH to be running. This approach does not scale as well and works differently in the sense that the message bus is not utilized. 
 
 **Message bus**: Salt uses the ZeroMQ message bus to facilitate communication between the master and the minions by default. This open source software is a high-speed messaging bus that carries messages between the master and the (proxy-) minions. Both master as well as minions can utitlize this message bus to send and receive messages for various purposes. 
