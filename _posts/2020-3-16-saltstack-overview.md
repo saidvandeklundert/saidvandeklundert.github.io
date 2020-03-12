@@ -46,7 +46,7 @@ SaltStack comes with its own set of terms and terminolgy that can be overwhelmin
 
 Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture.
 
-**Salt-master**: the Salt master service is what manages and orchestrates the remote systems. Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). The master has a several constructs at its disposal to control the remote systems. Some of these constructs, which are discussed later on, are the following:
+**Salt-master**: the Salt master service is what manages and orchestrates the remote systems. Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). The master has a several constructs at its disposal to control the remote systems. Some of these constructs, that are discussed later on, are the following:
 - states and orchestration states
 - execution modules
 - runners
