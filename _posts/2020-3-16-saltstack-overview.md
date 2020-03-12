@@ -45,6 +45,11 @@ SaltStack comes with its own set of terms and terminolgy that can be overwhelmin
 {: refdef}
 
 **Salt-master**: the Salt master service is what manages and orchestrates the remote systems. Systems that are managed by the salt master service can be managed through a variety of ways:
+
+{:refdef: style="text-align: center;"}
+![SaltStack master and minions](/img/salt_master_and_minion.png "SaltStack master and minions")
+{: refdef}
+
 - **Salt-minion**: in this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter.
 - **Proxy-minion**: for systems that do not allow you to run a salt-minion process or devices that are not capable of letting you (old networking devices for example), you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will commicate with the proxy over the event bus (the salt way) and the proxy can translate the instructions received from the master to whatever the device understands ( using an SSH channel, an API, etc.) 
 - **Salt-ssh**: an agentless based approach to control another system. All that is required on the other system is for SSH to be running. This approach does not scale as well and works differently in the sense that the message bus is not utilized. 
