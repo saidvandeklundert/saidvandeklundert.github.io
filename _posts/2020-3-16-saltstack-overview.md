@@ -5,10 +5,9 @@ tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 
-Diving into SaltStack for the first time can be difficult and confusing. There is a lot of terminology involved that is going to be new. In addition to that, it is not immediately apparent what parts there are to SaltStack.
+Diving into SaltStack for the first time can be difficult and confusing. There is a lot of terminology involved that is going to be new. So much so, that is makes it difficult to get a clear overview of how everything is working together and how it might be useful to you.
 
 This article aims to provide an overview of Salt and all of the different terminologies and constructs that come with it. Instead of providing an exhaustive list of possibilities and knobs that exist in Salt, the aim is to give you an idea of what the SaltStack framework has to offer and what most of the individual constructs could be used for. 
-
 
 
 ## What SaltStack does
