@@ -44,6 +44,8 @@ SaltStack comes with its own set of terms and terminolgy that can be overwhelmin
 ![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
 {: refdef}
 
+Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture.
+
 **Salt-master**: the Salt master service is what manages and orchestrates the remote systems. Systems that are managed by the salt master service can be managed through a variety of ways:
 
 {:refdef: style="text-align: center;"}
