@@ -51,7 +51,7 @@ Let's go over some of this Saltspeak and provide a high-level description on all
 - execution modules
 - runners
 
-Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). Systems that are managed by the salt master service can be managed through a variety of ways. In case a minion or a proxy-minion is used, the communication between the minions and the master is facilitated through a message bus called ZeroMQ.
+Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). Systems that are managed by the salt master service can be managed through a variety of ways. Communication between the minions and the master is facilitated through a <b>message bus</b> called <b>ZeroMQ</b>.
 
 {:refdef: style="text-align: center;"}
 ![SaltStack master and minions](/img/salt_master_and_minion.png "SaltStack master and minions")
