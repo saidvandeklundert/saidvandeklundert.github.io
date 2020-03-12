@@ -51,11 +51,17 @@ Let's go over some of this Saltspeak and provide a high-level description on all
 - execution modules
 - runners
 
+Systems that are managed by the salt master service can be managed through a variety of ways. The master can manage systems using the following:
+- minions
+- proxy-minions
+- ssh
+ 
+When minions or proxy-minion are used, communication between the master and the minions is facilitated through a <b>message bus</b> called <b>ZeroMQ</b>.  
+
 {:refdef: style="text-align: center;"}
 ![SaltStack master and minions](/img/salt_master_and_minion.png "SaltStack master and minions")
 {: refdef}
 
-Systems that are managed by the salt master service can be managed through a variety of ways. In case of (proxy-) minions, communication between the master and the minions is facilitated through a <b>message bus</b> called <b>ZeroMQ</b>.  
 
 - **Salt-minion**: in this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter.
 - **Proxy-minion**: for systems that do not allow you to run a salt-minion process or devices that are not capable of letting you (old networking devices for example), you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will commicate with the proxy over the event bus (the salt way) and the proxy can translate the instructions received from the master to whatever the device understands ( using an SSH channel, an API, etc.) 
