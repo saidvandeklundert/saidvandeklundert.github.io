@@ -75,7 +75,8 @@ When minions or proxy-minion are used, communication between the master and the 
 
 Some examples of what the message bus is used for:
 - the master can use the message bus to issue a command to one, several or all minions
-- a minion can generate an event to signal to the master that something has happened
+- minions utilize the message bus to return the results of any job that was executed
+- minions can generate an event to signal to the master that something has happened
 
 The message bus is sometimes touted as one of the greatest strengths of the Salt framework. This is because it serves as a construct on which other features in Salt are built. Salt’s ability to scale, to orchestrate or to be event-driven for instance all rely on this message bus. It is also something that sets Salt apart from several other automation frameworks.
 Two Salt functionalities that are particularly related, or intertwined, with the message bus are the reactor and the beacon.
