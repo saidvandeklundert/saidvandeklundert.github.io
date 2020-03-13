@@ -72,7 +72,7 @@ When minions or proxy-minion are used, communication between the master and the 
 In this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. It will communicate with the master service over the event bus.
 
 {:refdef: style="text-align: center;"}
-![SaltStack minion](/img/salt_runner_example.png "SaltStack minion")
+![SaltStack minion](/img/salt_minion_.png "SaltStack minion")
 {: refdef}
 
 
