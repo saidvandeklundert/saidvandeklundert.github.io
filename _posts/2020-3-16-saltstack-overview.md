@@ -113,18 +113,19 @@ In addition to these data interfaces, there is also another way in which you can
 - LDAP integration
 - Reporting
 
-**States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’ (hence the name). 
+**States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’ (hence the name): 
 
 {:refdef: style="text-align: center;"}
 ![Salt State](/img/salt_state.png "Salt State")
 {: refdef}
 
+A salt-master can tell a minion that it needs to run a state. The minion will execute the state and return the result using the ZeroMQ message bus. Because if this, it is possible to run a state on many thousands of systems at the same time without overwhelming the master.
 
-The state system has access to most Salt interfaces. So from within a state, you are free to access the pilllar, or grains, etc. Additionally, the state system can be used by a lot of other Salt facilities as well. For instance, a Salt reactor can call a state in response to an event.
+The state system has access to most Salt interfaces. This means that from within a state, you are free to access the pilllar, the grains and other Salt facilities. Additionally, the state system itself can be used by other Salt features as well. Salt reactors and runners for instance can also run states. Obviously, it is also possible to run a state from the CLI at will or to schedule states at regular intervals.
 
-States can be invoked at will, they can be made to run at (minion) startup and they can be scheduled at regular intervals. Additionally, the state system allows you to use requisites to create relationships between different states and/or actions inside a single state. An example of what this would enable you to do is to make sure an action is executed only if another action before that was completed succesfully.  
+Another nice thing about the state system is that it allows you to use requisites to create relationships between different states and/or actions inside a single state. An example of what this would enable you to do is to make sure an action is executed only if another action was completed succesfully.  
 
-Though other options exist, most Salt states are written in YAML and Jinja. This makes the state easy to read and manage.
+Though other options exist, most Salt states are written in YAML and Jinja. This makes the state an easy to read and manage abstraction layer.
 
 The general phylisophy is that a state should be idempotent. Regardless of how many times you run a state, it should bring a system into the same state, always.
 
