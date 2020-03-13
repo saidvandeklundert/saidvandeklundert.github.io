@@ -135,14 +135,15 @@ The general phylisophy is that a state should be idempotent. Regardless of how m
 ![Salt execution module ](/img/salt_execution_module.png "Salt execution module ")
 {: refdef}
 
+Salt comes with several execution modules out of the box. Those modules can be found <a href="https://github.com/saltstack/salt/tree/master/salt/modules" target="_blank">here</a>. This is also a nice folder to browse in case you are looking to get started writing your own execution module. 
 
-Inside the execution, you are able to use Salt-interfaces by calling various dunder-methods. You will, for instance, be able use pillar, grains and other execution modules in your script. 
-
-Apart from this, it is also possible to import ‘regular’ Python modules. You do have to ensure that whatever extra module you are using is available on the system that needs to run the execution module.
-
-Salt comes with several execution modules out of the box. In order to get started writing custom execution modules, you could look at the modules Salt is shipped with <a href="https://github.com/saltstack/salt/tree/master/salt/modules" target="_blank">here</a>. 
-
-In case you want to plug in your own scripts, you can write and create whatever you can dream up. You will need to place the script in the proper folder, which is `/srv/salt/_modules`. After this, the scripts inside those folder, dubbed custom execution modules, can be synched to the (proxy-) minions.  
+Writing your own is something I would really recommend. Mostly, when people write an execution module themselves, it is referred to as a 'custom execution module'. Some of the things I really like about the custom execution module are the following:
+- you can express yourself in Python 
+- you can use the standard library and, if the system the minion runs on let's you, pip install whatever you want
+- Salt interfaces are available through special dunder methods (__pillar__, __grains__, etc.)
+- the execution module can be used in other Salt facilities as well, like in states for instance
+- the master can utilize the message bus to have all minions run the execution module in (near) parralel
+ 
 
 **Custom states**: a custom state is a construct that Salt offers where you can write State functions in Python. You will be able to call these functions directly in the state system. 
 
