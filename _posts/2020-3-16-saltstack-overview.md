@@ -86,6 +86,7 @@ For systems that do not allow you to run a salt-minion process, you can run the 
 
 The proxy-minion process that is used to control a system does not have to be running on the same server that is used to run the master service.
 
+
 ## Salt-ssh
 
 An agentless based approach to control another system. All that is required on the other system is for SSH to be running. Though in some cases convenient, this approach does not scale as well. Using salt-ssh will put a lot of load on the master. And since there is no message bus in between the master and the system that is being managed with salt-ssh, the master cannot control a lot of systems at the same speed.
@@ -93,6 +94,8 @@ An agentless based approach to control another system. All that is required on t
 {:refdef: style="text-align: center;"}
 ![SaltStack Salt-ssh](/img/salt_ssh.png "SaltStack Salt-ssh")
 {: refdef}
+
+An interesting use for Salt-ssh is to install minion software on a system and properly configure that minion in order to bring it under the control of Salt.
 
 
 ## Message bus
