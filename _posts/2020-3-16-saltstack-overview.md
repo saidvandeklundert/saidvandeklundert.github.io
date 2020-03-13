@@ -119,23 +119,28 @@ In addition to these data interfaces, there is also another way in which you can
 ![Salt State](/img/salt_state.png "Salt State")
 {: refdef}
 
-A salt-master can tell a minion that it needs to run a state. The minion will execute the state and return the result using the ZeroMQ message bus. Because if this, it is possible to run a state on many thousands of systems at the same time without overwhelming the master.
+A salt-master can tell a minion that it needs to run a state. The minion will execute the state and return the result using the ZeroMQ message bus. Because of this, it is possible to run a state on many thousands of systems at the same time without overwhelming the master.
 
 The state system has access to most Salt interfaces. This means that from within a state, you are free to access the pilllar, the grains and other Salt facilities. Additionally, the state system itself can be used by other Salt features as well. Salt reactors and runners for instance can also run states. Obviously, it is also possible to run a state from the CLI at will or to schedule states at regular intervals.
 
 Another nice thing about the state system is that it allows you to use requisites to create relationships between different states and/or actions inside a single state. An example of what this would enable you to do is to make sure an action is executed only if another action was completed succesfully.  
 
-Though other options exist, most Salt states are written in YAML and Jinja. This makes the state an easy to read and manage abstraction layer.
+Though other options exist, most Salt states are written in YAML and Jinja. This makes the state easy to read and a nice abstraction layer to manage complexity.
 
 The general phylisophy is that a state should be idempotent. Regardless of how many times you run a state, it should bring a system into the same state, always.
 
 **Execution modules**: if you like Python, the (custom)-execution module will make you fall in love with Salt. The execution module is a Python script with functions that you can call on the command line or use inside a Salt state. 
 
+{:refdef: style="text-align: center;"}
+![Salt execution module ](/img/salt_execution_module.png "Salt execution module ")
+{: refdef}
+
+
 Inside the execution, you are able to use Salt-interfaces by calling various dunder-methods. You will, for instance, be able use pillar, grains and other execution modules in your script. 
 
 Apart from this, it is also possible to import ‘regular’ Python modules. You do have to ensure that whatever extra module you are using is available on the system that needs to run the execution module.
 
-Salt comes with several execution modules out of the box and a nice thing to do in order to get started writing custom execution modules is to look for inspiration at how the modules Salt is shipped with look: https://github.com/saltstack/salt/tree/master/salt/modules
+Salt comes with several execution modules out of the box. In order to get started writing custom execution modules, you could look at the modules Salt is shipped with <a href="https://github.com/saltstack/salt/tree/master/salt/modules" target="_blank">here</a>. 
 
 In case you want to plug in your own scripts, you can write and create whatever you can dream up. You will need to place the script in the proper folder, which is `/srv/salt/_modules`. After this, the scripts inside those folder, dubbed custom execution modules, can be synched to the (proxy-) minions.  
 
