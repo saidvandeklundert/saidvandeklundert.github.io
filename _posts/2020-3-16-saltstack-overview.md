@@ -9,7 +9,7 @@ Diving into SaltStack for the first time can be difficult and confusing. There i
 
 This article aims to provide an overview of Salt and all of the different terminologies and constructs that come with it. Instead of providing an exhaustive list of possibilities and knobs that exist in Salt, the aim is to give you an idea of what the SaltStack framework has to offer and what most of the individual constructs could be used for. 
 
-First though, let's see what SaltStack can do for an organization as a whole.
+First, I will cover what SaltStack does at a very high level. After this, most of the constructs that are part of the Salt architecture are discussed. In this part, I will differentiate between the elements in the Salt architecture that you will be putting to use and the interfaces that you will be working with in order to control the elements of the Salt architecture.
 
 ## What SaltStack does
 
@@ -37,18 +37,30 @@ An example of what you could orchestrate with Salt is the following:
 - Update the firewall to account for the newly provisioned services
 
 
+## SaltStack architecture
 
-## Salt concepts and architecture overview.
+SaltStack comes with its own set of terms and terminology. This can be overwhelming at first. 
 
-SaltStack comes with its own set of terms and terminology. This can be overwhelming at first. The following picture captures part of the architecture and displays a lot 'Saltspeak':
+Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture. I sometimes distinguish between the parts of Salt that we utilize to our benefit and the constructs that we define in order to make things happen.
 
-{:refdef: style="text-align: center;"}
-![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
-{: refdef}
+The parts of the SaltStack architecture that we can utilize:
+- Salt-master
+- Salt-minion
+- Proxy-minion
+- Salt-ssh
+- Message bus
+- SaltStack data interfaces
+- SaltStack Enterprise (SSE)
 
-Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture.
+The parts of the SaltStack architecture that we work with:
+- States
+- Execution modules
+- Custom states
+- Runners
+- Orchestration
+- SalStack reactors and beacons
 
-## Salt-master
+### Salt-master
 
 The Salt master service is what manages and orchestrates the remote systems. Different methods exist to ensure the Salt master is redundant (multimaster, failover master and more). The master has a several constructs at its disposal to control the remote systems. Some of these constructs, discussed in more detail later on, are the following:
 - states and orchestration states
@@ -67,7 +79,7 @@ When minions or proxy-minion are used, communication between the master and the 
 {: refdef}
 
 
-## Salt-minion
+### Salt-minion
 
 In this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. It will communicate with the master service over the event bus.
 
@@ -76,7 +88,7 @@ In this case, the salt-minion process is running on the system that the salt-mas
 {: refdef}
 
 
-## Proxy-minion
+### Proxy-minion
 
 For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the system that is being managed. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the system being managed using a method that system will understand. This can be an SSH channel, an API, etc. 
 
@@ -87,7 +99,7 @@ For systems that do not allow you to run a salt-minion process, you can run the 
 The proxy-minion process that is used to control a system does not have to be running on the same server that is used to run the master service.
 
 
-## Salt-ssh
+### Salt-ssh
 
 An agentless based approach to control another system. All that is required on the other system is for SSH to be running. Though in some cases convenient, this approach does not scale as well. Using salt-ssh will put a lot of load on the master. And since there is no message bus in between the master and the system that is being managed with salt-ssh, the master cannot control a lot of systems at the same speed.
 
@@ -98,7 +110,7 @@ An agentless based approach to control another system. All that is required on t
 An interesting use for Salt-ssh is to install minion software on a system and properly configure that minion in order to bring it under the control of Salt.
 
 
-## Message bus
+### Message bus
 
 Salt uses the ZeroMQ message bus to facilitate communication between the master and the minions by default. This open source software is a high-speed messaging bus that carries messages between the master and the (proxy-) minions. Both master as well as minions can utitlize this message bus to send and receive messages for various purposes. 
 
@@ -108,22 +120,9 @@ Some examples of what the message bus is used for:
 - minions can generate an event to signal to the master that something has happened
 
 The message bus is sometimes touted as one of the greatest strengths of the Salt framework. This is because it serves as a construct on which other features in Salt are built. Salt’s ability to scale, to orchestrate or to be event-driven for instance all rely on this message bus. It is also something that sets Salt apart from several other automation frameworks.
-Two Salt functionalities that are particularly related, or intertwined, with the message bus are the reactor and the beacon.
-
-## SalStack reactors and beacons
-
-Reactors and beacons are the constructs that can be leveraged to make the master respond to events generated by the minion.
-
-{:refdef: style="text-align: center;"}
-![SaltStack reactors and beacons](/img/salt_reactor_and_beacon.png "SaltStack reactors and beacons")
-{: refdef}
-
-**Beacon**: Salt beacon is a minion-side feature that can be used to generate events that are then send on to the message bus. A beacon can be used for anything on the system that the minion controls or has access to. For instance, a beacon can be used to generate an event when a file is changed or when a network interface goes down. You could then use a reactor to determine if and what actions should follow as a result of a beacon. The beacon is send on a port that only the master is listening to (4506).
-
-**Reactor**: The reactor is a master-side interface that is used to watch the event bus for messages and respond to them. A reactor can be made to respond to a pattern, or tag. The response can be to start a state or a runner.
 
 
-## SaltStack data interfaces
+### SaltStack data interfaces
 
 SaltStack offers remote execution, configuration management as well as orchestration. And one of the nice things about Salt is the way it can be made to use a varitiety of data interfaces. 
 
@@ -136,22 +135,25 @@ In general, there are 3 different data interfaces that can be identified in Salt
 ![SaltStack external pillar](/img/salt_external_pillar.png "SaltStack external pillar")
 {: refdef}
 
-In addition to these data interfaces, there is also another way in which you can have Salt use data from other sources. This is helpful in case the grains, pillar and external pillar do not suffice. The execution module is a very powerfull way to make a master or minion talk to another system and expose data from that system to Salt in any way you like. One example would be where you write an execution module (a Python script ) to perform a SQL query to retrieve data. You could opt to use that in a state or template directly. 
+In addition to these data interfaces, there is also another way in which you can have Salt use data from other sources. This is the execution module, which is a Python script that can be used by various other Salt constructs. 
 
-Alternatively, in case you have thousands of minions, you can also choose to store this data as JSON, YAML or a map file and include it in your Jinja later on. This way, you would fetch the data once and still allow Salt to use it everywhere. This is also a nice alternative to pillar data for large scale deployments.
+The execution module can be helpful to bring in data from other systems in case the grains, pillar and external pillar do not suffice.  One example would be where you write an execution module to perform a SQL query to retrieve data. You could opt to use that in a state or template directly. 
+
+Alternatively, in case you have thousands of minions, you can also choose to store this data as JSON, YAML or a map file and include it in your Jinja or template later on. This way, you would fetch the data once and still allow Salt to use it everywhere. This is also a nice alternative to pillar data for large scale deployments.
 
 
-## SaltStack Enterprise (SSE)
+### SaltStack Enterprise (SSE)
 
-SSE is a commercial product that includes:
+SSE is a commercial product that adds the following features to SaltStack:
 - Centralized control of your salt masters through a GUI or an API
 - Role based access control
 - Multi-master support
 - LDAP integration
 - Reporting
 
+## Salt
 
-## States
+### States
 
 A Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’ (hence the name): 
 
@@ -169,7 +171,8 @@ Though other options exist, most Salt states are written in YAML and Jinja. This
 
 The general phylisophy is that a state should be idempotent. Regardless of how many times you run a state, it should bring a system into the same state, always.
 
-## Execution modules
+
+### Execution modules
 
 you like Python, the (custom)-execution module will make you fall in love with Salt. The execution module is a Python script with functions that you can call on the command line or use inside a Salt state. 
 
@@ -185,9 +188,9 @@ Writing your own is something I would really recommend. An execution module you 
 - Salt interfaces, like the pillar and grains, are available through special dunder methods.
 - the execution module can be used in other Salt facilities as well, like in states for instance or even other execution modules
 - the master can utilize the message bus to have all minions run the execution module in (near) parralel
- 
 
-## Custom states
+
+### Custom states
 
 A custom state is a construct that Salt offers you to write State functions in. You will be able to call these functions directly in the state system. The custom state is written in Python and it can interface with other Salt features. Some of the things you can do inside a custom state functions are:
 - Interface with pillar or grains data
@@ -197,7 +200,8 @@ The general idea is that the execution module is a low level function that does 
 
 Unlike (custom-) execution modules, custom state functions cannot be called from the CLI. 
 
-## Runners
+
+### Runners
 
 Salt runners are similar to (custom) execution modules. In a salt-runner, the Python you write will have access to all the available Salt interfaces from the master perspective. 
 
@@ -207,7 +211,8 @@ The key difference between an execution module and a runner is the fact that a r
 ![SaltStack runner](/img/salt_runner_example.png "SaltStack runner")
 {: refdef}
 
-## Orchestration
+
+### Orchestration
 
 Orchestration states are run on the master and offers a means to ‘orchestrate’ a series of events to take place. 
 
@@ -223,8 +228,25 @@ Orchestration states are a collection of actions that are executed on the master
 - use salt-ssh to perform a task on a remote system
 - call, or follow up with additional orchestration states
 
+### SalStack reactors and beacons
+
+Reactors and beacons are the constructs that can be leveraged to make the master respond to events generated by the minion.
+
+{:refdef: style="text-align: center;"}
+![SaltStack reactors and beacons](/img/salt_reactor_and_beacon.png "SaltStack reactors and beacons")
+{: refdef}
+
+**Beacon**: Salt beacon is a minion-side feature that can be used to generate events that are then send on to the message bus. A beacon can be used for anything on the system that the minion controls or has access to. For instance, a beacon can be used to generate an event when a file is changed or when a network interface goes down. You could then use a reactor to determine if and what actions should follow as a result of a beacon. The beacon is send on a port that only the master is listening to (4506).
+
+**Reactor**: The reactor is a master-side interface that is used to watch the event bus for messages and respond to them. A reactor can be made to respond to a pattern, or tag. The response can be to start a state or a runner.
+
+
+Let's wrap things up with the following picture that captures part of the architecture and displays a lot 'Saltspeak':
+
+{:refdef: style="text-align: center;"}
+![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
+{: refdef}
 
 
 
-Obviously, a lot more is possible.
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
