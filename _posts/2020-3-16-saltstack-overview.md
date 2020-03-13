@@ -40,7 +40,7 @@ An example of what you could orchestrate with Salt is the following:
 
 ## Salt concepts and architecture overview.
 
-SaltStack comes with its own set of terms and terminolgy. This can be overwhelming at first. The following picture captures part of the architecture and displays a lot 'Saltspeak':
+SaltStack comes with its own set of terms and terminology. This can be overwhelming at first. The following picture captures part of the architecture and displays a lot 'Saltspeak':
 
 {:refdef: style="text-align: center;"}
 ![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
@@ -78,7 +78,7 @@ In this case, the salt-minion process is running on the system that the salt-mas
 
 ## Proxy-minion
 
-For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the device using whatever method the device understands. This can be an SSH channel, an API, etc. 
+For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the system that is being managed. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the system being managed using a method that system will understand. This can be an SSH channel, an API, etc. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack proxy-minion](/img/salt_proxy_minion.png "SaltStack proxy-minion")
