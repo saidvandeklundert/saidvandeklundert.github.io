@@ -68,15 +68,32 @@ When minions or proxy-minion are used, communication between the master and the 
 
 
 ## Salt-minion
+
 In this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. It will communicate with the master service over the event bus.
+
+{:refdef: style="text-align: center;"}
+![SaltStack minion](/img/salt_runner_example.png "SaltStack minion")
+{: refdef}
+
 
 ## Proxy-minion
 
-For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the device using whatever method the device understands. This can be an SSH channel, an API, etc. The proxy-minion process that is used to control a system does not have to be running on the same server/container that is housing the master service. 
+For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the device. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the device using whatever method the device understands. This can be an SSH channel, an API, etc. 
+
+{:refdef: style="text-align: center;"}
+![SaltStack proxy-minion](/img/salt_proxy_minion.png "SaltStack proxy-minion")
+{: refdef}
+
+The proxy-minion process that is used to control a system does not have to be running on the same server/container that is housing the master service.
 
 ## Salt-ssh
 
-An agentless based approach to control another system. All that is required on the other system is for SSH to be running. This approach does not scale as well and works differently in the sense that the message bus is not utilized. 
+An agentless based approach to control another system. All that is required on the other system is for SSH to be running. Though in some cases convenient, this approach does not scale as well. Using salt-ssh will put a lot of load on the master. And since there is no message bus in between the master and the system that is being managed with salt-ssh, the master cannot control a lot of systems at the same speed.
+
+{:refdef: style="text-align: center;"}
+![SaltStack Salt-ssh](/img/salt_ssh.png "SaltStack Salt-ssh")
+{: refdef}
+
 
 ## Message bus
 
@@ -125,6 +142,7 @@ SSE is a commercial product that includes:
 - Multi-master support
 - LDAP integration
 - Reporting
+
 
 ## States
 
