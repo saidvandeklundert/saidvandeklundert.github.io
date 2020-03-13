@@ -113,7 +113,7 @@ In addition to these data interfaces, there is also another way in which you can
 - LDAP integration
 - Reporting
 
-**States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’. 
+**States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’ (hence the name). 
 
 {:refdef: style="text-align: center;"}
 ![Salt State](/img/salt_state.png "Salt State")
