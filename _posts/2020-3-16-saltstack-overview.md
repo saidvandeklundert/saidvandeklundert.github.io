@@ -84,7 +84,7 @@ For systems that do not allow you to run a salt-minion process, you can run the 
 ![SaltStack proxy-minion](/img/salt_proxy_minion.png "SaltStack proxy-minion")
 {: refdef}
 
-The proxy-minion process that is used to control a system does not have to be running on the same server that is housing the master service.
+The proxy-minion process that is used to control a system does not have to be running on the same server that is used to run the master service.
 
 ## Salt-ssh
 
