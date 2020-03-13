@@ -52,7 +52,7 @@ The parts of the SaltStack architecture that we can utilize:
 - SaltStack data interfaces
 - SaltStack Enterprise (SSE)
 
-The parts of the SaltStack architecture that we work with:
+The parts of the SaltStack architecture that we interface with:
 - States
 - Execution modules
 - Custom states
