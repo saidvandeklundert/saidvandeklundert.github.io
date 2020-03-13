@@ -16,22 +16,22 @@ First though, let's see what SaltStack can do for an organization as a whole.
 
 ### Remote execution:
 
-Salt is a remote execution framework that can be used to manage thousands of systems. These systems can be Linux servers, Docker containers, networking devices and more.
+Salt is a remote execution framework that can be used to manage thousands of systems. These systems can be servers, containers, networking devices and more.
 
 ### Configuration management:
 
 Salt is well suited to act as a configuration management system. Some of the reasons that make it suitable as a configuration management system are the fact that Salt:
 - can interface with a plethora of systems (Linux, Windows, Juniper, Cisco, ESXi and more)
-- can be made to interface with other external systems
+- interfaces with other external systems, or can easily be made to do so
 - offers you easy ways to plug in Python libraries to overcome configuration challenge
-- offers granular control as well as ways to abstract complexity and work on a different layers
+- gives you granular control as well as ways to abstract complexity and work on a different layers
 
 ### Orchestration and automation:
 
 SaltStack’s capabilities for remote execution and configuration management can be further extended with the ability to orchestrate the order in which events are to take place. This can be an orchestrated series of events that is initiated whenever a user runs an orchestration state, or a certain series of events that take place as a reaction to something happening on a system.
 
 An example of what you could orchestrate with Salt is the following:
-- Extend an IP-Fabric constisting of Juniper and Arista switches to a Linux server
+- Extend an IP-Fabric constisting of routers and switches to a Linux server
 - Install Docker engine on said server
 - Start different containers that offer microservices in a specific order
 - Update the firewall to account for the newly provisioned services
@@ -40,7 +40,7 @@ An example of what you could orchestrate with Salt is the following:
 
 ## Salt concepts and architecture overview.
 
-SaltStack comes with its own set of terms and terminolgy that can be overwhelming at first. The following picture captures part of the architecture and displays a lot 'Saltspeak':
+SaltStack comes with its own set of terms and terminolgy. This can be overwhelming at first. The following picture captures part of the architecture and displays a lot 'Saltspeak':
 
 {:refdef: style="text-align: center;"}
 ![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
