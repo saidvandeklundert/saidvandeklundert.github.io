@@ -113,12 +113,18 @@ In addition to these data interfaces, there is also another way in which you can
 - LDAP integration
 - Reporting
 
-**States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Though other options exist, most Salt states are written in YAML and Jinja. This makes the state easy to read and manage.
+**States**: a Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’. 
 
-Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’. 
+{:refdef: style="text-align: center;"}
+![Salt State](/img/salt_state.png "Salt State")
+{: refdef}
+
+
 The state system has access to most Salt interfaces. So from within a state, you are free to access the pilllar, or grains, etc. Additionally, the state system can be used by a lot of other Salt facilities as well. For instance, a Salt reactor can call a state in response to an event.
 
-States can be invoked at will, they can be made to run at (minion) startup and they can be scheduled at regular intervals. Additionally, the state system allows you to use requisites to create relationships between different states and/or actions inside a single state.  
+States can be invoked at will, they can be made to run at (minion) startup and they can be scheduled at regular intervals. Additionally, the state system allows you to use requisites to create relationships between different states and/or actions inside a single state. An example of what this would enable you to do is to make sure an action is executed only if another action before that was completed succesfully.  
+
+Though other options exist, most Salt states are written in YAML and Jinja. This makes the state easy to read and manage.
 
 The general phylisophy is that a state should be idempotent. Regardless of how many times you run a state, it should bring a system into the same state, always.
 
