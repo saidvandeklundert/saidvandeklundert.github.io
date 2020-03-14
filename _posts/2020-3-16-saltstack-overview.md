@@ -239,7 +239,7 @@ Reactors and beacons are the constructs that can be leveraged to make the master
 
 ## Summary
 
-SaltStack has a lot of different parts to it. It is overwhelming at fist, but a blessing to work with. I sometimes distinguish between the parts of Salt that we put to work for us and the parts we use to interface with Salt.
+SaltStack has a lot of different parts to it. It is overwhelming at fist, but a blessing to work with. I sometimes distinguish between the core components of Salt that we put to work for us and the parts we use to interface with Salt.
 
 **SaltStack core components**:
 - Salt-master
