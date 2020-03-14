@@ -144,13 +144,13 @@ SSE is a commercial product that adds the following features to SaltStack:
 
 ### States
 
-A Salt state is a collection of actions you want to perform to put a system into a certain ‘state’. Inside the state, you can call different execution modules, custom execution modules and/or custom states to bring a system into a certain ‘state’ (hence the name): 
+A Salt state is a collection of actions you want to perform to put a system into a certain ‘state’ (hence the name). Inside the state, you can call different execution modules, custom execution modules and/or custom states.
 
 {:refdef: style="text-align: center;"}
 ![Salt State](/img/salt_state.png "Salt State")
 {: refdef}
 
-A salt-master can tell a minion that it needs to run a state. The minion will execute the state and return the result using the ZeroMQ message bus. Because of this, it is possible to run a state on many thousands of systems at the same time without overwhelming the master.
+A salt-master can tell a minion that it needs to run a state. The minion will execute the state and return the result using the ZeroMQ message bus. Because of the fact that the minion executes the state, it is possible to run a state on many thousands of systems at the same time without overwhelming the master.
 
 The state system has access to most Salt interfaces. This means that from within a state, you are free to access the pilllar, the grains and other Salt facilities. Additionally, the state system itself can be used by other Salt features as well. Salt reactors and runners for instance can also run states. Obviously, it is also possible to run a state from the CLI at will or to schedule states at regular intervals.
 
