@@ -130,7 +130,7 @@ The execution module can be helpful to bring in data from other systems in case 
 
 Alternatively, in case you have thousands of minions, you can also choose to store this data as JSON, YAML or a map file and include it in your Jinja or template later on. This way, you would fetch the data once and still allow Salt to use it everywhere. This is also a nice alternative to pillar data for large scale deployments.
 
-SaltStack offers remote execution, configuration management as well as orchestration. And one of the nices things about the data interfaces in Salt is the fact that they can be used (almost) everywhere. 
+SaltStack offers remote execution, configuration management as well as orchestration. And one of the nicest things about the data interfaces in Salt is the fact that they can be used (almost) everywhere. 
 
 Pillar and grains for instance can be used to:
 - determine what systems to target
