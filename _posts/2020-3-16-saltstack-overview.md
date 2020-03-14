@@ -9,7 +9,7 @@ Diving into SaltStack for the first time can be difficult and confusing. There i
 
 This article aims to provide an overview of Salt and all of the different terminologies and constructs that come with it. Instead of providing an exhaustive list of possibilities and knobs that exist in Salt, the aim is to give you an idea of what the SaltStack framework has to offer and what most of the individual constructs could be used for. 
 
-First, I will cover what SaltStack does at a very high level. After this, most of the constructs that are part of the Salt architecture are discussed. In this part, I will differentiate between the elements in the Salt architecture that you will be putting to use and the interfaces that you will be working with in order to control the elements of the Salt architecture.
+First, I will cover what SaltStack does at a very high level. After this, most of the constructs that are part of the Salt architecture are discussed.
 
 ## What SaltStack does
 
@@ -233,6 +233,8 @@ Reactors and beacons are the constructs that can be leveraged to make the master
 SaltStack has a lot of different parts to it. It is overwhelming at fist, but a blessing to work with.
 I sometimes distinguish between the parts of Salt that we put to work for us and the parts we use to interface with Salt.
 
+ In this part, I will differentiate between the elements in the Salt architecture that you will be putting to use and the interfaces that you will be working with in order to control the elements of the Salt architecture.
+ 
 SaltStack core components:
 - Salt-master
 - Salt-minion
