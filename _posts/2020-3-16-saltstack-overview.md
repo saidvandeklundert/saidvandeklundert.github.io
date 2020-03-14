@@ -78,7 +78,7 @@ The salt-minion process will communicate with the salt master using the event bu
 
 ### Proxy-minion
 
-For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermidiary between the master and the system that is being managed. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the system being managed using a method that system will understand. This can be an SSH channel, an API, etc. 
+For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermediary between the master and the system that is being managed. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the system being managed using a method that system will understand. This can be an SSH channel, an API, etc. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack proxy-minion](/img/salt_proxy_minion.png "SaltStack proxy-minion")
