@@ -233,12 +233,9 @@ Reactors and beacons are the constructs that can be leveraged to make the master
 
 ## Summary
 
-SaltStack has a lot of different parts to it. It is overwhelming at fist, but a blessing to work with.
-I sometimes distinguish between the parts of Salt that we put to work for us and the parts we use to interface with Salt.
+SaltStack has a lot of different parts to it. It is overwhelming at fist, but a blessing to work with. I sometimes distinguish between the parts of Salt that we put to work for us and the parts we use to interface with Salt.
 
- In this part, I will differentiate between the elements in the Salt architecture that you will be putting to use and the interfaces that you will be working with in order to control the elements of the Salt architecture.
-
-SaltStack core components:
+**SaltStack core components**:
 - Salt-master
 - Salt-minion
 - Proxy-minion
@@ -246,7 +243,7 @@ SaltStack core components:
 - Message bus
 - SaltStack data interfaces (pillar, grains, external pillar)
 
-SaltStack user interfaces:
+**SaltStack methods to interface with the core components**:
 - States
 - Execution modules
 - Custom states
