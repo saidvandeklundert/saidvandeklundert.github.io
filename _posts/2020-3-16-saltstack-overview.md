@@ -74,7 +74,7 @@ In this case, the salt-minion process is running on the system that the salt-mas
 ![SaltStack minion](/img/salt_minion.png "SaltStack minion")
 {: refdef}
 
-The salt-minion process will communicate with the master service over the event bus and execute whatever assignment it receives. When the minion has completed its task, it will inform the master.
+The salt-minion process will communicate with the salt master using the event bus. The minion will execute whatever assignment it receives and when the minion has completed its task, it will inform the master of the results.
 
 ### Proxy-minion
 
