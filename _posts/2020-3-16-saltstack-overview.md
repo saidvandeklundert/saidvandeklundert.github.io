@@ -169,7 +169,7 @@ The general phylisophy is that a state should be idempotent. Regardless of how m
 
 ### Execution modules
 
-you like Python, the (custom)-execution module will make you fall in love with Salt. The execution module is a Python script with functions that you can call on the command line or use inside a Salt state. 
+If you like Python, the (custom)-execution module will make you fall in love with Salt. The execution module is a Python script with functions that you can call on the command line or use inside a Salt state. 
 
 {:refdef: style="text-align: center;"}
 ![Salt execution module ](/img/salt_execution_module.png "Salt execution module ")
