@@ -162,7 +162,7 @@ The state system has access to most Salt interfaces. This means that from within
 
 Another nice thing about the state system is that it allows you to use requisites to create relationships between different states and/or actions inside a single state. An example of what this would enable you to do is to make sure an action is executed only if another action was completed succesfully.  
 
-Though other options exist, most Salt states are written in YAML and Jinja. This makes the state easy to read and a nice abstraction layer to manage complexity.
+Though other options exist, most Salt states are written in YAML and Jinja. This makes a state easy to read, turning it into a nice abstraction layer to manage complexity.
 
 The general phylisophy is that a state should be idempotent. Regardless of how many times you run a state, it should bring a system into the same state, always.
 
