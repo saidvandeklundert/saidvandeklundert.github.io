@@ -150,7 +150,7 @@ SSE is a commercial product that adds the following features to SaltStack:
 
 ### States
 
-A Salt state is a collection of actions you want to perform to put a system into a certain ‘state’ (hence the name). Inside the state, you can call different execution modules, custom execution modules and/or custom states.
+A Salt state is a collection of actions you want to perform to put a system into a certain ‘state’ (hence the name). Inside the state, you can call different execution modules, states and/or custom state functions.
 
 {:refdef: style="text-align: center;"}
 ![Salt State](/img/salt_state.png "Salt State")
