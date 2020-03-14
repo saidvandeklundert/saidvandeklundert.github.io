@@ -23,7 +23,7 @@ Salt is a remote execution framework that can be used to manage thousands of sys
 Salt is well suited to act as a configuration management system. This is because Salt:
 - can interface with a plethora of systems (Linux, Windows, Juniper, Cisco, ESXi and more)
 - interfaces with other external systems, or can easily be made to do so (Vault, Netbox, databases and more)
-- offers you easy ways to plug in Python libraries to overcome configuration challenge
+- offers you easy ways to plug in Python libraries to overcome configuration challenges
 - gives you granular control as well as ways to abstract complexity and work on a different layers
 
 ### Orchestration and automation:
@@ -68,12 +68,13 @@ When minions or proxy-minion are used, communication between the master and the 
 
 ### Salt-minion
 
-In this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. It will communicate with the master service over the event bus.
+In this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack minion](/img/salt_minion.png "SaltStack minion")
 {: refdef}
 
+The salt-minion process will communicate with the master service over the event bus and execute whatever assignment it receives. When the minion has completed its task, it will inform the master.
 
 ### Proxy-minion
 
