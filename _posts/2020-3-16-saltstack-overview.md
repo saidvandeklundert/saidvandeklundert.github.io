@@ -88,7 +88,7 @@ The proxy-minion process that is used to control a system does not have to be ru
 
 ### Salt-ssh
 
-An agentless based approach to control another system. All that is required on the other system is for SSH to be running. Though in some cases convenient, this approach does not scale as well. Using salt-ssh will put a lot of load on the master. And since there is no message bus in between the master and the system that is being managed with salt-ssh, the master cannot control a lot of systems at the same speed.
+An agentless based approach to control another system. All that is required on the other system is for SSH to be running. Though in some cases convenient, this approach does not scale as well. Using salt-ssh will put a lot of load on the master. And since there is no message bus in between the master and the system that is being managed with salt-ssh, the master cannot control as many systems at the same time.
 
 {:refdef: style="text-align: center;"}
 ![SaltStack Salt-ssh](/img/salt_ssh.png "SaltStack Salt-ssh")
