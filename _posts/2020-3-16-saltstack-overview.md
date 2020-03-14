@@ -22,7 +22,7 @@ Salt is a remote execution framework that can be used to manage thousands of sys
 
 Salt is well suited to act as a configuration management system. This is because Salt:
 - can interface with a plethora of systems (Linux, Windows, Juniper, Cisco, ESXi and more)
-- interfaces with other external systems, or can easily be made to do so (Vault, Netbox, SQL servers and more)
+- interfaces with other external systems, or can easily be made to do so (Vault, Netbox, databases and more)
 - offers you easy ways to plug in Python libraries to overcome configuration challenge
 - gives you granular control as well as ways to abstract complexity and work on a different layers
 
@@ -234,7 +234,7 @@ SaltStack has a lot of different parts to it. It is overwhelming at fist, but a 
 I sometimes distinguish between the parts of Salt that we put to work for us and the parts we use to interface with Salt.
 
  In this part, I will differentiate between the elements in the Salt architecture that you will be putting to use and the interfaces that you will be working with in order to control the elements of the Salt architecture.
- 
+
 SaltStack core components:
 - Salt-master
 - Salt-minion
