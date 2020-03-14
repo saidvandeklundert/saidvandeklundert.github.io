@@ -37,28 +37,15 @@ An example of what you could orchestrate with Salt is the following:
 - Update the firewall to account for the newly provisioned services
 
 
-## SaltStack architecture
+## SaltStack architecture overview
 
-SaltStack comes with its own set of terms and terminology. This can be overwhelming at first. 
+SaltStack comes with its own set of terms and terminology. This can be overwhelming at first. The following is picture that captures part of the architecture and displays a lot 'Saltspeak':
 
-Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture. I sometimes distinguish between the parts of Salt that we utilize to our benefit and the constructs that we define in order to make things happen.
+{:refdef: style="text-align: center;"}
+![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
+{: refdef}
 
-The parts of the SaltStack architecture that we can utilize:
-- Salt-master
-- Salt-minion
-- Proxy-minion
-- Salt-ssh
-- Message bus
-- SaltStack data interfaces
-- SaltStack Enterprise (SSE)
-
-The parts of the SaltStack architecture that we interface with:
-- States
-- Execution modules
-- Custom states
-- Runners
-- Orchestration
-- SalStack reactors and beacons
+Let's go over some of this Saltspeak and provide a high-level description on all the different parts there are to this architecture. 
 
 ### Salt-master
 
@@ -151,7 +138,6 @@ SSE is a commercial product that adds the following features to SaltStack:
 - LDAP integration
 - Reporting
 
-## Salt
 
 ### States
 
@@ -241,12 +227,27 @@ Reactors and beacons are the constructs that can be leveraged to make the master
 **Reactor**: The reactor is a master-side interface that is used to watch the event bus for messages and respond to them. A reactor can be made to respond to a pattern, or tag. The response can be to start a state or a runner.
 
 
-Let's wrap things up with the following picture that captures part of the architecture and displays a lot 'Saltspeak':
 
-{:refdef: style="text-align: center;"}
-![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
-{: refdef}
+## Summary
 
+SaltStack has a lot of different parts to it. It is overwhelming at fist, but a blessing to work with.
+I sometimes distinguish between the parts of Salt that we put to work for us and the parts we use to interface with Salt.
+
+SaltStack core components:
+- Salt-master
+- Salt-minion
+- Proxy-minion
+- Salt-ssh
+- Message bus
+- SaltStack data interfaces (pillar, grains, external pillar)
+
+SaltStack user interfaces:
+- States
+- Execution modules
+- Custom states
+- Runners
+- Orchestration
+- SalStack reactors and beacons
 
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
