@@ -20,7 +20,7 @@ Salt is a remote execution framework that can be used to manage thousands of sys
 
 ### Configuration management:
 
-Salt gives you granular control as well as ways to abstract complexity and work on a different layers. On a practical level, Salt can interface with a plethora of systems. You can use SaltStack to manage Linux, Windows, Juniper, Cisco, ESXi and much more. Additionally, SaltStack can interface with other external systems in order to pull in whatever data is needed for you configuration efforts. 
+Salt gives you granular control as well as ways to abstract complexity and work on a different layers. On a practical level, Salt can interface with a plethora of systems. You can use SaltStack to manage Linux, Windows, Juniper, Cisco, ESXi and much more. Additionally, SaltStack can interface with other external systems in order to pull in whatever data is needed for your configuration efforts. 
 
 ### Orchestration and automation:
 
