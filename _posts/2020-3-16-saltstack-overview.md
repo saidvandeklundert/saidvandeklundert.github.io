@@ -261,5 +261,8 @@ So far, everything that was discussed were the things that you find in <b>Salt o
 
 Working with Salt has been a lot of fun. The first weeks trying out different things using minions and proxy-minions, I struggled a lot. There were so many new concepts that I suddenly had to understand and work with. I hope this write-up will help others starting out with Salt understand it a little bit better.
 
+Note:
+
+Things were left out. Top files, mines, high-states, and more. Hopefully, I can do some follow-up posts and include those concepts when I expand on certain things.
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
