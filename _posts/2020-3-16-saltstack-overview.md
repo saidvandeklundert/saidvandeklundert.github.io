@@ -36,7 +36,7 @@ Salt has the ability to orchestrate the order in which events are to take place.
 SaltStack comes with its own set of terms and terminology and this can be a bit overwhelming at first. The following is a picture that captures part of the architecture, showing a lot of 'Saltspeak':
 
 {:refdef: style="text-align: center;"}
-![SaltStack architecture](/img/saltstack-architecture.png  "SaltStack architecture" =250x250)
+![SaltStack architecture](/img/saltstack-architecture.png  "SaltStack architecture" )
 {: refdef}
 
 Perhaps a little overwhelming at first, but really great to work with after you wrap your head around it. I sometimes distinguish between the core components of Salt that we put to work for us and the parts we use to interface with those core components. High-level, we could divide everything up like this:
