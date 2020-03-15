@@ -20,17 +20,11 @@ Salt is a remote execution framework that can be used to manage thousands of sys
 
 ### Configuration management:
 
-Salt is well suited to act as a configuration management system. This is because Salt:
-- can interface with a plethora of systems (Linux, Windows, Juniper, Cisco, ESXi and more)
-- interfaces with other external systems, or can easily be made to do so (Vault, Netbox, databases and more)
-- offers you easy ways to plug in Python libraries to overcome configuration challenges
-- gives you granular control as well as ways to abstract complexity and work on a different layers
+Salt gives you granular control as well as ways to abstract complexity and work on a different layers. On a practical level, Salt can interface with a plethora of systems. You can use SaltStack to manage Linux, Windows, Juniper, Cisco, ESXi and much more. Additionally, SaltStack can interface with other external systems in order to pull in whatever data is needed for you configuration efforts. 
 
 ### Orchestration and automation:
 
-SaltStack’s capabilities for remote execution and configuration management can be further extended with the ability to orchestrate the order in which events are to take place. This can be an orchestrated series of events that is initiated whenever a user runs an orchestration state, or a certain series of events that take place as a reaction to something happening on a system.
-
-An example of what you could orchestrate with Salt is the following:
+Salt has the ability to orchestrate the order in which events are to take place. An example of what you could orchestrate with Salt is the following:
 - Extend an IP-Fabric consisting of routers and switches to a Linux server
 - Install Docker engine on said server
 - Start different containers that offer microservices in a specific order
