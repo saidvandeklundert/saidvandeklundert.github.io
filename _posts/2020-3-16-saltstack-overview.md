@@ -33,7 +33,7 @@ Salt has the ability to orchestrate the order in which events are to take place.
 
 ## SaltStack architecture overview
 
-SaltStack comes with its own set of terms and terminology. This can be overwhelming at first. The following is picture that captures part of the architecture and displays a lot 'Saltspeak':
+SaltStack comes with its own set of terms and terminology and this can be a bit overwhelming at first. The following is picture that captures part of the architecture and displays a lot 'Saltspeak':
 
 {:refdef: style="text-align: center;"}
 ![SaltStack architecture](/img/saltstack-architecture.png "SaltStack architecture")
