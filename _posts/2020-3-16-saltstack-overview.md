@@ -154,16 +154,6 @@ Pillar and grains for instance can be used to:
 - make states and modules act differently based on their value
 
 
-### SaltStack Enterprise (SSE)
-
-SSE is a commercial product that adds the following features to SaltStack:
-- Centralized control of your salt masters through a GUI or an API
-- Role based access control
-- Multi-master support
-- LDAP integration
-- Reporting
-
-
 ### States
 
 A Salt state is a collection of actions you want to perform to put a system into a certain ‘state’ (hence the name). Inside the state, you can call different execution modules, states and/or custom state functions.
@@ -252,11 +242,19 @@ Reactors and beacons are the constructs that can be leveraged to make the master
 **Reactor**: The reactor is a master-side interface that is used to watch the event bus for messages and respond to them. A reactor can be made to respond to a pattern, or tag. The response can be to start a state or a runner.
 
 
+### SaltStack Enterprise (SSE)
 
-## Summary
+So far, everything that was discussed were the things that you find in <b>Salt open</b>. In addition to Salt open, there is also SSE. This is a commercial product that adds the following features to SaltStack:
+- Centralized control of your salt masters through a GUI or an API
+- Role based access control
+- Multi-master support
+- LDAP integration
+- Reporting
 
 
+## Closing thoughts
 
+Working with Salt has been a lot of fun. The first weeks trying out different things using minions and proxy-minions, I struggled a lot. There were so many new concepts that I suddenly had to understand and work with. I hope this write-up will help others starting out with Salt understand it a little bit better.
 
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
