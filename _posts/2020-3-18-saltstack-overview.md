@@ -264,4 +264,4 @@ Working with Salt has been a lot of fun. The first weeks trying out different th
 
 Note: some things were left out. Top files, mines, high-states and more did not make it. Perhaps I will discuss those in a followup post.
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-18-saltstack-overview.md
