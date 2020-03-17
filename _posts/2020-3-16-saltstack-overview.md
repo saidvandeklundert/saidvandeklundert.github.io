@@ -14,7 +14,7 @@ This article aims to provide an overview of Salt and all of the different termin
 
 First, I will cover what SaltStack does at a very high level. After this, most of the constructs that are part of the Salt architecture are discussed.
 
-## What SaltStack does
+## What SaltStack has to offer
 
 
 ### Remote execution:
