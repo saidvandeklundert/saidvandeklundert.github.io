@@ -205,9 +205,9 @@ Unlike (custom-) execution modules, custom state functions cannot be called from
 
 ### Runners
 
-Salt runners are similar to (custom) execution modules. In a salt-runner, the Python you write will have access to all the available Salt interfaces from the master perspective. 
+Salt runners are similar to execution modules. In a salt-runner, the Python you write will have access to all the available Salt interfaces from the master perspective. 
 
-The key difference between an execution module and a runner is the fact that a runner is executed on the salt-master instead of on the salt-minion.  Since the runner function is executed on the master, there is also the possibility to have it perform actions on several minions. 
+The key difference between an execution module and a runner is the fact that a runner is executed on the salt-master instead of on the salt-minion. Since the runner function is executed on the master, there is also the possibility to have it perform actions on several minions. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack runner](/img/salt_runner_example.png "SaltStack runner")
@@ -257,8 +257,7 @@ So far, everything that was discussed were the things that you find in <b>Salt o
 
 Working with Salt has been a lot of fun. The first weeks trying out different things using minions and proxy-minions, I struggled a lot. There were so many new concepts that I suddenly had to understand and work with. I hope this write-up will help others starting out with Salt understand it a little bit better.
 
-Note:
 
-Things were left out. Top files, mines, high-states, and more. Hopefully, I can do some follow-up posts and include those concepts when I expand on certain things.
+Note: some things were left out. Top files, mines, high-states and more did not make it. Perhaps I will discuss those in a followup post.
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/saltstack/_posts/2020-3-16-saltstack-overview.md
