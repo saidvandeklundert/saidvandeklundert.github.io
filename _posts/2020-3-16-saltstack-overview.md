@@ -144,9 +144,12 @@ In general, there are 3 different data interfaces that can be identified in Salt
 
 In addition to these data interfaces, there is also another way in which you can have Salt use data from other sources. This is the execution module, which is a Python script that can be used by various other Salt constructs. 
 
-The execution module can be helpful to bring in data from other systems in case the grains, pillar and external pillar do not suffice.  One example would be where you write an execution module to perform a SQL query to retrieve data. You could opt to use that in a state or template directly. 
+The execution module can be used to bring in data from other systems in case the grains, pillar and external pillar do not suffice.  One example would be where you write an execution module to perform a SQL query to retrieve data. You could opt to use that in a state or template directly. Alternatively, in case you have thousands of minions, you can also choose to store gathered data as JSON or YAML and include it in your template this way. 
 
-Alternatively, in case you have thousands of minions, you can also choose to store this data as JSON, YAML or a map file and include it in your Jinja or template later on. This way, you would fetch the data once and still allow Salt to use it everywhere. This is also a nice alternative to pillar data for large scale deployments.
+If you are thinking about going this route, another nice construct worth pointing out is the map file. You can use YAML, JSON, Jinja or even Python in a map file. It can be included in states and templates and is not as taxing to the overall system as pillar data is because it does not have to be rendered by the master as pillar data and it does not require the same encryption. 
+
+Storing data in JSON, YAML or map-files allow you to fetch the data once while enabling Salt to use it (almost) everywhere else. Recommended to look into as an alternative to pillar data for large scale deployments.
+
 
 SaltStack offers remote execution, configuration management as well as orchestration. And one of the nicest things about the data interfaces in Salt is the fact that they can be used (almost) everywhere. 
 
