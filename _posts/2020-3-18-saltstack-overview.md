@@ -11,7 +11,7 @@ Diving into SaltStack for the first time can be difficult and confusing. There i
 ![SaltStack](/img/saltstack_logo_large.jpg  "SaltStack" )
 {: refdef}
 
-This article aims to provide an overview of Salt and all of the different terminologies and constructs that come with it. Instead of providing an exhaustive list of possibilities and knobs that exist in Salt, the aim is to give you an idea of what the SaltStack framework has to offer and what most of the individual constructs could be used for. 
+This article aims to provide an overview of Salt and all of the different terminologies and constructs that come with it. Instead of providing an exhaustive list of possibilities and knobs that exist in Salt, the aim is to give you an idea of what the SaltStack framework has to offer and what most of the individual constructs can be used for. 
 
 First, I will cover what SaltStack does at a very high level. After this, most of the constructs that are part of the Salt architecture are discussed.
 
