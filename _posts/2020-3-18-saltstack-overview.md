@@ -202,9 +202,9 @@ A custom state is a construct that Salt offers you to write State functions in. 
 - interface with pillar or grains data
 - call execution modules or custom execution modules
 
-The general idea is that the execution module is a low level function that does 1 thing while the custom state is used to put in additional logic. 
+The idea is that the execution module is a low level function that accomplishes a single task. The custom state is something that can be used to call different execution modules while putting in additional logic. In the end though, you are free to use it to perform whatever you want.
 
-Unlike (custom-) execution modules, custom state functions cannot be called from the CLI. 
+One thing to keep in mind is that unlike (custom-) execution modules, custom state functions cannot be called directly from the CLI. 
 
 
 ### Runners
