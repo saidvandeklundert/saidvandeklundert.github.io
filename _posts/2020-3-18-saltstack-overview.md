@@ -58,7 +58,7 @@ Perhaps a little overwhelming at first, but really great to work with after you 
 - **States**: collection of actions that a minion or proxy-minion can be made to run
 - **Execution modules**: a Python script that can be executed on a minion or a proxy-minion
 - **Custom states**: Python functions that you can call in a state
-- **Runners**: a script that is executed on the master
+- **Runners**: a Python script that is executed on the master
 - **Orchestration state**: state that is run on the master and that can call states and modules on minions as well as start a runner
 - **Reactor**: master-side interface that can react to a beacon
 - **Beacon**: minion-side feature, used to generate an event
