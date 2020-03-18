@@ -169,7 +169,7 @@ A Salt state is a collection of actions you want to perform to put a system into
 
 A salt-master can tell a minion that it needs to run a state. The minion will execute the state and return the result using the ZeroMQ message bus. Because the minion executes the state, it is possible to run a state on many thousands of systems at the same time without overwhelming the master.
 
-The state system has access to most Salt interfaces. This means that from within a state, you are free to access the pillar, the grains and other Salt facilities. Additionally, the state system itself can be used by other Salt features as well. Salt reactors and runners for instance can also run states. Obviously, it is also possible to run a state from the CLI at will or to schedule states at regular intervals.
+The state system has access to most Salt interfaces. This means that from within a state, you are free to access the pillar, the grains and other Salt features. Additionally, the state system itself can be used by other Salt features as well. Salt reactors and runners for instance can also run states. Obviously, it is also possible to run a state from the CLI at will or to schedule states at regular intervals.
 
 Another nice thing about the state system is that it allows you to use requisites to create relationships between different states and/or actions inside a single state. An example of what this would enable you to do is to make sure an action is executed only if another action was completed successfully.  
 
@@ -192,7 +192,7 @@ Writing your own is something I really recommend. An execution module you produc
 - You can express yourself in Python .
 - You can pip install whatever you want and use that in the execution module (system running the minion has to let you).
 - Many Salt interfaces, like the pillar and grains, are available in the execution module through special dunder methods.
-- The execution module can be used in other Salt facilities as well. You can call the execution module in states, custom states and in other execution modules.
+- The execution module can be used by other other Salt features as well. You can call the execution module in states, custom states and in other execution modules.
 - The master can utilize the message bus to have all minions run the execution module in (near) parallel.
 
 
