@@ -47,7 +47,7 @@ SaltStack comes with its own set of terms and terminology. The following is a pi
 Perhaps a little overwhelming at first, but really great to work with after you wrap your head around it. High-level, the following are the core components of the SaltStack architecture:
 
 - **Salt-master**: manages and orchestrates the remote systems
-- **Salt-minion**: process that is running on a system that the salt-master is managing
+- **Salt-minion**: system that is being controlled by a Salt master
 - **Proxy-minion**: process that acts as an intermediary between the master and the system that is being managed
 - **Salt-ssh**: a salt-master connecting to a device using SSH ( not using a minion or proxy-minion )
 - **Message bus**: the ZeroMQ message bus that facilitates exchange of messages between the master and the (proxy-) minions
