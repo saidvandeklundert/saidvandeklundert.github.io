@@ -63,7 +63,7 @@ Perhaps a little overwhelming at first, but really great to work with after you 
 - **Reactor**: master-side interface that can react to a beacon
 - **Beacon**: minion-side feature, used to generate an event
 
-Let's go over this Saltspeak and provide a little more context. 
+Let's provide a little more detail and context for all this Saltspeak.
 
 ### Salt-master
 
