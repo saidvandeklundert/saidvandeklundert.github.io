@@ -188,7 +188,7 @@ If you like Python, the (custom)-execution module will make you fall in love wit
 
 Salt comes with several execution modules 'out of the box'. Those modules can be found <a href="https://github.com/saltstack/salt/tree/master/salt/modules" target="_blank">here</a>. This is also a nice folder to browse in case you are looking to get started writing your own execution module. 
 
-Writing your own is something I really recommend. An execution module you produce yourself is referred to as a 'custom execution module'. Some of the things I really like about the custom execution module are the following:
+Writing your own is something I really recommend. An execution module you create yourself is referred to as a 'custom execution module'. Some of the things I really like about the custom execution module are the following:
 - You can express yourself in Python .
 - You can pip install whatever you want and use that in the execution module (system running the minion has to let you).
 - Many Salt interfaces, like the pillar and grains, are available in the execution module through special dunder methods.
