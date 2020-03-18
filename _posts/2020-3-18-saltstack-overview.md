@@ -75,7 +75,7 @@ The Salt master service is what manages and orchestrates the remote systems. Dif
 Systems that are managed by the salt master service can be managed through a variety of ways:
 - minions
 - proxy-minions
-- ssh
+- salt-ssh
  
 When minions or proxy-minion are used, communication between the master and the minions is facilitated through a <b>message bus</b> called <b>ZeroMQ</b>.  
 
@@ -86,7 +86,7 @@ When minions or proxy-minion are used, communication between the master and the 
 
 ### Salt-minion
 
-In this case, the salt-minion process is running on the system that the salt-master is managing. The minion can run on (almost) any system that allows for a Python interpreter. 
+A system that is being controlled by a Salt-master is called a <b>Salt-minion</b>. The Salt-master controls the system through a salt-minion process that is running on the system that is being managed. The minion can run on (almost) any system that allows for a Python interpreter. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack minion](/img/salt_minion.png "SaltStack minion")
