@@ -146,7 +146,7 @@ In addition to these data interfaces, there is also another way in which you can
 
 The execution module can be used to bring in data from other systems in case the grains, pillar and external pillar do not suffice.  One example would be where you write an execution module to perform a SQL query to retrieve data. You could opt to use that in a state or template directly. Alternatively, in case you have thousands of minions, you can also choose to store gathered data as JSON or YAML and include it in your template this way. 
 
-If you are thinking about going this route, another nice construct worth pointing out is the map file. You can use YAML, JSON, Jinja or even Python in a map file. It can be included in states and templates and is not as taxing to the overall system as pillar data is because it does not have to be rendered by the master as is the case with pillar data. Furthermore, it does not require the same encryption. 
+If you are thinking about going this route, another nice construct worth pointing out is the map file. You can use YAML, JSON, Jinja or even Python in a map file. It can be included in states and templates and is not as taxing to the overall system as pillar data. This is because it does not have to be rendered by the master and it does not require the same encryption. 
 
 Storing data in JSON, YAML or map-files allow you to fetch the data once while enabling Salt to use it (almost) everywhere else. Recommended to look into as an alternative to pillar data for large scale deployments.
 
