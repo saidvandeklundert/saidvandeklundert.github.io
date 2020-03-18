@@ -220,7 +220,7 @@ The key difference between an execution module and a runner is the fact that a r
 
 ### Orchestration
 
-Orchestration states are run on the master and offers a means to ‘orchestrate’ a series of events to take place. 
+Orchestration states are run on the master and they do what the name implies: they orchestrate. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack orchestration state](/img/salt_orchestration_state.png "SaltStack orchestration state")
