@@ -86,17 +86,17 @@ When minions or proxy-minion are used, communication between the master and the 
 
 ### Salt-minion
 
-A system that is being controlled by a Salt-master is called a <b>Salt-minion</b>. The Salt-master controls the minion through a salt-minion process that is running on the system that is being managed. The minion can run on (almost) any system that allows for a Python interpreter. 
+A system that is being controlled by a salt-master is called a <b>Salt-minion</b>. Systems under the control of a salt-master run a salt-minion service. The salt-minion service can run on (almost) any system that allows for a Python interpreter. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack minion](/img/salt_minion.png "SaltStack minion")
 {: refdef}
 
-The salt-minion process will communicate with the salt master using the event bus. The minion will execute whatever assignment it receives and when the minion has completed its task, it will inform the master of the results.
+The salt-minion service will communicate with the salt master using the event bus. The minion will execute whatever assignment it receives and when the minion has completed its task, it will inform the master of the results.
 
 ### Proxy-minion
 
-For systems that do not allow you to run a salt-minion process, you can run the proxy-minion process as an intermediary between the master and the system that is being managed. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the system being managed using a method that system will understand. This can be an SSH channel, an API, etc. 
+For systems that do not allow you to run a salt-minion service, you can run the proxy-minion process as an intermediary between the master and the system that is being managed. The salt-master will communicate with the proxy over the event bus. The proxy process will communicate with the system being managed using a method that system will understand. This can be an SSH channel, an API, etc. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack proxy-minion](/img/salt_proxy_minion.png "SaltStack proxy-minion")
