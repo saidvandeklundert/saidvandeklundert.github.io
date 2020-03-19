@@ -250,11 +250,12 @@ Reactors and beacons are the constructs that can be leveraged to make the master
 ### SaltStack Enterprise (SSE)
 
 So far, everything that was discussed were the things that you find in <b>Salt open</b>. In addition to Salt open, there is also SSE. This is a commercial product that adds the following features to SaltStack:
-- Centralized control of your salt masters through a GUI or an API
+- Centralized control of your salt masters through a GUI or an Enterprise API
 - Role based access control
 - Multi-master support
-- LDAP integration
+- LDAP and Active Directory integration
 - Reporting
+- Central job and event cache
 
 
 ## Closing thoughts
