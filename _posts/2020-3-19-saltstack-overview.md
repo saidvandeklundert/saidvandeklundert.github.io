@@ -5,7 +5,7 @@ tags: [automation, saltstack]
 image: /img/salt_stack_logo.jpg
 ---
 
-Diving into SaltStack for the first time can be difficult and confusing. There is a lot of terminology involved that is going to be new. So much so, that it makes it difficult to get a clear overview of how everything is working together and how the different parts might be useful to you.
+Diving into SaltStack for the first time can be difficult and confusing. There is a lot of terminology involved that is going to be new. This makes it difficult to get a clear overview of how everything is working together and how the different parts might be useful to you.
 
 {:refdef: style="text-align: center;"}
 ![SaltStack](/img/saltstack_logo_large.jpg  "SaltStack" )
