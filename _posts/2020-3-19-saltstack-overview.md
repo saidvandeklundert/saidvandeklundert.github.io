@@ -92,7 +92,7 @@ A system that is being controlled by a salt-master is called a <b>Salt-minion</b
 ![SaltStack minion](/img/salt_minion.png "SaltStack minion")
 {: refdef}
 
-The salt-minion service will communicate with the salt master using the event bus. The minion will execute whatever assignment it receives and when the minion has completed its task, it will inform the master of the results.
+The salt-minion service and the salt master communicate using the event bus. The minion will execute whatever assignment it receives and when the minion has completed its task, it will inform the master of the results.
 
 ### Proxy-minion
 
