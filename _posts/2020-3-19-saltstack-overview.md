@@ -86,7 +86,7 @@ When minions or proxy-minion are used, communication between the master and the 
 
 ### Salt-minion
 
-A system that is being controlled by a Salt-master is called a <b>Salt-minion</b>. The Salt-master controls the system through a salt-minion process that is running on the system that is being managed. The minion can run on (almost) any system that allows for a Python interpreter. 
+A system that is being controlled by a Salt-master is called a <b>Salt-minion</b>. The Salt-master controls the minion through a salt-minion process that is running on the system that is being managed. The minion can run on (almost) any system that allows for a Python interpreter. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack minion](/img/salt_minion.png "SaltStack minion")
