@@ -72,7 +72,7 @@ The Salt master service is what manages and orchestrates the remote systems. Dif
 - execution modules
 - runners
 
-Systems that are managed by the salt master service can be managed through a variety of ways:
+The Salt-master can manage systems in a variety of ways:
 - minions
 - proxy-minions
 - salt-ssh
