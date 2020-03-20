@@ -218,7 +218,7 @@ Salt runners are similar to execution modules. The key difference between an exe
 
 ### Orchestration
 
-Orchestration states are run on the master and they do what the name implies: they orchestrate. 
+Orchestration states can be used to do what the name implies: orchestrate. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack orchestration state](/img/salt_orchestration_state.png "SaltStack orchestration state")
@@ -226,11 +226,10 @@ Orchestration states are run on the master and they do what the name implies: th
 
 
 Orchestration states are a collection of actions that are executed on the master. Some of actions that you can make the master perform are the following:
-- call execution modules or states on minions
-- instruct minions to run states
+- instruct minions to run execution modules or states
 - make the master execute a salt-runner
 - use salt-ssh to perform a task on a remote system
-- call, or follow up with additional orchestration states
+- call additional orchestration states
 
 ### SalStack reactors and beacons
 
