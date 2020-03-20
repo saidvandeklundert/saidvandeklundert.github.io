@@ -209,9 +209,7 @@ One thing to keep in mind is that unlike (custom-) execution modules, custom sta
 
 ### Runners
 
-Salt runners are similar to execution modules. In a salt-runner, the Python you write will have access to all the available Salt interfaces from the master perspective. 
-
-The key difference between an execution module and a runner is the fact that a runner is executed on the salt-master instead of on the salt-minion. Since the runner function is executed on the master, there is also the possibility to have it perform actions on several minions. 
+Salt runners are similar to execution modules. The key difference between an execution module and a runner is the fact that a runner is executed on the salt-master instead of on the salt-minion. Because of this, in a salt-runner, the Python you write will have access to all the available Salt interfaces from the master perspective. Since the runner function is executed on the master, there is also the possibility to have it perform actions on several minions. 
 
 {:refdef: style="text-align: center;"}
 ![SaltStack runner](/img/salt_runner_example.png "SaltStack runner")
