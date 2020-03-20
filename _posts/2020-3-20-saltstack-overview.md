@@ -198,7 +198,7 @@ Writing your own is something I really recommend. An execution module you create
 
 ### Custom states
 
-A custom state is a construct that Salt offers you to write State functions in. You will be able to call these functions directly in the state system. The custom state is written in Python and it can interface with other Salt features. Some of the things you can do inside a custom state functions are:
+A custom state is a construct that Salt offers you to write state functions in. You will be able to call these functions directly in the state system. The custom state is written in Python and it can interface with other Salt features. Some of the things you can do inside a custom state functions are:
 - interface with pillar or grains data
 - call execution modules or custom execution modules
 
