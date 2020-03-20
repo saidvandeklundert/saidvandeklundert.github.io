@@ -192,7 +192,7 @@ Writing your own is something I really recommend. An execution module you create
 - You can express yourself in Python.
 - You can pip install whatever you want and use that in the execution module (system running the minion has to let you).
 - Many Salt interfaces, like the pillar and grains, are available in the execution module through special dunder methods.
-- The execution module can be used by other other Salt features as well. You can call the execution module in states, custom states and in other execution modules.
+- The execution module can be used by other Salt features as well. You can call the execution module in states, custom states and in other execution modules.
 - The master can utilize the message bus to have all minions run the execution module in (near) parallel.
 
 
