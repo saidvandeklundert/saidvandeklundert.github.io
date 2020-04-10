@@ -87,19 +87,23 @@ filter rr_export {
         else accept;
     }
 </pre>
-                <p>
-                    To apply the filter, reference it with the following configuration command:
-                </p>
-                <pre>
+
+<p>
+To apply the filter, reference it with the following configuration command:
+</p>
+
+<pre>
 template bgp RR {
 ..
         export filter rr_export;                                 
 ..
-}</pre>
-                <p>
-                    Worked for me and I wanted to keep it as an example to copy paste from in the future.
-                </p>
+}
+</pre>
+
+<p>
+Worked for me and I wanted to keep it as an example to copy paste from in the future.
+</p>
                 
-                <p>
-                    <a href="http://bird.network.cz/?get_doc">Chapter 5</a> in the BIRD User's Guide offers some very clear insights into all the things possible with filtering and BIRD.
-                </p>
+<p>
+<a href="http://bird.network.cz/?get_doc">Chapter 5</a> in the BIRD User's Guide offers some very clear insights into all the things possible with filtering and BIRD.
+</p>
