@@ -15,9 +15,11 @@ In some networks, BFD is configured to aide multiple protocols at the same time.
 ### Micro-BFD on LAG interfaces
 
 
-When BFD is used as a liveness detection protocol for a LAG, micro-BFD sessions will monitor the links between the two systems. When BFD detects a failure in the path of a link, the child of the LAG is brought down. This way, BFD can detect failures in the forwarding path of a LAG and ensure that it is brought down swiftly.
+When BFD is used as a liveness detection protocol for a LAG, micro-BFD sessions will monitor the links between the two systems. The micro BFD sessions that are protecting the member links are independent BFD sessions. When BFD detects a failure in the path of a link, the child of the LAG is brought down. This way, BFD can detect failures in the forwarding path of a child link and ensure that it is brought down swiftly.
 
-This in turn ensures that higher layer-protocols (such as OSPF, LDP or BGP) will be able to respond quickly to the loss of connectivity. This is because protocols running across interfaces will react nearly instantaneously to an interface down event. This strategy can work out well for all sorts of networks, be it an MPLS core or a clos fabric. 
+The BFD protected LAG will be able to respond to failures as fast as the BFD timers you configure. This in turn ensures that higher layer-protocols (such as OSPF, LDP or BGP) will be able to respond quickly to the loss of connectivity. This is because protocols running across interfaces will react nearly instantaneously to an interface down event. Consider an OSPF neighbor relationship with a dead timer of 40 seconds. When the underlying interface that is used to sustain the OSPF session is brought down by BFD, the system does not have to wait for the dead timer to reach 0. As soon as the LAG is brought down, the OSPF session is removed and alternate routes (if any) are considered. 
+
+The same thing goes for other protocols and this makes it that the strategy can work out well for all sorts of networks, be it an MPLS core or a clos fabric. 
 
 
 ### Configuring a LAG with BFD
@@ -30,6 +32,8 @@ In this example, we will configure a LAG between two MX routers:
 {: refdef}
 
 Let's start out configuring the LAG. The LAG will use LACP and it will be configured with 4 child links. We do not want the LAG to remain up in case there is only 1 link left. To this end, we configure the following:
+
+<b>vMX-1</b>:
 
 <pre style="font-size:12px">
 set chassis aggregated-devices ethernet device-count 20
@@ -51,27 +55,47 @@ set interfaces ae0 unit 0 family inet address 10.100.0.0/31
 set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::0/127
 </pre>
 
-The first line enables the system to configure a total of 20 LAGs. Without this configuration, the Juniper device will not bring up the LAG. After this, we assign 4 interfaces to LAG interface AE0. After this, we configure the AE0 interface configuration. Here we configure the <b>aggregated-ether-options</b> to use LACP and we instruct the system to bring the LAG down in case there are less then 2 links. 
+
+<b>vMX-2</b>:
+
+<pre style="font-size:12px">
+set chassis aggregated-devices ethernet device-count 20
+
+set interfaces ge-0/0/4 description vMX1
+set interfaces ge-0/0/4 gigether-options 802.3ad ae0
+set interfaces ge-0/0/5 description vMX1
+set interfaces ge-0/0/5 gigether-options 802.3ad ae0
+set interfaces ge-0/0/6 description vMX1
+set interfaces ge-0/0/6 gigether-options 802.3ad ae0
+set interfaces ge-0/0/7 description vMX1
+set interfaces ge-0/0/7 gigether-options 802.3ad ae0
+
+set interfaces ae0 description vMX-1
+set interfaces ae0 aggregated-ether-options minimum-links 2
+set interfaces ae0 aggregated-ether-options lacp active
+
+set interfaces ae0 unit 0 family inet address 10.100.0.1/31
+set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::1/127
+</pre>
+
+
+The first line enables the system to configure a total of 20 LAGs. Without this configuration, the Juniper device will not bring up the LAG. After this, we assign 4 interfaces to LAG interface AE0. After this, we configure the AE0 interface configuration. Here we configure the <b>aggregated-ether-options</b> to use LACP and we instruct the system to bring the LAG down in case there are less than 2 links. 
 Finally, we finish up configuring IP addresses on the AE interface.
 
 
 Configuring this on both vMX-1 as well as vMX-2 is enough to bring up the LAG. But in this case, we also want to enable BFD between the two systems. The BFD sessions that protect the LAG are configured as part of the <b>aggregated-ether-options</b> under the interface configuration of the LAG.
 
-First, we configure it on <b>vMX-1</b>:
+<b>vMX-1</b>:
 
 <pre style="font-size:12px">
 set interfaces ae0 aggregated-ether-options bfd-liveness-detection minimum-interval 100
 set interfaces ae0 aggregated-ether-options bfd-liveness-detection neighbor 10.0.0.2
 set interfaces ae0 aggregated-ether-options bfd-liveness-detection local-address 10.0.0.1
 
-set interfaces ae0 unit 0 family inet address 10.100.0.0/31
-set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::0/127
-
 set interfaces lo0 unit 0 family inet address 10.0.0.1/32
-set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::1/128
 </pre>
 
-Next on <b>vMX-2</b>:
+<b>vMX-2</b>:
 
 <pre style="font-size:12px">
 set interfaces ae0 aggregated-ether-options bfd-liveness-detection minimum-interval 100
@@ -79,6 +103,27 @@ set interfaces ae0 aggregated-ether-options bfd-liveness-detection neighbor 10.0
 set interfaces ae0 aggregated-ether-options bfd-liveness-detection local-address 10.0.0.2
 
 set interfaces lo0 unit 0 family inet address 10.0.0.2/32
+</pre>
+
+Alternatively, we can also choose to create the BFD sessions using IPv6 addresses. In that case, we could configure something like this:
+
+<b>vMX-1</b>:
+
+<pre style="font-size:12px">
+set interfaces ae0 aggregated-ether-options bfd-liveness-detection minimum-interval 100
+set interfaces ae0 aggregated-ether-options bfd-liveness-detection neighbor 2001:db8:1000::2
+set interfaces ae0 aggregated-ether-options bfd-liveness-detection local-address 2001:db8:1000::1
+
+set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::1/128
+</pre>
+
+<b>vMX-2</b>:
+
+<pre style="font-size:12px">
+set interfaces ae0 aggregated-ether-options bfd-liveness-detection minimum-interval 100
+set interfaces ae0 aggregated-ether-options bfd-liveness-detection neighbor 2001:db8:1000::1
+set interfaces ae0 aggregated-ether-options bfd-liveness-detection local-address 2001:db8:1000::2
+
 set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::2/128
 </pre>
 
@@ -336,69 +381,18 @@ Physical interface: ae0, Enabled, Physical link is Up
 </pre>      
 
 
-### The complete configuration
-
-<b>vMX-1</b>:
-
-<pre style="font-size:12px">
-set chassis aggregated-devices ethernet device-count 20
-
-set interfaces ge-0/0/4 description vMX2
-set interfaces ge-0/0/4 gigether-options 802.3ad ae0
-set interfaces ge-0/0/5 description vMX2
-set interfaces ge-0/0/5 gigether-options 802.3ad ae0
-set interfaces ge-0/0/6 description vMX2
-set interfaces ge-0/0/6 gigether-options 802.3ad ae0
-set interfaces ge-0/0/7 description vMX2
-set interfaces ge-0/0/7 gigether-options 802.3ad ae0
-
-set interfaces ae0 description vMX-2
-set interfaces ae0 aggregated-ether-options bfd-liveness-detection minimum-interval 100
-set interfaces ae0 aggregated-ether-options bfd-liveness-detection neighbor 10.0.0.2
-set interfaces ae0 aggregated-ether-options bfd-liveness-detection local-address 10.0.0.1
-set interfaces ae0 aggregated-ether-options minimum-links 2
-set interfaces ae0 aggregated-ether-options lacp active
-
-set interfaces ae0 unit 0 family inet address 10.100.0.0/31
-set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::0/127
-
-set interfaces lo0 unit 0 family inet address 10.0.0.1/32
-set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::1/128
-</pre>
 
 
+This is supported on QFX as well, or at least on QFX10k. The configuration is the same save for the way in which you add the child link.
 
-<b>vMX-2</b>:
+<b>MX</b>:
 
 <pre style="font-size:12px">
-set chassis aggregated-devices ethernet device-count 20
-
-set interfaces ge-0/0/4 description vMX1
-set interfaces ge-0/0/4 gigether-options 802.3ad ae0
-set interfaces ge-0/0/5 description vMX1
-set interfaces ge-0/0/5 gigether-options 802.3ad ae0
-set interfaces ge-0/0/6 description vMX1
-set interfaces ge-0/0/6 gigether-options 802.3ad ae0
-set interfaces ge-0/0/7 description vMX1
-set interfaces ge-0/0/7 gigether-options 802.3ad ae0
-
-set interfaces ae0 description vMX-1
-set interfaces ae0 aggregated-ether-options bfd-liveness-detection minimum-interval 100
-set interfaces ae0 aggregated-ether-options bfd-liveness-detection neighbor 10.0.0.1
-set interfaces ae0 aggregated-ether-options bfd-liveness-detection local-address 10.0.0.2
-set interfaces ae0 aggregated-ether-options minimum-links 2
-set interfaces ae0 aggregated-ether-options lacp active
-
-set interfaces ae0 unit 0 family inet address 10.100.0.1/31
-set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::1/127
-
-set interfaces lo0 unit 0 family inet address 10.0.0.2/32
-set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::2/128
+set interfaces et-0/0/0 <font color='red'>gigether-options</font> 802.3ad ae0
 </pre>
 
+<b>QFX<b>:
 
-
-
-
-
-
+<pre style="font-size:12px">
+set interfaces et-0/0/0 <font color='red'>ether-options</font> 802.3ad ae0
+</pre>
