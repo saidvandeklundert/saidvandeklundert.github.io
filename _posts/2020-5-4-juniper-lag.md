@@ -169,73 +169,18 @@ salt@vMX-1> <b>show interfaces ae0 extensive</b>
 Physical interface: ae0, Enabled, Physical link is Up
   Interface index: 158, SNMP ifIndex: 541, Generation: 174
   Description: vMX-2
-  Link-level type: Ethernet, MTU: 1514, Speed: 4Gbps, BPDU Error: None, MAC-REWRITE Error: None, Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled
+  Link-level type: Ethernet, MTU: 1514, <b>Speed: 4Gbps</b>, BPDU Error: None, MAC-REWRITE Error: None, Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled
   Pad to minimum frame size: Disabled
   Minimum links needed: 2, Minimum bandwidth needed: 1bps
-  Device flags   : Present Running
-  Interface flags: SNMP-Traps Internal: 0x4000
-  Current address: 2c:6b:f5:c3:d4:c0, Hardware address: 2c:6b:f5:c3:d4:c0
-  Last flapped   : 2020-05-03 12:45:21 UTC (06:31:51 ago)
-  Statistics last cleared: Never
-  Traffic statistics:
-   Input  bytes  :            191743826                22832 bps
-   Output bytes  :             45822084                 4144 bps
-   Input  packets:              3271894                   47 pps
-   Output packets:               376862                    3 pps
-   IPv6 transit statistics:
-   Input  bytes  :                82112
-   Output bytes  :                    0
-   Input  packets:                 1252
-   Output packets:                    0
-  Label-switched interface (LSI) traffic statistics:
-   Input  bytes  :                    0                    0 bps
-   Input  packets:                    0                    0 pps
-  Dropped traffic statistics due to STP State:
-   Input  bytes  :                    0
-   Output bytes  :                    0
-   Input  packets:                    0
-   Output packets:                    0
-  MAC statistics:                      Receive         Transmit
-    Broadcast packets                        0                0
-    Multicast packets                        0                0
-  Input errors:
-    Errors: 0, Drops: 0, Framing errors: 0, Runts: 0, Giants: 0, Policed discards: 0, Resource errors: 0
-  Output errors:
-    Carrier transitions: 4, Errors: 0, Drops: 0, MTU errors: 0, Resource errors: 0
 < output omitted >
-  Logical interface ae0.0 (Index 329) (SNMP ifIndex 548) (Generation 169)
-    Flags: Up SNMP-Traps 0x4004000 Encapsulation: ENET2
-    Statistics        Packets        pps         Bytes          bps
-    Bundle:
-        Input :       1044439         47      54547394        18896
-        Output:          9008          0        765736            0
-    Adaptive Statistics:
-        Adaptive Adjusts:          0
-        Adaptive Scans  :          0
-        Adaptive Updates:          0
-    Link:
-      ge-0/0/4.0
-        Input :        258264         12      13429736         4704
-        Output:          9008          0        765736            0
-      ge-0/0/5.0
-        Input :        269916         12      14272362         4984
-        Output:             0          0             0            0
-      ge-0/0/6.0
-        Input :        258144         12      13423402         4704
-        Output:             0          0             0            0
-      ge-0/0/7.0
-        Input :        258115         11      13421894         4504
-        Output:             0          0             0            0
+    <b>Aggregate member links: 4</b>
 
-
-    Aggregate member links: 4
-
-    BFD View :           Link        Usable
+    <b>BFD View</b> :           Link        Usable
                    ge-0/0/4.0         Yes
                    ge-0/0/5.0         Yes
                    ge-0/0/6.0         Yes
                    ge-0/0/7.0         Yes
-    LACP info:        Role     System             System       Port     Port    Port 
+    <b>LACP info</b>:        Role     System             System       Port     Port    Port 
                              priority         identifier   priority   number     key 
       ge-0/0/4.0     Actor        127  2c:6b:f5:c3:d4:c0        127        1       1
       ge-0/0/4.0   Partner        127  2c:6b:f5:07:da:c0        127        2       1
@@ -254,17 +199,7 @@ Physical interface: ae0, Enabled, Physical link is Up
       ge-0/0/4.0                 0           0            0            0
       ge-0/0/5.0                 0           0            0            0
       ge-0/0/6.0                 0           0            0            0
-      ge-0/0/7.0                 0           0            0            0
-    List-Type       Status
-    Primary         Active
-                Interfaces:
-                ge-0/0/4        Up   
-                ge-0/0/5        Up   
-                ge-0/0/6        Up   
-                ge-0/0/7        Up   
-    List-Type       Status
-    Backup          Down 
-    Standby         Down 
+      ge-0/0/7.0                 0           0            0            0 
 < output omitted >
 </pre>      
 
