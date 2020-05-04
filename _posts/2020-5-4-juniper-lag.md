@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Juniper BFD protected LAGs
+title: BFD protected LAG on Juniper 
 tags: [ juniper ]
 image: /img/juniper_logo.jpg
 ---
@@ -135,74 +135,13 @@ To verify the LAG, we can use the following commands:<br>
 Example output verifying the BFD sessions:
 
 <pre style="font-size:12px">
-salt@vMX-1> <b>show bfd session extensive</b>
+salt@vMX-1> <b>show bfd session</b>
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        <b>ge-0/0/4</b>       0.300     0.100        3   
- Client LACPD, TX interval 0.100, RX interval 0.100
- Session up time 06:34:00
- Local diagnostic None, remote diagnostic None
- Remote state Up, version 1
- Session type: Micro BFD
- Min async interval 0.100, min slow interval 1.000
- Adaptive async TX interval 0.100, RX interval 0.100
- Local min TX interval 0.100, minimum RX interval 0.100, multiplier 3
- Remote min TX interval 0.100, min RX interval 0.100, multiplier 3
- Local discriminator 21, remote discriminator 21
- Echo mode disabled/inactive
- Remote is control-plane independent
-  Session ID: 0x0
-
-                                                  Detect   Transmit
-Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        <b>ge-0/0/7</b>       0.300     0.100        3   
- Client LACPD, TX interval 0.100, RX interval 0.100
- Session up time 06:33:59
- Local diagnostic None, remote diagnostic None
- Remote state Up, version 1
- Session type: Micro BFD
- Min async interval 0.100, min slow interval 1.000
- Adaptive async TX interval 0.100, RX interval 0.100
- Local min TX interval 0.100, minimum RX interval 0.100, multiplier 3
- Remote min TX interval 0.100, min RX interval 0.100, multiplier 3
- Local discriminator 20, remote discriminator 20
- Echo mode disabled/inactive
- Remote is control-plane independent
-  Session ID: 0x0
-
-                                                  Detect   Transmit
-Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        <b>ge-0/0/6</b>       0.300     0.100        3   
- Client LACPD, TX interval 0.100, RX interval 0.100
- Session up time 06:34:00
- Local diagnostic None, remote diagnostic None
- Remote state Up, version 1
- Session type: Micro BFD
- Min async interval 0.100, min slow interval 1.000
- Adaptive async TX interval 0.100, RX interval 0.100
- Local min TX interval 0.100, minimum RX interval 0.100, multiplier 3
- Remote min TX interval 0.100, min RX interval 0.100, multiplier 3
- Local discriminator 19, remote discriminator 19
- Echo mode disabled/inactive            
- Remote is control-plane independent
-  Session ID: 0x0
-
-                                                  Detect   Transmit
-Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        <b>ge-0/0/5</b>       0.300     0.100        3   
- Client LACPD, TX interval 0.100, RX interval 0.100
- Session up time 06:34:00
- Local diagnostic None, remote diagnostic None
- Remote state Up, version 1
- Session type: Micro BFD
- Min async interval 0.100, min slow interval 1.000
- Adaptive async TX interval 0.100, RX interval 0.100
- Local min TX interval 0.100, minimum RX interval 0.100, multiplier 3
- Remote min TX interval 0.100, min RX interval 0.100, multiplier 3
- Local discriminator 18, remote discriminator 18
- Echo mode disabled/inactive
- Remote is control-plane independent
-  Session ID: 0x0
+2001:db8:1000::2         Up        ge-0/0/7       0.300     0.100        3   
+2001:db8:1000::2         Up        ge-0/0/6       0.300     0.100        3   
+2001:db8:1000::2         Up        ge-0/0/5       0.300     0.100        3   
+2001:db8:1000::2         Up        ge-0/0/4       0.300     0.100        3   
 
 4 sessions, 4 clients
 Cumulative transmit rate 40.0 pps, cumulative receive rate 40.0 pps
@@ -213,15 +152,7 @@ Example output verifying the AE interface:
 <pre style="font-size:12px">
 salt@vMX-1> <b>show lacp interfaces ae0</b>
 Aggregated interface: ae0
-    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity
-      ge-0/0/4       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/4     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/5       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/5     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/6       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/6     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/7       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
-      ge-0/0/7     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
+< output omitted >
     LACP protocol:        Receive State  Transmit State          Mux State 
       ge-0/0/4                  Current   Fast periodic Collecting distributing
       ge-0/0/5                  Current   Fast periodic Collecting distributing
@@ -273,24 +204,7 @@ Physical interface: ae0, Enabled, Physical link is Up
     Errors: 0, Drops: 0, Framing errors: 0, Runts: 0, Giants: 0, Policed discards: 0, Resource errors: 0
   Output errors:
     Carrier transitions: 4, Errors: 0, Drops: 0, MTU errors: 0, Resource errors: 0
-  Ingress queues: 8 supported, 4 in use
-  Queue counters:       Queued packets  Transmitted packets      Dropped packets
-    0                                0                    0                    0
-    1                                0                    0                    0
-    2                                0                    0                    0
-    3                                0                    0                    0
-  Egress queues: 8 supported, 4 in use
-  Queue counters:       Queued packets  Transmitted packets      Dropped packets
-    0                                0                    0                    0
-    1                                0                    0                    0
-    2                                0                    0                    0
-    3                                0                    0                    0
-  Queue number:         Mapped forwarding classes
-    0                   best-effort
-    1                   expedited-forwarding
-    2                   assured-forwarding
-    3                   network-control
-
+< output omitted >
   Logical interface ae0.0 (Index 329) (SNMP ifIndex 548) (Generation 169)
     Flags: Up SNMP-Traps 0x4004000 Encapsulation: ENET2
     Statistics        Packets        pps         Bytes          bps
@@ -353,25 +267,7 @@ Physical interface: ae0, Enabled, Physical link is Up
     List-Type       Status
     Backup          Down 
     Standby         Down 
-    Protocol inet, MTU: 1500
-    Max nh cache: 75000, New hold nh limit: 75000, Curr nh cnt: 1, Curr new hold cnt: 0, NH drop cnt: 0
-    Generation: 221, Route table: 0
-      Flags: Sendbcast-pkt-to-re
-      Addresses, Flags: Is-Preferred Is-Primary
-        Destination: 10.100.0.0/31, Local: 10.100.0.0, Broadcast: Unspecified, Generation: 214
-    Protocol inet6, MTU: 1500
-    Max nh cache: 75000, New hold nh limit: 75000, Curr nh cnt: 1, Curr new hold cnt: 0, NH drop cnt: 0
-    Generation: 222, Route table: 0
-      Flags: Is-Primary
-      Addresses, Flags: Is-Preferred Is-Primary
-        Destination: 2001:db8:1000::/127, Local: 2001:db8:1000::
-    Generation: 216
-      Addresses, Flags: Is-Preferred
-        Destination: fe80::/64, Local: fe80::2e6b:f5ff:fec3:d4c0
-    Protocol multiservice, MTU: Unlimited, Generation: 218
-    Generation: 224, Route table: 0
-      Flags: Is-Primary
-      Policer: Input: __default_arp_policer__
+< output omitted >
 </pre>      
 
 
