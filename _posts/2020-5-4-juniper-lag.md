@@ -122,7 +122,7 @@ set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::2/128
 
 To verify the BFD sessions, we can use the following command:
 <pre style="font-size:12px">
-<b>show bfd session extensive</b>
+<b>show bfd session</b>
 </pre>
 
 To verify the LAG, we can use the following commands:<br>
