@@ -120,10 +120,10 @@ set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::2/128
 
 ### Verifying our work
 
-To verify the BFD sessions, we can use the following command:
+To verify the BFD sessions, we can use the following command:<br>
 <b>show bfd session extensive</b>
 
-To verify the LAG, we can use the following commands:
+To verify the LAG, we can use the following commands:<br>
 <b>show lacp interfaces ae0</b><br>
 <b>show lacp statistics interfaces ae0</b><br>
 <b>show interfaces ae0 extensive</b><br>
