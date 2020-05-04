@@ -377,7 +377,7 @@ Physical interface: ae0, Enabled, Physical link is Up
 
 
 
-This is supported on QFX as well, or at least on QFX10k. The configuration is the same save for the way in which you add the child link.
+This is supported on QFX as well, or at least on QFX10k. The configuration is the same except for the way in which you add a child link to the LAG.
 
 <b>MX</b>:
 
