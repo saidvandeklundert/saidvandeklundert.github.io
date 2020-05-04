@@ -120,19 +120,6 @@ set interfaces lo0 unit 0 family inet6 address 2001:db8:1000::2/128
 
 To verify the BFD sessions, we can use the following command:
 <pre style="font-size:12px">
-<b>show bfd session</b>
-</pre>
-
-To verify the LAG, we can use the following commands:<br>
-<pre style="font-size:12px">
-<b>show lacp interfaces ae0</b>
-<b>show lacp statistics interfaces ae0</b>
-<b>show interfaces ae0 extensive</b>
-</pre>
-
-Example output verifying the BFD sessions:
-
-<pre style="font-size:12px">
 salt@vMX-1> <b>show bfd session</b>
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
@@ -143,9 +130,9 @@ Address                  State     Interface      Time     Interval  Multiplier
 
 4 sessions, 4 clients
 Cumulative transmit rate 40.0 pps, cumulative receive rate 40.0 pps
-</pre>      
+</pre>  
 
-Example output verifying the AE interface:
+To verify the LAG, we can use the following commands:<br>
 
 <pre style="font-size:12px">
 salt@vMX-1> <b>show lacp interfaces ae0</b>
@@ -202,9 +189,6 @@ Physical interface: ae0, Enabled, Physical link is Up
       ge-0/0/7.0                 0           0            0            0 
 < output omitted >
 </pre>      
-
-
-
 
 This is supported on QFX as well, or at least on QFX10k. The configuration is the same except for the way in which you add a child link to the LAG.
 
