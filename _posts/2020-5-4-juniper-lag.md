@@ -22,10 +22,8 @@ The BFD protected LAG will be able to respond to failures as fast as the BFD tim
 The same thing goes for other protocols and this makes it a strategy that can work out well for all sorts of networks, be it an MPLS core or a clos fabric.
 
 
-### Configuring BFD for a LAG on Juniper
+### Configuring BFD for a LAG on Juniper MX
 
-
-In this example, we will configure BFD for a LAG between two Juniper MX routers:
 
 {:refdef: style="text-align: center;"}
 ![Juniper BFD protected LAG on MX](/img/juniper_lag_bfd.png "Juniper BFD protected LAG")
