@@ -8,7 +8,7 @@ image: /img/juniper_logo.jpg
 
 A LAG combines multiple physical links between two adjacent nodes together to establish a single (virtual) link. This offers increased bandwidth, link efficiency and physical redundancy.
 
-In order to make protocols that run accross the LAG rapidly detect failures, you can configure them with BFD. BFD supports OSPF, IS-IS, BGP, LDP, RSVP, static routes and more. 
+In order to make protocols that run across the LAG rapidly detect failures, you can configure them with BFD. BFD supports OSPF, IS-IS, BGP, LDP, RSVP, static routes and more. 
 
 In some networks, BFD is configured for multiple protocols at the same time. But did you know that you can also protect a LAG using BFD? And that this protection also helps the higher-layer protocols to respond faster?
 
