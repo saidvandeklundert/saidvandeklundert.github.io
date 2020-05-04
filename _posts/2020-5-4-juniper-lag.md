@@ -138,7 +138,7 @@ Example output verifying the BFD sessions:
 salt@vMX-1> <b>show bfd session extensive</b>
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        ge-0/0/4       0.300     0.100        3   
+10.0.0.2                 Up        <b>ge-0/0/4</b>       0.300     0.100        3   
  Client LACPD, TX interval 0.100, RX interval 0.100
  Session up time 06:34:00
  Local diagnostic None, remote diagnostic None
@@ -155,7 +155,7 @@ Address                  State     Interface      Time     Interval  Multiplier
 
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        ge-0/0/7       0.300     0.100        3   
+10.0.0.2                 Up        <b>ge-0/0/7</b>       0.300     0.100        3   
  Client LACPD, TX interval 0.100, RX interval 0.100
  Session up time 06:33:59
  Local diagnostic None, remote diagnostic None
@@ -172,7 +172,7 @@ Address                  State     Interface      Time     Interval  Multiplier
 
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        ge-0/0/6       0.300     0.100        3   
+10.0.0.2                 Up        <b>ge-0/0/6</b>       0.300     0.100        3   
  Client LACPD, TX interval 0.100, RX interval 0.100
  Session up time 06:34:00
  Local diagnostic None, remote diagnostic None
@@ -189,7 +189,7 @@ Address                  State     Interface      Time     Interval  Multiplier
 
                                                   Detect   Transmit
 Address                  State     Interface      Time     Interval  Multiplier
-10.0.0.2                 Up        ge-0/0/5       0.300     0.100        3   
+10.0.0.2                 Up        <b>ge-0/0/5</b>       0.300     0.100        3   
  Client LACPD, TX interval 0.100, RX interval 0.100
  Session up time 06:34:00
  Local diagnostic None, remote diagnostic None
