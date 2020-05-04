@@ -31,7 +31,7 @@ The same thing goes for other protocols and this makes it a strategy that can wo
 ![Juniper BFD protected LAG on MX](/img/juniper_lag_bfd.png "Juniper BFD protected LAG")
 {: refdef}
 
-Let's start out configuring the LAG with its 4 child links. Additionally, let's make sure the LAG does not remain up in case there is only 1 link left. To this end, we configure the following:
+Let's start out configuring the LAG with its 4 child links. To this end, we configure the following:
 
 <b>vMX-1</b>:
 
@@ -44,7 +44,6 @@ set interfaces ge-0/0/6 gigether-options 802.3ad ae0
 set interfaces ge-0/0/7 gigether-options 802.3ad ae0
 
 set interfaces ae0 description vMX-2
-set interfaces ae0 aggregated-ether-options minimum-links 2
 set interfaces ae0 aggregated-ether-options lacp active
 
 set interfaces ae0 unit 0 family inet address 10.100.0.0/31
@@ -63,7 +62,6 @@ set interfaces ge-0/0/6 gigether-options 802.3ad ae0
 set interfaces ge-0/0/7 gigether-options 802.3ad ae0
 
 set interfaces ae0 description vMX-1
-set interfaces ae0 aggregated-ether-options minimum-links 2
 set interfaces ae0 aggregated-ether-options lacp active
 
 set interfaces ae0 unit 0 family inet address 10.100.0.1/31
@@ -71,7 +69,7 @@ set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::1/127
 </pre>
 
 
-The first line enables the system to configure a total of 20 LAGs. Without this configuration, the Juniper device will not bring up any LAG. After this, we assign 4 interfaces to LAG AE0 and configure the AE0 interface itself. Here we configure the <b>aggregated-ether-options</b> to use LACP and we instruct the system to bring the LAG down in case there are less than 2 links. Finally, we finish up configuring IP addresses on the AE interface.
+The first line enables the system to configure a total of 20 LAGs. Without this configuration, the Juniper device will not bring up any LAG. After this, we assign 4 interfaces to LAG AE0 and configure the AE0 interface itself. Here we configure the <b>aggregated-ether-options</b> to use LACP. Finally, we finish up configuring IP addresses on the AE interface.
 
 Next up is the BFD sessions that protect the LAG. Those are configured as part of the <b>aggregated-ether-options</b> under the interface configuration of the LAG. We only need to specify the BFD session characteristics once in the AE configuration. This will make the Juniper device attempt to establish BFD sessions on every active child link that is participating in the LAG.
 
@@ -160,7 +158,7 @@ Physical interface: ae0, Enabled, Physical link is Up
   Description: vMX-2
   Link-level type: Ethernet, MTU: 1514, <b>Speed: 4Gbps</b>, BPDU Error: None, MAC-REWRITE Error: None, Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled
   Pad to minimum frame size: Disabled
-  Minimum links needed: 2, Minimum bandwidth needed: 1bps
+  Minimum links needed: 1, Minimum bandwidth needed: 1bps
 < output omitted >
     <b>Aggregate member links: 4</b>
 
