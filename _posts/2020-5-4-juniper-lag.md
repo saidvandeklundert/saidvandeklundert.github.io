@@ -31,7 +31,7 @@ In this example, we will configure a LAG between two MX routers:
 ![Juniper BFD protected LAG on MX](/img/juniper_lag_bfd.png "Juniper BFD protected LAG")
 {: refdef}
 
-Let's start out configuring the LAG. The LAG will use LACP and it will be configured with 4 child links. We do not want the LAG to remain up in case there is only 1 link left. To this end, we configure the following:
+Let's start out configuring the LAG with its 4 child links. Additionally, let's make sure the LAG does not remain up in case there is only 1 link left. To this end, we configure the following:
 
 <b>vMX-1</b>:
 
