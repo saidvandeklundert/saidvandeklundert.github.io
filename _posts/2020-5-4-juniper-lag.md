@@ -6,7 +6,7 @@ image: /img/juniper_logo.jpg
 ---
 
 
-A LAG combines multiple physical links between two adjacent nodes together to establish a single (virtual) link. This offers increased bandwidth, link efficiency and physical redundancy. Other protocols use the LAG interface as a single interface.
+A LAG combines multiple physical links between two adjacent nodes together to establish a single (virtual) link. This offers increased bandwidth, link efficiency and physical redundancy.
 
 In order to make protocols that run accross the LAG rapidly detect failures, you can configure them with BFD. BFD supports OSPF, IS-IS, BGP, LDP, RSVP, static routes and more. 
 
