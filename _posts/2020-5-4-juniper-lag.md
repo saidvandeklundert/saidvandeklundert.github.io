@@ -19,7 +19,7 @@ When BFD is used as a liveness detection protocol for a LAG, micro-BFD sessions 
 
 The BFD protected LAG will be able to respond to failures as fast as the BFD timers you configure. This in turn ensures that higher layer-protocols (such as OSPF, LDP or BGP) will be able to respond quickly to the loss of connectivity. This is because protocols running across interfaces will react nearly instantaneously to an interface down event. Consider an OSPF neighbor relationship with a dead timer of 40 seconds. When the underlying interface that is used to sustain the OSPF session is brought down by BFD, the system does not have to wait for the dead timer to reach 0. As soon as the LAG is brought down, the OSPF session is removed and alternate routes (if any) are considered. 
 
-The same thing goes for other protocols and this makes it that the strategy can work out well for all sorts of networks, be it an MPLS core or a clos fabric.
+The same thing goes for other protocols and this makes it a strategy that can work out well for all sorts of networks, be it an MPLS core or a clos fabric.
 
 
 ### Configuring BFD for a LAG
