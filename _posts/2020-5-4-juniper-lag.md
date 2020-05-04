@@ -15,11 +15,11 @@ In some networks, BFD is configured to aide multiple protocols at the same time.
 ### Micro-BFD on LAG interfaces
 
 
-When BFD is used as a liveness detection protocol for a LAG, micro-BFD sessions will monitor the links between the two systems. The micro BFD sessions that are protecting the member links are independent BFD sessions. When BFD detects a failure in the path of a link, the child of the LAG is brought down. This way, BFD can detect failures in the forwarding path of a child link and ensure that it is brought down swiftly.
+When BFD is used as a liveness detection protocol for a LAG, micro-BFD sessions will monitor the forwarding path of the links between the two systems. The BFD sessions that are protecting the member links are independent BFD sessions. There is on BFD session per link that is part of the LAG. When BFD detects a failure in the path of a link, the child of the LAG is brought down. This way, BFD can detect failures in the forwarding path of a child link and ensure that it is brought down swiftly.
 
 The BFD protected LAG will be able to respond to failures as fast as the BFD timers you configure. This in turn ensures that higher layer-protocols (such as OSPF, LDP or BGP) will be able to respond quickly to the loss of connectivity. This is because protocols running across interfaces will react nearly instantaneously to an interface down event. Consider an OSPF neighbor relationship with a dead timer of 40 seconds. When the underlying interface that is used to sustain the OSPF session is brought down by BFD, the system does not have to wait for the dead timer to reach 0. As soon as the LAG is brought down, the OSPF session is removed and alternate routes (if any) are considered. 
 
-The same thing goes for other protocols and this makes it that the strategy can work out well for all sorts of networks, be it an MPLS core or a clos fabric. 
+The same thing goes for other protocols and this makes it that the strategy can work out well for all sorts of networks, be it an MPLS core or a clos fabric.
 
 
 ### Configuring a LAG with BFD
@@ -79,11 +79,9 @@ set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::1/127
 </pre>
 
 
-The first line enables the system to configure a total of 20 LAGs. Without this configuration, the Juniper device will not bring up the LAG. After this, we assign 4 interfaces to LAG interface AE0. After this, we configure the AE0 interface configuration. Here we configure the <b>aggregated-ether-options</b> to use LACP and we instruct the system to bring the LAG down in case there are less than 2 links. 
-Finally, we finish up configuring IP addresses on the AE interface.
+The first line enables the system to configure a total of 20 LAGs. Without this configuration, the Juniper device will not bring up any LAG. After this, we assign 4 interfaces to LAG AE0 and configure the AE0 interface itself. Here we configure the <b>aggregated-ether-options</b> to use LACP and we instruct the system to bring the LAG down in case there are less than 2 links. Finally, we finish up configuring IP addresses on the AE interface.
 
-
-Configuring this on both vMX-1 as well as vMX-2 is enough to bring up the LAG. But in this case, we also want to enable BFD between the two systems. The BFD sessions that protect the LAG are configured as part of the <b>aggregated-ether-options</b> under the interface configuration of the LAG.
+Next up is the BFD sessions that protect the LAG. Those are configured as part of the <b>aggregated-ether-options</b> under the interface configuration of the LAG.
 
 <b>vMX-1</b>:
 
@@ -134,9 +132,9 @@ To verify the BFD sessions, we can use the following command:
 <b>show bfd session extensive</b>
 
 To verify the LAG, we can use the following commands:
-<b>show lacp interfaces ae0</b>
-<b>show lacp statistics interfaces ae0</b>
-<b>show interfaces ae0 extensive</b>
+<b>show lacp interfaces ae0</b><br>
+<b>show lacp statistics interfaces ae0</b><br>
+<b>show interfaces ae0 extensive</b><br>
 
 Example output verifying the BFD sessions:
 
