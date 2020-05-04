@@ -38,13 +38,9 @@ Let's start out configuring the LAG with its 4 child links. Additionally, let's 
 <pre style="font-size:12px">
 set chassis aggregated-devices ethernet device-count 20
 
-set interfaces ge-0/0/4 description vMX2
 set interfaces ge-0/0/4 gigether-options 802.3ad ae0
-set interfaces ge-0/0/5 description vMX2
 set interfaces ge-0/0/5 gigether-options 802.3ad ae0
-set interfaces ge-0/0/6 description vMX2
 set interfaces ge-0/0/6 gigether-options 802.3ad ae0
-set interfaces ge-0/0/7 description vMX2
 set interfaces ge-0/0/7 gigether-options 802.3ad ae0
 
 set interfaces ae0 description vMX-2
@@ -61,13 +57,9 @@ set interfaces ae0 unit 0 family inet6 address 2001:db8:1000::0/127
 <pre style="font-size:12px">
 set chassis aggregated-devices ethernet device-count 20
 
-set interfaces ge-0/0/4 description vMX1
 set interfaces ge-0/0/4 gigether-options 802.3ad ae0
-set interfaces ge-0/0/5 description vMX1
 set interfaces ge-0/0/5 gigether-options 802.3ad ae0
-set interfaces ge-0/0/6 description vMX1
 set interfaces ge-0/0/6 gigether-options 802.3ad ae0
-set interfaces ge-0/0/7 description vMX1
 set interfaces ge-0/0/7 gigether-options 802.3ad ae0
 
 set interfaces ae0 description vMX-1
