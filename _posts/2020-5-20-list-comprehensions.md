@@ -5,6 +5,8 @@ tags: [ python, automation ]
 image: /img/python-logo.jpg
 ---
 
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/list_comp/_posts/2020-5-20-list-comprehensions.md
+
 ### Python list comprehensions
 
 Using Python list comprehensions allows you to use all of the things shown previously while writing it down in a very concise way. See the [Python intro](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) for the basics on list comprehensions. 
