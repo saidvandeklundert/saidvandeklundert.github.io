@@ -127,7 +127,7 @@ The gain is tremendous. On many devices performing <b>netmiko.send_command 'show
 
 Proxy minions memory and CPU usage can be problematic. Switching to a function that uses scrapli for screen scraping can help you deal with the CPU usage and speed things up at the same time. 
 
-Mostly, I have been using scrapli to retrieve information from Cisco and Arista devices that either do not have an API or run software too old to turn the API on. It has been working very well for me so far. The only caveat I see at the moment is the fact that the library that makes scrapli work really fast and efficient, ssh2-python, is no longer maintained that actively.
+So far, I have only been using scrapli to retrieve information from Cisco and Arista devices where scraping is required and this has been working very well for me. The only caveat I see at the moment is the fact that the library that makes scrapli work really fast and efficient, ssh2-python, is no longer maintained that actively.  
 
 Switching to using scrapli is not something that helps to address the memory requirements that come with the proxy minions. To address this, Salt is working on a delta proxy. 
 
