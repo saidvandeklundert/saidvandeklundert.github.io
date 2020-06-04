@@ -33,7 +33,7 @@ With this example, you can use scrapli to log in to the device using the SSH bin
 
 
 <pre style="font-size:12px">
-from scrapli.driver.core import EOSDriver
+from scrapli.driver.core import IOSXEDriver
 
 my_device = {
     "host": "192.168.1.1",
@@ -43,7 +43,7 @@ my_device = {
     "<font color='red'>transport</font>" : "<font color='red'>ssh2</font>",      
 }
 
-with EOSDriver(**my_device) as conn:
+with IOSXEDriver(**my_device) as conn:
     response = conn.send_command("show version")
     print(response.result)
 </pre>
@@ -125,6 +125,8 @@ The gain is tremendous. On many devices performing <b>netmiko.send_command 'show
 
 ### Final thoughts
 
-Proxy minions memory and CPU usage can be problematic. Switching to a function that uses scrapli can help you deal with the CPU usage and speed things up at the same time. It is not something that helps to address the memory requirements that come with the proxy minions. To address this, Salt is working on a delta proxy. 
+Proxy minions memory and CPU usage can be problematic. Switching to a function that uses scrapli can help you deal with the CPU usage and speed things up at the same time. Mostly, I have been using scrapli to retrieve information from Cisco and Arista devices that either do not have an API or run software to old to turn the API on. It has been working very well for me.
 
-Another solution to the memory issue and burden that comes with managing many proxies could be <a href="https://github.com/mirceaulinic/salt-sproxy" target="_blank">salt-sproxy</a>. Things will not happen in near parallel as you do not use the message bus, but the upside is that you have no more proxy minions to manage. I am not (yet) using sproxy, but I think scrapli is able to offer the same benefits here.
+Switching to using scrapli is not something that helps to address the memory requirements that come with the proxy minions. To address this, Salt is working on a delta proxy. 
+
+Another solution to the memory issue and burden that comes with managing many proxies could be <a href="https://github.com/mirceaulinic/salt-sproxy" target="_blank">salt-sproxy</a>. Things will not happen in near parallel as you do not use the message bus, but the upside is that you have no more proxy minions to manage. I am not (yet) using sproxy, but I think scrapli is able to offer the same benefits there.
