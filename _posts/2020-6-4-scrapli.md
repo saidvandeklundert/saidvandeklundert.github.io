@@ -48,7 +48,7 @@ with IOSXEDriver(**my_device) as conn:
     print(response.result)
 </pre>
 
-If you are normally using Paramiko (or netmiko) for screen scraping, you will see things speed up quite a bit using this package. The following are 2 posts where the ssh2-python author compares paramiko with his own package:<br>
+If you are normally using Paramiko (or netmiko) for screen scraping, you will see things speed up quite a bit using this package. The following are 2 posts where the ssh2-python author compares Paramiko with his own package:<br>
 <a href="https://parallel-ssh.org/post/ssh2-python/" target="_blank">The State of Python SSH Libraries</a><br>
 <a href="https://parallel-ssh.org/post/parallel-ssh-libssh2/" target="_blank">parallel-ssh Clients</a><br>
 
@@ -57,7 +57,7 @@ If you are normally using Paramiko (or netmiko) for screen scraping, you will se
 
 In SaltStack, Netmiko proxy minions use Paramiko to communicate with devices. In some drivers that NAPALM uses, you will also find that Paramiko is used for SSH sessions. 
 
-Asuming you are using netmiko proxy minions, the following would be a quick way to utilize scrapli:
+Assuming you are using netmiko proxy minions, the following would be a quick way to utilize scrapli:
 
 <pre style="font-size:12px">
 from scrapli.driver.core import EOSDriver
@@ -127,7 +127,7 @@ The gain is tremendous. On many devices performing <b>netmiko.send_command 'show
 
 Proxy minions memory and CPU usage can be problematic. Switching to a function that uses scrapli for screen scraping can help you deal with the CPU usage and speed things up at the same time. 
 
-Mostly, I have been using scrapli to retrieve information from Cisco and Arista devices that either do not have an API or run software to old to turn the API on. It has been working very well for me so far. The only caveat I see at the moment is the fact that the library that makes scrapli work really fast and efficient, ssh2-python, is no longer maintained that actively.
+Mostly, I have been using scrapli to retrieve information from Cisco and Arista devices that either do not have an API or run software too old to turn the API on. It has been working very well for me so far. The only caveat I see at the moment is the fact that the library that makes scrapli work really fast and efficient, ssh2-python, is no longer maintained that actively.
 
 Switching to using scrapli is not something that helps to address the memory requirements that come with the proxy minions. To address this, Salt is working on a delta proxy. 
 
