@@ -15,7 +15,7 @@ Scrapli can be found <a href="https://github.com/carlmontanari/scrapli" target="
 In the following example, scrapli is used to send a command to an Arista device:
 
 <pre style="font-size:12px">
-from scrapli.driver.core import EOSDriver
+from scrapli.driver.core import IOSXEDriver
 
 my_device = {
     "host": "192.168.1.1",
@@ -24,7 +24,7 @@ my_device = {
     "auth_strict_key": False,
 }
 
-with EOSDriver(**my_device) as conn:
+with IOSXEDriver(**my_device) as conn:
     response = conn.send_command("show version")
     print(response.result)
 </pre>
