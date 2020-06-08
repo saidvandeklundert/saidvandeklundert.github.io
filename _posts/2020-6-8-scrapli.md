@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Scrapli in SaltStack
-tags: [ python, automation, scrapli ]
-image: /img/python-logo.jpg
+tags: [ python, automation, scrapli, saltstack ]
+image: /img/salt_stack_logo.jpg
 ---
 
 Recently, I have been looking into a Python library called <b>scrapli</b>. You can use it for screen scraping and what led me to checking out this package is the fact that it is easy to tap into <b>ssh2-python</b>. This can offer quite some benefits in terms of speed and CPU utilization.
