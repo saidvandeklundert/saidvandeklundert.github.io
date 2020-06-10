@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Scripting Juniper shell commands
+title: Scripting Juniper shell commands in Python
 tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
@@ -10,11 +10,11 @@ When you log in to a Juniper device, you generally land on the Juniper CLI. This
 
 ### Issuing shell commands in a script
 
-Junos PyEZ, the Python library to automate Juniper devices, also has methods available to help issue shell commands. The code can be found <a href="https://github.com/Juniper/py-junos-eznc/blob/master/lib/jnpr/junos/utils/start_shell.py" target="_blank">here</a>. 
+Junos PyEZ, the Python library to automate Juniper devices, also has methods available to issue shell commands. The code can be found <a href="https://github.com/Juniper/py-junos-eznc/blob/master/lib/jnpr/junos/utils/start_shell.py" target="_blank">here</a>. 
 
-This code offers you the <b>StartShell</b> class that comes with a set of methods to log in to the Juniper device and land directly into the shell mode. The SSH session that is instantiated is created leveraging Paramiko. This part of the code can be found <a href="https://github.com/Juniper/py-junos-eznc/blob/master/lib/jnpr/junos/utils/ssh_client.py" target="_blank">here</a>.
+This code offers you the <b>StartShell</b> class that comes with a set of methods to log in to the Juniper device and land directly into shell mode. The SSH session that enables all this is created with Paramiko. This part of the code can be found <a href="https://github.com/Juniper/py-junos-eznc/blob/master/lib/jnpr/junos/utils/ssh_client.py" target="_blank">here</a>.
 
-In order to use it, generally, you create a <b>Device</b> object and use that to create a <b>StartShell</b> object. The <b>StartShell</b> object can then be used to open up an SSH connection to the device and issue shell commands. 
+To use the methods, you create a <b>Device</b> object which you then use to create a <b>StartShell</b> object. The <b>StartShell</b> object will allow you to open up an SSH connection to the device and issue shell commands. 
 
 To play around with the <b>StartShell</b> class, you can paste the following into a Python interctive shell (or run it as a script):
 
