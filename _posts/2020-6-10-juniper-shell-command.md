@@ -36,9 +36,9 @@ print(ss.run('logger -e testing123')[1])
 ss.close()
 ```
 
-The <b>ss.open</b> and <b>ss.close</b> are used to open and close the connection to the device. The <b>ss.run</b> method will send a command to the device and return the result. The return is a tuple that contains two items. The first item will be True in case the shell command was executed succesffully, and False otherwise. The second item contains the command output that the device returns.
+The <b>ss.open</b> and <b>ss.close</b> are used to open and close the connection to the device. The <b>ss.run</b> method will send a command to the device and return a tuple that contains two items. The first item will be True in case the shell command was executed succesffully, and False otherwise. The second item contains the command output that the device returns.
 
-The connection has a default timeout set to 30. This is also the time that You can alter it by passing the <b>timeout</b> keyword argument. If there are particularly slow commands, you can also pass a timeout value along with the run method. Let try that out by running a command that takes some time to complete. The log messages that are accessible via <b>show log messages</b> are stored in <b>/var/log/messages</b>. Unless they recently rolled over, chances are this file contains quite some lines. Let's look at the content of this log file using the following script:
+The connection has a default timeout set to 30. In case you are dealing with a command that takes a long time to complete, you can pass a timeout value along with the run method. Let try this out by running a command that takes some time to complete. The log messages that are accessible via <b>show log messages</b> are stored in <b>/var/log/messages</b>. Unless they recently rolled over, chances are this file contains quite some lines. Let's look at the content of this log file using the following script:
 
 ```python
 from jnpr.junos.utils.start_shell import StartShell
@@ -59,6 +59,7 @@ print(cli_1[0])
 print(cli_2[0])
 
 ```
+
 When we run the script, we can see the following:
 
 ```
@@ -86,7 +87,5 @@ with StartShell(dev) as ss:
 print(log_msg[1])
 print(log_msg_0[1])
 ```
-
-
 
 Hope this helps!
