@@ -14,7 +14,7 @@ Junos PyEZ, the Python library to automate Juniper devices, also has methods ava
 
 This code offers you the <b>StartShell</b> class that comes with a set of methods to log in to the Juniper device and land directly into shell mode. The SSH session that enables all this is created with Paramiko. This part of the code can be found <a href="https://github.com/Juniper/py-junos-eznc/blob/master/lib/jnpr/junos/utils/ssh_client.py" target="_blank">here</a>.
 
-To use these methods, you first create a <b>Device</b> object. This is used to instantiate a <b>StartShell</b> object that will allow you to open up an SSH connection to the device and issue shell commands. 
+To use these methods, you first create a <b>Device</b> object. This can then be used to instantiate a <b>StartShell</b> object that will allow you to open up an SSH connection to the device and issue shell commands. 
 
 To play around with the <b>StartShell</b> class, you can paste the following into a Python interactive shell (or run it as a script):
 
