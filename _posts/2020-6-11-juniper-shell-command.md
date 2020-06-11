@@ -5,7 +5,7 @@ tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
 
-When you log in to a Juniper device, you generally land on the Juniper CLI. This is the command shell that most engineers are familiar with. But not all commands are available in the Juniper CLI. Sometimes you will need to interact with the CLI of the underlying OS, which is either Linux or FreeBSD. A reason for you to go to shell mode, is when you need to log in to a specific line card. Using <b>start shell</b> drops you to shell mode. But how can you do this in a script?
+When you log in to a Juniper device, you normally land on the Juniper CLI. This is the command shell that most engineers are familiar with. But not all commands are available on the Juniper CLI. Sometimes you will need to interact with the shell of the underlying OS, which can be Linux or FreeBSD. One example reason for you to go to this shell mode, is when you need to log in to a specific line card. Using <b>start shell</b> drops you to shell mode. But how can you do this from a script?
 
 
 ### Issuing shell commands in a script
