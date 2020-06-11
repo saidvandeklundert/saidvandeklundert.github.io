@@ -37,7 +37,9 @@ cmd_3_result = ss.run('cprod -A fpc0 -c "show syslog messages"')[1]
 
 ss.close()
 
+# print the tuple that run returns:
 print(cmd_result)
+# only print the result of the shell command:
 print(cmd_1_result[1])
 print(cmd_2_result[1])
 print(cmd_3_result[1])
