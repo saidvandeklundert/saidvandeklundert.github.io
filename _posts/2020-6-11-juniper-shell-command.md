@@ -5,7 +5,7 @@ tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
 
-When you log in to a Juniper device, you generally land on the Juniper CLI. This is the command shell that most engineers are familiar with. But not all commands are available in the Juniper CLI. Sometimes you will need to interact with the CLI of the underlying OS, which is either Linux or FreeBSD. An example of a scenario that requires you to go to shell mode, is when you need to log in to a specific line card for instance. Using <b>start shell</b> drops you to shell mode. But how can you do this in a script?
+When you log in to a Juniper device, you generally land on the Juniper CLI. This is the command shell that most engineers are familiar with. But not all commands are available in the Juniper CLI. Sometimes you will need to interact with the CLI of the underlying OS, which is either Linux or FreeBSD. A reason for you to go to shell mode, is when you need to log in to a specific line card. Using <b>start shell</b> drops you to shell mode. But how can you do this in a script?
 
 
 ### Issuing shell commands in a script
@@ -26,26 +26,21 @@ dev=Device(host='10.175.74.101', user='salt', password='salt123')
 
 ss = StartShell(dev)
 
-# open the connection to the device
 ss.open()
 
-#check the files in a directory
-print(ss.run('ls -ltr /var/tmp/')[1])
+# checks files in /var/tmp
+cmd_1_result = ss.run('ls -ltr /var/tmp/')
+# check FPC software version
+cmd_2_result = ss.run('cprod -A fpc0 -c "show version"')[1]
+# check FPC syslog messages
+cmd_3_result = ss.run('cprod -A fpc0 -c "show syslog messages"')[1]
 
-# have the device send a syslog command
-print(ss.run('logger -e testing123')[1])
-
-# run a Junos CLI command from shell
-print(ss.run('cli -c "show version | no-more"')[1])
-
-# run 'show version' on FPC 0
-print(ss.run('cprod -A fpc0 -c "show version"')[1])
-
-# show the syslog messages for FPC 0
-print(ss.run('cprod -A fpc0 -c "show syslog messages"')[1])
-
-# close the connection to the device
 ss.close()
+
+print(cmd_result)
+print(cmd_1_result[1])
+print(cmd_2_result[1])
+print(cmd_3_result[1])
 ```
 
 The <b>ss.open</b> and <b>ss.close</b> are used to open and close the connection to the device. The <b>ss.run</b> method will send a command to the device and return a tuple that contains two items. The first item will be <b>True</b> in case the shell command was executed succesffully, and <b>False</b> otherwise. The second item contains the command output that the device returns.
@@ -93,11 +88,17 @@ dev=Device(host='10.175.74.101', user='salt', password='salt123')
 ss = StartShell(dev)
 
 with StartShell(dev) as ss:    
-    log_msg = ss.run('cat /var/log/messages', timeout=90)
-    log_msg_0 = ss.run('zcat /var/log/messages.0.gz', timeout=90)
+    # check older log messages
+    cmd_1 = ss.run('zcat /var/log/messages.0.gz', timeout=90)[1]
+    # have the device send a syslog message
+    cmd_2 = ss.run('logger -e testing123')[1]
+    # run a Junos CLI command from shell
+    cmd_3 = ss.run('cli -c "show version | no-more"')[1]
 
-print(log_msg[1])
-print(log_msg_0[1])
+print(cmd_1)
+print(cmd_2)
+print(cmd_3)
 ```
+
 
 Hope this helps!
