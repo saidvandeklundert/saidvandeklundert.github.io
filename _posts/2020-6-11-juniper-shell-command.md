@@ -8,7 +8,7 @@ image: /img/juniper_logo.jpg
 When you log in to a Juniper device, you normally land on the Juniper CLI. This is the command shell that most engineers are familiar with. But not all commands are available on the Juniper CLI. Sometimes you will need to interact with the shell of the underlying OS, which can be Linux or FreeBSD. One example reason for you to go to this shell mode, is when you need to log in to a specific line card. Using <b>start shell</b> drops you to shell mode. But how can you do this from a script?
 
 
-### Issuing shell commands in a script
+### Executing shell commands from a script
 
 Junos PyEZ, the Python library to automate Juniper devices, also has methods available to issue shell commands. The code can be found <a href="https://github.com/Juniper/py-junos-eznc/blob/master/lib/jnpr/junos/utils/start_shell.py" target="_blank">here</a>. 
 
@@ -45,7 +45,7 @@ print(cmd_2_result[1])
 print(cmd_3_result[1])
 ```
 
-The <b>ss.open</b> and <b>ss.close</b> are used to open and close the connection to the device. The <b>ss.run</b> method will send a command to the device and return a tuple that contains two items. The first item will be <b>True</b> in case the shell command was executed succesfully, and <b>False</b> otherwise. The second item contains the command output that the device returns.
+The <b>ss.open</b> and <b>ss.close</b> are used to open and close the connection to the device. The <b>ss.run</b> method will send a command to the device and return a tuple that contains two items. The first item will be <b>True</b> in case the shell command was executed successfully, and <b>False</b> otherwise. The second item contains the command output that the device returns.
 
 The connection has a default timeout set to 30. In case you are dealing with a command that takes a long time to complete, you can pass a timeout value along with the run method. Let try this out by running a command that takes some time to complete. The log messages that are accessible via <b>show log messages</b> are stored in <b>/var/log/messages</b>. Unless they recently rolled over, chances are this file contains quite some lines. Let's look at the content of this log file using the following script:
 
