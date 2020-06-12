@@ -37,9 +37,9 @@ cmd_3_result = ss.run('cprod -A fpc0 -c "show syslog messages"')[1]
 
 ss.close()
 
-# print the tuple that run returns:
+# print the tuple that ss.run returns:
 print(cmd_result)
-# only print the result of the shell command:
+# printing the result of the shell commands:
 print(cmd_1_result[1])
 print(cmd_2_result[1])
 print(cmd_3_result[1])
@@ -47,7 +47,7 @@ print(cmd_3_result[1])
 
 The <b>ss.open</b> and <b>ss.close</b> are used to open and close the connection to the device. The <b>ss.run</b> method will send a command to the device and return a tuple that contains two items. The first item will be <b>True</b> in case the shell command was executed successfully, and <b>False</b> otherwise. The second item contains the command output that the device returns.
 
-The connection has a default timeout set to 30. In case you are dealing with a command that takes a long time to complete, you can pass a timeout value along with the run method. Let try this out by running a command that takes some time to complete. The log messages that are accessible via <b>show log messages</b> are stored in <b>/var/log/messages</b>. Unless they recently rolled over, chances are this file contains quite some lines. Let's look at the content of this log file using the following script:
+In case you are dealing with a command that takes a long time to complete, you can pass a timeout value along with the run method. Let try this out by running a command that takes some time to complete. The log messages that are accessible via <b>show log messages</b> are stored in <b>/var/log/messages</b>. Unless they recently rolled over, chances are this file contains quite some lines. Let's look at the content of this log file using the following script:
 
 ```python
 from jnpr.junos.utils.start_shell import StartShell
@@ -77,7 +77,7 @@ False
 True
 ```
 
-The first command did not complete because the timeout was too short. The second command, which had an increased timeout, did complete. The way this is determined currently is by checking whether or not the prompt that is returned by the SSH session matches the prompt that should be there after a command completed.
+The first command did not complete because the timeout was too short. The second command, which had an increased timeout, did complete. 
 
 Another thing worth mentioning is that <b>StartShell</b> can be used with the context manager. This means you can use <b>with</b> to open the connection. As soon as the block of code in the <b>with</b> statement is executed, the device connection is automatically closed: 
 
