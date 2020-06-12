@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Scripting Juniper shell commands in Python
+title: Executing shell commands using Junos PyEZ
 tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
