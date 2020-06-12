@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Juniper and JSON
-tags: [automation, juniper, pyez]
+tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
 
