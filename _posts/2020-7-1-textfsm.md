@@ -6,13 +6,13 @@ image: /img/python.jpg
 ---
 
 
-Google TextFSM is a Python module that is written to make parsing text easier. It is a convenient way to turn CLI output into structured data. In this blog, I will walkthrough a textFSM example and share the way in which I have been using textFSM lately.
+Google TextFSM is a Python module that is written to make parsing text easier. It is a convenient way to turn CLI output into structured data. In this blog, I will walkthrough a TextFSM example and share the way in which I have been using TextFSM lately.
 
 
 ### TextFSM example
 
 
-In this example, I will parse the the output from the Arista <b>show version</b> CLI command:
+In this example, I will parse the output from the Arista <b>show version</b> CLI command:
 
 <pre style="font-size:12px">
 Arista DCS-7050TX-64-R
@@ -30,7 +30,7 @@ Total memory:           3818208 kB
 Free memory:            2428516 kB
 </pre>
 
-In order to extract the relevant fields from this string as structured data, I wrote a textFSM template that I stored as a separate file. The example template I am working with in this article is stored as <b>eos_show_version.fsm</b> and contains the following:
+In order to extract the relevant fields from this string as structured data, I wrote a TextFSM template that I stored as a separate file. The example template I am working with in this article is stored as <b>eos_show_version.fsm</b> and contains the following:
 
 <pre style="font-size:12px">
 Value MODEL (\S*)
@@ -51,7 +51,7 @@ The first part of the template contains the values that have to be extracted fro
 
 The second part of the template, the State definitions, is where we define the state rules. The input we feed the template is read line by line, and every line is tested against each rule we define here.
 
-A basic script that we can use to run the text output through this textFSM template is the following:
+A basic script that we can use to run the text output through this TextFSM template is the following:
 
 
 ```python
@@ -166,9 +166,9 @@ This will output the following:
 
 There are a number of advantages to doing it in this way. First of all, since the method is decoupled from collecting the string, using it in a variety of other functions or scripts can be done without too much effort.
 
-Second is that you can use this method to parse the text regardess of how the string is collected. It could be coming from a script that uses paramiko, netmiko, a file already stored, a Salt execution module or anything really.
+Second is that you can use this method to parse the text regardless of how the string is collected. It could be coming from a script that uses paramiko, netmiko, a file already stored, a Salt execution module or anything really.
 
-And lastly, it can benefit you when you are writing testcases for the various parsing methods you have. In case your poison is pytest, you could write something like this:
+And lastly, it can benefit you when you are writing test cases for the various parsing methods you have. In case your poison is pytest, you could write something like this:
 
 ```python
 def test_get_version_information():
@@ -180,6 +180,6 @@ def test_get_version_information():
                    'software-version': '4.20.15M'}
 ```
 
-In closing, I think it is a good idea to read through the <a href="https://github.com/google/textfsm/wiki/TextFSM" target="_blank">TextFSM wiki</a>. And additionally, you should definately check out the <a href="https://github.com/networktocode/ntc-templates/tree/master/templates" target="_blank">NTC textFSM templates</a>. This is a great repo that you can use as inspiration. It might even already have a template for something you need. 
+In closing, I think it is a good idea to read through the <a href="https://github.com/google/textfsm/wiki/TextFSM" target="_blank">TextFSM wiki</a>. And additionally, you should definitely check out the <a href="https://github.com/networktocode/ntc-templates/tree/master/templates" target="_blank">NTC TextFSM templates</a>. This is a great repo that you can use as inspiration. It might even already have a template for something you need. 
 
 
