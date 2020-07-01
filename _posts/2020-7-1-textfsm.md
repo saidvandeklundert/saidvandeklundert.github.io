@@ -168,7 +168,7 @@ There are a number of advantages to doing it in this way. First of all, since th
 
 Second is that you can use this method to parse the text regardless of how the string is collected. It could be coming from a script that uses paramiko, netmiko, a file already stored, a Salt execution module or anything really.
 
-And lastly, it can benefit you when you are writing test cases for the various parsing methods you have. In case your poison is pytest, you could write something like this:
+And lastly, it can benefit you when you are writing test cases for the various parsing methods you have. In case you are using pytest, you could write something like this:
 
 ```python
 def test_get_version_information():
