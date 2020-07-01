@@ -12,7 +12,7 @@ Google TextFSM is a Python module that is written to make parsing text easier. I
 ### TextFSM example
 
 
-For the example, I am using the Arista <b>show version</b> output:
+In this example, I will parse the the output from the Arista <b>show version</b> CLI command:
 
 <pre style="font-size:12px">
 Arista DCS-7050TX-64-R
@@ -30,7 +30,7 @@ Total memory:           3818208 kB
 Free memory:            2428516 kB
 </pre>
 
-We need to extract the relevant fields from this string as structured data. To that end, I wrote a textFSM template that I stored as a separate file. The example template I am working with in this article is stored as <b>eos_show_version.fsm</b> and contains the following:
+In order to extract the relevant fields from this string as structured data, I wrote a textFSM template that I stored as a separate file. The example template I am working with in this article is stored as <b>eos_show_version.fsm</b> and contains the following:
 
 <pre style="font-size:12px">
 Value MODEL (\S*)
@@ -47,7 +47,7 @@ Start
   ^Software\s*image version:\s+${SOFTWARE_VERSION} -> Record
 </pre>
 
-The first part of the template contains the values that have to be extracted from the parsed output. In this part, every line starts with the keyword 'Value' followed by the name of the value and the regex that will extract the value from the text.
+The first part of the template contains the values that have to be extracted from the parsed output. In this part, every line starts with the keyword 'Value' followed by the name of the value and a regex. This regex is used to match and extract the value we are looking for.
 
 The second part of the template, the State definitions, is where we define the state rules. The input we feed the template is read line by line, and every line is tested against each rule we define here.
 
@@ -80,7 +80,7 @@ data = re_table.ParseText(show_version)
 pprint(data)
 ```
 
-Running this script will produce the following output:
+Running this script returns the following:
 
 
 ```python
@@ -102,7 +102,9 @@ version_info["software-version"] = data[0][4]
 ### Separate the parser from the rest
 
 
-Something worth considering is to turn the code that parses the text into a method. You could write the method in such a way that it takes the string as input and return the desired data as output. An example on how to do this:
+Something worth considering is to turn the code that parses the text into a method. You could write the method in such a way that it takes the string as input and return the desired data as output. 
+
+Here is an example on how you could do this:
 
 
 ```python
@@ -166,8 +168,17 @@ There are a number of advantages to doing it in this way. First of all, since th
 
 Second is that you can use this method to parse the text regardess of how the string is collected. It could be coming from a script that uses paramiko, netmiko, a file already stored, a Salt execution module or anything really.
 
-And lastly, it can benefit you when you are writing testcases for the various parsing methods you have.
+And lastly, it can benefit you when you are writing testcases for the various parsing methods you have. In case your poison is pytest, you could write something like this:
 
+```python
+def test_get_version_information():
+    out = arista_parser.get_version_information(show_version)
+    assert out == {'model': 'DCS-7050TX-64-R',
+                   'hardware-version': '01.11',
+                   'serial': 'JPE16072020',
+                   'system-mac': '444c.a875.9745',
+                   'software-version': '4.20.15M'}
+```
 
 In closing, I think it is a good idea to read through the <a href="https://github.com/google/textfsm/wiki/TextFSM" target="_blank">TextFSM wiki</a>. And additionally, you should definately check out the <a href="https://github.com/networktocode/ntc-templates/tree/master/templates" target="_blank">NTC textFSM templates</a>. This is a great repo that you can use as inspiration. It might even already have a template for something you need. 
 
