@@ -18,7 +18,7 @@ In this example, I will parse the output from the Arista <b>show version</b> CLI
 Arista DCS-7050TX-64-R
 Hardware version:    01.11
 Serial number:       JPE16073030
-System MAC address:  444c.a875.9745
+System MAC address:  444c.a876.9746
 
 Software image version: 4.20.15M
 Architecture:           i386
@@ -62,7 +62,7 @@ show_version = """
 Arista DCS-7050TX-64-R
 Hardware version:    01.11
 Serial number:       JPE16073030
-System MAC address:  444c.a875.9745
+System MAC address:  444c.a876.9746
 
 Software image version: 4.20.15M
 Architecture:           i386
@@ -84,7 +84,7 @@ Running this script returns the following:
 
 
 ```python
-[['DCS-7050TX-64-R', '01.11', 'JPE16073030', '444c.a875.9745', '4.20.15M']]
+[['DCS-7050TX-64-R', '01.11', 'JPE16073030', '444c.a876.9746', '4.20.15M']]
 ```
 
 The output is a list that contains a list of the values that we are interested in. We can access the items in the list and put it in a dictionary like so:
@@ -139,7 +139,7 @@ show_version = """
 Arista DCS-7050TX-64-R
 Hardware version:    01.11
 Serial number:       JPE16073030
-System MAC address:  444c.a875.9745
+System MAC address:  444c.a876.9746
 
 Software image version: 4.20.15M
 Architecture:           i386
@@ -160,7 +160,7 @@ This will output the following:
 
 
 ```python
-{'model': 'DCS-7050TX-64-R', 'hardware-version': '01.11', 'serial': 'JPE16073030', 'system-mac': '444c.a875.9745', 'software-version': '4.20.15M'}
+{'model': 'DCS-7050TX-64-R', 'hardware-version': '01.11', 'serial': 'JPE16073030', 'system-mac': '444c.a876.9746', 'software-version': '4.20.15M'}
 ```
 
 
@@ -176,7 +176,7 @@ def test_get_version_information():
     assert out == {'model': 'DCS-7050TX-64-R',
                    'hardware-version': '01.11',
                    'serial': 'JPE16073030',
-                   'system-mac': '444c.a875.9745',
+                   'system-mac': '444c.a876.9746',
                    'software-version': '4.20.15M'}
 ```
 
