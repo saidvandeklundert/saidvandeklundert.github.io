@@ -30,7 +30,7 @@ Total memory:           3818208 kB
 Free memory:            2428516 kB
 </pre>
 
-In order to extract the relevant fields from this string as structured data, I wrote a TextFSM template that I stored as a separate file. The example template I am working with in this article is stored as <b>eos_show_version.fsm</b> and contains the following:
+In order to extract the relevant fields from this string, I wrote a TextFSM template that I stored as a separate file. The example template I am working with in this article is stored as <b>eos_show_version.fsm</b> and contains the following:
 
 <pre style="font-size:12px">
 Value MODEL (\S*)
