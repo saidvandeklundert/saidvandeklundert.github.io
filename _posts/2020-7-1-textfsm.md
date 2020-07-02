@@ -51,6 +51,32 @@ The first part of the template contains the values that have to be extracted fro
 
 The second part of the template, the State definitions, is where we define the state rules. The input we feed the template is read line by line, and every line is tested against each rule we define here.
 
+Let's look at the first value I defined:
+
+<pre style="font-size:12px">
+Value MODEL (\S*)
+</pre>  
+
+The regex matches any non-whitespace character, zero or more times. It matches the model once the line in the text has been identified.
+
+Now a look at the first state I defined:
+
+<pre style="font-size:12px">
+  ^Arista ${MODEL}
+</pre>  
+
+This state rule will match a string that starts with 'Arista'. When the text is being parsed. the '${MODEL}' will be replaced with the regex that was put in place. The state rule will essentially do the following:
+
+<pre style="font-size:12px">
+  ^Arista (\S*)
+</pre>  
+
+On <a href="https://regex101.com/" target="_blank">regex101</a>, you can see what this expression would match:
+
+{:refdef: style="text-align: center;"}
+![regex101 textFSM](/img/regex_101_textFSM.png "regex101 textFSM")
+{: refdef}
+
 A basic script that we can use to run the text output through this TextFSM template is the following:
 
 
