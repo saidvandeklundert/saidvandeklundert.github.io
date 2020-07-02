@@ -47,7 +47,7 @@ Start
   ^Software\s*image version:\s+${SOFTWARE_VERSION} -> Record
 </pre>
 
-The first part of the template contains the values that have to be extracted from the parsed output. In this part, every line starts with the keyword 'Value' followed by the name of the value and a regex. This regex is used to match and extract the value we are looking for.
+The first part of the template contains the values that have to be extracted from the parsed output. In this part, every line starts with the keyword 'Value' followed by the name of the value and a regex. This regex is used to match the value we are looking for.
 
 The second part of the template, the State definitions, is where we define the state rules. The input we feed the template is read line by line, and every line is tested against each rule we define here.
 
