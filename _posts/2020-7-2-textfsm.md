@@ -65,7 +65,7 @@ Now a look at the first state I defined:
   ^Arista ${MODEL}
 </pre>  
 
-This state rule will match a string that starts with 'Arista'. When the text is being parsed, the '${MODEL}' will be replaced with the regex defined under that value. The state rule will essentially do the following:
+This state rule will match a string that starts with 'Arista'. When the text is being parsed, the '${MODEL}' will be replaced with the regex defined under that value. The state rule essentially translates to this:
 
 <pre style="font-size:12px">
   ^Arista (\S*)
