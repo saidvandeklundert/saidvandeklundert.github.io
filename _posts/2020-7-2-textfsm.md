@@ -160,6 +160,7 @@ We can test the class using the following <b>test_arista_class.py</b>:
 
 ```python
 from arista_class import Arista
+from pprint import pprint
 
 show_version = """
 Arista DCS-7050TX-64-R
@@ -178,7 +179,7 @@ Free memory:            2428516 kB
 """
 
 arista_parser = Arista()
-print(arista_parser.get_version_information(show_version))
+pprint(arista_parser.get_version_information(show_version))
 ```
 
 
@@ -186,7 +187,11 @@ This will output the following:
 
 
 ```python
-{'model': 'DCS-7050TX-64-R', 'hardware-version': '01.11', 'serial': 'JPE16073030', 'system-mac': '444c.a876.9746', 'software-version': '4.20.15M'}
+{'hardware-version': '01.11',
+ 'model': 'DCS-7050TX-64-R',
+ 'serial': 'JPE16072020',
+ 'software-version': '4.20.15M',
+ 'system-mac': '444c.a875.9745'}
 ```
 
 
