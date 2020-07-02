@@ -82,7 +82,6 @@ A basic script that we can use to run the text output through this TextFSM templ
 
 ```python
 import textfsm
-from pprint import pprint
 
 show_version = """
 Arista DCS-7050TX-64-R
@@ -103,7 +102,7 @@ Free memory:            2428516 kB
 template = open("eos_show_version.fsm")
 re_table = textfsm.TextFSM(template)
 data = re_table.ParseText(show_version)
-pprint(data)
+print(data)
 ```
 
 Running this script returns the following:
