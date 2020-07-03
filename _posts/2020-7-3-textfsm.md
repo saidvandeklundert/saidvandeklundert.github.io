@@ -6,7 +6,7 @@ image: /img/python.jpg
 ---
 
 
-Google TextFSM is a Python module that is written to make parsing text easier. It is a convenient way to turn CLI output into structured data. In this blog, I will walkthrough a TextFSM example and share the way in which I have been using TextFSM lately.
+Google TextFSM is a Python module that is written to make parsing text easier. It is a convenient way to turn CLI output into structured data. This blog covers a TextFSM example and shares the way in which I have been using TextFSM lately.
 
 
 ### TextFSM example
