@@ -77,8 +77,7 @@ On <a href="https://regex101.com/" target="_blank">regex101</a>, you can see wha
 ![regex101 textFSM](/img/regex_101_textFSM.png "regex101 textFSM")
 {: refdef}
 
-A basic script that we can use to run the text output through this TextFSM template is the following:
-
+The following is a script that runs the text output through the TextFSM template:
 
 ```python
 import textfsm
@@ -105,7 +104,7 @@ data = re_table.ParseText(show_version)
 print(data)
 ```
 
-Running this script returns the following:
+Running this script, using texFSM version 1.1.0, returns the following:
 
 
 ```python
