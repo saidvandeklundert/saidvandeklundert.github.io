@@ -2,7 +2,7 @@
 layout: post
 title: TextFSM
 tags: [ python, automation, textfsm, ]
-image: /img/python.jpg
+image: /img/python-logo.jpg
 ---
 
 
