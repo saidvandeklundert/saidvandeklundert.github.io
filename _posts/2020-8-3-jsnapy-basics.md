@@ -33,6 +33,12 @@ By default, the snapshots are stored on the local system. You can configure JSNA
 You can use JSNAPy as a CLI tool and run the cofigured checks manually. This works really well when you are looking at it for the first time and still figuring out how to use it. In addition to using it on the CLI, you can use JSNAPy in you Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
 
 
+{:refdef: style="text-align: center;"}
+![JSNAPy overview](/img/jsnapy_overview.png "JSNAPy overview")
+{: refdef}
+
+
+
 ## Making a snapshot
 
 
