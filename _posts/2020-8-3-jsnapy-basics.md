@@ -48,6 +48,10 @@ One thing that JSNAPy can be used for is to perform checks against a single snap
 Another use case is using JSNAPy for pre- and post-change checks. When you are performing complex changes on multiple devices, there is usually a whole variety of things you need to make sure are working before as well as after the change. And usually, this is the case for multiple devices in your network. Using JSNAPy, you can collect state before you start your change. After collecting your initial snapshot, you can test for changes and conditions by comparing subsequent snapshots to the one you created before the change. Did I lose a BGP session anywhere? Did a BGP session bounce during my maintenance? Do I have the same amount of interfaces and LLDP neighbors listed before as well as after the change?
 
 
+{:refdef: style="text-align: center;"}
+![JSNAPy pre- and post-change check](/img/jsnapy_pre_post_change_check.png "JSNAPy pre- and post-change check")
+{: refdef}
+
 
 
 
