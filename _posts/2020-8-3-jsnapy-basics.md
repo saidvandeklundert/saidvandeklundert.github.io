@@ -53,11 +53,25 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 {: refdef}
 
 
+## Coniguring JSNAPy and writing your first test file
+
+The only thing we'll do in this example is install JSNAPy and configure it in such a way that we can use the CLI to take snapshots and run tests.
+
+To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and testfiles. In my example, I am using the following configuration:
+
+```
+[DEFAULT]
+config_file_path= /etc/jsnapy
+snapshot_path = /var/tmp/jsnapy_snapshot
+test_file_path = /var/tmp/jsnapy_test
+```
 
 
-## Making a snapshot
 
 
+
+
+## REST IS TODO STUFF
 
 ```
 said@qfx10k-re0> show bgp summary | display xml rpc 
@@ -76,7 +90,7 @@ said@qfx10k-re0> show bgp summary | display xml rpc
 
 
 
-## Creating a test file
+
 
 The jsnapy configuration file is /etc/jsnapy/jsnapy.cfg
 
@@ -185,3 +199,5 @@ Overall Tests passed!!!
 
 
 
+## Links:
+- https://github.com/Juniper/jsnapy
