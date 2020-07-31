@@ -49,7 +49,7 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 
 
 
-<pre style="font-size:12px">
+```
 said@qfx10k-re0> show bgp summary | display xml rpc 
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
     <rpc>
@@ -61,7 +61,7 @@ said@qfx10k-re0> show bgp summary | display xml rpc
     </cli>
 </rpc-reply>
 
-</pre>
+```
 
 
 
