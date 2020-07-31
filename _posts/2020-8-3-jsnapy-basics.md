@@ -21,9 +21,18 @@ In this walkthrough, after covering what JSNAPy is and how it works, I will cove
 
 ## What is JSNAPy 
 
-JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Juniper API to take snapshots of the device. Anything a CLI command or RPC can retrieve from a device can be stored as a snapshot.
+JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Juniper API to retrieve data from the device. The data that is retrieved us then stored as a snapshot:
 
-You can use the snapshot and run tests against it. For instance, you could create a snapshot of the configuration and run several compliance checks against it. You could, for example, check if you have the proper firewall filters applied everywhere. And instead of compliance checks, you can also use a single snapshot to run health checks against it. For instance, are all my BGP peers up?
+{:refdef: style="text-align: center;"}
+![JSNAPy overview](/img/jsnapy_overview.png "JSNAPy overview")
+{: refdef}
+
+
+You write test cases according to a fixed format. JSNAPy can run these test cases against the collected snapshots.
+
+For instance, you could create a snapshot of the configuration and run several compliance checks against it. You could, for example, check if you have the proper firewall filters applied everywhere. And instead of compliance checks, you can also use a single snapshot to run health checks against it. For instance, are all my BGP peers up?
+
+Anything a CLI command or RPC can retrieve from a device can be stored as a snapshot.
 
 Another option is to write tests that analyze information from 2 snapshots. You can create 2 snapshots at different times and test if certain conditions are met. An example is where you create a snapshot before and after a change and check if all interfaces that were up before the change are still up after the change.
 
@@ -33,9 +42,6 @@ By default, the snapshots are stored on the local system. You can configure JSNA
 You can use JSNAPy as a CLI tool and run the cofigured checks manually. This works really well when you are looking at it for the first time and still figuring out how to use it. In addition to using it on the CLI, you can use JSNAPy in you Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
 
 
-{:refdef: style="text-align: center;"}
-![JSNAPy overview](/img/jsnapy_overview.png "JSNAPy overview")
-{: refdef}
 
 
 
