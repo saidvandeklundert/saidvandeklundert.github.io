@@ -21,25 +21,25 @@ In this walkthrough, after covering what JSNAPy is and how it works, I will cove
 
 ## What is JSNAPy 
 
-JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Juniper API to retrieve data from the device. The data that is retrieved us then stored as a snapshot:
+JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Juniper API to retrieve data from the device. You can specify an RPC or a CLI that needs to be executed. The data returned by the device is stored as a snapshot:
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy overview](/img/jsnapy_overview.png "JSNAPy overview")
 {: refdef}
 
 
-You write test cases according to a fixed format. JSNAPy can run these test cases against the collected snapshots.
+By default, the snapshots are stored on the local system. You have the option of storing captured snapshots in a database. 
 
-For instance, you could create a snapshot of the configuration and run several compliance checks against it. You could, for example, check if you have the proper firewall filters applied everywhere. And instead of compliance checks, you can also use a single snapshot to run health checks against it. For instance, are all my BGP peers up?
-
-Anything a CLI command or RPC can retrieve from a device can be stored as a snapshot.
-
-Another option is to write tests that analyze information from 2 snapshots. You can create 2 snapshots at different times and test if certain conditions are met. An example is where you create a snapshot before and after a change and check if all interfaces that were up before the change are still up after the change.
-
-By default, the snapshots are stored on the local system. You can configure JSNAPy to write the snapshots to a database.
+The test cases that JSNAPy executes against the snapshots are written according to a fixed format (more on that later). JSNAPy can run test cases against a single snapshot or it can be made to analyze 2 snapshots.
 
 
-You can use JSNAPy as a CLI tool and run the cofigured checks manually. This works really well when you are looking at it for the first time and still figuring out how to use it. In addition to using it on the CLI, you can use JSNAPy in you Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
+You can use JSNAPy as a CLI tool and run the configured checks manually. This works really well when you are looking at it for the first time and still figuring out how to use it. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
+
+## JSNAPy use cases
+
+One thing that JSNAPy can be used for is to perform checks against a single snaphot from a device. This works by having JSNAPy create a snapshot and applying several tests against it. Reasons for doing this can be because you are going through an audit and you have to prove, or verify, that every device has the proper firewall filters applied. In addition to compliance checks, you can also use a single snapshot to run health checks against it. For example, are all my BGP peers up? JSNAPy can be made to capture snapshots for a single device or for groups of devices. This means that after you have invested some time into writing the checks, running these checks accross all devices can be done in minutes. Checking BGP sessions with Route-refectors, verifying that all core routers have at least 2 OSPF neihbors, verifying that certain VRFs have routes learned from the CPE etc. 
+
+Another use case is using JSNAPy for pre- and post-change checks. When you are performing complex changes on multiple devices, there is usually a whole variety of things you need to make sure are working before as well as after the change. And usually, this is the case for multiple devices in your network. Using JSNAPy, you can collect state before you start your change. After collecting your initial snapshot, you can test for changes and conditions by comparing subsequent snapshots to the one you created before the change. Did I lose a BGP session anywhere? Did a BGP session bounce during my maintenance? Do I have the same amount of interfaces and LLDP neighbors listed before as well as after the change?
 
 
 
@@ -66,7 +66,7 @@ said@qfx10k-re0> show bgp summary | display xml rpc
 
 
 
-## How does JSNAPy work?
+## Creating a test file
 
 The jsnapy configuration file is /etc/jsnapy/jsnapy.cfg
 
