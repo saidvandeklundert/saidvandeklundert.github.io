@@ -5,6 +5,7 @@ tags: [ python, automation, juniper, pyez, ]
 image: /img/python-logo.jpg
 ---
 
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
 
 
 JSNAPy can make you feel more comfortable executing changes and verifying device state. 
@@ -47,6 +48,7 @@ said@qfx10k-re0> show bgp summary | display xml rpc
         <banner>{master}</banner>
     </cli>
 </rpc-reply>
+
 </pre>
 
 
