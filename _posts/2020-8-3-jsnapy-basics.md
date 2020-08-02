@@ -12,7 +12,7 @@ JSNAPy can make you feel more comfortable executing changes and verifying device
 
 It allows you to create snapshots that capture the state of your devices running Junos. After capturing the device state, you can run tests against these snapshots. These tests can tell you if there is something to worry about or not.
 
-The thing I love using JSNAPy for the most is for pre- and post- change validation. If you are performing a change on a device that has 100+ interfaces and that is also enabled for OSPF, BGP, LDP, LLDP, LACP and much more, you spend quite some time validating that operations have returned to normal after making a change. It is error-prone, time consuming and it is no fun at all, especially if you are doing it during a nightly maintenance window.
+The thing I love using JSNAPy for the most is for pre- and post- change validation. If you are performing a change on a device that has 100+ interfaces and that is also enabled for OSPF, BGP, LDP, LLDP, LACP and much more, you spend quite some time validating that operations have returned to normal after executing a change. It is error-prone, time consuming and it is no fun at all, especially if you are doing it during a nightly maintenance window.
 
 With JSNAPy, you write out your testcases in advance. When you have your maintenance, the test cases are executed in seconds.
 
@@ -33,7 +33,7 @@ By default, the snapshots are stored on the local system. You have the option of
 The test cases that JSNAPy executes against the snapshots are written according to a fixed format (more on that later). JSNAPy can run test cases against a single snapshot or it can be made to analyze 2 snapshots.
 
 
-You can use JSNAPy as a CLI tool and run the configured checks manually. This works really well when you are looking at it for the first time and still figuring out how to use it. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
+You can use JSNAPy as a CLI tool and run the configured checks manually. Apart from working very well as a CLI tool, it is also a very convenient way to learn how JSNAPy works. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
 
 ## JSNAPy use cases
 
