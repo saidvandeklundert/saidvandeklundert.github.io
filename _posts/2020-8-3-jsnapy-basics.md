@@ -5,8 +5,6 @@ tags: [ python, automation, juniper, pyez, ]
 image: /img/python-logo.jpg
 ---
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
-
 
 JSNAPy can make you feel more comfortable executing changes and verifying device state. 
 
@@ -82,12 +80,14 @@ hosts:
     username: lab
     passwd: test123  
 tests:
-  - test_interfaces.yaml
+  - test_bgp.yaml 
 ```
 
-This test will target 1 devices and run a single test called `test_interfaces.yaml`. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_interfaces.yaml`. 
+This test will target 1 devices and run a single test called `test_bgp.yaml`. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_bgp.yaml`. 
 
-Let's start out with the following test:
+We referenced the test in `snap_config.yaml`, but we have not created it yet. Let's start off writing a test that will inform us on whether or not a BGP peer flapped.
+
+We instruct JSNAPy to gather the information that is returned when the `show bgp summary` command is executed and iterate every BGP peer. For every BGP peer in the return, we check the `flap-count`. If there is a difference, we trigger an error and we have JSNAPy inform us of the BGP peer that flapped:
 
 <pre style="font-size:12px">
 test_bgp_summary:
@@ -105,7 +105,7 @@ test_bgp_summary:
 </pre>
 
  
- If we run the pre and post change check when everything is fine, we see the following:
+ After having things setup, we run a pre and post change check:
 
 
 ```
@@ -117,6 +117,13 @@ Taking snapshot of COMMAND: show bgp summary
 Connecting to device 10.0.19.245 ................
 Taking snapshot of COMMAND: show bgp summary 
 / # 
+```
+
+What happened here is JSNAPy logged into the device to make an API call. It translated the `show bgp summary` command to an RPC and stored the XML return in the snapshot directory. 
+
+In order to run our test, we issue the following command:
+
+```
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
 **************************** Device: 10.0.19.245 ****************************
 Tests Included: test_bgp_summary 
@@ -129,8 +136,9 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
+No failures! But how do we know that our test case will detect actual BGP flaps? 
 
-Let's observe how things look when the test fails. We edit the snapshot file and change the flap-count for 2 BGP neighbors. We can do this by editing the file that is stored in the snapshot directory. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, the check returns the following information:
+To verify that our tests work, we edit the snapshot file and change the flap-count for 2 BGP neighbors. We can do this by editing the file that is stored in the snapshot directory. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
 
 ```
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
@@ -155,3 +163,4 @@ Overall Tests failed!!!
 
 ## Links:
 - https://github.com/Juniper/jsnapy
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
