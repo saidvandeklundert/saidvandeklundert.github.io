@@ -313,7 +313,7 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
-
+Every basic test can follow a similar pattern. You write the tests once and you reap the benefit during every maintenance.
 
 ## Links:
 - https://github.com/Juniper/jsnapy
