@@ -101,7 +101,6 @@ test_bgp_summary:
         - no-diff: flap-count
           info:  "Succes! {{pre['peer-address']}} did not register flaps."
           err:  "FAIL!! {{pre['peer-address']}} flapped. Pre-change: {{pre['flap-count']}}. Post-change: {{post['flap-count']}}"
-
 </pre>
 
  
@@ -155,12 +154,164 @@ Total No of tests failed: 1
 Overall Tests failed!!! 
 ```
 
+Expanding the test cases can be done in multiple ways. First, let's add one additional check to BGP. We want to finish up the maintenance with exactly 0 BGP peers down. In that case, we can add an additional test in the existing `test_bgp.yaml`:
 
+<pre style="font-size:12px">
+test_bgp_summary:
 
+  - command: show bgp summary
 
+  - iterate:
+      xpath: bgp-peer
+      id: peer-address
+      tests:
+        - no-diff: flap-count
+          info:  "Succes! {{pre['peer-address']}} did not register flaps."
+          err:  "FAIL!! {{pre['peer-address']}} flapped. Pre-change: {{pre['flap-count']}}. Post-change: {{post['flap-count']}}"
 
+  - item:
+      xpath: bgp-information       
+      tests:
+        - is-equal: down-peer-count, 0
+          info:  "Succes! None of the configured BGP peers are down."
+          err:  "FAIL! There are {{post['down-peer-count']}} peers down"
+</pre>
 
+We use `item` instead of `iterate` because we are interested in the first node of the xpath. The `down-peer-count` is a sub-element `bgp-information`, so that becomes the xpath expresssion. 
 
+We can also decide to run some additional tests on other things besides BGP. Let's create a separate file for an interface test as well as an OSPF test.
+
+First the interface test in `/home/said/testfiles/test_interfaces.yaml`:
+
+<pre style="font-size:12px">
+test_router_interface:
+
+  - command: show interface terse
+  
+  - iterate:
+      xpath: physical-interface
+      id: name
+      tests:
+        - no-diff: oper-status    
+          info: "Success! The operational status of interfaces pre and post change is the same."
+          err: "Fail ! Interface {{id_0}} changed from {{pre['oper-status']}} to {{post['oper-status']}}."
+</pre>
+
+Next the OSPF test in `/home/said/testfiles/test_ospf.yaml`:
+
+<pre style="font-size:12px">
+ospf_interface:
+  - command: show ospf interface
+  - iterate:
+      xpath: ospf-interface[interface-name != "lo0.0"]
+      tests:
+        - is-gt: neighbor-count, 0          
+          info: "Success! There is at least 1 OSPF neighbor found behind {{post['interface-name']}}"
+          err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"    
+
+ospf3_interface:
+  - command: show ospf3 interface
+  - iterate:
+      xpath: ospf3-interface[interface-name != "lo0.0"]
+      tests:
+        - is-gt: neighbor-count, 0          
+          info: "Success! There is at least 1 OSPF neighbor found behind {{post['interface-name']}}"
+          err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"   
+</pre>
+
+After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the checks against:
+```
+hosts:
+  - device: 10.253.158.251
+    username: lab
+    passwd: test123 
+  - device: 10.45.17.7
+    username: lab
+    passwd: test123 
+tests:
+  - test_bgp.yaml 
+  - test_ospf.yaml
+  - test_interfaces.yaml
+```
+
+Let's run the tests:
+
+```
+/ # jsnapy --snap pre -f snap_config.yaml
+Connecting to device 10.253.158.251 ................
+Taking snapshot of COMMAND: show bgp summary 
+Taking snapshot of COMMAND: show ospf interface 
+Taking snapshot of COMMAND: show ospf3 interface 
+Taking snapshot of COMMAND: show interface terse 
+Connecting to device 10.45.17.7 ................
+Taking snapshot of COMMAND: show bgp summary 
+Taking snapshot of COMMAND: show ospf interface 
+Taking snapshot of COMMAND: show ospf3 interface 
+Taking snapshot of COMMAND: show interface terse 
+/ # 
+/ # jsnapy --snap post -f snap_config.yaml
+Connecting to device 10.253.158.251 ................
+Taking snapshot of COMMAND: show bgp summary 
+Taking snapshot of COMMAND: show ospf interface 
+Taking snapshot of COMMAND: show ospf3 interface 
+Taking snapshot of COMMAND: show interface terse 
+Connecting to device 10.45.17.7 ................
+Taking snapshot of COMMAND: show bgp summary 
+Taking snapshot of COMMAND: show ospf interface 
+Taking snapshot of COMMAND: show ospf3 interface 
+Taking snapshot of COMMAND: show interface terse 
+/ # 
+/ # 
+/ # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
+************************** Device: 10.253.158.251 **************************
+Tests Included: test_bgp_summary 
+************************* Command: show bgp summary *************************
+PASS | All "flap-count" is same in pre and post snapshot [ 36 matched ]
+PASS | All "down-peer-count" is equal to "0" [ 1 matched ]
+************************** Device: 10.253.158.251 **************************
+Tests Included: ospf_interface 
+************************ Command: show ospf interface ************************
+PASS | All "neighbor-count" is greater than 0" [ 8 matched ]
+Tests Included: ospf3_interface 
+*********************** Command: show ospf3 interface ***********************
+PASS | All "neighbor-count" is greater than 0" [ 8 matched ]
+************************** Device: 10.253.158.251 **************************
+Tests Included: test_router_interface 
+*********************** Command: show interface terse ***********************
+PASS | All "oper-status" is same in pre and post snapshot [ 191 matched ]
+------------------------------- Final Result!! -------------------------------
+test_bgp_summary : Passed
+ospf_interface : Passed
+ospf3_interface : Passed
+test_router_interface : Passed
+Total No of tests passed: 5
+Total No of tests failed: 0 
+Overall Tests passed!!! 
+**************************** Device: 10.45.17.7 ****************************
+Tests Included: test_bgp_summary 
+************************* Command: show bgp summary *************************
+PASS | All "flap-count" is same in pre and post snapshot [ 49 matched ]
+PASS | All "down-peer-count" is equal to "0" [ 1 matched ]
+**************************** Device: 10.45.17.7 ****************************
+Tests Included: ospf_interface 
+************************ Command: show ospf interface ************************
+PASS | All "neighbor-count" is greater than 0" [ 8 matched ]
+Tests Included: ospf3_interface 
+*********************** Command: show ospf3 interface ***********************
+PASS | All "neighbor-count" is greater than 0" [ 8 matched ]
+**************************** Device: 10.45.17.7 ****************************
+Tests Included: test_router_interface 
+*********************** Command: show interface terse ***********************
+PASS | All "oper-status" is same in pre and post snapshot [ 73 matched ]
+------------------------------- Final Result!! -------------------------------
+test_bgp_summary : Passed
+ospf_interface : Passed
+ospf3_interface : Passed
+test_router_interface : Passed
+Total No of tests passed: 5
+Total No of tests failed: 0 
+Overall Tests passed!!! 
+```
 ## Links:
 - https://github.com/Juniper/jsnapy
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
