@@ -60,138 +60,92 @@ The only thing we'll do in this example is install JSNAPy and configure it in su
 To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and testfiles. In my example, I am using the following configuration:
 
 ```
+# This file can be overwritten
+# It contains default path for 
+# config file, snapshots and testfiles
+# If required, overwrite the path with your path
+#config_file_path: path of main config file
+#snapshot_path : path of snapshot file
+#test_file_path: path of test file
+
 [DEFAULT]
 config_file_path= /etc/jsnapy
-snapshot_path = /var/tmp/jsnapy_snapshot
-test_file_path = /var/tmp/jsnapy_test
+snapshot_path = /home/said/snapshots
+test_file_path = /home/said/testfiles
 ```
 
-
-
-
-
-
-## REST IS TODO STUFF
+We configure a snap test in file `/etc/jsnapy/snap_config.yaml`:
 
 ```
-said@qfx10k-re0> show bgp summary | display xml rpc 
-<rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
-    <rpc>
-        <get-bgp-summary-information>
-        </get-bgp-summary-information>
-    </rpc>
-    <cli>
-        <banner>{master}</banner>
-    </cli>
-</rpc-reply>
-
+hosts:
+  - device: 10.0.19.245
+    username: lab
+    passwd: test123  
+tests:
+  - test_interfaces.yaml
 ```
 
+This test will target 1 devices and run a single test called `test_interfaces.yaml`. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_interfaces.yaml`. 
 
-
-
-
-
-The jsnapy configuration file is /etc/jsnapy/jsnapy.cfg
-
-In this example, the test cfg is in:  /var/tmp/jsnapy_test/cfg_snap.yml 
-
-
-
-jsnapy --snap pre -f /var/tmp/cfg_snap.yml 
-jsnapy --snap pre -f /var/tmp/jsnapy_test/cfg_snap.yml 
-jsnapy --snap post -f /var/tmp/jsnapy_test/cfg_snap.yml 
-jsnapy --check /var/tmp/jsnapy_snapshot/10.0.19.245_pre_show_bgp_summary.xml  /var/tmp/jsnapy_snapshot/10.0.19.245_post_show_bgp_summary.xml -f /var/tmp/jsnapy_test/cfg_snap.yml 
-
-
-
-Running a snapcheck:
-
-
-jsnapy --snapcheck  /var/tmp/jsnapy_snapshot/10.0.19.245_post_show_bgp_summary.xml -f /var/tmp/jsnapy_test/cfg_snap.yml 
-
-
+Let's start out with the following test:
 
 <pre style="font-size:12px">
-jsnapy --snap pre -f /var/tmp/jsnapy_test/cfg_snap.yml 
-jsnapy --snap post -f /var/tmp/jsnapy_test/cfg_snap.yml 
-jsnapy --check pre post -f /var/tmp/jsnapy_test/cfg_snap.yml 
+test_bgp_summary:
+
+  - command: show bgp summary
+
+  - iterate:
+      xpath: bgp-peer
+      id: peer-address
+      tests:
+        - no-diff: flap-count
+          info:  "Succes! {{pre['peer-address']}} did not register flaps."
+          err:  "FAIL!! {{pre['peer-address']}} flapped. Pre-change: {{pre['flap-count']}}. Post-change: {{post['flap-count']}}"
+
 </pre>
 
+ 
+ If we run the pre and post change check when everything is fine, we see the following:
 
-## Using JSNAPy from the CLI
 
-
-<pre style="font-size:12px">
-/ $ jsnapy --snap pre -f /var/tmp/jsnapy_test/cfg_snap.yml 
+```
+/ # jsnapy --snap pre -f snap_config.yaml
 Connecting to device 10.0.19.245 ................
 Taking snapshot of COMMAND: show bgp summary 
-Taking snapshot of COMMAND: show interface terse 
-Connecting to device 10.0.19.246 ................
-Taking snapshot of COMMAND: show bgp summary 
-Taking snapshot of COMMAND: show interface terse 
-/ $ 
-/ $ jsnapy --snap post -f /var/tmp/jsnapy_test/cfg_snap.yml 
+/ # 
+/ # jsnapy --snap post -f snap_config.yaml
 Connecting to device 10.0.19.245 ................
 Taking snapshot of COMMAND: show bgp summary 
-Taking snapshot of COMMAND: show interface terse 
-Connecting to device 10.0.19.246 ................
-Taking snapshot of COMMAND: show bgp summary 
-Taking snapshot of COMMAND: show interface terse 
-/ $ 
-/ $ jsnapy --check pre post -f /var/tmp/jsnapy_test/cfg_snap.yml 
+/ # 
+/ # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
 **************************** Device: 10.0.19.245 ****************************
 Tests Included: test_bgp_summary 
 ************************* Command: show bgp summary *************************
 PASS | All "flap-count" is same in pre and post snapshot [ 63 matched ]
-PASS | All "elapsed-time/@seconds" is greater than 300" [ 61 matched ]
-PASS | All "down-peer-count" is same in pre and post snapshot [ 1 matched ]
-**************************** Device: 10.0.19.245 ****************************
-Tests Included: test_router_interface 
-*********************** Command: show interface terse ***********************
-PASS | All "oper-status" is same in pre and post snapshot [ 127 matched ]
-PASS | All "name" in pre snapshot is present in post snapshot [ 127 matched ]
 ------------------------------- Final Result!! -------------------------------
 test_bgp_summary : Passed
-test_router_interface : Passed
-Total No of tests passed: 5
+Total No of tests passed: 1
 Total No of tests failed: 0 
 Overall Tests passed!!! 
-**************************** Device: 10.0.19.246 ****************************
+```
+
+
+Let's observe how things look when the test fails. We edit the snapshot file and change the flap-count for 2 BGP neighbors. We can do this by editing the file that is stored in the snapshot directory. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, the check returns the following information:
+
+```
+/ # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
+**************************** Device: 10.0.19.245 ****************************
 Tests Included: test_bgp_summary 
 ************************* Command: show bgp summary *************************
-PASS | All "flap-count" is same in pre and post snapshot [ 63 matched ]
-PASS | All "elapsed-time/@seconds" is greater than 300" [ 61 matched ]
-PASS | All "down-peer-count" is same in pre and post snapshot [ 1 matched ]
-**************************** Device: 10.0.19.246 ****************************
-Tests Included: test_router_interface 
-*********************** Command: show interface terse ***********************
-PASS | All "oper-status" is same in pre and post snapshot [ 126 matched ]
-PASS | All "name" in pre snapshot is present in post snapshot [ 126 matched ]
+FAIL!! 10.0.13.49 flapped. Pre-change: ['3']. Post-change: ['13']
+FAIL!! 10.0.18.229 flapped. Pre-change: ['0']. Post-change: ['1']
+FAIL | All "flap-count" is not same in pre and post snapshot [ 61 matched / 2 failed ]
 ------------------------------- Final Result!! -------------------------------
-test_bgp_summary : Passed
-test_router_interface : Passed
-Total No of tests passed: 5
-Total No of tests failed: 0 
-Overall Tests passed!!! 
-</pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+test_bgp_summary : Failed
+Total No of tests passed: 0
+Total No of tests failed: 1 
+Overall Tests failed!!! 
+```
 
 
 
