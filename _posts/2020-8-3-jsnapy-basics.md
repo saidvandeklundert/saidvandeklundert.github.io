@@ -83,7 +83,7 @@ tests:
   - test_bgp.yaml 
 ```
 
-This test will target 1 devices and run a single test called `test_bgp.yaml`. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_bgp.yaml`. 
+This test will target 1 device and run the tests defined in the `test_bgp.yaml` file. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_bgp.yaml`. 
 
 We referenced the test in `snap_config.yaml`, but we have not created it yet. Let's start off writing a test that will inform us on whether or not a BGP peer flapped.
 
