@@ -51,7 +51,7 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 {: refdef}
 
 
-## Coniguring JSNAPy and writing your first test file
+## Configuring JSNAPy and writing your first test file
 
 The only thing we'll do in this example is install JSNAPy and configure it in such a way that we can use the CLI to take snapshots and run tests.
 
