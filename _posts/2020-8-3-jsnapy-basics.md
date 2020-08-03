@@ -219,7 +219,8 @@ ospf3_interface:
           err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"   
 </pre>
 
-After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the checks against:
+After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the tests against:
+
 ```
 hosts:
   - device: 10.253.158.251
