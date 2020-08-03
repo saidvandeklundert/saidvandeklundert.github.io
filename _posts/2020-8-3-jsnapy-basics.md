@@ -72,7 +72,7 @@ snapshot_path = /home/said/snapshots
 test_file_path = /home/said/testfiles
 ```
 
-We configure a snap test in file `/etc/jsnapy/snap_config.yaml`:
+We configure a snap test in the following file `/etc/jsnapy/snap_config.yaml`:
 
 ```
 hosts:
