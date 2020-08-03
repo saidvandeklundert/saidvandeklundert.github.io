@@ -135,7 +135,7 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
-No failures! But how do we know that our test case will detect actual BGP flaps? 
+There were no failures in this case, but how do we know that our test case will detect actual BGP flaps? 
 
 To verify that our tests work, we edit the snapshot file and change the flap-count for 2 BGP neighbors. We can do this by editing the file that is stored in the snapshot directory. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
 
