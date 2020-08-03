@@ -197,7 +197,9 @@ test_router_interface:
           err: "Fail ! Interface {{id_0}} changed from {{pre['oper-status']}} to {{post['oper-status']}}."
 </pre>
 
-Next the OSPF test in `/home/said/testfiles/test_ospf.yaml`:
+For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
+
+After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
 
 <pre style="font-size:12px">
 ospf_interface:
@@ -218,6 +220,8 @@ ospf3_interface:
           info: "Success! There is at least 1 OSPF neighbor found behind {{post['interface-name']}}"
           err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"   
 </pre>
+
+The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface. It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
 
 After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the tests against:
 
@@ -314,7 +318,9 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
-Every basic test can follow a similar pattern. You write the tests once and you reap the benefit during every maintenance.
+The example tests I use here barely scratch the surface of what is possible. At the same time though, the pattern of iterating a certain element and doing a `no-diff` or ensuring that a certain value is present will get you a long way. We saw that there was no big difference between checking the BGP flap count and checking for state changes in the interfaces. We can apply similar logic to check LDP sessions, RSVP LSPs, LLDP neighbors, line-cards, etc. We basically need to input a command, the xpath that defines what part of the XML tree to iterate. After this, we specify what field to test and when the test fails/succeeds.
+
+You write the tests once and you reap the benefit during every maintenance.
 
 ## Links:
 - https://github.com/Juniper/jsnapy
