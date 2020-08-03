@@ -26,7 +26,7 @@ JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Junipe
 {: refdef}
 
 
-By default, the snapshots are stored on the local system. You have the option of storing captured snapshots in a database. 
+By default, the snapshots are stored on the local system that is running JNAPy. You have the option of storing captured snapshots in a database. 
 
 The test cases that JSNAPy executes against the snapshots are written according to a fixed format (more on that later). JSNAPy can run test cases against a single snapshot or it can be made to analyze 2 snapshots.
 
