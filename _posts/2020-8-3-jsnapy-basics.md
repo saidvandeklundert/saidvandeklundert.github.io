@@ -154,7 +154,7 @@ Total No of tests failed: 1
 Overall Tests failed!!! 
 ```
 
-Expanding the test cases can be done in multiple ways. First, let's add one additional check to BGP. We want to finish up the maintenance with exactly 0 BGP peers down. In that case, we can add an additional test in the existing `test_bgp.yaml`:
+Expanding the test cases can be done in multiple ways. First, let's add one additional BGP test in the same test file. We want to be able to ensure that when we finish our maintenance, there are 0 BGP peers down. To this end, we add an additional test at the bottom of our the existing `test_bgp.yaml`:
 
 <pre style="font-size:12px">
 test_bgp_summary:
