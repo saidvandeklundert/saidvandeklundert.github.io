@@ -95,7 +95,7 @@ test_bgp_summary:
   - command: show bgp summary
 
   - iterate:
-      xpath: bgp-peer
+      xpath: //bgp-information/bgp-peer
       id: peer-address
       tests:
         - no-diff: flap-count
