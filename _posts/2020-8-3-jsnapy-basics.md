@@ -148,7 +148,7 @@ test_bgp_summary:
 
 Another thing we can see in the XML is that the value we are after is called `flap-count`.  We want to be notified in case there is a difference before and after the change. So in the `tests` segment, we use `no-diff` on `flap-count`.
 
-As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an error message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we emit the pre and post change value:
+As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an `err` message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we emit the pre and post change value:
 
 
 <pre style="font-size:12px">
