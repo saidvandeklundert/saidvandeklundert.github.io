@@ -6,15 +6,13 @@ image: /img/python-logo.jpg
 ---
 
 
-JSNAPy can make you feel more comfortable executing changes and verifying device state. 
-
-It allows you to create snapshots that capture the state of your devices running Junos. After capturing the device state, you can run tests against these snapshots. These tests can tell you if there is something to worry about or not.
+JSNAPy allows you to create snapshots that capture the state of devices running Junos. After capturing the device state, you can run tests against these snapshots. These tests can tell you if there is something to worry about or not.
 
 The thing I love using JSNAPy for the most is pre- and post- change validation. If you are performing a change on a device that has 100+ interfaces and that is also enabled for OSPF, BGP, LDP, LLDP, RSVP and LACP, you spend quite some time validating that operations have returned to normal after executing a change. It is error-prone, time consuming and it is no fun at all. Especially if you are executing a change during a nightly maintenance window.
 
 With JSNAPy, you write out your testcases in advance. When you have your maintenance, the test cases are executed in seconds.
 
-In this walkthrough, after covering what JSNAPy is and how it works, I will cover the most basic scenario that I think is the best way to get familiar with JSNAPy.  We will write a test case and execute that using the CLI.
+This walkthrough will cover what JSNAPy is, how it works and how it is configured. After this, we will write a few test cases and execute those using the CLI.
 
 
 ## What is JSNAPy 
