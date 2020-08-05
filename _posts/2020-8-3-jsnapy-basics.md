@@ -131,7 +131,24 @@ svandeklundert@ppr01.dal12-re0> show bgp summary | display xml
 ..<output omitted>..
 ```
 
-We can see that the BGP peers are sub-elements of `bgp-information`. Another thing we can see is that the value we are after is called `flap-count`. This value is kept for every BGP peer configured on the device.
+Looking at the XML, we can figure out what `xpath` we need to use. In case you never worked with xpath before, it is XML path language and it can be used to select nodes in an XML document. Let's assume that you never used xpath before. In the context of JSNAPy, you can get away with keeping it as straightforward as filling in the path to the node you are after. In this example, we can use the following xpath: `//bgp-information/bgp-peer`. 
+
+We are going to be using the check functionality and submit the `id` value `bgp-peer`. Since we need to iterate all of the BGP peers in the returned XML, we put in the `iterate` statement:
+
+
+<pre style="font-size:12px">
+test_bgp_summary:
+
+  - command: show bgp summary
+
+  - iterate:
+      xpath: //bgp-information/bgp-peer
+      id: peer-address
+</pre>
+
+Another thing we can see in the XML is that the value we are after is called `flap-count`.  We want to be notified in case there is a difference before and after the change. So in the `tests` segment, we use `no-diff` on `flap-count`.
+
+As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an error message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we emit the pre and post change value:
 
 
 <pre style="font-size:12px">
@@ -148,7 +165,9 @@ test_bgp_summary:
           err:  "FAIL!! {{pre['peer-address']}} flapped. Pre-change: {{pre['flap-count']}}. Post-change: {{post['flap-count']}}"
 </pre>
 
- 
+
+We now have JSNAPy configured and we have our first test created. Let's see how we can put all this to use.
+
 ## Running pre and post change checks
 
 After having things setup, we run a pre and post change check:
