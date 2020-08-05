@@ -51,7 +51,7 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 {: refdef}
 
 
-## Configuring JSNAPy and writing your first test file
+## Configuring JSNAPy
 
 The only thing we'll do in this example is install JSNAPy and configure it in such a way that we can use the CLI to take snapshots and run tests.
 
@@ -87,6 +87,9 @@ This test will target 1 device and run the tests defined in the `test_bgp.yaml` 
 
 We referenced the test in `snap_config.yaml`, but we have not created it yet. Let's start off writing a test that will inform us on whether or not a BGP peer flapped.
 
+
+## Writing your first test file
+
 We instruct JSNAPy to gather the information that is returned when the `show bgp summary` command is executed and iterate every BGP peer. For every BGP peer in the return, we check the `flap-count`. If there is a difference, we trigger an error and we have JSNAPy inform us of the BGP peer that flapped:
 
 <pre style="font-size:12px">
@@ -104,7 +107,9 @@ test_bgp_summary:
 </pre>
 
  
- After having things setup, we run a pre and post change check:
+## Running pre and post change checks
+
+After having things setup, we run a pre and post change check:
 
 
 ```
@@ -153,6 +158,9 @@ Total No of tests passed: 0
 Total No of tests failed: 1 
 Overall Tests failed!!! 
 ```
+
+
+## Expanding the number of test cases and devices
 
 Expanding the test cases can be done in multiple ways. First, let's add one additional BGP test in the same test file. We want to be able to ensure that when we finish our maintenance, there are 0 BGP peers down. To this end, we add an additional test at the bottom of our the existing `test_bgp.yaml`:
 
@@ -317,6 +325,8 @@ Total No of tests passed: 5
 Total No of tests failed: 0 
 Overall Tests passed!!! 
 ```
+
+## Conclusion
 
 The example tests I use here barely scratch the surface of what is possible. At the same time though, the pattern of iterating a certain element and doing a `no-diff` or ensuring that a certain value is present will get you a long way. We saw that there was no big difference between checking the BGP flap count and checking for state changes in the interfaces. We can apply similar logic to check LDP sessions, RSVP LSPs, LLDP neighbors, line-cards, etc. We basically need to input a command, the xpath that defines what part of the XML tree to iterate. After this, we specify what field to test and when the test fails/succeeds.
 
