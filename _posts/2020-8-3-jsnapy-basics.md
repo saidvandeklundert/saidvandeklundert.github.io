@@ -26,14 +26,16 @@ JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Junipe
 
 By default, the snapshots are stored on the local system that is running JSNAPy. You have the option of storing captured snapshots in a database. 
 
-The test cases that JSNAPy executes against the snapshots are written according to a fixed format (more on that later). JSNAPy can run test cases against a single snapshot or it can be made to analyze 2 snapshots.
+The test cases that JSNAPy executes against the snapshots are written according to a fixed format (more on that later). JSNAPy test cases can be written in such a way that data from a single or from 2 snapshots are analyzed.
 
 
-You can use JSNAPy as a CLI tool and run the configured checks manually. Apart from working very well as a CLI tool, it is also a very convenient way to learn how JSNAPy works. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module for people into that.
+You can use JSNAPy as a CLI tool and run the configured checks manually. Apart from working very well as a CLI tool, it is also a very convenient way to learn how JSNAPy works. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module.
+
 
 ## JSNAPy use cases
 
-One thing that JSNAPy can be used for is to perform checks against a single snaphot from a device. This works by having JSNAPy create a snapshot and applying several tests against it. Reasons for doing this can be because you are going through an audit and you have to prove, or verify, that every device has the proper firewall filters applied. In addition to compliance checks, you can also use a single snapshot to run health checks against it. For example, are all my BGP peers up? JSNAPy can be made to capture snapshots for a single device or for groups of devices. This means that after you have invested some time into writing the checks, running these checks accross all devices becomes effortless.
+
+One thing that JSNAPy can be used for is to perform checks against a single snaphot from a device. This works by having JSNAPy create a snapshot and applying several tests against it. Reasons for doing this can be because you are going through an audit and you have to prove, or verify, that every device has the proper configuration applied. In addition to compliance checks, you can also use a single snapshot to run health checks against it. For example, are all my BGP peers up? JSNAPy can be made to capture snapshots for a single device or for groups of devices. This means that after you have invested some time into writing the checks, running these checks accross all devices becomes effortless.
 
 
 {:refdef: style="text-align: center;"}
@@ -51,15 +53,9 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 
 ## Configuring JSNAPy
 
-The only thing we'll do in this example is install JSNAPy and configure it in such a way that we can use the CLI to take snapshots and run tests.
-
-To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and testfiles. In my example, I am using the following configuration:
+To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and testfiles. In this example, we are using the following configuration:
 
 ```
-# This file can be overwritten
-# It contains default path for 
-# config file, snapshots and testfiles
-# If required, overwrite the path with your path
 #config_file_path: path of main config file
 #snapshot_path : path of snapshot file
 #test_file_path: path of test file
@@ -70,7 +66,7 @@ snapshot_path = /home/said/snapshots
 test_file_path = /home/said/testfiles
 ```
 
-We configure a snap test in the following file `/etc/jsnapy/snap_config.yaml`:
+We also need a configuration file that contains our target device as well as the tests we need to run. We will use the following `/etc/jsnapy/snap_config.yaml`:
 
 ```
 hosts:
@@ -88,7 +84,55 @@ We referenced the test in `snap_config.yaml`, but we have not created it yet. Le
 
 ## Writing your first test file
 
-We instruct JSNAPy to gather the information that is returned when the `show bgp summary` command is executed and iterate every BGP peer. For every BGP peer in the return, we check the `flap-count`. If there is a difference, we trigger an error and we have JSNAPy inform us of the BGP peer that flapped:
+As a first test, we want JSNAPy to tell us if any of our BGP peers flapped. This information is returned when we issue the `show bgp summary` command. We start off naming the test and putting in the command that we want JSNAPy to execute:
+
+<pre style="font-size:12px">
+test_bgp_summary:
+
+  - command: show bgp summary
+</pre>
+
+
+The next thing we add to the test is the instruction to <b>iterate</b> all BGP peers. We do this by supplying an xpath expression that identifies the node we are after. 
+
+JSNAPy snapshots and tests work against the XML that the Juniper device API returns. So on the device, we use `show bgp summary | display xml` to see what the device will return: 
+
+```
+svandeklundert@ppr01.dal12-re0> show bgp summary | display xml    
+<rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
+    <bgp-information xmlns="http://xml.juniper.net/junos/15.1X53/junos-routing">
+        <group-count>5</group-count>
+        <peer-count>63</peer-count>
+        <down-peer-count>2</down-peer-count>
+..<output omitted>..
+        <bgp-peer junos:style="terse">
+            <peer-address>10.0.0.49</peer-address>
+            <peer-as>4201065544</peer-as>
+            <input-messages>24816125</input-messages>
+            <output-messages>3870576081</output-messages>
+            <route-queue-count>0</route-queue-count>
+            <flap-count>3</flap-count>
+            <elapsed-time junos:seconds="21685301">35w5d 23:41:41</elapsed-time>
+            <description>BGP: gr02.dal</description>
+            <peer-state junos:format="Establ">Established</peer-state>
+..<output omitted>..            
+        </bgp-peer>
+        <bgp-peer junos:style="terse">
+            <peer-address>10.0.0.236</peer-address>
+            <peer-as>4201065544</peer-as>
+            <input-messages>0</input-messages>
+            <output-messages>0</output-messages>
+            <route-queue-count>0</route-queue-count>
+            <flap-count>1</flap-count>
+            <elapsed-time junos:seconds="26730677">44w1d 9:11:17</elapsed-time>
+            <description>BGP: ar01a.dal</description>
+            <peer-state>Connect</peer-state>
+        </bgp-peer>
+..<output omitted>..
+```
+
+We can see that the BGP peers are sub-elements of `bgp-information`. Another thing we can see is that the value we are after is called `flap-count`. This value is kept for every BGP peer configured on the device.
+
 
 <pre style="font-size:12px">
 test_bgp_summary:
