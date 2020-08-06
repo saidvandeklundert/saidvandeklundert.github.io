@@ -131,7 +131,9 @@ svandeklundert@ppr01.dal12-re0> show bgp summary | display xml
 ..<output omitted>..
 ```
 
-Looking at the XML, we can figure out what `xpath` we need to use. In case you never worked with xpath before, it is XML path language and it can be used to select nodes in an XML document. Let's assume that you never used xpath before. In the context of JSNAPy, you can get away with keeping it as straightforward as filling in the path to the node you are after. In this example, we can use the following xpath: `//bgp-information/bgp-peer`. 
+Looking at the XML, we can figure out what `xpath` we need to use. In case you never worked with xpath before, it is XML path language and it can be used to select nodes in an XML document. Let's assume that you never used xpath before. 
+
+In the context of JSNAPy, you can get away with keeping it as straightforward as filling in the path to the node you are after. In this example, we are after the `bgp-peer`. This node can be reached following this path: `bgp-information/bgp-peer`. For this reason, we submit the following xpath: `//bgp-information/bgp-peer`. 
 
 We are going to be using the check functionality and submit the `id` value `bgp-peer`. Since we need to iterate all of the BGP peers in the returned XML, we put in the `iterate` statement:
 
