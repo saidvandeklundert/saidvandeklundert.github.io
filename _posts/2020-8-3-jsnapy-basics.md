@@ -203,9 +203,37 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
-There were no failures in this case, but how do we know that our test case will detect actual BGP flaps? 
+There were no failures in this case, but how do we know that our xpath and parameters identified the correct values? And how do we know whether or not our test case will detect actual BGP flaps? 
 
-To verify that our tests work, we edit the snapshot file and change the flap-count for 2 BGP neighbors. We can do this by editing the file that is stored in the snapshot directory. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
+First, we check what BGP peers our test identifies. To this end, we use the debug flag:
+
+<pre style="font-size:12px">
+/ # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml -v
+jsnapy.cfg file location used : /etc/jsnapy
+Configuration file location used : /etc/jsnapy
+**************************** Device: 10.0.19.245 ****************************
+Tests Included: test_bgp_summary 
+************************* Command: show bgp summary *************************
+----------------------Performing no-diff Test Operation----------------------
+Succes! 10.0.104.20 did not register flaps.
+Succes! 10.0.10.242 did not register flaps.
+Succes! 10.0.114.249 did not register flaps.
+Succes! 10.0.10.228 did not register flaps.
+Succes! 10.0.160.236 did not register flaps.
+Succes! 10.0.182.254 did not register flaps.
+Succes! 2107:f0d0:1f00:8000::2 did not register flaps.
+... output omitted ...
+PASS | All "flap-count" is same in pre and post snapshot [ 63 matched ]
+------------------------------- Final Result!! -------------------------------
+test_bgp_summary : Passed
+Total No of tests passed: 1
+Total No of tests failed: 0 
+Overall Tests passed!!! 
+</pre>
+
+Using the debug flag, we can see the informational message that we put in our test.
+
+Next is to verify that our tests work. We can do this by altering the flap-count for 2 BGP neighbors in the snapshot file. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
 
 ```
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
