@@ -241,7 +241,7 @@ test_bgp_summary:
           err:  "FAIL!! {{pre['peer-address']}} flapped. Pre-change: {{pre['flap-count']}}. Post-change: {{post['flap-count']}}"
 
   - item:
-      xpath: bgp-information       
+      xpath: //bgp-information       
       tests:
         - is-equal: down-peer-count, 0
           info:  "Succes! None of the configured BGP peers are down."
