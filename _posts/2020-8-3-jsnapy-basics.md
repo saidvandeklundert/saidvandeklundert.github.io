@@ -133,7 +133,7 @@ svandeklundert@ppr01.dal12-re0> show bgp summary | display xml
 
 Looking at the XML, we can figure out what `xpath` we need to use. In case you never worked with xpath before, it is XML path language and it can be used to select nodes in an XML document. Let's assume that you never used xpath before. 
 
-In the context of JSNAPy, you can get away with keeping it as straightforward as filling in the path to the node you are after. In this example, we are after the `bgp-peer`. This node can be reached following this path: `bgp-information/bgp-peer`. For this reason, we submit the following xpath: `//bgp-information/bgp-peer`. 
+In the context of JSNAPy, you do not need to be an expert using xpath. You can keep it very straightforward and still get a lot out of the framework. In this example, we are after the `bgp-peer`. For this reason, we submit the following xpath: `//bgp-peer`. The `//`, means anywhere in the XML tree. And `bgp-peer` is the name of the node we are after. 
 
 We are going to be using the check functionality and submit the `id` value `bgp-peer`. Since we need to iterate all of the BGP peers in the returned XML, we put in the `iterate` statement:
 
@@ -144,7 +144,7 @@ test_bgp_summary:
   - command: show bgp summary
 
   - iterate:
-      xpath: //bgp-information/bgp-peer
+      xpath: //bgp-peer
       id: peer-address
 </pre>
 
@@ -159,7 +159,7 @@ test_bgp_summary:
   - command: show bgp summary
 
   - iterate:
-      xpath: //bgp-information/bgp-peer
+      xpath: //bgp-peer
       id: peer-address
       tests:
         - no-diff: flap-count
@@ -168,7 +168,7 @@ test_bgp_summary:
 </pre>
 
 
-We now have JSNAPy configured and we have our first test created. Let's see how we can put all this to use.
+We now have JSNAPy configured and we have our first test created. The first test iterates all BGP peers and it will inform us if the value we are interested in shows any difference between the two snapshots. Let's see how we can put all this to use.
 
 ## Running pre and post change checks
 
@@ -233,7 +233,7 @@ test_bgp_summary:
   - command: show bgp summary
 
   - iterate:
-      xpath: //bgp-information/bgp-peer
+      xpath: //bgp-peer
       id: peer-address
       tests:
         - no-diff: flap-count
@@ -260,7 +260,7 @@ test_router_interface:
   - command: show interface terse
   
   - iterate:
-      xpath: physical-interface
+      xpath: //physical-interface
       id: name
       tests:
         - no-diff: oper-status    
@@ -270,13 +270,15 @@ test_router_interface:
 
 For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
 
+As you can see, we used a pattern that is very similar to what we used for the BGP peer check. The xpath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overal setup of the test is the same. We can use this patter for LLDP neighbors, LDP sessions, IS-IS adjancies, etc.  
+
 After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
 
 <pre style="font-size:12px">
 ospf_interface:
   - command: show ospf interface
   - iterate:
-      xpath: ospf-interface[interface-name != "lo0.0"]
+      xpath: //ospf-interface[interface-name != "lo0.0"]
       tests:
         - is-gt: neighbor-count, 0          
           info: "Success! There is at least 1 OSPF neighbor found behind {{post['interface-name']}}"
@@ -285,14 +287,14 @@ ospf_interface:
 ospf3_interface:
   - command: show ospf3 interface
   - iterate:
-      xpath: ospf3-interface[interface-name != "lo0.0"]
+      xpath: //ospf3-interface[interface-name != "lo0.0"]
       tests:
         - is-gt: neighbor-count, 0          
           info: "Success! There is at least 1 OSPF neighbor found behind {{post['interface-name']}}"
           err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"   
 </pre>
 
-The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface. It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
+In this case, we put 2 tests in the same file. One for OSPF and another one for OSPF3. To indicate that a lot more is possible using xpath, I 'spiced' things up a little. The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface (`[interface-name != "lo0.0"]`). It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
 
 After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the tests against:
 
@@ -310,7 +312,7 @@ tests:
   - test_interfaces.yaml
 ```
 
-Let's run the tests:
+Now that we have things set up, let's run the tests:
 
 ```
 / # jsnapy --snap pre -f snap_config.yaml
@@ -388,6 +390,8 @@ Total No of tests passed: 5
 Total No of tests failed: 0 
 Overall Tests passed!!! 
 ```
+
+Whenever we use JSNAPy, the snapshots and checks are run for all the devices referecenced in the `/etc/jsnapy/snap_config.yaml` file. 
 
 ## Conclusion
 
