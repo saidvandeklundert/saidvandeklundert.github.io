@@ -440,37 +440,49 @@ You write the tests once and you reap the benefit during every maintenance.
 Grab the XML output from a Juniper device:
 
 ```
-said@ar.dal-re0> show bgp summary | display xml    
+said@ar.dal-re0> show bgp summary |display xml 
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
     <bgp-information xmlns="http://xml.juniper.net/junos/15.1X53/junos-routing">
         <group-count>5</group-count>
-        <peer-count>63</peer-count>
+        <peer-count>65</peer-count>
         <down-peer-count>2</down-peer-count>
-..<output omitted>..
-        <bgp-peer junos:style="terse">
-            <peer-address>10.0.0.49</peer-address>
+  ..<output omitted>..
+        <bgp-peer junos:style="terse" heading="Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...">
+            <peer-address>10.0.13.48</peer-address>
             <peer-as>4201065544</peer-as>
-            <input-messages>24816125</input-messages>
-            <output-messages>3870576081</output-messages>
+            <input-messages>24675776</input-messages>
+            <output-messages>4033821163</output-messages>
             <route-queue-count>0</route-queue-count>
             <flap-count>3</flap-count>
-            <elapsed-time junos:seconds="21685301">35w5d 23:41:41</elapsed-time>
-            <description>BGP: gr02.dal</description>
+            <elapsed-time junos:seconds="22238121">36w5d 9:15:21</elapsed-time>
+            <description>R1</description>
             <peer-state junos:format="Establ">Established</peer-state>
-..<output omitted>..            
+            <bgp-rib junos:style="terse">
+                <name>inet.0</name>
+                <active-prefix-count>0</active-prefix-count>
+                <received-prefix-count>1</received-prefix-count>
+                <accepted-prefix-count>1</accepted-prefix-count>
+                <suppressed-prefix-count>0</suppressed-prefix-count>
+            </bgp-rib>
+            <bgp-rib junos:style="terse">
+                <name>bgp.l3vpn.0</name>
+                <active-prefix-count>590</active-prefix-count>
+                <received-prefix-count>590</received-prefix-count>
+                <accepted-prefix-count>590</accepted-prefix-count>
+                <suppressed-prefix-count>0</suppressed-prefix-count>
+            </bgp-rib>
         </bgp-peer>
         <bgp-peer junos:style="terse">
-            <peer-address>10.0.0.236</peer-address>
+            <peer-address>10.0.13.49</peer-address>
             <peer-as>4201065544</peer-as>
-            <input-messages>0</input-messages>
-            <output-messages>0</output-messages>
+            <input-messages>24846590</input-messages>
+            <output-messages>4139021655</output-messages>
             <route-queue-count>0</route-queue-count>
-            <flap-count>1</flap-count>
-            <elapsed-time junos:seconds="26730677">44w1d 9:11:17</elapsed-time>
-            <description>BGP: ar01a.dal</description>
-            <peer-state>Connect</peer-state>
-        </bgp-peer>
-..<output omitted>..
+            <flap-count>3</flap-count>
+            <elapsed-time junos:seconds="22236625">36w5d 8:50:25</elapsed-time>
+            <description>R2</description>
+            <peer-state junos:format="Establ">Established</peer-state>
+  ..<output omitted>..
 ```
 
 Input the XML and the XPATH expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
@@ -488,7 +500,13 @@ Input the XML to an online tool here https://www.freeformatter.com/xpath-tester.
 
 
 
+### The JSNAPy github repo:
+
+https://github.com/Juniper/jsnapy
+
+Inside the repo, there is also a directory with a lot of examples that you can use as an example for your own test cases:
+
+https://github.com/Juniper/jsnapy/tree/master/samples
 
 
-- https://github.com/Juniper/jsnapy
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
