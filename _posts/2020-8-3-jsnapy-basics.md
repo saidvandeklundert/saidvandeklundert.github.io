@@ -492,7 +492,7 @@ Input the XML and the XPATH expression you want to test into an online tool, for
 {: refdef}
 
 
-Input the XML to an online tool here https://www.freeformatter.com/xpath-tester.html :
+After pressing `TEST XPATH`, you will see what your XPATH will match:
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy freeformatter](/img/jsnapy_freeformatter_2.png "JSNAPy freeformatter")
