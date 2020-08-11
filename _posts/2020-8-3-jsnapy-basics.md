@@ -98,7 +98,7 @@ The next thing we add to the test is the instruction to <b>iterate</b> all BGP p
 JSNAPy snapshots and tests work against the XML that the Juniper device API returns. So on the device, we use `show bgp summary | display xml` to see what the device will return: 
 
 ```
-svandeklundert@ppr01.dal12-re0> show bgp summary | display xml    
+said@ar.dal-re0> show bgp summary | display xml    
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
     <bgp-information xmlns="http://xml.juniper.net/junos/15.1X53/junos-routing">
         <group-count>5</group-count>
@@ -439,9 +439,39 @@ You write the tests once and you reap the benefit during every maintenance.
 
 Grab the XML output from a Juniper device:
 
-{:refdef: style="text-align: center;"}
-![JSNAPy get XML](/img/jsnapy_to_xml.png "JSNAPy get XML")
-{: refdef}
+```
+said@ar.dal-re0> show bgp summary | display xml    
+<rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
+    <bgp-information xmlns="http://xml.juniper.net/junos/15.1X53/junos-routing">
+        <group-count>5</group-count>
+        <peer-count>63</peer-count>
+        <down-peer-count>2</down-peer-count>
+..<output omitted>..
+        <bgp-peer junos:style="terse">
+            <peer-address>10.0.0.49</peer-address>
+            <peer-as>4201065544</peer-as>
+            <input-messages>24816125</input-messages>
+            <output-messages>3870576081</output-messages>
+            <route-queue-count>0</route-queue-count>
+            <flap-count>3</flap-count>
+            <elapsed-time junos:seconds="21685301">35w5d 23:41:41</elapsed-time>
+            <description>BGP: gr02.dal</description>
+            <peer-state junos:format="Establ">Established</peer-state>
+..<output omitted>..            
+        </bgp-peer>
+        <bgp-peer junos:style="terse">
+            <peer-address>10.0.0.236</peer-address>
+            <peer-as>4201065544</peer-as>
+            <input-messages>0</input-messages>
+            <output-messages>0</output-messages>
+            <route-queue-count>0</route-queue-count>
+            <flap-count>1</flap-count>
+            <elapsed-time junos:seconds="26730677">44w1d 9:11:17</elapsed-time>
+            <description>BGP: ar01a.dal</description>
+            <peer-state>Connect</peer-state>
+        </bgp-peer>
+..<output omitted>..
+```
 
 Input the XML and the XPATH expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
 
