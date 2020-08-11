@@ -427,6 +427,38 @@ The example tests I use here barely scratch the surface of what is possible. At 
 
 You write the tests once and you reap the benefit during every maintenance.
 
-## Links:
+## XPATH Links:
+
+### Video tutorial on XPATH by Jeremy Schulman:
+
+- https://youtu.be/LwTv_G0VwoE
+- https://github.com/jeremyschulman/xml-tutorial
+
+
+### Quickly testing XPATH on XML output:
+
+Grab the XML output from a Juniper device:
+
+{:refdef: style="text-align: center;"}
+![JSNAPy get XML](/img/jsnapy_to_xml.png "JSNAPy get XML")
+{: refdef}
+
+Input the XML and the XPATH expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
+
+{:refdef: style="text-align: center;"}
+![JSNAPy freeformatter](/img/jsnapy_freeformatter_1.png "JSNAPy freeformatter")
+{: refdef}
+
+
+Input the XML to an online tool here https://www.freeformatter.com/xpath-tester.html :
+
+{:refdef: style="text-align: center;"}
+![JSNAPy freeformatter](/img/jsnapy_freeformatter_2.png "JSNAPy freeformatter")
+{: refdef}
+
+
+
+
+
 - https://github.com/Juniper/jsnapy
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
