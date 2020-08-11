@@ -29,7 +29,7 @@ By default, the snapshots are stored on the local system that is running JSNAPy.
 The test cases that JSNAPy executes against the snapshots are written according to a fixed format (more on that later). JSNAPy test cases can be written in such a way that data from a single or from 2 snapshots are analyzed.
 
 
-You can use JSNAPy as a CLI tool and run the configured checks manually. Apart from working very well as a CLI tool, it is also a very convenient way to learn how JSNAPy works. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). Juniper also supplies an Ansible module.
+JSNAPy can be used as a CLI tool where you run the configured checks manually. Apart from working very well, it is also a very convenient way to learn how JSNAPy works. In addition to using it on the CLI, you can use JSNAPy in your Python scripts. This makes the framework very flexible (I use it in SaltStack for example). And to make it easier for Ansible users, Juniper also supplies an Ansible module.
 
 
 ## JSNAPy use cases
