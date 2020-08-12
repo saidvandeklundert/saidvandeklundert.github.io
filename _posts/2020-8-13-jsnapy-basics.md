@@ -446,6 +446,31 @@ Jeremy Schulman did a great XPath tutorial that is definately worth watching:
 - https://github.com/jeremyschulman/xml-tutorial
 
 
+#### The JSNAPy github repo:
+
+Obviously, this is worth checking out as it contains all JSNAPy code:
+https://github.com/Juniper/jsnapy
+
+In the repo, there is a WIKI and in addition to that, there is also a directory with a lot of examples that you can use as an example for your own test cases:
+
+https://github.com/Juniper/jsnapy/tree/master/samples
+
+
+#### Junos Snapshot Administrator in Python
+
+This is a comprehensive adminstrator guide that Juniper provides. It contains, or should contain, all you need to know to work effectively with JSNAPy:
+
+https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.html
+
+
+#### Enabling Automated Network Verifications with JSNAPy
+
+This is a day one book that contains a lot of additional information and example test cases that can be very usefull. I highly recommend downloading it from the Juniper website and reading through it.
+
+
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
+
+
 #### Quickly testing XPath on XML output:
 
 
@@ -511,25 +536,3 @@ After pressing `TEST XPATH`, you will see what your XPath will match:
 {: refdef}
 
 
-#### The JSNAPy github repo:
-
-Obviously, this is worth checking out as it contains all JSNAPy code:
-https://github.com/Juniper/jsnapy
-
-In the repo, there is a WIKI and in addition to that, there is also a directory with a lot of examples that you can use as an example for your own test cases:
-
-https://github.com/Juniper/jsnapy/tree/master/samples
-
-#### Junos Snapshot Administrator in Python
-
-This is a comprehensive adminstrator guide that Juniper provides. It contains, or should contain, all you need to know to work effectively with JSNAPy:
-
-https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.html
-
-
-#### Enabling Automated Network Verifications with JSNAPy
-
-This is a day one book that contains a lot of additional information and example test cases that can be very usefull. I highly recommend downloading it from the Juniper website and reading through it.
-
-
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
