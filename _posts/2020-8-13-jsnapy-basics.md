@@ -527,9 +527,9 @@ This is a comprehensive adminstrator guide that Juniper provides. It contains, o
 https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.html
 
 
-#### Juniper DO: Enabling Automated Network Verifications with JSNAPy
+#### Enabling Automated Network Verifications with JSNAPy
 
-<b>Enabling Automated Network Verifications with JSNAPy</b> is a day one book that contains a lot of additional information and example test cases that can be very usefull.
+This is a day one book that contains a lot of additional information and example test cases that can be very usefull. I highly recommend downloading it from the Juniper website and reading through it.
 
 
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
