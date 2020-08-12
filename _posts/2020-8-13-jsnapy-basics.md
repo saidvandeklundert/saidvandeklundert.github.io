@@ -515,4 +515,8 @@ In the repo, there is a WIKI and in addition to that, there is also a directory 
 https://github.com/Juniper/jsnapy/tree/master/samples
 
 
+#### Juniper DO: Enabling Automated Network Verifications with JSNAPy
+
+Google for the <b>Enabling Automated Network Verifications with JSNAPy</b> day one book. It contains a lot of additional information and example test cases that can be very usefull.
+
 https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
