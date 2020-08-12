@@ -2,8 +2,12 @@
 layout: post
 title: JSNAPy
 tags: [ python, automation, juniper, pyez, ]
-image: /img/python-logo.jpg
+image: /img/JSNAPy_logo.png
 ---
+
+{:refdef: style="text-align: center;"}
+![JSNAPy logo](/img/JSNAPy_logo.png "JSNAPy logo")
+{: refdef}
 
 
 JSNAPy allows you to create snapshots that capture the state of devices running Junos. After capturing the device state, you can run tests against these snapshots. These tests can tell you if there is something to worry about or not.
