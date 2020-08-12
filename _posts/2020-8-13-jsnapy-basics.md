@@ -21,7 +21,7 @@ This walkthrough will cover what JSNAPy is, how it works and how it is configure
 
 ## What is JSNAPy 
 
-JSNAPy stands for Junos Snapshot Administrator in Python. It leverage the Juniper API to retrieve data from the device. You can specify an RPC or a CLI that needs to be executed. The data returned by the device is stored as a snapshot:
+JSNAPy stands for Junos Snapshot Administrator in Python. It leverages the Juniper API to retrieve data from the device. You can specify an RPC or a CLI that needs to be executed. The data returned by the device is stored as a snapshot:
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy overview](/img/jsnapy_overview.png "JSNAPy overview")
