@@ -304,7 +304,7 @@ test_router_interface:
 
 For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
 
-As you can see, we used a pattern that is very similar to what we used for the BGP peer check. The xpath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup of the test is the same. We can use this patter for LLDP neighbors, LDP sessions, IS-IS adjacencies, etc.  
+As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The xpath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc.  
 
 After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
 
