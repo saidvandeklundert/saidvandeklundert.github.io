@@ -21,7 +21,7 @@ This walkthrough will cover what JSNAPy is, how it works and how it is configure
 
 ## What is JSNAPy 
 
-JSNAPy stands for Junos Snapshot Administrator in Python. It leverages the Juniper API to retrieve data from the device. You can specify an RPC or a CLI that needs to be executed. The data returned by the device is stored as a snapshot:
+JSNAPy stands for Junos Snapshot Administrator in Python. It leverages the Juniper API to retrieve data from the device. You can specify an RPC or a CLI that needs to be executed. JSNAPy can then execute that RPC or CLI and the data returned by the device is then stored as a snapshot:
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy overview](/img/jsnapy_overview.png "JSNAPy overview")
@@ -57,7 +57,7 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 {: refdef}
 
 
-## Configuring JSNAPy
+## Installing and configuring JSNAPy
 
 To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and test files. In this example, we are using the following configuration:
 
@@ -137,9 +137,9 @@ said@ar.dal-re0> show bgp summary | display xml
 ..<output omitted>..
 ```
 
-Looking at the XML, we can figure out what `xpath` we need to use. In case you never worked with xpath before, it is XML path language and it can be used to select nodes in an XML document. Let's assume that you never used xpath before. 
+Looking at the XML, we can figure out what `XPath` we need to use. In case you never worked with XPath before, XPath stands for XML Path language and it can be used to select nodes in an XML document. The way XPath allows you to search through data and select what you need is extremely powerfull. There are some followup documents and resources referenced at the end of the article that you can use to learn more about XPath.
 
-In the context of JSNAPy, you do not need to be an expert using xpath. You can keep it very straightforward and still get a lot out of the framework. In this example, we are after the `bgp-peer`. For this reason, we submit the following xpath: `//bgp-peer`. The `//`, means anywhere in the XML tree. And `bgp-peer` is the name of the node we are after. 
+For now, let's assume that you never used XPath before. The nice thing about JSNAPy is that you do not need to be an expert at XPath in order to successfully use it. You can keep it very straightforward and still get a lot out of the framework. In this example, we are after the `bgp-peer`. For this reason, we submit the following XPath: `//bgp-peer`. The `//`, means anywhere in the XML tree. And `bgp-peer` is the name of the node we are after. 
 
 We are going to be using the check functionality and submit the `id` value `bgp-peer`. Since we need to iterate all of the BGP peers in the returned XML, we put in the `iterate` statement:
 
@@ -156,7 +156,7 @@ test_bgp_summary:
 
 Another thing we can see in the XML is that the value we are after is called `flap-count`.  We want to be notified in case there is a difference before and after the change. So in the `tests` segment, we use `no-diff` on `flap-count`.
 
-As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an `err` message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we emit the pre and post change value:
+As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an `err` message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we return the pre and post change value:
 
 
 <pre style="font-size:12px">
@@ -209,7 +209,7 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
-There were no failures in this case, but how do we know that our xpath and parameters identified the correct values? And how do we know whether or not our test case will detect actual BGP flaps? 
+There were no failures in this case, but how do we know that our XPath and parameters identified the correct values? And how do we know whether or not our test case will detect actual BGP flaps? 
 
 First, we check what BGP peers our test identifies. To this end, we use the debug flag:
 
@@ -282,7 +282,7 @@ test_bgp_summary:
           err:  "FAIL! There are {{post['down-peer-count']}} peers down"
 </pre>
 
-We use `item` instead of `iterate` because we are interested in the first node of the xpath. The `down-peer-count` is a sub-element `bgp-information`, so that becomes the xpath expression. 
+We use `item` instead of `iterate` because we are interested in the first node of the XPath. The `down-peer-count` is a sub-element `bgp-information`, so that becomes the XPath expression. 
 
 We can also decide to run some additional tests on other things besides BGP. Let's create a separate file for an interface test as well as an OSPF test.
 
@@ -304,7 +304,7 @@ test_router_interface:
 
 For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
 
-As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The xpath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc.  
+As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The XPath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc.  
 
 After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
 
@@ -328,7 +328,7 @@ ospf3_interface:
           err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"   
 </pre>
 
-In this case, we put 2 tests in the same file. One for OSPF and another one for OSPF3. To indicate that a lot more is possible using xpath, I 'spiced' things up a little. The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface (`[interface-name != "lo0.0"]`). It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
+In this case, we put 2 tests in the same file. One for OSPF and another one for OSPF3. To indicate that a lot more is possible using XPath, I 'spiced' things up a little. The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface (`[interface-name != "lo0.0"]`). It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
 
 After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the tests against:
 
@@ -429,7 +429,7 @@ Whenever we use JSNAPy, the snapshots and checks are run for all the devices ref
 
 ## Conclusion
 
-The example tests I use here barely scratch the surface of what is possible. At the same time though, the pattern of iterating a certain element and doing a `no-diff` or ensuring that a certain value is present will get you a long way. We saw that there was no big difference between checking the BGP flap count and checking for state changes in the interfaces. We can apply similar logic to check LDP sessions, RSVP LSPs, LLDP neighbors, line-cards, etc. We basically need to input a command, the xpath that defines what part of the XML tree to iterate. After this, we specify what field to test and when the test fails/succeeds.
+The example tests I use here barely scratch the surface of what is possible. At the same time though, the pattern of iterating a certain element and doing a `no-diff` or ensuring that a certain value is present will get you a long way. We saw that there was no big difference between checking the BGP flap count and checking for state changes in the interfaces. We can apply similar logic to check LDP sessions, RSVP LSPs, LLDP neighbors, line-cards, etc. We basically need to input a command, the XPath that defines what part of the XML tree to iterate. After this, we specify what field to test and when the test fails/succeeds.
 
 You write the tests once and you reap the benefit during every maintenance.
 
@@ -437,19 +437,19 @@ You write the tests once and you reap the benefit during every maintenance.
 
 ### Additional resources:
 
-Here are several additional resources that are worth checking out. They include resources that are useful in case you want to learn more about XPATH and several resources that are worth checking out in case you want to learn more about JSNAPy.
+Here are several additional resources that are worth checking out. They include resources that are useful in case you want to learn more about XPath and several resources that are worth checking out in case you want to learn more about JSNAPy.
 
-#### Video tutorial on XPATH by Jeremy Schulman:
+#### Video tutorial on XPath by Jeremy Schulman:
 
-Jeremy Schulman did a great XPATH tutorial that is definately worth watching:
+Jeremy Schulman did a great XPath tutorial that is definately worth watching:
 - https://youtu.be/LwTv_G0VwoE
 - https://github.com/jeremyschulman/xml-tutorial
 
 
-#### Quickly testing XPATH on XML output:
+#### Quickly testing XPath on XML output:
 
 
-Getting more familiar and accustomed to using XPATH expressions can be frustrating in the beginning. You can practice and play with XPATH expressions relatively easy. Consider grabbing the XML from a Juniper device like so:
+Getting more familiar and accustomed to using XPath expressions can be frustrating in the beginning. You can practice and play with XPath expressions relatively easy. Consider grabbing the XML from a Juniper device like so:
 
 ```
 said@ar.dal-re0> show bgp summary |display xml 
@@ -497,14 +497,14 @@ said@ar.dal-re0> show bgp summary |display xml
   ..<output omitted>..
 ```
 
-Input the XML and the XPATH expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
+Input the XML and the XPath expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy freeformatter](/img/jsnapy_freeformatter_1.png "JSNAPy freeformatter")
 {: refdef}
 
 
-After pressing `TEST XPATH`, you will see what your XPATH will match:
+After pressing `TEST XPATH`, you will see what your XPath will match:
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy freeformatter](/img/jsnapy_freeformatter_2.png "JSNAPy freeformatter")
