@@ -427,17 +427,23 @@ The example tests I use here barely scratch the surface of what is possible. At 
 
 You write the tests once and you reap the benefit during every maintenance.
 
-## XPATH Links:
 
-### Video tutorial on XPATH by Jeremy Schulman:
 
+### Additional resources:
+
+Here are several additional resources that are worth checking out. They include resources that are usefull in case you want to learn more about XPATH and several resources that are worth checking out in case you want to learn more about JSNAPy.
+
+#### Video tutorial on XPATH by Jeremy Schulman:
+
+Jeremy Schulman did a great XPATH tuturial that is worth watching:
 - https://youtu.be/LwTv_G0VwoE
 - https://github.com/jeremyschulman/xml-tutorial
 
 
-### Quickly testing XPATH on XML output:
+#### Quickly testing XPATH on XML output:
 
-Grab the XML output from a Juniper device:
+
+Getting more familiar and accustomed to using XPATH expressions can be frustrating in the beginning. You can practice and play with XPATH expressions relatively easy. Consider grabbing the XML from from a Juniper device like so:
 
 ```
 said@ar.dal-re0> show bgp summary |display xml 
@@ -499,14 +505,14 @@ After pressing `TEST XPATH`, you will see what your XPATH will match:
 {: refdef}
 
 
+#### The JSNAPy github repo:
 
-### The JSNAPy github repo:
-
+Obviously, this is worth checking out as it contains all JSNAPy code:
 https://github.com/Juniper/jsnapy
 
-Inside the repo, there is also a directory with a lot of examples that you can use as an example for your own test cases:
+In the repo, there is a WIKI and in addition to that, there is also a directory with a lot of examples that you can use as an example for your own test cases:
 
 https://github.com/Juniper/jsnapy/tree/master/samples
 
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-3-jsnapy-basics.md
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
