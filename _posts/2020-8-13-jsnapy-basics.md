@@ -10,7 +10,7 @@ JSNAPy allows you to create snapshots that capture the state of devices running 
 
 The thing I love using JSNAPy for the most is pre- and post- change validation. If you are performing a change on a device that has 100+ interfaces and that is also enabled for OSPF, BGP, LDP, LLDP, RSVP and LACP, you spend quite some time validating that operations have returned to normal after executing a change. It is error-prone, time consuming and it is no fun at all. Especially if you are executing a change during a nightly maintenance window.
 
-With JSNAPy, you write out your testcases in advance. When you have your maintenance, the test cases are executed in seconds.
+With JSNAPy, you write out your test cases in advance. When you have your maintenance, the test cases are executed in seconds.
 
 This walkthrough will cover what JSNAPy is, how it works and how it is configured. After this, we will write a few test cases and execute those using the CLI.
 
@@ -35,7 +35,7 @@ JSNAPy can be used as a CLI tool where you run the configured checks manually. A
 ## JSNAPy use cases
 
 
-One thing that JSNAPy can be used for is to perform checks against a single snaphot from a device. This works by having JSNAPy create a snapshot and applying several tests against it. Reasons for doing this can be because you are going through an audit and you have to prove, or verify, that every device has the proper configuration applied. In addition to compliance checks, you can also use a single snapshot to run health checks against it. For example, are all my BGP peers up? JSNAPy can be made to capture snapshots for a single device or for groups of devices. This means that after you have invested some time into writing the checks, running these checks accross all devices becomes effortless.
+One thing that JSNAPy can be used for is to perform checks against a single snapshot from a device. This works by having JSNAPy create a snapshot and applying several tests against it. Reasons for doing this can be because you are going through an audit and you have to prove, or verify, that every device has the proper configuration applied. In addition to compliance checks, you can also use a single snapshot to run health checks against it. For example, are all my BGP peers up? JSNAPy can be made to capture snapshots for a single device or for groups of devices. This means that after you have invested some time into writing the checks, running these checks across all devices becomes effortless.
 
 
 {:refdef: style="text-align: center;"}
@@ -53,7 +53,7 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 
 ## Configuring JSNAPy
 
-To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and testfiles. In this example, we are using the following configuration:
+To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and test files. In this example, we are using the following configuration:
 
 ```
 #config_file_path: path of main config file
@@ -253,7 +253,7 @@ Overall Tests failed!!!
 
 ## Expanding the number of test cases and devices
 
-Expanding the test cases can be done in multiple ways. First, let's add one additional BGP test in the same test file. We want to be able to ensure that when we finish our maintenance, there are 0 BGP peers down. To this end, we add an additional test at the bottom of our the existing `test_bgp.yaml`:
+Expanding the test cases can be done in multiple ways. First, let's add one additional BGP test in the same test file. We want to be able to ensure that when we finish our maintenance, there are 0 BGP peers down. To this end, we add an additional test at the bottom of our existing `test_bgp.yaml`:
 
 <pre style="font-size:12px">
 test_bgp_summary:
@@ -276,7 +276,7 @@ test_bgp_summary:
           err:  "FAIL! There are {{post['down-peer-count']}} peers down"
 </pre>
 
-We use `item` instead of `iterate` because we are interested in the first node of the xpath. The `down-peer-count` is a sub-element `bgp-information`, so that becomes the xpath expresssion. 
+We use `item` instead of `iterate` because we are interested in the first node of the xpath. The `down-peer-count` is a sub-element `bgp-information`, so that becomes the xpath expression. 
 
 We can also decide to run some additional tests on other things besides BGP. Let's create a separate file for an interface test as well as an OSPF test.
 
@@ -298,7 +298,7 @@ test_router_interface:
 
 For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
 
-As you can see, we used a pattern that is very similar to what we used for the BGP peer check. The xpath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overal setup of the test is the same. We can use this patter for LLDP neighbors, LDP sessions, IS-IS adjancies, etc.  
+As you can see, we used a pattern that is very similar to what we used for the BGP peer check. The xpath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup of the test is the same. We can use this patter for LLDP neighbors, LDP sessions, IS-IS adjacencies, etc.  
 
 After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
 
@@ -419,7 +419,7 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 ```
 
-Whenever we use JSNAPy, the snapshots and checks are run for all the devices referecenced in the `/etc/jsnapy/snap_config.yaml` file. 
+Whenever we use JSNAPy, the snapshots and checks are run for all the devices referenced in the `/etc/jsnapy/snap_config.yaml` file. 
 
 ## Conclusion
 
@@ -431,11 +431,11 @@ You write the tests once and you reap the benefit during every maintenance.
 
 ### Additional resources:
 
-Here are several additional resources that are worth checking out. They include resources that are usefull in case you want to learn more about XPATH and several resources that are worth checking out in case you want to learn more about JSNAPy.
+Here are several additional resources that are worth checking out. They include resources that are useful in case you want to learn more about XPATH and several resources that are worth checking out in case you want to learn more about JSNAPy.
 
 #### Video tutorial on XPATH by Jeremy Schulman:
 
-Jeremy Schulman did a great XPATH tuturial that is worth watching:
+Jeremy Schulman did a great XPATH tutorial that is definately worth watching:
 - https://youtu.be/LwTv_G0VwoE
 - https://github.com/jeremyschulman/xml-tutorial
 
@@ -443,7 +443,7 @@ Jeremy Schulman did a great XPATH tuturial that is worth watching:
 #### Quickly testing XPATH on XML output:
 
 
-Getting more familiar and accustomed to using XPATH expressions can be frustrating in the beginning. You can practice and play with XPATH expressions relatively easy. Consider grabbing the XML from from a Juniper device like so:
+Getting more familiar and accustomed to using XPATH expressions can be frustrating in the beginning. You can practice and play with XPATH expressions relatively easy. Consider grabbing the XML from a Juniper device like so:
 
 ```
 said@ar.dal-re0> show bgp summary |display xml 
