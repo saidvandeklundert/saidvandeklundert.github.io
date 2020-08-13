@@ -74,7 +74,7 @@ We also need a configuration file that contains our target device as well as the
 
 ```
 hosts:
-  - device: 10.0.19.245
+  - device: ar01.wdc
     username: lab
     passwd: test123  
 tests:
@@ -181,11 +181,11 @@ After having things setup, we run a pre and post change check:
 
 ```
 / # jsnapy --snap pre -f snap_config.yaml
-Connecting to device 10.0.19.245 ................
+Connecting to device ar01.wdc ................
 Taking snapshot of COMMAND: show bgp summary 
 / # 
 / # jsnapy --snap post -f snap_config.yaml
-Connecting to device 10.0.19.245 ................
+Connecting to device ar01.wdc ................
 Taking snapshot of COMMAND: show bgp summary 
 / # 
 ```
@@ -196,7 +196,7 @@ In order to run our test, we issue the following command:
 
 ```
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
-**************************** Device: 10.0.19.245 ****************************
+**************************** Device: ar01.wdc ****************************
 Tests Included: test_bgp_summary 
 ************************* Command: show bgp summary *************************
 PASS | All "flap-count" is same in pre and post snapshot [ 63 matched ]
@@ -215,7 +215,7 @@ First, we check what BGP peers our test identifies. To this end, we use the debu
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml -v
 jsnapy.cfg file location used : /etc/jsnapy
 Configuration file location used : /etc/jsnapy
-**************************** Device: 10.0.19.245 ****************************
+**************************** Device: ar01.wdc ****************************
 Tests Included: test_bgp_summary 
 ************************* Command: show bgp summary *************************
 ----------------------Performing no-diff Test Operation----------------------
@@ -237,11 +237,11 @@ Overall Tests passed!!!
 
 Using the debug flag, we can see the informational message that we put in our test.
 
-Next is to verify that our tests work. We can do this by altering the flap-count for 2 BGP neighbors in the snapshot file. In this example, it is the `/home/said/snapshots/10.0.19.245_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
+Next is to verify that our tests work. We can do this by altering the flap-count for 2 BGP neighbors in the snapshot file. In this example, it is the `/home/said/snapshots/ar01.wdc_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
 
 ```
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
-**************************** Device: 10.0.19.245 ****************************
+**************************** Device: ar01.wdc ****************************
 Tests Included: test_bgp_summary 
 ************************* Command: show bgp summary *************************
 FAIL!! 10.0.13.49 flapped. Pre-change: ['3']. Post-change: ['13']
