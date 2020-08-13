@@ -225,7 +225,7 @@ Succes! 10.0.114.249 did not register flaps.
 Succes! 10.0.10.228 did not register flaps.
 Succes! 10.0.160.236 did not register flaps.
 Succes! 10.0.182.254 did not register flaps.
-Succes! 2107:f0d0:1f00:8000::2 did not register flaps.
+Succes! 2100:f0d0:1f00:8000::2 did not register flaps.
 ... output omitted ...
 PASS | All "flap-count" is same in pre and post snapshot [ 63 matched ]
 ------------------------------- Final Result!! -------------------------------
