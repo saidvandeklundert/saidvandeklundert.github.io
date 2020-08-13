@@ -59,7 +59,7 @@ Another use case is using JSNAPy for pre- and post-change checks. When you are p
 
 To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg</b> file contains the default path for configuration files, snapshots and test files. In this example, we are using the following configuration:
 
-```
+<pre style="font-size:12px">
 #config_file_path: path of main config file
 #snapshot_path : path of snapshot file
 #test_file_path: path of test file
@@ -68,18 +68,18 @@ To install JSNAPy, run <b>pip install jsnapy</b>. The <b>/etc/jsnapy/jsnapy.cfg<
 config_file_path= /etc/jsnapy
 snapshot_path = /home/said/snapshots
 test_file_path = /home/said/testfiles
-```
+</pre>
 
 We also need a configuration file that contains our target device as well as the tests we need to run. We will use the following `/etc/jsnapy/snap_config.yaml`:
 
-```
+<pre style="font-size:12px">
 hosts:
   - device: ar01.wdc
     username: lab
     passwd: test123  
 tests:
   - test_bgp.yaml 
-```
+</pre>
 
 This test will target 1 device and run the tests defined in the `test_bgp.yaml` file. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_bgp.yaml`. 
 
@@ -179,7 +179,7 @@ We now have JSNAPy configured and we have our first test created. The first test
 After having things setup, we run a pre and post change check:
 
 
-```
+<pre style="font-size:12px">
 / # jsnapy --snap pre -f snap_config.yaml
 Connecting to device ar01.wdc ................
 Taking snapshot of COMMAND: show bgp summary 
@@ -188,13 +188,13 @@ Taking snapshot of COMMAND: show bgp summary
 Connecting to device ar01.wdc ................
 Taking snapshot of COMMAND: show bgp summary 
 / # 
-```
+</pre>
 
 What happened here is JSNAPy logged into the device to make an API call. It translated the `show bgp summary` command to an RPC and stored the XML return in the snapshot directory. 
 
 In order to run our test, we issue the following command:
 
-```
+<pre style="font-size:12px">
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
 **************************** Device: ar01.wdc ****************************
 Tests Included: test_bgp_summary 
@@ -205,7 +205,7 @@ test_bgp_summary : Passed
 Total No of tests passed: 1
 Total No of tests failed: 0 
 Overall Tests passed!!! 
-```
+</pre>
 
 There were no failures in this case, but how do we know that our XPath and parameters identified the correct values? And how do we know whether or not our test case will detect actual BGP flaps? 
 
@@ -239,7 +239,7 @@ Using the debug flag, we can see the informational message that we put in our te
 
 Next is to verify that our tests work. We can do this by altering the flap-count for 2 BGP neighbors in the snapshot file. In this example, it is the `/home/said/snapshots/ar01.wdc_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
 
-```
+<pre style="font-size:12px">
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
 **************************** Device: ar01.wdc ****************************
 Tests Included: test_bgp_summary 
@@ -252,7 +252,7 @@ test_bgp_summary : Failed
 Total No of tests passed: 0
 Total No of tests failed: 1 
 Overall Tests failed!!! 
-```
+</pre>
 
 
 ## Expanding the number of test cases and devices
@@ -330,7 +330,7 @@ In this case, we put 2 tests in the same file. One for OSPF and another one for 
 
 After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the tests against:
 
-```
+<pre style="font-size:12px">
 hosts:
   - device: 10.253.158.251
     username: lab
@@ -342,11 +342,11 @@ tests:
   - test_bgp.yaml 
   - test_ospf.yaml
   - test_interfaces.yaml
-```
+</pre>
 
 Now that we have things set up, let's run the tests:
 
-```
+<pre style="font-size:12px">
 / # jsnapy --snap pre -f snap_config.yaml
 Connecting to device 10.253.158.251 ................
 Taking snapshot of COMMAND: show bgp summary 
@@ -421,7 +421,7 @@ test_router_interface : Passed
 Total No of tests passed: 5
 Total No of tests failed: 0 
 Overall Tests passed!!! 
-```
+</pre>
 
 Whenever we use JSNAPy, the snapshots and checks are run for all the devices referenced in the `/etc/jsnapy/snap_config.yaml` file. 
 
@@ -473,7 +473,7 @@ This is a day one book that contains a lot of additional information and example
 
 Getting more familiar and accustomed to using XPath expressions can be frustrating in the beginning. You can practice and play with XPath expressions relatively easy. Consider grabbing the XML from a Juniper device like so:
 
-```
+<textarea rows="20" cols="40" style="border:none;">
 said@ar.dal-re0> show bgp summary |display xml 
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
     <bgp-information xmlns="http://xml.juniper.net/junos/15.1X53/junos-routing">
@@ -517,7 +517,7 @@ said@ar.dal-re0> show bgp summary |display xml
             <description>R2</description>
             <peer-state junos:format="Establ">Established</peer-state>
   ..<output omitted>..
-```
+</textarea>
 
 Input the XML and the XPath expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
 
@@ -533,4 +533,3 @@ After pressing `TEST XPATH`, you will see what your XPath will match:
 {: refdef}
 
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
