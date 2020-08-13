@@ -41,7 +41,7 @@ JSNAPy can be used as a CLI tool where you run the configured checks manually. A
 
 One thing that JSNAPy can be used for is to perform checks against a single snapshot from a device. This works by having JSNAPy create a snapshot and applying several tests against it. Reasons for doing this can be because you are going through an audit and you have to prove, or verify, that every device has the proper configuration applied. 
 
-In addition to compliance checks, you can also run tests against a single snapshot in order to perform health checks. You can use these health checks to periodically verify the state of your network or to tell you whether or not you are good to go to start a change. You could, for example, verify that all configured BGP peers are up and that the CPU utilization is below a certain threshold and use that to determine whether or not you are good to go and start a change on the network.
+In addition to compliance checks, you can also run tests against a single snapshot in order to perform health checks. You can use these health checks to periodically verify the state of your network or to tell you whether or not it is safe to start a change. You could, for example, verify that all configured BGP peers are up and that the CPU utilization is below a certain threshold and use that to determine whether or not you are good to go and start a change on the network.
 
 JSNAPy can be made to capture snapshots for a single device or for groups of devices. This means that after you have invested some time into writing the checks, running these checks across all devices becomes effortless.
 
