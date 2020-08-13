@@ -70,7 +70,7 @@ snapshot_path = /home/said/snapshots
 test_file_path = /home/said/testfiles
 </pre>
 
-We also need a configuration file that contains our target device as well as the tests we need to run. We will use the following `/etc/jsnapy/snap_config.yaml`:
+We also need a configuration file that contains our target device as well as the tests we need to run. We will use the following <b>/etc/jsnapy/snap_config.yaml</b>:
 
 <pre style="font-size:12px">
 hosts:
@@ -81,14 +81,14 @@ tests:
   - test_bgp.yaml 
 </pre>
 
-This test will target 1 device and run the tests defined in the `test_bgp.yaml` file. Due to our previous configuration, the path JSNAPy expects for the test file is the following: `/home/said/testfiles/test_bgp.yaml`. 
+This test will target 1 device and run the tests defined in the <b>test_bgp.yaml</b> file. Due to our previous configuration, the path JSNAPy expects for the test file is the following: <b>/home/said/testfiles/test_bgp.yaml</b>. 
 
-We referenced the test in `snap_config.yaml`, but we have not created it yet. Let's start off writing a test that will inform us on whether or not a BGP peer flapped.
+We referenced the test in <b>snap_config.yaml</b>, but we have not created it yet. Let's start off writing a test that will inform us on whether or not a BGP peer flapped.
 
 
 ## Writing your first test file
 
-As a first test, we want JSNAPy to tell us if any of our BGP peers flapped. This information is returned when we issue the `show bgp summary` command. We start off naming the test and putting in the command that we want JSNAPy to execute:
+As a first test, we want JSNAPy to tell us if any of our BGP peers flapped. This information is returned when we issue the <b>show bgp summary</b> command. We start off naming the test and putting in the command that we want JSNAPy to execute:
 
 <pre style="font-size:12px">
 test_bgp_summary:
@@ -99,7 +99,7 @@ test_bgp_summary:
 
 The next thing we add to the test is the instruction to <b>iterate</b> all BGP peers. We do this by supplying an xpath expression that identifies the node we are after. 
 
-JSNAPy snapshots and tests work against the XML that the Juniper device API returns. So on the device, we use `show bgp summary | display xml` to see what the device will return: 
+JSNAPy snapshots and tests work against the XML that the Juniper device API returns. So on the device, we use <b>show bgp summary | display xml</b> to see what the device will return: 
 
 ```
 said@ar.dal-re0> show bgp summary | display xml    
@@ -135,11 +135,11 @@ said@ar.dal-re0> show bgp summary | display xml
 ..<output omitted>..
 ```
 
-Looking at the XML, we can figure out what `XPath` we need to use. In case you never worked with XPath before, XPath stands for XML Path language and it can be used to select nodes in an XML document. The way XPath allows you to search through data and select what you need is extremely powerfull. There are some followup documents and resources referenced at the end of the article that you can use to learn more about XPath.
+Looking at the XML, we can figure out what <b>XPath</b> we need to use. In case you never worked with XPath before, XPath stands for XML Path language and it can be used to select nodes in an XML document. The way XPath allows you to search through data and select what you need is extremely powerfull. There are some followup documents and resources referenced at the end of the article that you can use to learn more about XPath.
 
-For now, let's assume that you never used XPath before. The nice thing about JSNAPy is that you do not need to be an expert at XPath in order to successfully use it. You can keep it very straightforward and still get a lot out of the framework. In this example, we are after the `bgp-peer`. For this reason, we submit the following XPath: `//bgp-peer`. The `//`, means anywhere in the XML tree. And `bgp-peer` is the name of the node we are after. 
+For now, let's assume that you never used XPath before. The nice thing about JSNAPy is that you do not need to be an expert at XPath in order to successfully use it. You can keep it very straightforward and still get a lot out of the framework. In this example, we are after the <b>bgp-peer</b>. For this reason, we submit the following XPath: <b>//bgp-peer</b>. The <b>//</b>, means anywhere in the XML tree. And <b>bgp-peer</b> is the name of the node we are after. 
 
-We are going to be using the check functionality and submit the `id` value `bgp-peer`. Since we need to iterate all of the BGP peers in the returned XML, we put in the `iterate` statement:
+We are going to be using the check functionality and submit the <b>id</b> value <b>bgp-peer</b>. Since we need to iterate all of the BGP peers in the returned XML, we put in the <b>iterate</b> statement:
 
 
 <pre style="font-size:12px">
@@ -152,9 +152,9 @@ test_bgp_summary:
       id: peer-address
 </pre>
 
-Another thing we can see in the XML is that the value we are after is called `flap-count`.  We want to be notified in case there is a difference before and after the change. So in the `tests` segment, we use `no-diff` on `flap-count`. For a complete overview of the available test operators, be sure to check Chapter 5 JSNAPy Test Operators from the <b>Junos Snapshot Administrator in Python Guide</b>.
+Another thing we can see in the XML is that the value we are after is called <b>flap-count</b>.  We want to be notified in case there is a difference before and after the change. So in the <b>tests</b> segment, we use <b>no-diff</b> on <b>flap-count</b>. For a complete overview of the available test operators, be sure to check Chapter 5 JSNAPy Test Operators from the <b>Junos Snapshot Administrator in Python Guide</b>.
 
-As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an `err` message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we return the pre and post change value:
+As an <b>info</b> message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an <b>err</b> message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we return the pre and post change value:
 
 
 <pre style="font-size:12px">
@@ -190,7 +190,7 @@ Taking snapshot of COMMAND: show bgp summary
 / # 
 </pre>
 
-What happened here is JSNAPy logged into the device to make an API call. It translated the `show bgp summary` command to an RPC and stored the XML return in the snapshot directory. 
+What happened here is JSNAPy logged into the device to make an API call. It translated the <b>show bgp summary</b> command to an RPC and stored the XML return in the snapshot directory. 
 
 In order to run our test, we issue the following command:
 
@@ -237,7 +237,7 @@ Overall Tests passed!!!
 
 Using the debug flag, we can see the informational message that we put in our test.
 
-Next is to verify that our tests work. We can do this by altering the flap-count for 2 BGP neighbors in the snapshot file. In this example, it is the `/home/said/snapshots/ar01.wdc_post_show_bgp_summary.xml` file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
+Next is to verify that our tests work. We can do this by altering the flap-count for 2 BGP neighbors in the snapshot file. In this example, it is the <b>/home/said/snapshots/ar01.wdc_post_show_bgp_summary.xml</b> file that needs to be edited. After increasing the flap-count for 2 BGP neighbors, we run the check again. This time, we get the following result:
 
 <pre style="font-size:12px">
 / # jsnapy --check pre post -f /etc/jsnapy/snap_config.yaml 
@@ -257,7 +257,7 @@ Overall Tests failed!!!
 
 ## Expanding the number of test cases and devices
 
-Expanding the test cases can be done in multiple ways. First, let's add one additional BGP test in the same test file. We want to be able to ensure that when we finish our maintenance, there are 0 BGP peers down. To this end, we add an additional test at the bottom of our existing `test_bgp.yaml`:
+Expanding the test cases can be done in multiple ways. First, let's add one additional BGP test in the same test file. We want to be able to ensure that when we finish our maintenance, there are 0 BGP peers down. To this end, we add an additional test at the bottom of our existing <b>test_bgp.yaml</b>:
 
 <pre style="font-size:12px">
 test_bgp_summary:
@@ -280,11 +280,11 @@ test_bgp_summary:
           err:  "FAIL! There are {{post['down-peer-count']}} peers down"
 </pre>
 
-We use `item` instead of `iterate` because we are interested in the first node of the XPath. The `down-peer-count` is a sub-element `bgp-information`, so that becomes the XPath expression. 
+We use <b>item</b> instead of <b>iterate</b> because we are interested in the first node of the XPath. The <b>down-peer-count</b> is a sub-element <b>bgp-information</b>, so that becomes the XPath expression. 
 
 We can also decide to run some additional tests on other things besides BGP. Let's create a separate file for an interface test as well as an OSPF test.
 
-First the interface test in `/home/said/testfiles/test_interfaces.yaml`:
+First the interface test in <b>/home/said/testfiles/test_interfaces.yaml</b>:
 
 <pre style="font-size:12px">
 test_router_interface:
@@ -300,11 +300,11 @@ test_router_interface:
           err: "Fail ! Interface {{id_0}} changed from {{pre['oper-status']}} to {{post['oper-status']}}."
 </pre>
 
-For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
+For this test, we iterate the physical interfaces present on the device and check the <b>oper-status</b>. We use <b>no-diff</b> so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
 
-As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The XPath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc. 
+As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The XPath referenced the <b>physical-interface</b> instead of <b>bgp-peer</b>. Furthermore, the <b>id</b> and <b>no-diff</b> differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc. 
 
-After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
+After this, we define an OSPF test in the <b>/home/said/testfiles/test_ospf.yaml</b> file:
 
 <pre style="font-size:12px">
 ospf_interface:
@@ -326,9 +326,9 @@ ospf3_interface:
           err: "FAIL! There are no neighbors found behind {{post['interface-name']}}"   
 </pre>
 
-In this case, we put 2 tests in the same file. One for OSPF and another one for OSPF3. To indicate that a lot more is possible using XPath, I 'spiced' things up a little. The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface (`[interface-name != "lo0.0"]`). It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
+In this case, we put 2 tests in the same file. One for OSPF and another one for OSPF3. To indicate that a lot more is possible using XPath, I 'spiced' things up a little. The OSPF test will check all interfaces that are enabled for OSPFv2 or OSPFv3 skipping the lo0.0 interface (<b>[interface-name != "lo0.0"]</b>). It will check the neighbor count, and in case the neighbor count is 0, the test will fail.
 
-After creating the tests, we need to plug them in `/etc/jsnapy/snap_config.yaml`. While we add the tests, let's also add another host to run the tests against:
+After creating the tests, we need to plug them in <b>/etc/jsnapy/snap_config.yaml</b>. While we add the tests, let's also add another host to run the tests against:
 
 <pre style="font-size:12px">
 hosts:
@@ -423,11 +423,11 @@ Total No of tests failed: 0
 Overall Tests passed!!! 
 </pre>
 
-Whenever we use JSNAPy, the snapshots and checks are run for all the devices referenced in the `/etc/jsnapy/snap_config.yaml` file. 
+Whenever we use JSNAPy, the snapshots and checks are run for all the devices referenced in the <b>/etc/jsnapy/snap_config.yaml</b> file. 
 
 ## Conclusion
 
-The example tests I use here barely scratch the surface of what is possible. At the same time though, the pattern of iterating a certain element and doing a `no-diff` or ensuring that a certain value is present will get you a long way. We saw that there was no big difference between checking the BGP flap count and checking for state changes in the interfaces. We can apply similar logic to check LDP sessions, RSVP LSPs, LLDP neighbors, line-cards, etc. We basically need to input a command, the XPath that defines what part of the XML tree to iterate. After this, we specify what field to test and when the test fails/succeeds.
+The example tests I use here barely scratch the surface of what is possible. At the same time though, the pattern of iterating a certain element and doing a <b>no-diff</b> or ensuring that a certain value is present will get you a long way. We saw that there was no big difference between checking the BGP flap count and checking for state changes in the interfaces. We can apply similar logic to check LDP sessions, RSVP LSPs, LLDP neighbors, line-cards, etc. We basically need to input a command, the XPath that defines what part of the XML tree to iterate. After this, we specify what field to test and when the test fails/succeeds.
 
 You write the tests once and you reap the benefit during every maintenance.
 
@@ -439,18 +439,16 @@ Here are several additional resources that are worth checking out. They include 
 
 #### Video tutorial on XPath by Jeremy Schulman:
 
-Jeremy Schulman did a great XPath tutorial that is definately worth watching:
-- https://youtu.be/LwTv_G0VwoE
-- https://github.com/jeremyschulman/xml-tutorial
+Jeremy Schulman did a great XPath tutorial that is definately worth watching. You can check it out right <a href="https://youtu.be/LwTv_G0VwoE" target="_blank">here</a>.
 
 
 #### The JSNAPy github repo:
 
 Obviously, this is worth checking out as it contains all JSNAPy code:
-https://github.com/Juniper/jsnapy
+
+<a href="https://github.com/Juniper/jsnapy" target="_blank">JSNAPy github</a>
 
 In the repo, there is a WIKI and in addition to that, there is also a directory with a lot of examples that you can use as an example for your own test cases:
-
 
 <a href="https://github.com/Juniper/jsnapy/tree/master/samples" target="_blank">JSNAPy samples</a>
 
@@ -519,14 +517,14 @@ said@ar.dal-re0> show bgp summary |display xml
   ..<output omitted>..
 ```
 
-Input the XML and the XPath expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
+Input the XML and the XPath expression you want to test into an online tool, for instance this one: <a href="https://www.freeformatter.com/xpath-tester.html" target="_blank">freeformatter</a>
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy freeformatter](/img/jsnapy_freeformatter_1.png "JSNAPy freeformatter")
 {: refdef}
 
 
-After pressing `TEST XPATH`, you will see what your XPath will match:
+After pressing <b>TEST XPATH</b>, you will see what your XPath will match:
 
 {:refdef: style="text-align: center;"}
 ![JSNAPy freeformatter](/img/jsnapy_freeformatter_2.png "JSNAPy freeformatter")
