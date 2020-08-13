@@ -473,7 +473,7 @@ This is a day one book that contains a lot of additional information and example
 
 Getting more familiar and accustomed to using XPath expressions can be frustrating in the beginning. You can practice and play with XPath expressions relatively easy. Consider grabbing the XML from a Juniper device like so:
 
-<pre lang="xml">
+```
 said@ar.dal-re0> show bgp summary |display xml 
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/15.1X53/junos">
     <bgp-information xmlns="http://xml.juniper.net/junos/15.1X53/junos-routing">
@@ -517,7 +517,7 @@ said@ar.dal-re0> show bgp summary |display xml
             <description>R2</description>
             <peer-state junos:format="Establ">Established</peer-state>
   ..<output omitted>..
-</pre>
+```
 
 Input the XML and the XPath expression you want to test into an online tool, for instance this one: https://www.freeformatter.com/xpath-tester.html
 
