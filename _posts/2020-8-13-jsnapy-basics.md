@@ -458,9 +458,11 @@ https://github.com/Juniper/jsnapy/tree/master/samples
 
 #### Junos Snapshot Administrator in Python
 
-This is a comprehensive adminstrator guide that Juniper provides. It contains, or should contain, all you need to know to work effectively with JSNAPy:
+This is a comprehensive adminstrator guide that Juniper provides. It contains, or should contain, all you need to know to work effectively with JSNAPy.
 
-https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.html
+<a href="https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.pdf" target="_blank">Junos Snapshot Administrator in Python Guide PDF</a>
+
+<a href="https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.pdf" target="_blank">Junos Snapshot Administrator in Python Guide</a>
 
 
 #### Enabling Automated Network Verifications with JSNAPy
