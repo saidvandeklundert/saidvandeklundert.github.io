@@ -468,9 +468,6 @@ https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-produc
 This is a day one book that contains a lot of additional information and example test cases that can be very usefull. I highly recommend downloading it from the Juniper website and reading through it.
 
 
-https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
-
-
 #### Quickly testing XPath on XML output:
 
 
@@ -536,3 +533,4 @@ After pressing `TEST XPATH`, you will see what your XPath will match:
 {: refdef}
 
 
+https://github.com/saidvandeklundert/saidvandeklundert.github.io/blob/jsnapy/_posts/2020-8-13-jsnapy-basics.md
