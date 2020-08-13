@@ -154,7 +154,7 @@ test_bgp_summary:
       id: peer-address
 </pre>
 
-Another thing we can see in the XML is that the value we are after is called `flap-count`.  We want to be notified in case there is a difference before and after the change. So in the `tests` segment, we use `no-diff` on `flap-count`.
+Another thing we can see in the XML is that the value we are after is called `flap-count`.  We want to be notified in case there is a difference before and after the change. So in the `tests` segment, we use `no-diff` on `flap-count`. For a complete overview of the available test operators, be sure to check Chapter 5 JSNAPy Test Operators from the <b>Junos Snapshot Administrator in Python Guide</b>.
 
 As an `info` message, shown only when we run the check in debug mode, we will print that a peer did not register any flaps. In case a BGP peer flapped, we want to print an `err` message to screen that tells us what peer address flapped. We also want to understand how often it flapped, so we return the pre and post change value:
 
@@ -304,7 +304,7 @@ test_router_interface:
 
 For this test, we iterate the physical interfaces present on the device and check the `oper-status`. We use `no-diff` so that we are informed of anything that changed. In case something changes, we print the interface name and state changes to screen.
 
-As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The XPath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc.  
+As you can see, the patter used for the interface test is very similar to what we used for the BGP peer check. The XPath referenced the `physical-interface` instead of `bgp-peer`. Furthermore, the `id` and `no-diff` differ because in this case, we are interested in the value from other fields. However, the overall setup and logic of the test is the same. We can also use this pattern and logic to test LLDP neighbors, LDP sessions, IS-IS adjacencies, etc. 
 
 After this, we define an OSPF test in the `/home/said/testfiles/test_ospf.yaml` file:
 
@@ -458,7 +458,7 @@ https://github.com/Juniper/jsnapy/tree/master/samples
 
 #### Junos Snapshot Administrator in Python
 
-This is a comprehensive adminstrator guide that Juniper provides. It contains, or should contain, all you need to know to work effectively with JSNAPy.
+This is a comprehensive adminstrator guide that Juniper provides. It contains all you need to know to work effectively with JSNAPy.
 
 <a href="https://www.juniper.net/documentation/en_US/junos-snapshot1.0/information-products/pathway-pages/junos-snapshot-python.pdf" target="_blank">Junos Snapshot Administrator in Python Guide PDF</a>
 
