@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JSNAPy
+title: Getting started with JSNAPy
 tags: [ python, automation, juniper, pyez, ]
 image: /img/JSNAPy_logo.png
 ---
