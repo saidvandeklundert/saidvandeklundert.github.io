@@ -451,8 +451,8 @@ https://github.com/Juniper/jsnapy
 
 In the repo, there is a WIKI and in addition to that, there is also a directory with a lot of examples that you can use as an example for your own test cases:
 
-https://github.com/Juniper/jsnapy/tree/master/samples
 
+<a href="https://github.com/Juniper/jsnapy/tree/master/samples" target="_blank">JSNAPy samples</a>
 
 #### Junos Snapshot Administrator in Python
 
