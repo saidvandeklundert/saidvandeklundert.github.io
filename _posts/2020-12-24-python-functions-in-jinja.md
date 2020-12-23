@@ -61,6 +61,7 @@ We can now use the functions inside the Jinja template like so:
 <pre style="font-size:12px">
 Calling the 'hello_world' function:
 {{ hello_world() }}
+
 Calling the 'multiply' function:
 {{ multiply(2, 2) }}
 </pre>
@@ -70,6 +71,7 @@ When we run the Python script, we get the following result:
 <pre style="font-size:12px">
 Calling the 'hello_world' function:
 hello world from within the function
+
 Calling the 'multiply' function:
 4
 </pre>
