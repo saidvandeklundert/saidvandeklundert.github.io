@@ -7,15 +7,14 @@ image: /img/python-logo.jpg
 
 In some cases, Jinja templates become too complicated. Lots of deeply nested if statements, clunky ways of working with variables, macros and many other things that hurt the eyes.
 
-{:refdef: style="text-align: center;"}
-![Jinja logo](/img/jinja_logo.png "Jinja logo")
-{: refdef}
-
-
 What might be worth knowing is the fact that you can pass a Python function into your Jinja templates. Doing this can greatly improve the readability of your template as well as allow you to handle more complicated scenario's.
 
 
 # Using a Python function in a Jinja template
+
+{:refdef: style="text-align: center;"}
+![Jinja logo](/img/jinja_logo.png "Jinja logo")
+{: refdef}
 
 The following Python will pass 2 functions to the Jinja template.
 
