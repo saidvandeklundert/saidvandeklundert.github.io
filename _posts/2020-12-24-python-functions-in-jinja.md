@@ -75,3 +75,13 @@ hello world from within the function
 Calling the 'multiply' function:
 4
 </pre>
+
+
+# Final thoughts
+
+Being able to use Python functions like this inside a Jinja template has been usefull to me. It increased the readability of some templates as I was able to replace large parts with a straightforward Python functions. 
+
+It also allowed me to handle more complex logic in a Python function. This translated into being able to more quickly introduce more complicated configurations as well as allowing me to make templates behave based on the state of other systems. 
+
+It is not something that is required all the time, but it is nice to know that it is a possibility.
+
