@@ -10,8 +10,6 @@ image: /img/python-logo.jpg
 
 Jinja is a templating engine for the Python programming language. It is not a programming language. Jinja comes with its own syntax, control structures, expressions and it allows you to do some pretty complicated things.
 
-That does not mean it is a good idea.
-
 {:refdef: style="text-align: center;"}
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
 {: refdef}
