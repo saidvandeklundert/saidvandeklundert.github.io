@@ -12,10 +12,6 @@ What might be worth knowing is the fact that you can pass a Python function into
 
 # Using a Python function in a Jinja template
 
-{:refdef: style="text-align: center;"}
-![Jinja logo](/img/jinja_logo.png "Jinja logo")
-{: refdef}
-
 The following Python will pass 2 functions to the Jinja template.
 
 First we define 2 functions: 'hello_world' and 'multiply'. These functions are placed in a dictionary.
@@ -55,7 +51,11 @@ if __name__ == "__main__":
     print(render(template="test.j2"))
 </pre>
 
-In the following example Jinja, we use the functions that our previous Python passes into the template:
+In the following example Jinja, <b>/var/tmp/test.j2</b>, we use the functions that our previous Python passes into the template:
+
+{:refdef: style="text-align: center;"}
+![Jinja logo](/img/jinja_logo.png "Jinja logo")
+{: refdef}
 
 <pre style="font-size:12px">
 {% raw %}Calling the 'hello_world' function:
