@@ -5,7 +5,7 @@ tags: [ python, automation, ]
 image: /img/python-logo.jpg
 ---
 
-In some cases, Jinja templates become too complicated. Lots of deeply nested if statements, clunky ways of working with variables, macroes and many other things that hurt the eyes.
+In some cases, Jinja templates become too complicated. Lots of deeply nested if statements, clunky ways of working with variables, macros and many other things that hurt the eyes.
 
 {:refdef: style="text-align: center;"}
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
