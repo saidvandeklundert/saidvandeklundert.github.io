@@ -8,18 +8,19 @@ image: /img/python-logo.jpg
 
 
 
-Jinja is a templating engine for the Python programming language. It is not a programming language. Jinja comes with its own syntax, control structures, expressions and it allows you to do some pretty complicated things.
+Jinja is a <b>templating</b> engine for the Python programming language. It is not a <b>programming</b> language. Jinja comes with its own syntax, control structures, expressions and it allows you to do some pretty complicated things.
+
+But in some cases, Jinja templates become too complicated. As a result, you can see a lot of deeply nested if statements, clunky ways of working with variables, filtering the variables and more. 
 
 {:refdef: style="text-align: center;"}
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
 {: refdef}
 
-In some cases, templates become too complicated. Especially when there is too much logic that needs to be dealt with inside the Jinja template. As a result, you can see a lot of deeply nested if statements, clunky ways of working with variables, filtering the variables and more. 
 
 What might be worth knowing is the fact that you can pass a Python function into your Jinja templates. Doing this can greatly improve the readability of your template as well as allow you to handle more complicated scenario's.
 
 
-# The Python script
+# Using a Python function in a Jinja template
 
 The following is a Python script that will render a template using the <b>render</b> function. Inside that function, we use <b>jinja_template.globals.update(func_dict)</b> to pass in a dictionary called <b>func_dict</b>. This dictionary contains 2 functions: 'hello_world' and 'multiply'.
 
