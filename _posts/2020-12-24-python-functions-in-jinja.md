@@ -5,7 +5,7 @@ tags: [ python, automation, ]
 image: /img/python-logo.jpg
 ---
 
-In some cases, Jinja templates can become too complicated. Lots of deeply nested if statements, clunky ways of working with variables and many more things that hurt the eyes.
+In some cases, Jinja templates become too complicated. Lots of deeply nested if statements, clunky ways of working with variables, macroes and many other things that hurt the eyes.
 
 {:refdef: style="text-align: center;"}
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
@@ -19,9 +19,11 @@ What might be worth knowing is the fact that you can pass a Python function into
 
 The following Python will pass 2 functions to the Jinja template.
 
-First, 2 functions are defined: 'hello_world' and 'multiply'. These functions are placed in a dictionary.
+First we define 2 functions: 'hello_world' and 'multiply'. These functions are placed in a dictionary.
 
 After this, the <b>render</b> function is created. Inside this function, we use <b>jinja_template.globals.update(func_dict)</b> to pass the previously created <b>func_dict</b> and expose it during the Jinja rendering phase. 
+
+The function ends up rendering the template and returning the resulting string:
 
 
 <pre style="font-size:12px">
@@ -54,7 +56,7 @@ if __name__ == "__main__":
     print(render(template="test.j2"))
 </pre>
 
-In the following example Jinja, we use the functions like so:
+In the following example Jinja, we use the functions that our previous Python passes into the template:
 
 <pre style="font-size:12px">
 Calling the 'hello_world' function:
