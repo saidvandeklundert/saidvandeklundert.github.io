@@ -58,11 +58,11 @@ if __name__ == "__main__":
 In the following example Jinja, we use the functions that our previous Python passes into the template:
 
 <pre style="font-size:12px">
-Calling the 'hello_world' function:
+{% raw %}Calling the 'hello_world' function:
 {{ hello_world() }}
 
 Calling the 'multiply' function:
-{{ multiply(2, 2) }}
+{{ multiply(2, 2) }}{% endraw %}
 </pre>
 
 When we run the Python script, we get the following result:
