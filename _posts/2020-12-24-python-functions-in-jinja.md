@@ -8,7 +8,7 @@ image: /img/python-logo.jpg
 
 
 
-Jinja is a templating engine for the Python programming language. It is not a programming language. Jinja comes with it's own syntax, control structures, expressions and it allows you to do some pretty complicated things.
+Jinja is a templating engine for the Python programming language. It is not a programming language. Jinja comes with its own syntax, control structures, expressions and it allows you to do some pretty complicated things.
 
 That does not mean it is a good idea.
 
@@ -16,7 +16,7 @@ That does not mean it is a good idea.
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
 {: refdef}
 
-In some cases, templates become to complicated. Especially when there is too much logic that needs to be dealt with inside the Jinja template. As a result, you can see a lot of deeply nested if statements, clunky ways of working with variables, filtering the variables and more. 
+In some cases, templates become too complicated. Especially when there is too much logic that needs to be dealt with inside the Jinja template. As a result, you can see a lot of deeply nested if statements, clunky ways of working with variables, filtering the variables and more. 
 
 What might be worth knowing is the fact that you can pass a Python function into your Jinja templates. Doing this can greatly improve the readability of your template as well as allow you to handle more complicated scenario's.
 
@@ -79,9 +79,9 @@ Calling the 'multiply' function:
 
 # Final thoughts
 
-Being able to use Python functions like this inside a Jinja template has been usefull to me. It increased the readability of some templates as I was able to replace large parts with a straightforward Python functions. 
+Being able to use Python functions like this inside a Jinja template has been useful to me. It increased the readability of some templates as I was able to replace large parts with a straightforward Python functions. 
 
-It also allowed me to handle more complex logic in a Python function. This translated into being able to more quickly introduce more complicated configurations as well as allowing me to make templates behave based on the state of other systems. 
+It also allowed me to handle more complex logic in a Python function. This allowed me to introduce more complicated configurations as well make templates behave based on the state of other systems. 
 
 It is not something that is required all the time, but it is nice to know that it is a possibility.
 
