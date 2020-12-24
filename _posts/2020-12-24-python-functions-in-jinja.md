@@ -5,12 +5,7 @@ tags: [ python, automation, ]
 image: /img/python-logo.jpg
 ---
 
-
-
-
-Jinja is a <b>templating</b> engine for the Python programming language. It is not a <b>programming</b> language. Jinja comes with its own syntax, control structures, expressions and it allows you to do some pretty complicated things.
-
-But in some cases, Jinja templates become too complicated. As a result, you can see a lot of deeply nested if statements, clunky ways of working with variables, filtering the variables and more. 
+In some cases, Jinja templates can become too complicated. Lots of deeply nested if statements, clunky ways of working with variables and many more things that hurt the eyes.
 
 {:refdef: style="text-align: center;"}
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
@@ -22,7 +17,11 @@ What might be worth knowing is the fact that you can pass a Python function into
 
 # Using a Python function in a Jinja template
 
-The following is a Python script that will render a template using the <b>render</b> function. Inside that function, we use <b>jinja_template.globals.update(func_dict)</b> to pass in a dictionary called <b>func_dict</b>. This dictionary contains 2 functions: 'hello_world' and 'multiply'.
+The following Python will pass 2 functions to the Jinja template.
+
+First, 2 functions are defined: 'hello_world' and 'multiply'. These functions are placed in a dictionary.
+
+After this, the <b>render</b> function is created. Inside this function, we use <b>jinja_template.globals.update(func_dict)</b> to pass the previously created <b>func_dict</b> and expose it during the Jinja rendering phase. 
 
 
 <pre style="font-size:12px">
@@ -55,7 +54,7 @@ if __name__ == "__main__":
     print(render(template="test.j2"))
 </pre>
 
-We can now use the functions inside the Jinja template like so:
+In the following example Jinja, we use the functions like so:
 
 <pre style="font-size:12px">
 Calling the 'hello_world' function:
@@ -76,7 +75,7 @@ Calling the 'multiply' function:
 </pre>
 
 
-Being able to use Python functions like this inside a Jinja template has been useful to me. It increased the readability of some templates as I was able to replace large parts with a straightforward Python functions. 
+Being able to use Python functions like this inside a Jinja template has been very useful to me. It increased the readability of some templates as I was able to replace large parts with a straightforward Python functions. 
 
 It also allowed me to handle more complex logic in a Python function. This allowed me to introduce more complicated configurations as well make templates behave based on the state of other systems. 
 
