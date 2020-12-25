@@ -45,7 +45,7 @@ func_dict = {
 }
 
 def render(template):
-    env = Environment(loader=FileSystemLoader("/srv/tempaltes/"))
+    env = Environment(loader=FileSystemLoader("/srv/templates/"))
     jinja_template = env.get_template(template)
     jinja_template.globals.update(func_dict)
     template_string = jinja_template.render()
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     print(render(template="test.j2"))
 </pre>
 
-In the following example Jinja, <b>/srv/tempaltes/test.j2</b>, we use the functions that our previous Python passes into the template:
+In the following example Jinja, <b>/srv/templates/test.j2</b>, we use the functions that our previous Python passes into the template:
 
 <pre style="font-size:12px">
 {% raw %}Calling the 'hello_world' function:
