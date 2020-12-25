@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Using Python functions in Jinja templates
-tags: [ python, automation, ]
+tags: [ python, automation, jinja ]
 image: /img/python-logo.jpg
 ---
 
@@ -39,8 +39,8 @@ func_dict = {
     "multiply": multiply,
 }
 
-def render(template=None):
-    env = Environment(loader=FileSystemLoader("/var/tmp/"))
+def render(template):
+    env = Environment(loader=FileSystemLoader("/srv/tempaltes/"))
     jinja_template = env.get_template(template)
     jinja_template.globals.update(func_dict)
     template_string = jinja_template.render()
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     print(render(template="test.j2"))
 </pre>
 
-In the following example Jinja, <b>/var/tmp/test.j2</b>, we use the functions that our previous Python passes into the template:
+In the following example Jinja, <b>/srv/tempaltes/test.j2</b>, we use the functions that our previous Python passes into the template:
 
 {:refdef: style="text-align: center;"}
 ![Jinja logo](/img/jinja_logo.png "Jinja logo")
