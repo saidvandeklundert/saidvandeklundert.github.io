@@ -156,7 +156,7 @@ Short example where we put the collected information into a dictionary:
 ```
 from collections import OrderedDict # ensure the ordering of the dict key/values
 
-interfaces = rpc.xpath('//physical-interface')
+all_interfaces = rpc.xpath('//physical-interface|//physical-interface/logical-interface')
 interfaces_list_of_dict = []
 
 for interface in all_interfaces:
