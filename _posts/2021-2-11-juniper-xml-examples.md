@@ -181,7 +181,7 @@ print(dumps(interfaces_list_of_dict, indent=4))
 ```
 
 There are a lot of 'uninteresting' interfaces that Juniper has for internal use. Filtering them out is easy:
-```
+<pre style="font-size:12px">
 uninteresting = ["jsrv", "local", "igb", "ixlv", "bme", "32768", "16384", "32767"]
 
 for interface in all_interfaces:
@@ -190,7 +190,7 @@ for interface in all_interfaces:
     if len(interface.xpath('./address-family/interface-address/ifa-local/text()')):
         getattr(interface.find('./name'), 'text' , '')
         interface.xpath('./address-family/interface-address/ifa-local/text()')
-```
+</pre>
 
 I have recorded some sample output right [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_examples.py).
 
