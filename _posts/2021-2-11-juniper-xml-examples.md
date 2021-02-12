@@ -27,7 +27,7 @@ with Device(host=host, user=username, password=password, normalize=True) as dev:
 
 The `rpc` that is referred to in the rest of the examples is the device response to `get_interface_information(extensive=True)`. This is the RPC to retrieve the information that can be displayed with the `show interfaces extensive` command:
 
-<pre style="font-size:12px">
+```xml
 admin@ar.lab> show interfaces extensive | display xml rpc 
 <rpc-reply xmlns:junos="http://xml.juniper.net/junos/16.1R3/junos">
     <rpc>
@@ -39,7 +39,7 @@ admin@ar.lab> show interfaces extensive | display xml rpc
         <banner></banner>
     </cli>
 </rpc-reply>
-</pre>
+```
 
 I stored the example script as `example.py` and ran it with `python -i`. This will drop you in the interpretor and allows you to paste in the following snippets and examples.
 
