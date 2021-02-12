@@ -97,6 +97,7 @@ Using regular expresions in lxml:
 ns = {"re": "http://exslt.org/regular-expressions"}
 # RE to get 100G:
 rpc.xpath('physical-interface[re:match(name, "et")]/name/text()', namespaces=ns) 
+
 # RE to get 100G on linecard position 1 and 2:
 rpc.xpath('physical-interface[re:match(name, "et-[1,2]")]/name/text()', namespaces=ns)
 
@@ -193,7 +194,9 @@ for interface in all_interfaces:
         interface.xpath('./address-family/interface-address/ifa-local/text()')
 </pre>
 
-I have recorded some sample output right [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_examples.py).
+I have recorded some sample output right [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_examples.py) and [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_re_example.py).
+
+More examples and explantion on how to work with lxml can be found [here](https://lxml.de/xpathxslt.html).
 
 Note,
 
