@@ -192,6 +192,8 @@ for interface in all_interfaces:
         interface.xpath('./address-family/interface-address/ifa-local/text()')
 ```
 
+I have recorded some sample output right [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_examples.py).
+
 Note,
 
 The code was ran against a few different Junos versions:
