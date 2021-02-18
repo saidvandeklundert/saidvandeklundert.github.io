@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Navigating Juniper RPC returns using XPATH
-tags: [ python, automation, juniper, pyez, ]
+tags: [ python, automation, juniper, pyez, xpath ]
 image: /img/juniper_logo.jpg
 ---
 
