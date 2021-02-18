@@ -1,14 +1,19 @@
 ---
 layout: post
-title: Juniper automation examples for state 
+title: Navigating Juniper RPC returns using XPATH
 tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
 
 
-Some commonly used snippets that will help you retrieve information from Juniper devices.
+Quite often, XML is dreaded and a lot of folks seem to prefer working with JSON. In many cases though, using XPATH to deal with the returns you get from the Juniper XML API can be very rewarding. 
 
-I retrieved the data I will be working with using the following code:
+This blog contains some commonly used snippets that will help you retrieve information from Juniper devices using the XML API.
+
+
+## Code that was used to execute the RPC:
+
+The data I will be working with in the article is retrieved using the following code:
 
 <pre style="font-size:12px">
 #!/usr/bin/python
@@ -24,6 +29,8 @@ password = getpass.getpass()
 with Device(host=host, user=username, password=password, normalize=True) as dev:                                  
     rpc = dev.rpc.get_interface_information(extensive=True)
 </pre>
+
+## How the RPC was mapped from the Junos CLI command:
 
 The `rpc` that is referred to in the rest of the examples is the device response to `get_interface_information(extensive=True)`. This is the RPC to retrieve the information that can be displayed with the `show interfaces extensive` command:
 
@@ -43,7 +50,7 @@ admin@ar.lab> show interfaces extensive | display xml rpc
 
 I stored the example script as `example.py` and ran it with `python -i`. This will drop you in the interpretor and allows you to paste in the following snippets and examples.
 
-## XPATH examples:
+## Examples on how to use XPATH to navigate the RPC return:
 
 XPATH getting all the interface names:
 <pre style="font-size:12px">
@@ -156,7 +163,8 @@ The `getattr(object, attribute, default)` returns the value of a specified attri
 
 Short example where we put the collected information into a dictionary:
 <pre style="font-size:12px">
-from collections import OrderedDict # ensure the ordering of the dict key/values
+# to ensure ordering of dict key/values remains the same, no needed in python 3.9+
+from collections import OrderedDict 
 
 all_interfaces = rpc.xpath('//physical-interface|//physical-interface/logical-interface')
 interfaces_list_of_dict = []
