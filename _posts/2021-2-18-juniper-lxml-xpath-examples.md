@@ -5,11 +5,11 @@ tags: [ python, automation, juniper, pyez, xpath ]
 image: /img/juniper_logo.jpg
 ---
 
-Many people dread XML and would rather work with JSON. However, <b>XPATH</b> can be extremely powerful when dealing with the <b>Juniper XML API</b>.
+Many people dread XML and would rather work with JSON. However, <b>XPATH</b> can be extremely powerful when dealing with the <b>Juniper XML API</b> output.
 
 Even though the Juniper API can be made to return JSON instead of XML, I prefer sticking to XML. With little code, I tend to be able to find exactly what I am looking for.
 
-This blog contains my commonly used snippets of code that navigate information from the Juniper XML API using XPATH.
+This blog contains some of my commonly used snippets of code that leverage XPATH to deal with the RPC returned by the Juniper XML API.
 
 
 ## Code that was used to execute the RPC:
