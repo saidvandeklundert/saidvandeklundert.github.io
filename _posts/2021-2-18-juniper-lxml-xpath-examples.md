@@ -9,7 +9,7 @@ Many people dread XML and would rather work with JSON. However, XPATH can be ext
 
 Even though the Juniper API can be made to return JSON instead of XML, I prefer sticking to XML. With little code, I tend to be able to find exactly what I am looking for.
 
-This blog contains my commonly used snippets of code that can help you retrieve and navigate information from the Juniper XML API using XPATH.
+This blog contains my commonly used snippets of code that retrieve and navigate information from the Juniper XML API using XPATH.
 
 
 ## Code that was used to execute the RPC:
