@@ -7,9 +7,9 @@ image: /img/juniper_logo.jpg
 
 Many people dread XML and would rather work with JSON. However, XPATH can be extremely powerful when dealing with the Juniper XML API.
 
-Even though Juniper can be made to return JSON instead of XML, I prefer working sticking to XML. Finding what I need is easier and quite often requires little code.
+Even though the Juniper API can be made to return JSON instead of XML, I prefer sticking to XML. With little code, I tend to be able to find exactly what I am looking for.
 
-This blog contains some of my commonly used snippets that can help you retrieve and navigate information from Juniper devices using the XML API.
+This blog contains my commonly used snippets of code that can help you retrieve and navigate information from the Juniper XML API using XPATH.
 
 
 ## Code that was used to execute the RPC:
