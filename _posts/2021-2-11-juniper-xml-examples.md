@@ -5,10 +5,11 @@ tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
 
+Many people dread XML and would rather work with JSON. However, XPATH can be extremely powerful when dealing with the Juniper XML API.
 
-Quite often, XML is dreaded and a lot of folks seem to prefer working with JSON. In many cases though, using XPATH to deal with the returns you get from the Juniper XML API can be very rewarding. 
+Even though Juniper can be made to return JSON instead of XML, I prefer working sticking to XML. Finding what I need is easier and quite often requires little code.
 
-This blog contains some commonly used snippets that will help you retrieve information from Juniper devices using the XML API.
+This blog contains some of my commonly used snippets that can help you retrieve and navigate information from Juniper devices using the XML API.
 
 
 ## Code that was used to execute the RPC:
@@ -48,7 +49,7 @@ admin@ar.lab> show interfaces extensive | display xml rpc
 </rpc-reply>
 ```
 
-I stored the example script as `example.py` and ran it with `python -i`. This will drop you in the interpretor and allows you to paste in the following snippets and examples.
+I stored the example script as `example.py` and ran it with `python -i`. This will drop you in the interpreter and allows you to paste in the following snippets and examples.
 
 ## Examples on how to use XPATH to navigate the RPC return:
 
@@ -62,7 +63,7 @@ XPATH getting all the logical interface names:
 rpc.xpath('//physical-interface/logical-interface/name/text()')
 </pre>
 
-XPATH getting all the interface names of the physicall as well as the logical interfaces:
+XPATH getting all the interface names of the physical as well as the logical interfaces:
 <pre style="font-size:12px">
 rpc.xpath('//physical-interface/name/text()|//physical-interface/logical-interface/name/text()')
 </pre>
@@ -105,10 +106,10 @@ ns = {"re": "http://exslt.org/regular-expressions"}
 # RE to get 100G:
 rpc.xpath('physical-interface[re:match(name, "et")]/name/text()', namespaces=ns) 
 
-# RE to get 100G on linecard position 1 and 2:
+# RE to get 100G on line card position 1 and 2:
 rpc.xpath('physical-interface[re:match(name, "et-[1,2]")]/name/text()', namespaces=ns)
 
-# RE to get 100G on linecard position 1 and 2 while ignoring upper and lower case:
+# RE to get 100G on line card position 1 and 2 while ignoring upper and lower case:
 rpc.xpath('physical-interface[re:match(name, "ET-[1,2]", "i")]/name/text()', namespaces=ns)
 </pre>
 
@@ -140,7 +141,7 @@ for interface in all_interfaces:
     interface.xpath('child::*/text()')
 </pre>
 
-Sometimes, the atributes offer more interested data. In order to access attributes, we can use the following:
+Sometimes, the attributes offer more interesting data. To access these attributes, we can use the following:
 <pre style="font-size:12px">
 for interface in all_interfaces:
     interface.find('./interface-flapped').attrib['seconds'] if interface.find('./interface-flapped') is not None else None
@@ -159,7 +160,7 @@ for interface in all_interfaces:
     getattr(interface.find('.//output-pps'), 'text' , '')
 </pre>
 
-The `getattr(object, attribute, default)` returns the value of a specified attribute if it exists. If it does not exist, a default value is retured.
+The `getattr(object, attribute, default)` returns the value of a specified attribute if it exists. If it does not exist, a default value is returned.
 
 Short example where we put the collected information into a dictionary:
 <pre style="font-size:12px">
@@ -204,17 +205,20 @@ for interface in all_interfaces:
 
 I have recorded some sample output right [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_examples.py) and [here](https://github.com/saidvandeklundert/juniper/blob/master/xpath_re_example.py).
 
-More examples and explantion on how to work with lxml can be found [here](https://lxml.de/xpathxslt.html).
+More examples and explanation on how to work with lxml can be found [here](https://lxml.de/xpathxslt.html).
 
 Note,
 
-The code was ran against a few different Junos versions:
-- QFX 15.1X53-D65.3
-- MX 16.1R3-S8     
-- MX10003 17.4R2-S11
-
-I used Python 3.8.3 and the following package versions:
+Python 3.8.3 was used with the following package versions:
 ```   
 junos-eznc            2.5.4    
 lxml                  4.6.2    
+```
+
+The Juniper devices I used were the following:
+
+```
+QFX 15.1X53-D65.3
+MX 16.1R3-S8     
+MX10003 17.4R2-S11
 ```
