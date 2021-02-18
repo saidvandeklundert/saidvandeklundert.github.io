@@ -5,11 +5,11 @@ tags: [ python, automation, juniper, pyez, ]
 image: /img/juniper_logo.jpg
 ---
 
-Many people dread XML and would rather work with JSON. However, XPATH can be extremely powerful when dealing with the Juniper XML API.
+Many people dread XML and would rather work with JSON. However, <b>XPATH</b> can be extremely powerful when dealing with the <b>Juniper XML API</b>.
 
 Even though the Juniper API can be made to return JSON instead of XML, I prefer sticking to XML. With little code, I tend to be able to find exactly what I am looking for.
 
-This blog contains my commonly used snippets of code that retrieve and navigate information from the Juniper XML API using XPATH.
+This blog contains my commonly used snippets of code that navigate information from the Juniper XML API using XPATH.
 
 
 ## Code that was used to execute the RPC:
@@ -73,7 +73,7 @@ XPATH getting all the physical and logical interface XML data:
 rpc.xpath('//physical-interface|//physical-interface/logical-interface')
 </pre>
 
-Using XPATH, we slice the XML into a list of items. To see the content of the items, that we could do another XPATH expression on, we can use the following:
+Using XPATH, we slice the XML into a list of items. To see the content of the items we can use the following:
 <pre style="font-size:12px">
 for interface_xml in rpc.xpath('//physical-interface|//physical-interface/logical-interface'):    
     print(etree.tostring(interface_xml))
@@ -88,7 +88,7 @@ for interface_xml in rpc.xpath('//physical-interface|//physical-interface/logica
     print(interface_xml_pretty)
 </pre>
 
-Even easier then using the above would be to just check the XML on the device.
+Even easier then using the above would be to just check the XML on the device using <b>show interfaces extensive | display xml</b>.
 
 XPATH getting the physical interface names in case they include 'et':
 <pre style="font-size:12px">
@@ -164,7 +164,7 @@ The `getattr(object, attribute, default)` returns the value of a specified attri
 
 Short example where we put the collected information into a dictionary:
 <pre style="font-size:12px">
-# to ensure ordering of dict key/values remains the same, no needed in python 3.9+
+# to ensure ordering of dict key/values remains the same, not needed starting python 3.9
 from collections import OrderedDict 
 
 all_interfaces = rpc.xpath('//physical-interface|//physical-interface/logical-interface')
@@ -185,13 +185,13 @@ for interface in all_interfaces:
     )
 </pre>
 
-To look at what was gathered, use json.dumps because otherwise OrderedDicts look silly:
+To look at what was gathered, use json.dumps (printing OrderedDicts looks silly):
 <pre style="font-size:12px">
 from json import dumps
 print(dumps(interfaces_list_of_dict, indent=4))
 </pre>
 
-There are a lot of 'uninteresting' interfaces that Juniper has for internal use. Filtering them out is easy:
+There are a lot of 'uninteresting' interfaces that Juniper has for internal use. Can be done with multiple letnghty XPATHs, but sometimes using `any` to filter them out is easier:
 <pre style="font-size:12px">
 uninteresting = ["jsrv", "local", "igb", "ixlv", "bme", "32768", "16384", "32767"]
 
