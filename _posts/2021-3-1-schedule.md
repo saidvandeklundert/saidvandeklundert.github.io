@@ -1,0 +1,156 @@
+---
+layout: post
+title: Scheduling jobs in Python using schedule
+tags: [ python, automation ]
+image: /img/python-logo.jpg
+---
+
+
+The [schedule](https://github.com/dbader/schedule) module describes itself as 'Python job scheduling for humans'. It is a really nice package to use for infrastructure related tasks and activities. The package (currently) prides itself for the following:
+- A simple to use API for scheduling jobs.
+- Very lightweight and no external dependencies.
+- Excellent test coverage.
+- Tested on Python 3.6, 3.7, 3.8, 3.9
+
+Here is an example on how schedule could be used to run a job that collects the backup for a collection of devices:
+
+<pre style="font-size:12px">
+import schedule
+import time
+from datetime import datetime
+
+
+def collect_device_backup():
+    now = datetime.now().strftime("%H:%M:%S")
+    print(f"Collecting device backup at {now}.")
+
+
+def data_harvester():    
+    schedule.every(10).seconds.do(collect_device_backup)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+if __name__ == "__main__":
+    data_harvester()
+</pre>
+
+When we run this code, the backup job will run at a 10 second interval:
+
+```
+Collecting device backup at 11:28:28.
+Collecting device backup at 11:28:38.
+Collecting device backup at 11:28:49.
+Collecting device backup at 11:28:59.
+```
+
+Note that with <b>schedule.run_pending()</b>, the intended behavior for that method is to run jobs that are pending. Something scheduled to run every 10 seconds can only be run often enough if <b>run_pending()</b> is called at the same interval or faster. For instance, a job with a 10 second interval will only run once per minute if <b>run_pending()</b> is called once per minute. 
+
+Let's proceed and add another job to the schedule. Instead of just collecting the backup, we also collect additional facts that describe the device:
+
+<pre style="font-size:12px">
+import schedule
+import time
+from datetime import datetime
+
+def collect_device_backup():
+    now = datetime.now().strftime("%H:%M:%S")
+    print(f"Collecting device backup at {now}.")
+
+
+def collect_device_facts():
+    now = datetime.now().strftime("%H:%M:%S")
+    print(f"Collecting device facts at {now}.")    
+ 
+
+def data_harvester():    
+    schedule.every(10).seconds.do(collect_device_backup)
+    schedule.every(10).seconds.do(collect_device_facts)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+if __name__ == "__main__":
+    data_harvester()
+</pre>
+
+We are now running 2 tasks at the same interval:
+
+```
+Collecting device backup at 11:35:06.
+Collecting device facts at 11:35:06.
+Collecting device backup at 11:35:16.
+Collecting device facts at 11:35:16.
+Collecting device backup at 11:35:26.
+Collecting device facts at 11:35:26.
+```
+
+If we keep adding tasks to run at the same interval, it might be wise to ensure that not everything is run at the same time. The <b>schedule</b> module offers this facility for us. Instead of using <b>every(10).seconds</b> we use <b>every(10).to(20).seconds</b>:
+
+<pre style="font-size:12px">
+def data_harvester():    
+    schedule.every(10).to(20).seconds.do(collect_device_backup)
+    schedule.every(10).to(20).seconds.do(collect_device_facts)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+</pre>
+
+After the fist run, schedule will use <b>random.randint</b> to randomize the time at which the tasks are executed. With this in place, we now see the following:
+
+```
+Collecting device facts at 11:39:31.
+Collecting device backup at 11:39:32.
+Collecting device facts at 11:39:43.
+Collecting device backup at 11:39:53.
+Collecting device facts at 11:40:02.
+Collecting device backup at 11:40:10.
+Collecting device facts at 11:40:13.
+```
+
+Next thing I did was add a configuration file that made it easy to specify the interval for each job, like so:
+
+```yaml
+intervals:
+  backup: 3600
+  facts: 1800
+  splay: 300
+```
+
+This way, anyone can change the interval for any of the scheduled jobs without combing through (or understanding) all of the code.
+
+
+The schedule package offers more convenient ways to schedule jobs. The following comes from direcly from the readme:
+
+<pre style="font-size:12px">
+import schedule
+import time
+
+def job():
+    print("I'm working...")
+
+schedule.every(10).seconds.do(job)
+schedule.every(10).minutes.do(job)
+schedule.every().hour.do(job)
+schedule.every().day.at("10:30").do(job)
+schedule.every(5).to(10).minutes.do(job)
+schedule.every().monday.do(job)
+schedule.every().wednesday.at("13:15").do(job)
+schedule.every().minute.at(":17").do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+</pre>
+
+Check the package right [here](https://github.com/dbader/schedule/tree/master/schedule) to see what it has to offer.
+
+For these examples, I used Python `3.9.0` and schedule version `1.0.0`.
+
+
+
+
+
+
+
+
