@@ -6,7 +6,7 @@ image: /img/python-logo.jpg
 ---
 
 
-The [schedule](https://github.com/dbader/schedule) module describes itself as 'Python job scheduling for humans'. It is a really nice package to use for infrastructure related tasks and activities. The package (currently) prides itself for the following:
+The [schedule](https://github.com/dbader/schedule) module describes itself as 'Python job scheduling for humans'. It is a nice package to use for infrastructure related tasks and activities. The package (currently) prides itself for the following:
 - A simple to use API for scheduling jobs.
 - Very lightweight and no external dependencies.
 - Excellent test coverage.
@@ -44,7 +44,7 @@ Collecting device backup at 11:28:49.
 Collecting device backup at 11:28:59.
 ```
 
-Note that with <b>schedule.run_pending()</b>, the intended behavior for that method is to run jobs that are pending. Something scheduled to run every 10 seconds can only be run often enough if <b>run_pending()</b> is called at the same interval or faster. For instance, a job with a 10 second interval will only run once per minute if <b>run_pending()</b> is called once per minute. 
+Note that with <b>schedule.run_pending()</b>, the intended behaviour for that method is to run jobs that are pending. Something scheduled to run every 10 seconds can only be run often enough if <b>run_pending()</b> is called at the same interval or faster. For instance, a job with a 10 second interval will only run once per minute if <b>run_pending()</b> is called once per minute. 
 
 Let's proceed and add another job to the schedule. Instead of just collecting the backup, we also collect additional facts that describe the device:
 
@@ -108,19 +108,7 @@ Collecting device backup at 11:40:10.
 Collecting device facts at 11:40:13.
 ```
 
-Next thing I did was add a configuration file that made it easy to specify the interval for each job, like so:
-
-```yaml
-intervals:
-  backup: 3600
-  facts: 1800
-  splay: 300
-```
-
-This way, anyone can change the interval for any of the scheduled jobs without combing through (or understanding) all of the code.
-
-
-The schedule package offers more convenient ways to schedule jobs. The following comes from direcly from the readme:
+The schedule package offers more convenient ways to schedule jobs. The following comes from directly from the readme:
 
 <pre style="font-size:12px">
 import schedule
