@@ -108,7 +108,7 @@ Collecting device backup at 11:40:10.
 Collecting device facts at 11:40:13.
 ```
 
-Notice the <b>do</b> method ('<b>do</b>(collect_device_backup)'). It uses <b>partial</b> from <b>functools</b> to run the scheduled job. The <b>do</b> method will pass additional <b>args</b> and <b>kwargs</b> to the function that is passed to <b>partial</b>.
+Notice the <b>do()</b> method ('<b>do</b>(collect_device_backup)'). It uses <b>partial</b> from <b>functools</b> to run the scheduled job. The <b>do()</b> method will pass additional <b>args</b> and <b>kwargs</b> to the function that is passed to <b>partial</b>.
 
 In the next example, the <b>args_and_kwargs()</b> function is scheduled. It is passed 2 arguments and 2 keyword arguments. We do this using <b>do(args_and_kwargs, 'arg1', 'arg2', keyword1='argument1', keyword2='argument2')</b>:
 
