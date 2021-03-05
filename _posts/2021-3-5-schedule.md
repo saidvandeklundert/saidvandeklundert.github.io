@@ -37,12 +37,12 @@ if __name__ == "__main__":
 
 When we run this code, the backup job will run at a 10 second interval:
 
-```
+<pre style="font-size:12px">
 Collecting device backup at 11:28:28.
 Collecting device backup at 11:28:38.
 Collecting device backup at 11:28:49.
 Collecting device backup at 11:28:59.
-```
+</pre>
 
 Note that with <b>schedule.run_pending()</b>, the intended behaviour for that method is to run jobs that are pending. Something scheduled to run every 10 seconds can only be run often enough if <b>run_pending()</b> is called at the same interval or faster. For instance, a job with a 10 second interval will only run once per minute if <b>run_pending()</b> is called once per minute. 
 
@@ -76,14 +76,14 @@ if __name__ == "__main__":
 
 We are now running 2 tasks at the same interval:
 
-```
+<pre style="font-size:12px">
 Collecting device backup at 11:35:06.
 Collecting device facts at 11:35:06.
 Collecting device backup at 11:35:16.
 Collecting device facts at 11:35:16.
 Collecting device backup at 11:35:26.
 Collecting device facts at 11:35:26.
-```
+</pre>
 
 If we keep adding tasks to run at the same interval, it might be wise to ensure that not everything is run at the same time. The <b>schedule</b> module offers this facility for us. Instead of using <b>every(10).seconds</b> we use <b>every(10).to(20).seconds</b>:
 
@@ -98,7 +98,7 @@ def data_harvester():
 
 After the fist run, schedule will use <b>random.randint</b> to randomize the time at which the tasks are executed. With this in place, we now see the following:
 
-```
+<pre style="font-size:12px">
 Collecting device facts at 11:39:31.
 Collecting device backup at 11:39:32.
 Collecting device facts at 11:39:43.
@@ -106,7 +106,7 @@ Collecting device backup at 11:39:53.
 Collecting device facts at 11:40:02.
 Collecting device backup at 11:40:10.
 Collecting device facts at 11:40:13.
-```
+</pre>
 
 Notice the <b>do()</b> method ('<b>do</b>(collect_device_backup)'). It uses [partial](https://docs.python.org/3/library/functools.html#functools.partial) from <b>functools</b> to run the scheduled job. The <b>do()</b> method will pass additional <b>args</b> and <b>kwargs</b> to the function that is passed to <b>partial</b>.
 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
 Running this will give you the following:
 
-```
+<pre style="font-size:12px">
 Args:('arg1', 'arg2').
 kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
 Args:('arg1', 'arg2').
@@ -142,7 +142,7 @@ Args:('arg1', 'arg2').
 kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
 Args:('arg1', 'arg2').
 kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
-```
+</pre>
 
 The schedule package offers more convenient ways to schedule jobs. The following comes from directly from the readme:
 
