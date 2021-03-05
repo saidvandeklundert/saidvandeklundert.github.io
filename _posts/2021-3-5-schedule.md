@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Scheduling jobs in Python using schedule
+title: Schedule the boring stuff with Python
 tags: [ python, automation ]
 image: /img/python-logo.jpg
 ---
