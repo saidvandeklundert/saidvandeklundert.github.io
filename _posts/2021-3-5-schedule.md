@@ -167,7 +167,7 @@ while True:
     time.sleep(1)
 </pre>
 
-Check the package right [here](https://github.com/dbader/schedule/tree/master/schedule) to see what it has to offer.
+Check the package right [here](https://github.com/dbader/schedule) to see what it has to offer.
 
 For these examples, I used Python `3.9.0` and schedule version `1.0.0`.
 
