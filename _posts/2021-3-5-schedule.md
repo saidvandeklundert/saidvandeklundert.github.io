@@ -108,7 +108,9 @@ Collecting device backup at 11:40:10.
 Collecting device facts at 11:40:13.
 ```
 
-The `do` method uses `partial` from `functools` to run the scheduled job. The `do` method will pass additional `args` and `kwargs` to the function that is passed to `partial`. In the next example, the `args_and_kwargs` function is scheduled together with 2 arguments ('arg1', 'arg2') and 2 keyword arguments (keyword1='argument1', keyword2='argument2'). We do this using `do(args_and_kwargs, 'arg1', 'arg2', keyword1='argument1', keyword2='argument2')`:
+The `do` method uses `partial` from `functools` to run the scheduled job. The `do` method will pass additional `args` and `kwargs` to the function that is passed to `partial`. 
+
+In the next example, the `args_and_kwargs` function is scheduled together with 2 arguments ('arg1', 'arg2') and 2 keyword arguments (keyword1='argument1', keyword2='argument2'). We do this using `do(args_and_kwargs, 'arg1', 'arg2', keyword1='argument1', keyword2='argument2')`:
 
 <pre style="font-size:12px">
 import schedule
