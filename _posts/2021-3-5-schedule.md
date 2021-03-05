@@ -6,7 +6,7 @@ image: /img/python-logo.jpg
 ---
 
 
-The [schedule](https://github.com/dbader/schedule) module describes itself as 'Python job scheduling for humans'. It is a nice package to use for infrastructure related tasks and activities. The package (currently) prides itself for the following:
+The <b>schedule</b> module describes itself as 'Python job scheduling for humans'. It is a nice package that I use for infrastructure related tasks and activities. The package (currently) prides itself for the following:
 - A simple to use API for scheduling jobs.
 - Very lightweight and no external dependencies.
 - Excellent test coverage.
@@ -108,6 +108,40 @@ Collecting device backup at 11:40:10.
 Collecting device facts at 11:40:13.
 ```
 
+The `do` method uses `partial` from `functools` to run the scheduled job. The `do` method will pass additional `args` and `kwargs` to the function that is passed to `partial`. In the next example, the `args_and_kwargs` function is scheduled together with 2 arguments ('arg1', 'arg2') and 2 keyword arguments (keyword1='argument1', keyword2='argument2'). We do this using `do(args_and_kwargs, 'arg1', 'arg2', keyword1='argument1', keyword2='argument2')`:
+
+<pre style="font-size:12px">
+import schedule
+import time
+
+def args_and_kwargs(*args, **kwargs):
+    print(f"Args:{args}.")
+    print(f"kwargs:{kwargs}.")
+
+ 
+def data_harvester():    
+    schedule.every(10).seconds.do(args_and_kwargs, 'arg1', 'arg2', keyword1='argument1', keyword2='argument2')
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+if __name__ == "__main__":
+    data_harvester()
+</pre>
+
+Running this will give you the following:
+
+```
+Args:('arg1', 'arg2').
+kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
+Args:('arg1', 'arg2').
+kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
+Args:('arg1', 'arg2').
+kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
+Args:('arg1', 'arg2').
+kwargs:{'keyword1': 'argument1', 'keyword2': 'argument2'}.
+```
+
 The schedule package offers more convenient ways to schedule jobs. The following comes from directly from the readme:
 
 <pre style="font-size:12px">
@@ -134,11 +168,4 @@ while True:
 Check the package right [here](https://github.com/dbader/schedule/tree/master/schedule) to see what it has to offer.
 
 For these examples, I used Python `3.9.0` and schedule version `1.0.0`.
-
-
-
-
-
-
-
 
